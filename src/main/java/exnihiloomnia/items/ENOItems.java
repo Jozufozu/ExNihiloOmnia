@@ -140,8 +140,6 @@ public class ENOItems {
         return items;
     }
 
-
-
 	public static void init()
 	{
         POTATO_SEEDS = new ItemSeeds(Blocks.POTATOES, Blocks.FARMLAND).setUnlocalizedName("seeds_potato").setRegistryName("seeds_potato").setCreativeTab(ENO_TAB);

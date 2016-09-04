@@ -1,5 +1,9 @@
 package exnihiloomnia.blocks.barrels.states.fluid;
 
+import exnihiloomnia.util.helpers.InventoryHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;

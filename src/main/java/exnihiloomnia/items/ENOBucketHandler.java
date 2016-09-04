@@ -3,6 +3,7 @@ package exnihiloomnia.items;
 import exnihiloomnia.fluids.ENOFluids;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -12,10 +13,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ENOBucketHandler {
 
     public static void registerBuckets() {
-        FluidContainerRegistry.registerFluidContainer(ENOFluids.WITCHWATER, new ItemStack(ENOItems.BUCKET_PORCELAIN_WITCHWATER));
-        FluidContainerRegistry.registerFluidContainer(ENOFluids.WITCHWATER, new ItemStack(ENOItems.BUCKET_WITCHWATER));
-        FluidContainerRegistry.registerFluidContainer(FluidRegistry.LAVA, new ItemStack(ENOItems.BUCKET_PORCELAIN_LAVA));
-        FluidContainerRegistry.registerFluidContainer(FluidRegistry.WATER, new ItemStack(ENOItems.BUCKET_PORCELAIN_WATER));
+
+        //FluidRegistry.addBucketForFluid(ENOFluids.WITCHWATER);
+        FluidContainerRegistry.registerFluidContainer(ENOFluids.WITCHWATER, new ItemStack(ENOItems.BUCKET_WITCHWATER), new ItemStack(Items.BUCKET));
+        FluidContainerRegistry.registerFluidContainer(ENOFluids.WITCHWATER, new ItemStack(ENOItems.BUCKET_PORCELAIN_WITCHWATER), new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY));
+        FluidContainerRegistry.registerFluidContainer(FluidRegistry.LAVA, new ItemStack(ENOItems.BUCKET_PORCELAIN_LAVA), new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY));
+        FluidContainerRegistry.registerFluidContainer(FluidRegistry.WATER, new ItemStack(ENOItems.BUCKET_PORCELAIN_WATER), new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY));
     }
 
 	@SubscribeEvent

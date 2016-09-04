@@ -8,8 +8,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class BarrelFluidLayer extends BarrelStateLayer implements IFluidTank, IFluidHandler
 {
@@ -46,6 +48,12 @@ public class BarrelFluidLayer extends BarrelStateLayer implements IFluidTank, IF
 	{
 		return new FluidTankInfo(this);
 	}
+
+    @Override
+    public IFluidTankProperties[] getTankProperties()
+    {
+        return new IFluidTankProperties[] { new FluidTankProperties(getFluid(), CAPACITY, false, true) };
+    }
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) 
@@ -173,13 +181,7 @@ public class BarrelFluidLayer extends BarrelStateLayer implements IFluidTank, IF
 
 	/* IFluidHandler */
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
-    {
-        return fill(resource, doFill);
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(FluidStack resource, boolean doDrain)
     {
         if (resource == null || !resource.isFluidEqual(getFluid()))
         {
@@ -187,29 +189,5 @@ public class BarrelFluidLayer extends BarrelStateLayer implements IFluidTank, IF
         }
         
         return drain(resource.amount, doDrain);
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
-    {
-        return drain(maxDrain, doDrain);
-    }
-
-    @Override
-    public boolean canFill(EnumFacing from, Fluid fluid)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid)
-    {
-        return true;
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from)
-    {
-        return new FluidTankInfo[] { getInfo() };
     }
 }

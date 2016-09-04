@@ -7,6 +7,7 @@ import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -46,5 +47,4 @@ public class ItemOre extends Item
                     subItems.add(new ItemStack(itemIn, 1, ore.getMetadata()));
         }
     }
-
 }

@@ -79,6 +79,7 @@ public class BarrelStates {
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_END_STONE;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_CLAY;
+	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_STONE;
 	public static BarrelLogic FLUID_STATE_TRIGGER_SUMMON_SLIME;
@@ -117,6 +118,7 @@ public class BarrelStates {
 	public static boolean ALLOW_CRAFTING_NETHERRACK;
 	public static boolean ALLOW_CRAFTING_END_STONE;
 	public static boolean ALLOW_CRAFTING_CLAY;
+	public static boolean ALLOW_CRAFTING_SOUL_SAND;
 	public static boolean ALLOW_CRAFTING_OBSIDIAN;
 	public static boolean ALLOW_CRAFTING_STONE;
 	public static boolean ALLOW_SLIME_SUMMONING;
@@ -143,6 +145,7 @@ public class BarrelStates {
 		ALLOW_CRAFTING_NETHERRACK = config.get(CATEGORY_BARREL_OPTIONS, "allow creating netherrack", true).getBoolean(true);
 		ALLOW_CRAFTING_END_STONE = config.get(CATEGORY_BARREL_OPTIONS, "allow creating end stone", true).getBoolean(true);
 		ALLOW_CRAFTING_CLAY = config.get(CATEGORY_BARREL_OPTIONS, "allow creating clay", true).getBoolean(true);
+		ALLOW_CRAFTING_SOUL_SAND = config.get(CATEGORY_BARREL_OPTIONS, "allow creating soul sand", true).getBoolean(true);
 		ALLOW_CRAFTING_OBSIDIAN = config.get(CATEGORY_BARREL_OPTIONS, "allow creating obsidian", true).getBoolean(true);
 		ALLOW_CRAFTING_STONE = config.get(CATEGORY_BARREL_OPTIONS, "allow creating stone and cobblestone", true).getBoolean(true);
 		ALLOW_SLIME_SUMMONING = config.get(CATEGORY_BARREL_OPTIONS, "allow creating slimes", true).getBoolean(true);
@@ -170,6 +173,7 @@ public class BarrelStates {
 		FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK = new FluidCraftNetherrackTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_END_STONE = new FluidCraftEndstoneTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_CLAY = new FluidCraftClayTrigger();
+		FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND = new FluidCraftSoulsandTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN = new FluidCraftObsidianTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_STONE = new FluidCraftStoneTrigger();
 		FLUID_STATE_TRIGGER_SUMMON_SLIME = new FluidSummonSlimeTrigger();
@@ -254,6 +258,8 @@ public class BarrelStates {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_END_STONE);
 		if (ALLOW_CRAFTING_CLAY)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_CLAY);
+		if (ALLOW_CRAFTING_SOUL_SAND)
+			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND);
 		if (ALLOW_CRAFTING_OBSIDIAN)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN);
 		if (ALLOW_CRAFTING_STONE)

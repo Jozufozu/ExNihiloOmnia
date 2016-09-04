@@ -15,6 +15,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,10 +68,6 @@ public class ENO
 	public static Configuration config;
 
 	public static List<EnumOre> oreList;
-
-    //static {
-    //    FluidRegistry.enableUniversalBucket();
-    //}
 
 	@EventHandler
 	public void preInitialize(FMLPreInitializationEvent event)

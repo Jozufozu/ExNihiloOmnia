@@ -69,14 +69,14 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 					return true;
 				}
 			}
-			
+
 			ItemStack contents = item.copy();
 			contents.stackSize = 1;
-			
+
 			if (crucible.canInsertItem(0, contents, EnumFacing.UP))
 			{
 				crucible.setInventorySlotContents(0, contents);
-				
+
 				world.playSound(null, pos, SoundEvents.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
 
 				InventoryHelper.consumeItem(player, item);

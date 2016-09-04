@@ -18,12 +18,14 @@ public class BarrelStateLayer extends TileEntity{
 	{
 		String keyA = "";
 		String keyB = "";
-		
+
+        //state is valid
 		if (state != null)
 		{
 			keyA = this.state.getUniqueIdentifier();
 		}
-		
+
+
 		if (new_state != null)
 		{
 			state = new_state;
@@ -40,6 +42,7 @@ public class BarrelStateLayer extends TileEntity{
 			TileEntityBarrel barrel = (TileEntityBarrel)this;
 
 			state.activate(barrel);
+			barrel.resetTimer();
 			barrel.requestSync();
 		}
 	}

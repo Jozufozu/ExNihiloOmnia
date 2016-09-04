@@ -3,6 +3,7 @@ package exnihiloomnia.blocks.barrels;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -10,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -21,6 +23,9 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.capability.ItemFluidContainer;
 
 public class BlockBarrel extends Block implements ITileEntityProvider
 {
@@ -63,9 +68,10 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 
 		if (barrel != null)
 		{
-			if (item != null && barrel.getState().canUseItem(barrel, item))
-			{
-				barrel.getState().useItem(player, barrel, item);
+			if (item != null) {
+				if (barrel.getState().canUseItem(barrel, item)) {
+					barrel.getState().useItem(player, barrel, item);
+				}
 			}
 			else if (barrel.canExtractItem(0, barrel.getStackInSlot(0), EnumFacing.DOWN))
 			{

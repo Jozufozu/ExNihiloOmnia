@@ -29,7 +29,7 @@ public class MiscRecipes {
 		
 		//porcelain
 		GameRegistry.addShapelessRecipe(new ItemStack(ENOItems.PORCELAIN, 1),
-				new ItemStack(Items.CLAY_BALL, 1),
+				new ItemStack(Items.CLAY_BALL),
 				new ItemStack(ENOItems.ASH),
 				new ItemStack(Items.DYE, 1, 15)); //bonemeal
 	}

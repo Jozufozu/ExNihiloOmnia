@@ -20,6 +20,7 @@ public class WitchwaterStateLogic extends BarrelLogic{
 			{
 				barrel.transformFluidTo(new FluidStack(ENOFluids.WITCHWATER, 1000));
 				barrel.setState(BarrelStates.FLUID);
+				barrel.resetTimer();
 			}
 			
 			return true;

@@ -41,12 +41,12 @@ public class ENOCrafting {
 		
 		if (sieves_allowed)
 			SieveRecipes.register();
-		
-		if (porcelain_buckets_allowed)
-			BucketRecipes.register();
 
 		if (dolls_allowed)
 			DollRecipes.register();
+
+		if (porcelain_buckets_allowed)
+			BucketRecipes.register();
 		
 		MiscRecipes.registerSmeltingRecipes();
 		MiscRecipes.registerOtherRecipes();
