@@ -21,12 +21,17 @@ public class MiscRecipes {
 						'y', new ItemStack(Items.SLIME_BALL, 1)));
 		
 		//cobble from stones
-		GameRegistry.addRecipe(
-				new ShapedOreRecipe(new ItemStack(Blocks.COBBLESTONE, 1),
-						"xx",
-						"xx",
-						'x', new ItemStack(ENOItems.STONE, 1)));
-		
+		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE),
+                new ItemStack(ENOItems.STONE));
+
 		//porcelain
 		GameRegistry.addShapelessRecipe(new ItemStack(ENOItems.PORCELAIN, 1),
 				new ItemStack(Items.CLAY_BALL),
