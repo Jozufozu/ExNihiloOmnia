@@ -1,0 +1,24 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:ore_gravel_ender"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}],
+        "ore": {
+            "iron": {},
+            "gold": {},
+            "copper": {},
+            "aluminum": {},
+            "nickel": {},
+            "tin": {},
+            "lead": {},
+            "silver": {},
+            "platinum": {},
+            "cobalt": {},
+            "ardite": {},
+            "osmium": {}
+        }
+    }
+}

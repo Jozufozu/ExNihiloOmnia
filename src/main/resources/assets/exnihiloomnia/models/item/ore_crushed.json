@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "exnihiloomnia:items/crushed_base",
+        "layer1": "exnihiloomnia:items/crushed_template"
+    }
+}

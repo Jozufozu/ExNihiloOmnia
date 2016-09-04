@@ -1,0 +1,6 @@
+{
+    "parent": "exnihiloomnia:block/barrel",
+    "textures": {
+        "barrel": "blocks/planks_acacia"
+    }
+}

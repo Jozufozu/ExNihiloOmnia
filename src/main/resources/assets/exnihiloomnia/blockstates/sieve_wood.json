@@ -1,0 +1,21 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "blocks/planks_oak"
+        },
+        "model": "exnihiloomnia:sieve"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}],
+        "wood": {
+            "oak": { "textures": { "material": "blocks/planks_oak" }},
+            "spruce": { "textures": { "material": "blocks/planks_spruce" }},
+            "birch": { "textures": { "material": "blocks/planks_birch" }},
+            "jungle": { "textures": { "material": "blocks/planks_jungle" }},
+            "acacia": { "textures": { "material": "blocks/planks_acacia" }},
+            "dark_oak": { "textures": { "material": "blocks/planks_big_oak" }}
+        }
+    }
+}

@@ -1,0 +1,14 @@
+[
+{
+  "modid": "exnihiloomnia", "version": "${version}", "name": "Ex Nihilo Omnia",
+  "description": "Everything from nothing.",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Raven2396"],
+  "credits": "Erasmus Crowley, for coming up with it in the first place.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

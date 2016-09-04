@@ -1,0 +1,7 @@
+{
+	"parent": "exnihiloomnia:block/ore_block",
+    "textures": {
+		"base": "exnihiloomnia:blocks/dust_base",
+		"overlay": "exnihiloomnia:blocks/dust_template"
+    }
+}

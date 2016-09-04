@@ -1,0 +1,87 @@
+{
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"display": {
+		"firstperson_righthand" : {
+			"translation": [0,1,0],
+			"scale": [0.6,0.6,0.6]
+			},
+		"firstperson_lefthand" : {
+			"translation": [0,1,0],
+			"scale": [0.6,0.6,0.6]
+		}
+	},
+    "textures": {
+		"particle": "blocks/glass",
+		"glass": "blocks/glass",
+		"transglass": "exnihiloomnia:blocks/glass",
+		"wood": "blocks/planks_oak",
+		"cap": "blocks/itemframe_background",
+		"string": "blocks/wool_colored_white"
+    },
+    "elements": [
+        {
+            "name": "Base",
+            "from": [ 1, 0, 1 ], 
+            "to": [ 15, 1, 15 ], 
+            "faces": {
+                "north": { "texture": "#wood", "uv": [ 1, 0, 16, 1 ] },
+                "east": { "texture": "#wood", "uv": [ 1, 0, 16, 1 ] },
+                "south": { "texture": "#wood", "uv": [ 1, 0, 16, 1 ] },
+                "west": { "texture": "#wood", "uv": [ 1, 0, 16, 1 ] },
+                "up": { "texture": "#wood", "uv": [ 0, 0, 16, 16 ] },
+                "down": { "texture": "#wood", "uv": [ 0, 0, 16, 16 ] }
+            }
+        },
+        {
+            "name": "Jar",
+            "from": [ 2, 1, 2 ], 
+            "to": [ 14, 10, 14 ], 
+            "faces": {
+                "north": { "texture": "#transglass", "uv": [ 0, 0, 16, 12 ] },
+                "east": { "texture": "#transglass", "uv": [ 0, 0, 16, 12 ] },
+                "south": { "texture": "#transglass", "uv": [ 0, 0, 16, 12 ] },
+                "west": { "texture": "#transglass", "uv": [ 0, 0, 16, 12 ] },
+				"up": { "texture": "#transglass", "uv": [ 0, 0, 16, 16 ] }
+            }
+        },
+        {
+            "name": "Jar2",
+            "from": [ 2.5, 10, 2.5 ], 
+            "to": [ 13.5, 14, 13.5 ], 
+            "faces": {
+                "north": { "texture": "#transglass", "uv": [ 0, 11, 16, 16 ] },
+                "east": { "texture": "#transglass", "uv": [ 0, 11, 16, 16 ] },
+                "south": { "texture": "#transglass", "uv": [ 0, 11, 16, 16 ] },
+                "west": { "texture": "#transglass", "uv": [ 0, 11, 16, 16 ] },
+				"up": { "texture": "#transglass", "uv": [ 0, 0, 16, 16 ] }
+            }
+        },
+        {
+            "name": "Cap",
+            "from": [ 3, 13, 3 ], 
+            "to": [ 13, 15, 13 ], 
+            "faces": {
+                "north": { "texture": "#cap", "uv": [ 0, 7, 16, 9 ] },
+                "east": { "texture": "#cap", "uv": [ 0, 7, 16, 9 ] },
+                "south": { "texture": "#cap", "uv": [ 0, 7, 16, 9 ] },
+                "west": { "texture": "#cap", "uv": [ 0, 7, 16, 9 ] },
+                "up": { "texture": "#cap", "uv": [ 0, 0, 16, 16 ] },
+                "down": { "texture": "#cap", "uv": [ 0, 0, 16, 16 ] }
+            }
+        },
+		{
+			"name": "String",
+			"from": [7.6, 5, 7.6],
+			"to": [8.4, 14, 8.4],
+			"faces": {
+				"north": { "texture": "#string", "uv": [ 7.8, 1, 8.8, 10 ] },
+                "east": { "texture": "#string", "uv": [ 7.8, 1, 8.8, 10 ] },
+                "south": { "texture": "#string", "uv": [ 7.8, 1, 8.8, 10 ] },
+                "west": { "texture": "#string", "uv": [ 7.8, 1, 8.8, 10 ] },
+                "up": { "texture": "#string", "uv": [ 7.8, 7.8, 8.8, 8.8 ] },
+                "down": { "texture": "#string", "uv": [ 7.8, 7.8, 8.8, 8.8 ] }
+			}
+		}
+    ]
+}

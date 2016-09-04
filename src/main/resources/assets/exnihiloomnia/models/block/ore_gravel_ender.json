@@ -1,0 +1,7 @@
+{
+	"parent": "exnihiloomnia:block/ore_block",
+    "textures": {
+		"base": "exnihiloomnia:blocks/gravel_base_ender",
+		"overlay": "exnihiloomnia:blocks/gravel_template"
+    }
+}
