@@ -50,7 +50,7 @@ import exnihiloomnia.items.materials.ENOToolMaterials;
 import exnihiloomnia.proxy.Proxy;
 import exnihiloomnia.world.ENOWorld;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "required-after:VeinMiner")
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION)//, dependencies = "required-after:VeinMiner")
 public class ENO
 {
 	@Instance(ENO.MODID)
@@ -58,7 +58,7 @@ public class ENO
 	
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
-	public static final String VERSION = "1.0.01";
+	public static final String VERSION = "1.0.1";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;
@@ -116,7 +116,7 @@ public class ENO
 
 		GameRegistry.registerFuelHandler(new ENOFuelHandler());
         MinecraftForge.EVENT_BUS.register(new ENOBucketHandler());
-		ENOCompatibility.initialize();
+        ENOCompatibility.initialize();
 	}
 
 	@EventHandler
