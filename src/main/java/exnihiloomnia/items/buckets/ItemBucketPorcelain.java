@@ -111,7 +111,7 @@ public class ItemBucketPorcelain extends ItemBucket{
 					playerIn.addStat(StatList.getObjectUseStats(this));
                     if (!playerIn.capabilities.isCreativeMode) {
                         if (this.isFull == Blocks.FLOWING_LAVA)
-                            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY, 0));
+                            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY));
                         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY));
                     }
                     return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
@@ -181,7 +181,7 @@ public class ItemBucketPorcelain extends ItemBucket{
                         pos.destroyBlock(posIn, true);
                     }
 
-                    SoundEvent soundevent = this.isFull == Blocks.FLOWING_LAVA ? SoundEvents.BLOCK_FIRE_EXTINGUISH : SoundEvents.ITEM_BUCKET_EMPTY;
+                    SoundEvent soundevent = this.isFull == Blocks.FLOWING_LAVA ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
                     pos.playSound(worldIn, posIn, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     pos.setBlockState(posIn, this.isFull.getDefaultState(), 11);
                 }

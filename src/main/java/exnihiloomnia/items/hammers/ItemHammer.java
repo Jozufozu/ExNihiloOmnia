@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemHammer extends ItemTool{
 	private final static Set<Block> EMPTY_SET = Sets.newHashSet(new Block[]{});
@@ -31,20 +32,17 @@ public class ItemHammer extends ItemTool{
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-		if (HammerRegistry.isHammerable(state) 
-				&& (state.getMaterial().isToolNotRequired()
-				|| state.getBlock().getHarvestLevel(state) <= this.material.getHarvestLevel()))
+		if (HammerRegistry.isHammerable(state) && canHarvestBlock(state))
 		{
 			if (!world.isRemote)
 			{
 				world.setBlockToAir(pos);
 				HammerRegistry.getEntryForBlockState(state).dropRewards((EntityPlayer) entityLiving, pos);
 			}
-			
 			stack.damageItem(1, entityLiving);
 			return true;
 		}
-		
+		stack.damageItem(1, entityLiving);
 		return false;
 	}
 	
@@ -59,7 +57,6 @@ public class ItemHammer extends ItemTool{
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
         ItemStack mat = this.material.getRepairItemStack();
-        if (mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
-        return super.getIsRepairable(toRepair, repair);
+        return mat != null && OreDictionary.itemMatches(mat, repair, false) || super.getIsRepairable(toRepair, repair);
     }
 }

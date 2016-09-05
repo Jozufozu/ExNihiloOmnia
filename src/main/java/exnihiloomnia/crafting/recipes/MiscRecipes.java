@@ -1,5 +1,6 @@
 package exnihiloomnia.crafting.recipes;
 
+import exnihiloomnia.crafting.ENOCrafting;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,17 +21,82 @@ public class MiscRecipes {
 						'x', new ItemStack(Items.STRING, 1),
 						'y', new ItemStack(Items.SLIME_BALL, 1)));
 		
-		//cobble from stones
-		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE),
-                new ItemStack(ENOItems.STONE));
+		//cobble from stones, why did I do this as a config
+        switch (ENOCrafting.stone_required) {
+            case (0): {break;}
+            case (1): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (2): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (3): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (4): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (5): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (6): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (7): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (8): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+            case (9): {
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;}
+        }
 
 		//porcelain
 		GameRegistry.addShapelessRecipe(new ItemStack(ENOItems.PORCELAIN, 1),

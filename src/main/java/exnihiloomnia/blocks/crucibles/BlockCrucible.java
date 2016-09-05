@@ -4,6 +4,7 @@ import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHopper;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -37,11 +38,6 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if (player == null)
-		{
-			return false;
-		}
-
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
 		if (item != null && crucible != null)
@@ -52,33 +48,30 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 
 				if (full != null)
 				{
-					if (!player.capabilities.isCreativeMode)
-					{
-						if (item.stackSize > 1)
-						{
-							item.stackSize--;
-							InventoryHelper.giveItemStackToPlayer(player, full);
+					if (player != null) {
+						if (!player.capabilities.isCreativeMode) {
+							if (item.stackSize > 1) {
+								item.stackSize--;
+								InventoryHelper.giveItemStackToPlayer(player, full);
+							} else {
+								player.setHeldItem(hand, full);
+							}
 						}
-						else
-						{
-							player.setHeldItem(hand, full);
-						}
-					}
 
-					crucible.drain(1000, true);
-					return true;
+						crucible.drain(1000, true);
+						return true;
+					}
 				}
 			}
 
 			ItemStack contents = item.copy();
 			contents.stackSize = 1;
 
-			if (crucible.canInsertItem(0, contents, EnumFacing.UP))
+			if (crucible.isItemValidForSlot(0, contents))
 			{
 				crucible.setInventorySlotContents(0, contents);
 
 				world.playSound(null, pos, SoundEvents.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
-
 				InventoryHelper.consumeItem(player, item);
 				return true;
 			}

@@ -52,7 +52,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	
 	public ItemStack getLastItemAdded()
 	{
-		return this.lastItemAdded;
+		return this.inventory;
 	}
 	
 	public FluidStack getCurrentFluid()
@@ -68,20 +68,20 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	public void update() 
 	{
 		//remove stuff if is no longer valid
-        if (fluid !=null && lastItemAdded != null) {
+        if (fluid !=null && inventory != null) {
             if (!CrucibleRegistry.containsItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata())) {
                 this.solidContent = 0;
-                this.lastItemAdded = null;
+                this.inventory = null;
                 if (!CrucibleRegistry.containsFluid(this.getFluid().getFluid()))
                     this.fluid = null;
             }
         }
 		//process solids
-        if (this.fluid == null && lastItemAdded != null)
+        if (this.fluid == null && inventory != null)
             this.fluid = new FluidStack(CrucibleRegistry.getItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata()).fluid, 0);
 
         if (this.solidContent <= 0)
-            this.lastItemAdded = null;
+            this.inventory = null;
 		if (this.solidContent > 0 && getFluidFullness() < 1)
 		{
 			int speed = this.getMeltingSpeed();
@@ -100,7 +100,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
         if (this.fluid != null) {
             while (this.fluid.amount < fluidCapacity && this.solidContentProcessed >= solidFluidExchangeRate) {
                 this.solidContentProcessed -= solidFluidExchangeRate;
-                this.fluid.amount += CrucibleRegistry.getItem(Block.getBlockFromItem(lastItemAdded.getItem()), lastItemAdded.getMetadata()).getRatio();
+                this.fluid.amount += CrucibleRegistry.getItem(Block.getBlockFromItem(inventory.getItem()), inventory.getMetadata()).getRatio();
             }
         }
 		

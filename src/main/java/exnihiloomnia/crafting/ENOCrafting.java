@@ -5,7 +5,8 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ENOCrafting {
 	private static final String CATEGORY_CRAFTING_OPTIONS = "crafting options";
-	
+
+	public static int stone_required;
 	public static boolean barrels_allowed;
 	public static boolean crooks_allowed;
 	public static boolean crucibles_allowed;
@@ -16,6 +17,7 @@ public class ENOCrafting {
 	
 	public static void configure(Configuration config)
 	{
+		stone_required = config.get(CATEGORY_CRAFTING_OPTIONS, "small stones in a cobblestone", 9).getInt();
 		barrels_allowed = config.get(CATEGORY_CRAFTING_OPTIONS, "allow barrels", true).getBoolean(true);
 		crooks_allowed = config.get(CATEGORY_CRAFTING_OPTIONS, "allow crooks", true).getBoolean(true);
 		crucibles_allowed = config.get(CATEGORY_CRAFTING_OPTIONS, "allow crucibles", true).getBoolean(true);

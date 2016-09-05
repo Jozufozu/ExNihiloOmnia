@@ -37,28 +37,7 @@ public class InventoryHelper {
 	{
 		if (player != null && !player.capabilities.isCreativeMode)
 		{
-			if (item.stackSize > 1)
-			{
-				item.stackSize--;
-			}
-			else
-			{
-				if (player.getActiveItemStack().equals(item))
-				{
-					player.setHeldItem(player.getActiveHand(), null);
-				}else
-				{
-					List<ItemStack> inventory = player.inventoryContainer.getInventory();
-
-					for (int x = 0; x < inventory.size(); x++)
-					{
-						if (inventory.get(x).equals(item) && inventory.get(x).stackSize == 1)
-						{
-							inventory.remove(x);
-						}
-					}
-				}
-			}
+            item.stackSize--;
 		}
 	}
 }
