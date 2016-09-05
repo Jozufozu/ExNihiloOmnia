@@ -57,7 +57,7 @@ public class TinkersCompatability {
             case TIN:
                 return FluidRegistry.getFluid("tin");
 
-            case COBALT:
+            case COPPER:
                 return FluidRegistry.getFluid("copper");
 
             case SILVER:
@@ -74,6 +74,12 @@ public class TinkersCompatability {
 
             case ALUMINUM:
                 return FluidRegistry.getFluid("aluminum");
+            case OSMIUM:
+                return FluidRegistry.getFluid("osmium");
+            case COBALT:
+                return FluidRegistry.getFluid("cobalt");
+            case ARDITE:
+                return FluidRegistry.getFluid("ardite");
 
             default:
                 return null;

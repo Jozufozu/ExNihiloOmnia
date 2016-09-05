@@ -20,8 +20,8 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.0"
-group= "com.jozu.exnihiloomnia" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "1.0.1"
+group= "jozufozu" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloomnia"
 
 minecraft {
@@ -45,10 +45,16 @@ repositories {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
+    maven {
+        name 'DVS1 Maven FS'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
 }
 
 dependencies {
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+    deobfCompile "slimeknights.mantle:Mantle:1.10-0.10.2.jenkins152"
+    deobfCompile "slimeknights:TConstruct:1.10.2-2.4.0.jenkins326"
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
