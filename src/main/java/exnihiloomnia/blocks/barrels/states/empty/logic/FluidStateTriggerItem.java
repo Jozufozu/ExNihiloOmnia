@@ -3,6 +3,7 @@ package exnihiloomnia.blocks.barrels.states.empty.logic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +21,7 @@ public class FluidStateTriggerItem extends BarrelLogic {
 	}
 	
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) 
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item)
 	{
 		FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
 
@@ -37,7 +38,7 @@ public class FluidStateTriggerItem extends BarrelLogic {
 					}
 					else
 					{
-						player.setHeldItem(player.getActiveHand(), InventoryHelper.getContainer(item));
+						player.setHeldItem(hand, InventoryHelper.getContainer(item));
 					}
 				}
 			}

@@ -4,6 +4,7 @@ import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.meshs.ISieveMesh;
+import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
@@ -49,7 +50,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 
 		if (sieve != null)
 		{
-			if (sieve.canWork())
+			if (sieve.canWork() && !sieve.hasSifter())
 			{
 				//if (item != null && item.getItem() == Items.PRISMARINE_SHARD)
 				//	sieve.setWorkSpeed(60);
@@ -76,7 +77,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 					{
 						Block block = Block.getBlockFromItem(item.getItem());
 						
-						if (block != null && SieveRegistry.isSiftable(block.getStateFromMeta(item.getMetadata())))
+						if (sieve.getContents() == null && SieveRegistry.isSiftable(block.getStateFromMeta(item.getMetadata())))
 						{
 							ItemStack contents = item.copy();
 							contents.stackSize = 1;
@@ -135,7 +136,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 	{
 		TileEntitySieve sieve = new TileEntitySieve();
 		if (ENOConfig.classic_sieve)
-			sieve.setMesh(new ItemStack(ENOItems.MESH_SILK_WHITE.setMaxDamage(2147483647)));
+			sieve.setMesh(new ItemStack(ENOItems.MESH_SILK_WHITE.setMaxDamage(Integer.MAX_VALUE - 1)));
 		return sieve;
 	}
 }

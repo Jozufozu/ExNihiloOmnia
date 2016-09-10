@@ -2,6 +2,7 @@ package exnihiloomnia.blocks.barrels.states.fluid.logic;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
@@ -32,7 +33,7 @@ public class FluidStateLogicItems extends BarrelLogic{
 	}
 
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) {
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
 		FluidStack ifluid = FluidContainerRegistry.getFluidForFilledItem(item);
 
@@ -51,7 +52,7 @@ public class FluidStateLogicItems extends BarrelLogic{
 						}
 						else
 						{
-							player.setHeldItem(player.getActiveHand(), InventoryHelper.getContainer(item));
+							player.setHeldItem(hand, InventoryHelper.getContainer(item));
 						}
 					}
 				}
@@ -80,7 +81,7 @@ public class FluidStateLogicItems extends BarrelLogic{
 							} 
 							else 
 							{
-								player.setHeldItem(player.getActiveHand(), full);
+								player.setHeldItem(hand, full);
 							}
 						}
 					}
