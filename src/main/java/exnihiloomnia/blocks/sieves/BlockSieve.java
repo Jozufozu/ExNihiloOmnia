@@ -3,7 +3,7 @@ package exnihiloomnia.blocks.sieves;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.meshs.ItemMesh;
+import exnihiloomnia.items.meshs.ISieveMesh;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
@@ -90,7 +90,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 				}
 				else
 				{
-					if (item != null && item.getItem() instanceof ItemMesh)
+					if (item != null && item.getItem() instanceof ISieveMesh)
 					{
 						ItemStack mesh = item.copy();
 						mesh.stackSize = 1;

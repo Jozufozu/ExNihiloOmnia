@@ -1,7 +1,7 @@
 package exnihiloomnia.blocks.sieves.tileentity;
 
 import exnihiloomnia.client.particles.ParticleSieve;
-import exnihiloomnia.items.meshs.ItemMesh;
+import exnihiloomnia.items.meshs.ISieveMesh;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -224,7 +224,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 	public TextureAtlasSprite getMeshTexture()
 	{
 		if (mesh != null)
-			return ((ItemMesh) mesh.getItem()).getMeshTexture();
+			return ((ISieveMesh) mesh.getItem()).getMeshTexture();
 		else
 			return null;
 	}
