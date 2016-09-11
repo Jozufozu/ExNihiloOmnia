@@ -76,16 +76,17 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 					else if (item != null)
 					{
 						Block block = Block.getBlockFromItem(item.getItem());
-						
-						if (sieve.getContents() == null && SieveRegistry.isSiftable(block.getStateFromMeta(item.getMetadata())))
-						{
-							ItemStack contents = item.copy();
-							contents.stackSize = 1;
 
-							world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
-							
-							sieve.setContents(contents);
-							InventoryHelper.consumeItem(player, item);
+						if (block != null) {
+							if (sieve.getContents() == null && SieveRegistry.isSiftable(block.getStateFromMeta(item.getMetadata()))) {
+								ItemStack contents = item.copy();
+								contents.stackSize = 1;
+
+								world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
+
+								sieve.setContents(contents);
+								InventoryHelper.consumeItem(player, item);
+							}
 						}
 					}
 				}
