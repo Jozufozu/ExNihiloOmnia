@@ -4,6 +4,7 @@ import exnihiloomnia.items.ENOItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fluids.FluidRegistry;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
@@ -21,7 +22,7 @@ public class FluidTransformWitchwater extends BarrelLogic{
     }
 
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) {
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		if (item.getItem() == ENOItems.SPORES
 		    && barrel.getFluid().getFluid() == FluidRegistry.WATER
 		    && barrel.getFluidAmount() == barrel.getCapacity())

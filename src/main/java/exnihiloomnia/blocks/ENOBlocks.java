@@ -1,6 +1,8 @@
 package exnihiloomnia.blocks;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.blocks.automation.BlockSifter;
+import exnihiloomnia.blocks.automation.tile.TileSifter;
 import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.BlockBarrelGlassColored;
 import exnihiloomnia.blocks.barrels.BlockBarrelWood;
@@ -47,6 +49,8 @@ public class ENOBlocks {
 	public static Block INFESTED_LEAVES;
 	public static Block WITCHWATER;
 
+    //public static Block SIFTER;
+
     public static Block ORE_GRAVEL;
     public static Block ORE_GRAVEL_NETHER;
     public static Block ORE_GRAVEL_ENDER;
@@ -56,20 +60,22 @@ public class ENOBlocks {
     public static List<Block> getBlocks() {
         List<Block> blocks = new ArrayList<Block>();
 
-        blocks.add(ENOBlocks.SIEVE_WOOD);
-        blocks.add(ENOBlocks.DUST);
-        blocks.add(ENOBlocks.GRAVEL_ENDER);
-        blocks.add(ENOBlocks.GRAVEL_NETHER);
+        blocks.add(SIEVE_WOOD);
+        blocks.add(DUST);
+        blocks.add(GRAVEL_ENDER);
+        blocks.add(GRAVEL_NETHER);
 
-        blocks.add(ENOBlocks.CRUCIBLE);
-        blocks.add(ENOBlocks.CRUCIBLE_RAW);
-        blocks.add(ENOBlocks.BARREL_GLASS_COLORED);
-        blocks.add(ENOBlocks.BARREL_GLASS);
-        blocks.add(ENOBlocks.BARREL_STONE);
-        blocks.add(ENOBlocks.BARREL_WOOD);
-        blocks.add(ENOBlocks.INFESTED_LEAVES);
+        blocks.add(CRUCIBLE);
+        blocks.add(CRUCIBLE_RAW);
+        blocks.add(BARREL_GLASS_COLORED);
+        blocks.add(BARREL_GLASS);
+        blocks.add(BARREL_STONE);
+        blocks.add(BARREL_WOOD);
+        blocks.add(INFESTED_LEAVES);
 
-        blocks.add(ENOBlocks.WITCHWATER);
+        blocks.add(WITCHWATER);
+
+        //blocks.add(SIFTER);
 
         blocks.add(ORE_GRAVEL);
         blocks.add(ORE_GRAVEL_ENDER);
@@ -97,6 +103,8 @@ public class ENOBlocks {
 
         WITCHWATER = new BlockFluidWitchwater(ENOFluids.WITCHWATER, Material.WATER).setUnlocalizedName("witchwater").setRegistryName("witchwater");
 
+        //SIFTER = new BlockSifter().setRegistryName("sifter");
+
         ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
         ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
         ORE_GRAVEL_NETHER = new BlockOre(EnumOreBlockType.GRAVEL_NETHER).setUnlocalizedName("ore_gravel_nether").setRegistryName("ore_gravel_nether");
@@ -121,5 +129,6 @@ public class ENOBlocks {
 		GameRegistry.registerTileEntity(TileEntitySieve.class, ENO.MODID + ":tile_entity_sieve");
 		GameRegistry.registerTileEntity(TileEntityCrucible.class, ENO.MODID + ":tile_entity_crucible");
 		GameRegistry.registerTileEntity(TileEntityInfestedLeaves.class, ENO.MODID + ":tile_entity_infested_leaves");
+        //GameRegistry.registerTileEntity(TileSifter.class, ENO.MODID + ":tile_entity_sifter");
 	}
 }

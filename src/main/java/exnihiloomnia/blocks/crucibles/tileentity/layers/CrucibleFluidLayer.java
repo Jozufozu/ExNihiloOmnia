@@ -4,15 +4,17 @@ import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class CrucibleFluidLayer extends TileEntity implements IFluidHandler{
-	public static final int fluidCapacity = 8000;
-	protected FluidStack fluid = null;
+public class CrucibleFluidLayer extends TileEntity implements IFluidTank, IFluidHandler{
+	protected static final int capacity = 8000;
+	protected FluidStack fluid;
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
@@ -32,6 +34,15 @@ public class CrucibleFluidLayer extends TileEntity implements IFluidHandler{
 	}
 
 	@Override
+	public int getFluidAmount() {return fluid.amount;}
+
+	@Override
+	public FluidTankInfo getInfo() {return  new FluidTankInfo(this);}
+
+	@Override
+	public int getCapacity() {return capacity;}
+
+	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if (fluid == null || maxDrain == 0)
         {
@@ -39,18 +50,16 @@ public class CrucibleFluidLayer extends TileEntity implements IFluidHandler{
         }
 		else
 		{
-	        int drained = maxDrain;
-	        
-	        if (fluid.amount <= drained)
+	        if (fluid.amount <= maxDrain)
 	        {
-	            drained = fluid.amount;
+                maxDrain = fluid.amount;
 	        }
 
-	        FluidStack stack = new FluidStack(fluid, drained);
+	        FluidStack stack = new FluidStack(fluid, maxDrain);
 	        
 	        if (doDrain)
 	        {
-	            fluid.amount -= drained;
+	            fluid.amount -= maxDrain;
 	            ((TileEntityCrucible)this).sync();
 	        }
 	        
@@ -59,6 +68,7 @@ public class CrucibleFluidLayer extends TileEntity implements IFluidHandler{
 	}
 
     @Nullable
+	@Override
     public FluidStack getFluid()
     {
         return fluid;
@@ -67,7 +77,7 @@ public class CrucibleFluidLayer extends TileEntity implements IFluidHandler{
     @Override
     public IFluidTankProperties[] getTankProperties()
     {
-        return new IFluidTankProperties[] { new FluidTankProperties(getFluid(), fluidCapacity, false, true) };
+        return new IFluidTankProperties[] { new FluidTankProperties(getFluid(), capacity, false, true) };
     }
 
 	@Override

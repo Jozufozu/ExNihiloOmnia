@@ -1,7 +1,10 @@
 package exnihiloomnia.registries.hammering;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,7 +25,7 @@ public class HammerReward
 	public void dropReward(EntityPlayer player, BlockPos pos)
 	{
 		World world = player.worldObj;
-		int luck_level = getFortuneModifier();
+		int luck_level = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getActiveItemStack());
 		int chance = base_chance + (fortune_modifier * luck_level);
 
 		if (world.rand.nextInt(100) < chance)

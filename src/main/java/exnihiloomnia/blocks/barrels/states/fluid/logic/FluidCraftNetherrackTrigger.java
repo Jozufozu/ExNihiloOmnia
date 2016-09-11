@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fluids.FluidRegistry;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
@@ -23,7 +24,7 @@ public class FluidCraftNetherrackTrigger extends BarrelLogic{
     }
 
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) {
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		if (item.getItem() == Items.REDSTONE
 		    && barrel.getFluid().getFluid() == FluidRegistry.LAVA
 		    && barrel.getFluidAmount() == barrel.getCapacity())

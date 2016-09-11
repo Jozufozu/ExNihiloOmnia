@@ -7,6 +7,7 @@ import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
+import net.minecraft.util.EnumHand;
 
 public class CompostStateTrigger extends BarrelLogic{
 	
@@ -17,14 +18,14 @@ public class CompostStateTrigger extends BarrelLogic{
 	}
 	
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) 
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item)
 	{
 		CompostRegistryEntry recipe = CompostRegistry.getEntryForItemStack(item);
 		
 		if (recipe != null)
 		{
 			barrel.setState(BarrelStates.COMPOST);
-			barrel.getState().useItem(player, barrel, item);
+			barrel.getState().useItem(player, hand, barrel, item);
 			
 			return true;
 		}

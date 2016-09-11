@@ -52,7 +52,6 @@
                     "texture": "#material"
                 },
                 "north": {
-                    "uv": [0,0,16,8],
                     "texture": "#material"
                 },
                 "south": {

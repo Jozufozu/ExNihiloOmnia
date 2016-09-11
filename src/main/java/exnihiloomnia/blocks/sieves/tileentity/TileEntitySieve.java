@@ -1,6 +1,10 @@
 package exnihiloomnia.blocks.sieves.tileentity;
 
+import exnihiloomnia.ENOConfig;
+import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.blocks.automation.tile.TileSifter;
 import exnihiloomnia.client.particles.ParticleSieve;
+import exnihiloomnia.items.meshs.ISieveMesh;
 import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import net.minecraft.block.Block;
@@ -8,7 +12,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,15 +24,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntitySieve extends TileEntity implements ITickable {
+import javax.annotation.Nullable;
+
+public class TileEntitySieve extends TileEntity implements ITickable, IInventory {
 	protected ItemStack mesh;
 	protected ItemStack contents;
 	protected IBlockState contentsState;
+
+    protected boolean hasSifter;
 	
 	protected int work = 0;
 	protected int workMax = 1000;
@@ -51,6 +62,9 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 	{
 		if (!this.worldObj.isRemote)
 		{
+			//TileEntity sifter = worldObj.getTileEntity(pos.down());
+            //hasSifter = sifter != null && sifter instanceof TileSifter;
+
 			//Speed throttling.
 			workCycleTimer++;
 
@@ -112,6 +126,10 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 			}
 		}
 	}
+
+    public boolean hasSifter() {
+        return hasSifter;
+    }
 	
 	public boolean hasMesh()
 	{
@@ -224,7 +242,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 	public TextureAtlasSprite getMeshTexture()
 	{
 		if (mesh != null)
-			return ((ItemMesh) mesh.getItem()).getMeshTexture();
+			return ((ISieveMesh) mesh.getItem()).getMeshTexture();
 		else
 			return null;
 	}
@@ -334,4 +352,79 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 		NBTTagCompound tag = pkt.getNbtCompound();
 		this.readFromNBT(tag);
 	}
+
+
+	//for automation (IInventory)
+    @Override
+    public int getSizeInventory() {return 2;}
+
+    @Override
+    public ItemStack getStackInSlot(int index) {return null;}
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {return null;}
+
+    @Override
+    public ItemStack removeStackFromSlot(int index) {return null;}
+
+    @Override
+    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+        if (isItemValidForSlot(index, stack) && ENOConfig.sieve_automation) {
+            if (index == 0 && hasMesh())
+                contents = stack;
+            if (index == 1)
+                mesh = stack;
+            getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
+        }
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        Block block = Block.getBlockFromItem(stack.getItem());
+        if (ENOConfig.sieve_automation) {
+			if (block != null)
+				return index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata()));
+			else
+				return index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
+		}
+		return false;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer player) {return false;}
+
+    @Override
+    public void openInventory(EntityPlayer player) {}
+
+    @Override
+    public void closeInventory(EntityPlayer player) {}
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {}
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+
+    @Override
+    public String getName() {return ENOBlocks.SIEVE_WOOD.getUnlocalizedName();}
+
+    public boolean hasCustomName() {return false;}
+
+    public ITextComponent getDisplayName() {return null;}
 }

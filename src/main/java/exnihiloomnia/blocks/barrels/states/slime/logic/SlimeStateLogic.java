@@ -5,6 +5,7 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
@@ -30,7 +31,7 @@ public class SlimeStateLogic extends BarrelLogic{
     }
 
 	@Override
-	public boolean onUseItem(@Nullable EntityPlayer player, TileEntityBarrel barrel, ItemStack item) {
+	public boolean onUseItem(@Nullable EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		if (barrel.getTimerStatus() >= 1.0d && barrel.getWorld().isAirBlock(barrel.getPos().up()))
 		{
 		    barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.BLOCK_SLIME_PLACE, SoundCategory.NEUTRAL, 1.0f, 1.0f);
