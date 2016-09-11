@@ -8,6 +8,7 @@ import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
 import exnihiloomnia.util.Color;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 
 public class CompostStateLogicItems extends BarrelLogic{
@@ -19,7 +20,7 @@ public class CompostStateLogicItems extends BarrelLogic{
 	}
 	
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) 
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item)
 	{
 		CompostRegistryEntry recipe = CompostRegistry.getEntryForItemStack(item);
 		

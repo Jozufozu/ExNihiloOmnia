@@ -124,7 +124,7 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 			{
 				TileEntityBarrel barrel = (TileEntityBarrel)this;
 				
-				barrel.getState().useItem(null, barrel, stack);
+				barrel.getState().useItem(null, null, barrel, stack);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package exnihiloomnia.blocks.sieves;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.items.meshs.ISieveMesh;
 import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import exnihiloomnia.util.helpers.InventoryHelper;
@@ -49,7 +50,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 
 		if (sieve != null)
 		{
-			if (sieve.canWork())
+			if (sieve.canWork() && !sieve.hasSifter())
 			{
 				//if (item != null && item.getItem() == Items.PRISMARINE_SHARD)
 				//	sieve.setWorkSpeed(60);
@@ -75,22 +76,23 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 					else if (item != null)
 					{
 						Block block = Block.getBlockFromItem(item.getItem());
-						
-						if (block != null && SieveRegistry.isSiftable(block.getStateFromMeta(item.getMetadata())))
-						{
-							ItemStack contents = item.copy();
-							contents.stackSize = 1;
 
-							world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
-							
-							sieve.setContents(contents);
-							InventoryHelper.consumeItem(player, item);
+						if (block != null) {
+							if (sieve.getContents() == null && SieveRegistry.isSiftable(block.getStateFromMeta(item.getMetadata()))) {
+								ItemStack contents = item.copy();
+								contents.stackSize = 1;
+
+								world.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
+
+								sieve.setContents(contents);
+								InventoryHelper.consumeItem(player, item);
+							}
 						}
 					}
 				}
 				else
 				{
-					if (item != null && item.getItem() instanceof ItemMesh)
+					if (item != null && item.getItem() instanceof ISieveMesh)
 					{
 						ItemStack mesh = item.copy();
 						mesh.stackSize = 1;
@@ -135,7 +137,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 	{
 		TileEntitySieve sieve = new TileEntitySieve();
 		if (ENOConfig.classic_sieve)
-			sieve.setMesh(new ItemStack(ENOItems.MESH_SILK_WHITE.setMaxDamage(2147483647)));
+			sieve.setMesh(new ItemStack(ENOItems.MESH_SILK_WHITE.setMaxDamage(Integer.MAX_VALUE - 1)));
 		return sieve;
 	}
 }

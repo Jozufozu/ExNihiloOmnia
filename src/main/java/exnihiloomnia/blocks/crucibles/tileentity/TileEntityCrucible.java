@@ -26,8 +26,6 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	protected int solidContentMax = 200000;
 	protected int solidFluidExchangeRate = 100;
 	
-	private int luminosity = 0;
-	
 	public void addSolid(int amount)
 	{
 		this.solidContent += (amount * 200);
@@ -46,7 +44,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	public double getFluidFullness()
 	{
 	    if (getFluid() != null)
-		    return (double)this.fluid.amount / (double) fluidCapacity;
+		    return (double)this.fluid.amount / (double) capacity;
         else return 0;
 	}
 	
@@ -67,7 +65,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	@Override
 	public void update() 
 	{
-		//remove stuff if is no longer valid
+		//remove stuff if is no longer valid eg config change
         if (fluid !=null && inventory != null) {
             if (!CrucibleRegistry.containsItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata())) {
                 this.solidContent = 0;
@@ -98,7 +96,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 		
 		//transfer solids to fluids
         if (this.fluid != null) {
-            while (this.fluid.amount < fluidCapacity && this.solidContentProcessed >= solidFluidExchangeRate) {
+            while (this.fluid.amount < capacity && this.solidContentProcessed >= solidFluidExchangeRate) {
                 this.solidContentProcessed -= solidFluidExchangeRate;
                 this.fluid.amount += CrucibleRegistry.getItem(Block.getBlockFromItem(inventory.getItem()), inventory.getMetadata()).getRatio();
             }
@@ -169,11 +167,6 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	public double getTrueSpeed() {
         double speed = this.adjustedSpeed;
 	    return speed != 0 ? getLastItemAdded() != null ? ((double) 4 / 15 * speed - (double) 1 / 3) * CrucibleRegistry.getItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata()).getRatio() : 0 : 0;
-	}
-	
-	public int getLuminosity()
-	{
-		return this.luminosity;
 	}
 	
 	@Override

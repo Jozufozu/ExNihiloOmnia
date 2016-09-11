@@ -3,6 +3,7 @@ package exnihiloomnia.blocks.barrels.states.fluid.logic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,7 +30,7 @@ public class FluidSummonSlimeTrigger extends BarrelLogic{
 	}
 
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) {
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
 
 		if (fluid != null  

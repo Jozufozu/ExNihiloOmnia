@@ -70,7 +70,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 		{
 			if (item != null) {
 				if (barrel.getState().canUseItem(barrel, item)) {
-					barrel.getState().useItem(player, barrel, item);
+					barrel.getState().useItem(player, hand, barrel, item);
 				}
 			}
 			else if (barrel.canExtractItem(0, barrel.getStackInSlot(0), EnumFacing.DOWN))

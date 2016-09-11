@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import net.minecraft.util.EnumHand;
 
 public abstract class BarrelState
 {
@@ -51,13 +52,13 @@ public abstract class BarrelState
 		return false;
 	}
 	
-	public void useItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item)
+	public void useItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item)
 	{
 		for (BarrelLogic entry : triggers) 
 		{
 			if (entry.canUseItem(barrel, item))
 			{
-				if (entry.onUseItem(player, barrel, item))
+				if (entry.onUseItem(player, hand, barrel, item))
 				{
 					barrel.getWorld().notifyBlockOfStateChange(barrel.getPos(), barrel.getBlockType());
 

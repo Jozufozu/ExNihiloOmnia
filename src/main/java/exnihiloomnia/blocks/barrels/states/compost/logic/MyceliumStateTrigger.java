@@ -6,6 +6,7 @@ import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateMycelium;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import net.minecraft.util.EnumHand;
 
 public class MyceliumStateTrigger extends BarrelLogic{
 	
@@ -22,7 +23,7 @@ public class MyceliumStateTrigger extends BarrelLogic{
 	}
 	
 	@Override
-	public boolean onUseItem(EntityPlayer player, TileEntityBarrel barrel, ItemStack item) 
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item)
 	{
 		if (barrel.getTimerStatus() == -1.0d)
 		{

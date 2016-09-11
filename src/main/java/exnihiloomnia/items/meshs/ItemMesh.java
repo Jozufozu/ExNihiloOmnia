@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemMesh extends Item{
+public class ItemMesh extends Item implements ISieveMesh {
 	private String texture_location;
 	
 	public ItemMesh()
@@ -27,6 +27,7 @@ public class ItemMesh extends Item{
 	}
 	
 	@SideOnly(Side.CLIENT)
+	@Override
 	public TextureAtlasSprite getMeshTexture()
 	{
 		return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture_location);
