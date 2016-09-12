@@ -11,8 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemMesh extends Item implements ISieveMesh {
 	private String texture_location;
 	
-	public ItemMesh()
-	{
+	public ItemMesh() {
 		super();
 		
 		this.setCreativeTab(ENOItems.ENO_TAB);
@@ -21,15 +20,13 @@ public class ItemMesh extends Item implements ISieveMesh {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void setMeshTexture(String texture_location)
-	{
+	public void setMeshTexture(String texture_location) {
 		this.texture_location = texture_location;
 	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public TextureAtlasSprite getMeshTexture()
-	{
+	public TextureAtlasSprite getMeshTexture() {
 		return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture_location);
 	}
 

@@ -36,16 +36,13 @@ public class Template {
 		this.spawnYLevel = spawnYLevel;
 	}
 	
-	public void generate(World world, int xOffset, int zOffset)
-	{
+	public void generate(World world, int xOffset, int zOffset) {
 		ArrayList<TemplateBlock> blocks = this.getBlocks();
 		
-		for (TemplateBlock b : blocks)
-		{
+		for (TemplateBlock b : blocks) {
 			Block block = Block.REGISTRY.getObject(new ResourceLocation(b.getId()));
 			
-			if (block != null)
-			{
+			if (block != null) {
 				int x = b.getX() + xOffset;
 				int y = b.getY() + this.getSpawnYLevel();
 				int z = b.getZ() + zOffset;
@@ -54,29 +51,23 @@ public class Template {
 				setBlockWithoutUpdate(world, pos, block.getStateFromMeta(b.getMeta()));
 				
 				TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-				if (b.getContents() != null && te != null && te instanceof IInventory)
-				{
+				
+				if (b.getContents() != null && te != null && te instanceof IInventory) {
 					IInventory inv = (IInventory) te;
 					
-					if (inv != null)
-					{
+					if (inv != null) {
 						int i = 0;
 						int max = inv.getSizeInventory();
 						
-						for (TemplateItem contentItem : b.getContents())
-						{
-							if (i < max && contentItem.getCount() > 0)
-							{
+						for (TemplateItem contentItem : b.getContents()) {
+							if (i < max && contentItem.getCount() > 0) {
 								Item item = Item.REGISTRY.getObject(new ResourceLocation(contentItem.getId()));
 								
-								if (item != null)
-								{
-									if (contentItem.getSlot() > -1)
-									{
+								if (item != null) {
+									if (contentItem.getSlot() > -1) {
 										inv.setInventorySlotContents(contentItem.getSlot(), new ItemStack(item, contentItem.getCount(), contentItem.getMeta()));
 									}
-									else
-									{
+									else {
 										inv.setInventorySlotContents(i, new ItemStack(item, contentItem.getCount(), contentItem.getMeta()));
 									}
 								}
@@ -88,20 +79,17 @@ public class Template {
 					}
 				}
 			}
-			else
-			{
+			else {
 				ENO.log.error("Unable to locate block (" + b.getId() + ").");
 			}
 		}
 	}
 
-	private void setBlockWithoutUpdate(World world, BlockPos pos, IBlockState state)
-	{
+	private void setBlockWithoutUpdate(World world, BlockPos pos, IBlockState state) {
 		Chunk chunk =  world.getChunkFromBlockCoords(pos);
 		ExtendedBlockStorage[] storage = chunk.getBlockStorageArray();
 		
-		if (storage[(pos.getY() >> 4)] == null)
-		{
+		if (storage[(pos.getY() >> 4)] == null) {
 			//This call generates the sky light map and block storage so I don't have to.
 			chunk.setLightFor(EnumSkyBlock.SKY, pos, 0);
 		}

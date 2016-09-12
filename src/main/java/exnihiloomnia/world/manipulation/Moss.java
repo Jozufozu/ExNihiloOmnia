@@ -33,42 +33,34 @@ public class Moss {
 		Moss.rain_reactive = spreads;
 	}
 
-	public static void grow(World world, Chunk chunk)
-	{		
-		for (int i = 0; i < growth; i++)
-		{
+	public static void grow(World world, Chunk chunk) {		
+		for (int i = 0; i < growth; i++) {
 			pos = PositionHelper.getRandomPositionInChunk(world, chunk);
 			state = world.getBlockState(pos);
 
-			if (isValidCobblestone(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos))))
-			{
+			if (isValidCobblestone(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
 				world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
 			}
-			else if (isValidStoneBrick(state) && (PositionHelper.hasNearbyWaterSource(world, pos) ||  (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos))))
-			{
+			else if (isValidStoneBrick(state) && (PositionHelper.hasNearbyWaterSource(world, pos) ||  (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
 				world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY));
 			}
-			else if (isValidCobbleWall(state) && (PositionHelper.hasNearbyWaterSource(world, pos) ||  (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos))))
-			{
+			else if (isValidCobbleWall(state) && (PositionHelper.hasNearbyWaterSource(world, pos) ||  (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
 				world.setBlockState(pos, Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY));
 			}
 		}
 	}
 	
-	private static boolean isValidCobblestone(IBlockState state)
-	{
+	private static boolean isValidCobblestone(IBlockState state) {
 		return state.getBlock() == Blocks.COBBLESTONE;
 	}
 	
-	private static boolean isValidStoneBrick(IBlockState state)
-	{
+	private static boolean isValidStoneBrick(IBlockState state) {
 		return state.getBlock() == Blocks.STONEBRICK
 				&& (state.getValue(BlockStoneBrick.VARIANT) == BlockStoneBrick.EnumType.DEFAULT
 				|| state.getValue(BlockStoneBrick.VARIANT) == BlockStoneBrick.EnumType.CRACKED);
 	}
 	
-	private static boolean isValidCobbleWall(IBlockState state)
-	{
+	private static boolean isValidCobbleWall(IBlockState state) {
 		return state.getBlock() == Blocks.COBBLESTONE_WALL
 				&& (state.getValue(BlockWall.VARIANT) == BlockWall.EnumType.NORMAL);
 	}

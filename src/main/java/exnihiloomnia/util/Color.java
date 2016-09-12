@@ -10,35 +10,29 @@ public class Color {
 	
 	public static Color WHITE = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 	
-	public Color(float red, float green, float blue, float alpha)
-	{
+	public Color(float red, float green, float blue, float alpha) {
 		this.r = red;
 		this.g = green;
 		this.b = blue;
 		this.a = alpha;
 	}
 	
-	public Color (int color)
-	{
+	public Color (int color) {
 		this(color, true);
 	}
 	
-	public Color (String hex)
-	{
+	public Color (String hex) {
 		this(parseString(hex), false);
 	}
 	
-	public Color (int color, boolean hasAlpha)
-	{
-		if (!hasAlpha)
-		{
+	public Color (int color, boolean hasAlpha) {
+		if (!hasAlpha) {
 			this.a = 1.0f;
 			this.r = (float) (color >> 16 & 255) / 255.0F;
 			this.g = (float) (color >> 8 & 255) / 255.0F;
 			this.b = (float) (color & 255) / 255.0F;
 		}
-		else
-		{
+		else {
 			this.a = (float) (color >> 24 & 255) / 255.0F;
 			this.r = (float) (color >> 16 & 255) / 255.0F;
 			this.g = (float) (color >> 8 & 255) / 255.0F;
@@ -46,24 +40,20 @@ public class Color {
 		}
 	}
 
-	private static int parseString(String hex)
-	{
+	private static int parseString(String hex) {
 		int val = 0;
 
-		try
-		{
+		try {
 			val = Integer.parseInt(hex, 16);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			ENO.log.error("Unable to parse color: " + hex);
 		}
 
 		return val;
 	}
 
-	public int toInt()
-	{
+	public int toInt() {
 		int color = 0;
 		color |= (int)(this.a * 255) << 24;
 		color |= (int)(this.r * 255) << 16;
@@ -72,8 +62,7 @@ public class Color {
 		return color;
 	}
 	
-	public static Color average(Color colorA, Color colorB, float percentage)
-	{
+	public static Color average(Color colorA, Color colorB, float percentage) {
 		float avgR = colorA.r + (colorB.r - colorA.r) * percentage;
 		float avgG = colorA.g + (colorB.g - colorA.g) * percentage;
 		float avgB = colorA.b + (colorB.b - colorA.b) * percentage;

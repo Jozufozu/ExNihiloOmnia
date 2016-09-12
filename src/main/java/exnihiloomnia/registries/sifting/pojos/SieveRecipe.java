@@ -11,8 +11,7 @@ public class SieveRecipe {
 	private ArrayList<SieveRecipeReward> rewards = new ArrayList<SieveRecipeReward>();
 	
 	public SieveRecipe(){}
-	public SieveRecipe(String id, int meta, EnumMetadataBehavior behavior)
-	{
+	public SieveRecipe(String id, int meta, EnumMetadataBehavior behavior) {
 		this.id = id;
 		this.meta = meta;
 		this.behavior = behavior;
@@ -21,24 +20,31 @@ public class SieveRecipe {
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public int getMeta() {
 		return meta;
 	}
+	
 	public void setMeta(int meta) {
 		this.meta = meta;
 	}
+	
 	public EnumMetadataBehavior getBehavior() {
 		return behavior;
 	}
+	
 	public void setBehavior(EnumMetadataBehavior behavior) {
 		this.behavior = behavior;
 	}
+	
 	public ArrayList<SieveRecipeReward> getRewards() {
 		return rewards;
 	}
+	
 	public void setRewards(ArrayList<SieveRecipeReward> rewards) {
 		this.rewards = rewards;
 	}

@@ -19,8 +19,7 @@ public enum EnumOreItemType implements IStringSerializable{
     private final Block block;
 	private final Item item;
 
-	EnumOreItemType(String name, Block block, Item item)
-	{
+	EnumOreItemType(String name, Block block, Item item) {
 		this.name = name;
         this.block = block;
 		this.item = item;
@@ -31,7 +30,12 @@ public enum EnumOreItemType implements IStringSerializable{
 		return this.name;
 	}
 
-	public Block getBlock() { return this.block;}
-	public Item getItem() { return this.item;}
+	public Block getBlock() {
+		return this.block;
+	}
+	
+	public Item getItem() {
+		return this.item;
+	}
 
 }

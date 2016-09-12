@@ -13,8 +13,7 @@ public class CrucibleRegistryEntry {
 	public Fluid fluid;
 	public int fluidVolume;
 
-	public CrucibleRegistryEntry(Block block, int meta, int solidAmount, Fluid fluid, int fluidAmount)
-	{
+	public CrucibleRegistryEntry(Block block, int meta, int solidAmount, Fluid fluid, int fluidAmount) {
 		this.block = block;
 		this.meta = meta;
 		this.solidVolume = solidAmount;
@@ -23,8 +22,7 @@ public class CrucibleRegistryEntry {
 		this.fluidVolume = fluidAmount;
 	}
 
-    public static CrucibleRegistryEntry fromRecipe(CrucibleRecipe recipe)
-    {
+    public static CrucibleRegistryEntry fromRecipe(CrucibleRecipe recipe) {
         Block block = Block.REGISTRY.getObject(new ResourceLocation(recipe.getBlock()));
         Fluid fluid = FluidRegistry.getFluid(recipe.getFluid());
 
@@ -34,7 +32,9 @@ public class CrucibleRegistryEntry {
             return null;
     }
 
-	public float getRatio() {return (float) fluidVolume / solidVolume;}
+	public float getRatio() {
+		return (float) fluidVolume / solidVolume;
+	}
 
 	public Block getBlock() {
 		return block;
