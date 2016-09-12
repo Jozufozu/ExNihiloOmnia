@@ -1,8 +1,9 @@
 package exnihiloomnia.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import exnihiloomnia.ENO;
-import exnihiloomnia.blocks.automation.BlockSifter;
-import exnihiloomnia.blocks.automation.tile.TileSifter;
 import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.BlockBarrelGlassColored;
 import exnihiloomnia.blocks.barrels.BlockBarrelWood;
@@ -31,11 +32,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ENOBlocks {
-	
+public class ENOBlocks {	
 	public static Block BARREL_WOOD;
 	public static Block BARREL_STONE;
 	public static Block BARREL_GLASS;
@@ -87,8 +84,7 @@ public class ENOBlocks {
     }
 
 
-	public static void init()
-	{
+	public static void init() {
 	    BARREL_WOOD = new BlockBarrelWood().setUnlocalizedName("barrel_wood").setRegistryName("barrel_wood");
         BARREL_STONE = new BlockBarrel(Material.ROCK, SoundType.STONE).setUnlocalizedName("barrel_stone").setRegistryName("barrel_stone");
         BARREL_GLASS = new BlockBarrel(Material.GLASS, SoundType.GLASS).setUnlocalizedName("barrel_glass").setRegistryName("barrel_glass");

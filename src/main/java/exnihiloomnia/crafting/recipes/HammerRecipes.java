@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class HammerRecipes {
-	public static void register()
-	{
+	
+	public static void register() {
 		//Hammers!
 		GameRegistry.addRecipe(
 				new ShapedOreRecipe(

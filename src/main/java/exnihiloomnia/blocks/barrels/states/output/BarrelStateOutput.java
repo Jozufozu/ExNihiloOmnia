@@ -1,15 +1,15 @@
 package exnihiloomnia.blocks.barrels.states.output;
 
+import exnihiloomnia.blocks.barrels.architecture.BarrelState;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemStack;
-import exnihiloomnia.blocks.barrels.architecture.BarrelState;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 
-public class BarrelStateOutput extends BarrelState{	
+public class BarrelStateOutput extends BarrelState {
 	private static String[] description = new String[]{""};
 	private static EntityLivingBase entity;
 	
@@ -22,14 +22,12 @@ public class BarrelStateOutput extends BarrelState{
 	public void render(TileEntityBarrel barrel, double x, double y, double z) {
 		ItemStack contents = barrel.getContents();
 
-		if (contents != null)
-		{
-		  if (entity == null)
-		  {
-		    //getItemRenderer.renderItem will not work unless a non-null entity is passed to it.
-		    //thats the only reason this exists. :(
-		    entity = new EntityCreeper(barrel.getWorld());
-		  }
+		if (contents != null) {
+			if (entity == null) {
+				//getItemRenderer.renderItem will not work unless a non-null entity is passed to it.
+				//thats the only reason this exists. :(
+			    entity = new EntityCreeper(barrel.getWorld());
+			}
 		  
 			GlStateManager.pushMatrix();
 			
@@ -39,7 +37,6 @@ public class BarrelStateOutput extends BarrelState{
 			
 			Minecraft.getMinecraft().getItemRenderer().renderItem(entity, contents, TransformType.NONE);
 			
-			
 			GlStateManager.enableLighting();
 
 			GlStateManager.popMatrix();
@@ -47,21 +44,17 @@ public class BarrelStateOutput extends BarrelState{
 	}
 	
 	@Override
-	public boolean canExtractContents(TileEntityBarrel barrel)
-	{
+	public boolean canExtractContents(TileEntityBarrel barrel) {
 		return true;
 	}
 	
 	@Override
-	public String[] getWailaBody(TileEntityBarrel barrel)
-	{
-		if (barrel.getContents() != null)
-		{
+	public String[] getWailaBody(TileEntityBarrel barrel) {
+		if (barrel.getContents() != null) {
 			description[0] = barrel.getContents().getDisplayName();
 			return description;
 		}
-		else
-		{
+		else {
 			return null;
 		}
 	}

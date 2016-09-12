@@ -5,7 +5,8 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBarrelGlassColored extends ItemBlock{
+public class ItemBarrelGlassColored extends ItemBlock {
+	
 	public ItemBarrelGlassColored(Block block) {
 		super(block);
 		
@@ -14,14 +15,12 @@ public class ItemBarrelGlassColored extends ItemBlock{
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack)
-	{
+	public String getUnlocalizedName(ItemStack stack) {
 	    return super.getUnlocalizedName() + "_" + EnumDyeColor.byMetadata(stack.getItemDamage()).getName();
 	}
 	
 	@Override
-    public int getMetadata(int damage)
-    {
+    public int getMetadata(int damage) {
         return damage;
     }
 }

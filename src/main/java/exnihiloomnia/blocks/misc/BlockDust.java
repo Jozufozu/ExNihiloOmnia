@@ -5,10 +5,9 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-public class BlockDust extends BlockFalling{
+public class BlockDust extends BlockFalling {
 
-	public BlockDust()
-	{
+	public BlockDust() {
 		super(Material.SAND);
 
 		this.setCreativeTab(ENOItems.ENO_TAB);

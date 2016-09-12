@@ -1,19 +1,17 @@
 package exnihiloomnia.util.helpers;
 
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.VertexBuffer;
 import org.lwjgl.opengl.GL11;
 
+import exnihiloomnia.util.Color;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import exnihiloomnia.util.Color;
 
-public class ContentRenderHelper 
-{
-	public static double getAdjustedContentLevel(double min, double max, double fullness)
-	{
+public class ContentRenderHelper {
+	public static double getAdjustedContentLevel(double min, double max, double fullness) {
 		double capacity = max - min;
 		double adjusted = fullness * capacity;		
 		adjusted += min;
@@ -21,8 +19,7 @@ public class ContentRenderHelper
 		return adjusted;
 	}
 	
-	public static void renderContentsSimple(TextureAtlasSprite texture, double height, Color color)
-	{
+	public static void renderContentsSimple(TextureAtlasSprite texture, double height, Color color) {
 		GlStateManager.pushMatrix();
 		RenderHelper.disableStandardItemLighting();
 		

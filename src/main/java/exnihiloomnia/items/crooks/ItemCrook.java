@@ -29,15 +29,11 @@ public class ItemCrook extends Item {
 		this.maxStackSize = 1;
 		this.setMaxDamage((int)(material.getMaxUses() * 1.5));
 		this.setCreativeTab(CreativeTabs.TOOLS);
-
-
 	}
 
 	@Override
-	public boolean onLeftClickEntity(ItemStack item, EntityPlayer player, Entity entity)
-	{
-		if (!player.worldObj.isRemote)
-		{
+	public boolean onLeftClickEntity(ItemStack item, EntityPlayer player, Entity entity) {
+		if (!player.worldObj.isRemote) {
 			double distance = Math.sqrt(Math.pow(player.posX - entity.posX, 2) + Math.pow(player.posZ - entity.posZ, 2));
 
 			double scalarX = (player.posX - entity.posX) / distance;
@@ -46,7 +42,6 @@ public class ItemCrook extends Item {
 			double velX = 0 - scalarX * pushingForce;
 			double velY = 0;
 			double velZ = 0 - scalarZ * pushingForce;
-
 
 			if (player.posY < entity.posY)
 				velY = 0.5d;
@@ -60,10 +55,8 @@ public class ItemCrook extends Item {
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand)
-	{
-		if (!player.worldObj.isRemote)
-		{
+	public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
+		if (!player.worldObj.isRemote) {
 			double distance = Math.sqrt(Math.pow(player.posX - entity.posX, 2) + Math.pow(player.posZ - entity.posZ, 2));
 
 			double scalarX = (player.posX - entity.posX) / distance;
@@ -84,16 +77,13 @@ public class ItemCrook extends Item {
 	}
 
 	@Override
-	public boolean canHarvestBlock(IBlockState block)
-	{
+	public boolean canHarvestBlock(IBlockState block) {
 		return block.getMaterial() == Material.LEAVES;
 	}
 
 	@Override
-	public float getStrVsBlock(ItemStack item, IBlockState block)
-	{
-		if (block.getMaterial() == Material.LEAVES)
-		{
+	public float getStrVsBlock(ItemStack item, IBlockState block) {
+		if (block.getMaterial() == Material.LEAVES) {
 			return material.getEfficiencyOnProperMaterial() + 1;
 		}
 
@@ -101,13 +91,14 @@ public class ItemCrook extends Item {
 	}
 
 	@Override
-	public boolean onBlockStartBreak(ItemStack item, BlockPos pos, EntityPlayer player)
-	{
+	public boolean onBlockStartBreak(ItemStack item, BlockPos pos, EntityPlayer player) {
 		IBlockState block = player.worldObj.getBlockState(pos);
+		
 		if (!player.worldObj.isRemote) {
 			if (block.getMaterial() == Material.LEAVES || block instanceof BlockTallGrass) {
 				//Simulate a block break to cause the first round of items to drop.
 				block.getBlock().dropBlockAsItem(player.worldObj, pos, player.worldObj.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
+				
 				if (block.getMaterial().equals(Material.LEAVES)) {
 					if (player.worldObj.rand.nextInt(100) == 0 || block.getBlock() == ENOBlocks.INFESTED_LEAVES) {
 						EntityItem silky = new EntityItem(player.worldObj, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(ENOItems.SILKWORM, 1, 0));
@@ -123,15 +114,13 @@ public class ItemCrook extends Item {
 	}
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack item, World world, IBlockState block, BlockPos pos, EntityLivingBase player)
-	{
+	public boolean onBlockDestroyed(ItemStack item, World world, IBlockState block, BlockPos pos, EntityLivingBase player) {
 		item.damageItem(1, player);
 		return true;
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
-	{
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
 		ItemStack mat = this.material.getRepairItemStack();
 		if (mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
 		return super.getIsRepairable(toRepair, repair);

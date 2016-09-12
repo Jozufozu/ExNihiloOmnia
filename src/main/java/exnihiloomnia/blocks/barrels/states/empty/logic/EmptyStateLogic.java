@@ -4,7 +4,8 @@ import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.Color;
 
-public class EmptyStateLogic extends BarrelLogic{
+public class EmptyStateLogic extends BarrelLogic {
+	
 	@Override
 	public boolean onActivate(TileEntityBarrel barrel) {
 		barrel.drain(barrel.getCapacity(), true);

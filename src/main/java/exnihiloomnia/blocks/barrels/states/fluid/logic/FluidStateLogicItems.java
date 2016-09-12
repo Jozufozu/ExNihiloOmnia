@@ -1,30 +1,28 @@
 package exnihiloomnia.blocks.barrels.states.fluid.logic;
 
+import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.helpers.InventoryHelper;
 
-public class FluidStateLogicItems extends BarrelLogic{
+public class FluidStateLogicItems extends BarrelLogic {
+	
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
 		FluidStack ifluid = FluidContainerRegistry.getFluidForFilledItem(item);
 		ItemStack full = FluidContainerRegistry.fillFluidContainer(fluid, item);
 
-		if (fluid != null)
-		{
-			if (ifluid != null && barrel.fill(ifluid, false) > 0)
-			{
+		if (fluid != null) {
+			if (ifluid != null && barrel.fill(ifluid, false) > 0) {
 				return true;
 			}
 			
-			if (full != null && fluid.amount >= barrel.getCapacity())
-			{
+			if (full != null && fluid.amount >= barrel.getCapacity()) {
 				return true;
 			}
 		}
@@ -37,56 +35,42 @@ public class FluidStateLogicItems extends BarrelLogic{
 		FluidStack fluid = barrel.getFluid();
 		FluidStack ifluid = FluidContainerRegistry.getFluidForFilledItem(item);
 
-		if (fluid != null )
-		{
-			if (ifluid != null && barrel.fill(ifluid, false) > 0)
-			{
-				if (player != null)
-				{
-					if (!player.capabilities.isCreativeMode)
-					{
-						if(item.stackSize > 1)
-						{
+		if (fluid != null ) {
+			if (ifluid != null && barrel.fill(ifluid, false) > 0) {
+				if (player != null) {
+					if (!player.capabilities.isCreativeMode) {
+						if(item.stackSize > 1) {
 							item.stackSize--;
 							InventoryHelper.giveItemStackToPlayer(player, InventoryHelper.getContainer(item));
 						}
-						else
-						{
+						else {
 							player.setHeldItem(hand, InventoryHelper.getContainer(item));
 						}
 					}
 				}
-				else
-				{
+				else {
 					barrel.addOutput(InventoryHelper.getContainer(item));
 				}
 				
 				barrel.fill(ifluid, true);
 			}
 			
-			if (FluidContainerRegistry.isEmptyContainer(item) && fluid.amount >= barrel.getCapacity())
-			{
+			if (FluidContainerRegistry.isEmptyContainer(item) && fluid.amount >= barrel.getCapacity()) {
 				ItemStack full = FluidContainerRegistry.fillFluidContainer(fluid, item);
 				
-				if (full != null)
-				{
-					if (player != null)
-					{
-						if (!player.capabilities.isCreativeMode)
-						{
-							if (item.stackSize > 1) 
-							{
+				if (full != null) {
+					if (player != null) {
+						if (!player.capabilities.isCreativeMode) {
+							if (item.stackSize > 1) {
 								item.stackSize--;
 								InventoryHelper.giveItemStackToPlayer(player, full);
 							} 
-							else 
-							{
+							else {
 								player.setHeldItem(hand, full);
 							}
 						}
 					}
-					else
-					{
+					else {
 						barrel.addOutput(full);
 					}
 

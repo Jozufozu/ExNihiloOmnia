@@ -15,27 +15,22 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemAstrolabe extends Item{
+public class ItemAstrolabe extends Item {
 	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	
-	public ItemAstrolabe()
-	{
+	public ItemAstrolabe() {
 		this.setMaxStackSize(1);
 		this.setCreativeTab(ENOItems.ENO_TAB);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack item, World world, EntityPlayer player, EnumHand hand) {
-		if (!world.isRemote)
-		{
-			if (ENOWorld.isWorldGenerationOverridden(world.provider.getDimension()))
-			{
-				if (item.hasDisplayName())
-				{
+		if (!world.isRemote) {
+			if (ENOWorld.isWorldGenerationOverridden(world.provider.getDimension())) {
+				if (item.hasDisplayName()) {
 					TemplateWorldExporter.generate(item.getDisplayName(), world, player);
 				}
-				else
-				{
+				else {
 					TemplateWorldExporter.generate("export_" + format.format(new Date()), world, player);
 				}
 			}

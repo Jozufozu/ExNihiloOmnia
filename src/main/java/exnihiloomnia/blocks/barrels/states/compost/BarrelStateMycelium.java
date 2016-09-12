@@ -1,17 +1,16 @@
 package exnihiloomnia.blocks.barrels.states.compost;
 
+import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.enums.EnumMetadataBehavior;
 
-public class BarrelStateMycelium extends BarrelStateCompostSpecial{
+public class BarrelStateMycelium extends BarrelStateCompostSpecial {
 
-	public BarrelStateMycelium()
-	{
+	public BarrelStateMycelium() {
 		super();
 		
 		addIngredient(new ItemStack(Items.GHAST_TEAR), EnumMetadataBehavior.IGNORED);
@@ -23,22 +22,18 @@ public class BarrelStateMycelium extends BarrelStateCompostSpecial{
 	}
 	
 	@Override
-	protected void renderBlockTexture(TileEntityBarrel barrel)
-	{
+	protected void renderBlockTexture(TileEntityBarrel barrel) {
 		double timer = barrel.getTimerStatus();
 
-		if (timer > 0.0d)
-		{
+		if (timer > 0.0d) {
 			TextureAtlasSprite top = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/mycelium_top");
 			TextureAtlasSprite side = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/mycelium_side");
 			TextureAtlasSprite bottom = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/dirt");
 			
-			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque())
-			{
+			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
 				BarrelRenderer.renderContentsSimple(top, (double)barrel.getVolume() / (double)barrel.getVolumeMax(), white);
 			}
-			else
-			{
+			else {
 				BarrelRenderer.renderContentsMultiTexture(top, side, bottom, (double)barrel.getVolume() / (double)barrel.getVolumeMax(), white);
 
 			}

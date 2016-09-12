@@ -18,8 +18,7 @@ import net.minecraft.item.ItemStack;
 public class CompostRegistry {
 	private static HashMap<String, CompostRegistryEntry> entries;
 	
-	public static void initialize()
-	{
+	public static void initialize() {
 		entries = new HashMap<String, CompostRegistryEntry>();
 		
 		if (ENORegistries.loadCompostDefaults)
@@ -27,61 +26,48 @@ public class CompostRegistry {
 		
 		List<CompostRegistryEntry> loaded = CompostRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "compost" + File.separator);
 	
-		if (loaded != null && !loaded.isEmpty())
-		{
-			for (CompostRegistryEntry entry : loaded)
-			{
-				if (entry.getVolume() > 0)
-				{
+		if (loaded != null && !loaded.isEmpty()) {
+			for (CompostRegistryEntry entry : loaded) {
+				if (entry.getVolume() > 0) {
 					add(entry);
 				}
-				else
-				{
+				else {
 					remove(entry);
 				}
 			}
 		}
 	}
 	
-	public static HashMap<String, CompostRegistryEntry> getEntryMap()
-	{
+	public static HashMap<String, CompostRegistryEntry> getEntryMap() {
 		return entries;
 	}
 	
-	public static void add(CompostRegistryEntry entry)
-	{
-		if (entry != null)
-		{
+	public static void add(CompostRegistryEntry entry) {
+		if (entry != null) {
 			entries.put(entry.getKey(), entry);
 		}
 	}
 	
-	public static void remove(CompostRegistryEntry entry)
-	{
+	public static void remove(CompostRegistryEntry entry) {
 		entries.remove(entry.getKey());
 	}
 	
-	public static boolean isCompostable(ItemStack item)
-	{
+	public static boolean isCompostable(ItemStack item) {
 		return getEntryForItemStack(item) != null;
 	}
 	
-	public static CompostRegistryEntry getEntryForItemStack(ItemStack item)
-	{
+	public static CompostRegistryEntry getEntryForItemStack(ItemStack item) {
 		CompostRegistryEntry entry = entries.get(Item.REGISTRY.getNameForObject(item.getItem()) + ":" + item.getMetadata());
 		
-		if (entry != null)
-		{
+		if (entry != null) {
 			return entry;
 		}
-		else
-		{
-			return entries.get(Item.REGISTRY.getNameForObject(item.getItem())  + ":*");
+		else {
+			return entries.get(Item.REGISTRY.getNameForObject(item.getItem()) + ":*");
 		}
 	}
 	
-	public static void registerVanillaRecipes()
-	{
+	public static void registerVanillaRecipes() {
 		//saplings
 		add(new CompostRegistryEntry(new ItemStack(Item.getItemFromBlock(Blocks.SAPLING), 1, 0), 125, new Color("35A82A"), EnumMetadataBehavior.SPECIFIC)); //oak
 		add(new CompostRegistryEntry(new ItemStack(Item.getItemFromBlock(Blocks.SAPLING), 1, 1), 125, new Color("2E8042"), EnumMetadataBehavior.SPECIFIC)); //spruce

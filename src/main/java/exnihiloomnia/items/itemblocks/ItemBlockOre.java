@@ -5,7 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockOre extends ItemBlock{
+public class ItemBlockOre extends ItemBlock {
+	
 	public ItemBlockOre(Block block) {
 		super(block);
 		
@@ -14,14 +15,12 @@ public class ItemBlockOre extends ItemBlock{
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack)
-	{
+	public String getUnlocalizedName(ItemStack stack) {
 	    return super.getUnlocalizedName() + "." + EnumOre.fromMetadata(stack.getItemDamage()).getName();
 	}
 	
 	@Override
-    public int getMetadata(int damage)
-    {
+    public int getMetadata(int damage) {
         return damage;
     }
 }

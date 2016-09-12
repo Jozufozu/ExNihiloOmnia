@@ -9,15 +9,13 @@ public class HeatRegistryEntry {
 	public int meta;
 	public int value;
 	
-	public HeatRegistryEntry(Block block, int meta, int value)
-	{
+	public HeatRegistryEntry(Block block, int meta, int value) {
 		this.block = block;
 		this.meta = meta;
 		this.value = value;
 	}
 
-	public static HeatRegistryEntry fromRecipe(HeatValue value)
-	{
+	public static HeatRegistryEntry fromRecipe(HeatValue value) {
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(value.getBlock()));
 
 		if (block != null)

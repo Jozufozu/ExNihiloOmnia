@@ -3,26 +3,37 @@ package exnihiloomnia;
 import java.io.File;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.blocks.barrels.states.BarrelStates;
+import exnihiloomnia.client.textures.ENTextures;
 import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.compatibility.ENOOres;
+import exnihiloomnia.crafting.ENOCrafting;
+import exnihiloomnia.crafting.recipes.MobDrops;
+import exnihiloomnia.entities.ENOEntities;
 import exnihiloomnia.fluids.ENOFluids;
+import exnihiloomnia.items.ENOBucketHandler;
+import exnihiloomnia.items.ENOFuelHandler;
+import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.items.materials.ENOToolMaterials;
+import exnihiloomnia.proxy.Proxy;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.util.enums.EnumOre;
+import exnihiloomnia.world.ENOWorld;
 import net.minecraft.init.Items;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.fluids.FluidRegistry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,22 +48,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.blocks.barrels.states.BarrelStates;
-import exnihiloomnia.client.textures.ENTextures;
-import exnihiloomnia.crafting.ENOCrafting;
-import exnihiloomnia.crafting.recipes.MobDrops;
-import exnihiloomnia.entities.ENOEntities;
-import exnihiloomnia.items.ENOBucketHandler;
-import exnihiloomnia.items.ENOFuelHandler;
-import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.materials.ENOToolMaterials;
-import exnihiloomnia.proxy.Proxy;
-import exnihiloomnia.world.ENOWorld;
 
 @Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION)//, dependencies = "required-after:VeinMiner")
-public class ENO
-{
+public class ENO {
 	@Instance(ENO.MODID)
 	public static ENO instance;
 	
@@ -70,8 +68,7 @@ public class ENO
 	public static List<EnumOre> oreList;
 
 	@EventHandler
-	public void preInitialize(FMLPreInitializationEvent event)
-	{
+	public void preInitialize(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		path = event.getModConfigurationDirectory().getAbsolutePath() + File.separator + "ExNihiloOmnia" + File.separator;
@@ -103,8 +100,7 @@ public class ENO
 	}
 
 	@EventHandler
-	public void doInitialize(FMLInitializationEvent event)
-	{
+	public void doInitialize(FMLInitializationEvent event) {
         ENOCrafting.registerRecipes();
         ENORegistries.configure(config);
 
@@ -120,40 +116,35 @@ public class ENO
 	}
 
 	@EventHandler
-	public void postInitialize(FMLPostInitializationEvent event)
-	{
+	public void postInitialize(FMLPostInitializationEvent event) {
 		ENOOres.addOreDict();
     }
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void onTextureStitchEvent(TextureStitchEvent.Pre e)
-	{
-		ENTextures.registerCustomTextures(e.getMap());
+	public void onTextureStitchEvent(TextureStitchEvent.Pre event) {
+		ENTextures.registerCustomTextures(event.getMap());
 		ENTextures.setMeshTextures();
 	}
 
 	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Load e)
-	{
-		if (!e.getWorld().isRemote && e.getWorld() instanceof WorldServer)
+	public void onWorldLoad(WorldEvent.Load event) {
+		if (!event.getWorld().isRemote && event.getWorld() instanceof WorldServer)
 		{
-			ENOWorld.load(e.getWorld());
+			ENOWorld.load(event.getWorld());
 		}
 	}
 
 	@SubscribeEvent
-	public void onWorldTick(TickEvent.WorldTickEvent e)
-	{
-		if (e.side == Side.SERVER && e.phase == TickEvent.Phase.START)
+	public void onWorldTick(TickEvent.WorldTickEvent event) {
+		if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START)
 		{
-			ENOWorld.tick(e.world);
+			ENOWorld.tick(event.world);
 		}
 	}
 
 	@SubscribeEvent
-	public void onEntityDrop(LivingDropsEvent event) 
-	{
+	public void onEntityDrop(LivingDropsEvent event) {
 		MobDrops.onMobDeath(event);
 	}
 

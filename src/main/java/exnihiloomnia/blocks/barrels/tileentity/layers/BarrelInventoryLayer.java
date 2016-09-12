@@ -14,8 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 
-@SuppressWarnings("NullableProblems")
-public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInventory{
+public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInventory {
 	protected ArrayList<ItemStack> output = new ArrayList<ItemStack>();
 	protected ItemStack contents = null;
 	protected int MAX_OUTPUT_QUEUE_SIZE = 1;
@@ -24,53 +23,41 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	private int[] SLOTS_AVAILABLE_FROM_BOTTOM = new int[]{0};
 	private int[] SLOTS_NONE = new int[]{};
 	
-	public void addOutput(ItemStack item)
-	{
-		if (item != null && item.stackSize > 0)
-		{
+	public void addOutput(ItemStack item) {
+		if (item != null && item.stackSize > 0) {
 			output.add(item);
 		}
 	}
 	
-	public void setContents(ItemStack item)
-	{
-		if (item != null)
-		{
+	public void setContents(ItemStack item) {
+		if (item != null) {
 			this.contents = item;
 			((TileEntityBarrel)this).requestSync();
 		}
-		else
-		{
-			if (contents != null)
-			{
+		else {
+			if (contents != null) {
 				this.contents = null;
 				this.state.onExtractContents((TileEntityBarrel)this);
 			}
 		}
 	}
 	
-	public ItemStack getContents()
-	{
+	public ItemStack getContents() {
 		return contents;
 	}
 	
 	@Override
-	public int getSizeInventory() 
-	{
+	public int getSizeInventory() {
 		return 2;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) 
-	{
-		if (index == 0)
-		{
-			if (contents != null && this.state.canExtractContents((TileEntityBarrel)this))
-			{
+	public ItemStack getStackInSlot(int index) {
+		if (index == 0) {
+			if (contents != null && this.state.canExtractContents((TileEntityBarrel)this)) {
 				return contents;
 			}
-			else if ( output.size() > 0)
-			{
+			else if (output.size() > 0) {
 				return output.get(0);
 			}
 		}
@@ -79,18 +66,14 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int count) 
-	{
+	public ItemStack decrStackSize(int index, int count)  {
 		ItemStack item = getStackInSlot(index);
 		
-        if (item != null && count > 0) 
-        {
-            if (item.stackSize <= count) 
-            {
+        if (item != null && count > 0)  {
+            if (item.stackSize <= count)  {
                 setInventorySlotContents(index, null);
             }
-            else 
-            {
+            else {
                 item = item.splitStack(count);
             }
         }
@@ -99,29 +82,22 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	}
 
 	@Override
-  	public ItemStack removeStackFromSlot(int index)
-  {
-    return null;
-  }
+  	public ItemStack removeStackFromSlot(int index) {
+		return null;
+	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) 
-	{
-		if (stack == null || stack.getItem() == null)
-		{
-			if (contents != null)
-			{
+	public void setInventorySlotContents(int index, ItemStack stack)  {
+		if (stack == null || stack.getItem() == null) {
+			if (contents != null) {
 				setContents(null);
 			}
-			else if (index == 0 && output.size() > 0)
-			{
+			else if (index == 0 && output.size() > 0) {
 				output.remove(0);
 			}
 		}
-		else
-		{
-			if (index == 1)
-			{
+		else {
+			if (index == 1) {
 				TileEntityBarrel barrel = (TileEntityBarrel)this;
 				
 				barrel.getState().useItem(null, null, barrel, stack);
@@ -130,14 +106,12 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	}
 
 	@Override
-	public int getInventoryStackLimit() 
-	{
+	public int getInventoryStackLimit() {
 		return 1;
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player)
-	{
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		return false;
 	}
 
@@ -148,17 +122,14 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack)
-	{
-		if (this.output.size() < MAX_OUTPUT_QUEUE_SIZE)
-		{
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		if (this.output.size() < MAX_OUTPUT_QUEUE_SIZE) {
 			TileEntityBarrel barrel = (TileEntityBarrel)this;
 			BarrelState state = barrel.getState();
 			
 			return state.canUseItem(barrel, stack);
 		}
-		else
-		{
+		else {
 			ENO.log.error("insert rejected due to output being full.");
 		}
 		
@@ -166,8 +137,7 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	}
 
 	@Override
-	public int getField(int id) 
-	{
+	public int getField(int id)  {
 		return 0;
 	}
 
@@ -175,46 +145,38 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	public void setField(int id, int value) {}
 
 	@Override
-	public int getFieldCount() 
-	{
+	public int getFieldCount()  {
 		return 0;
 	}
 
 	@Override
-	public void clear() 
-	{
+	public void clear()  {
 		output.clear();
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		TileEntityBarrel barrel = (TileEntityBarrel)this;
 		return barrel.getBlockType().getUnlocalizedName();
 	}
 
 	@Override
-	public boolean hasCustomName() 
-	{
+	public boolean hasCustomName() {
 		return false;
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
-	{
+	public ITextComponent getDisplayName() {
 		return null;
 	}
 
 	@Override
-	public int[] getSlotsForFace(EnumFacing side) 
-	{
-		if (side == EnumFacing.DOWN)
-		{
+	public int[] getSlotsForFace(EnumFacing side) {
+		if (side == EnumFacing.DOWN) {
 			return SLOTS_AVAILABLE_FROM_BOTTOM;
 		}
 		
-		if (side == EnumFacing.UP)
-		{
+		if (side == EnumFacing.UP) {
 			return SLOTS_AVAILABLE_FROM_TOP;
 		}
 		
@@ -222,10 +184,8 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) 
-	{
-		if (direction == EnumFacing.UP && index == 1)
-		{
+	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
+		if (direction == EnumFacing.UP && index == 1) {
 			TileEntityBarrel barrel = (TileEntityBarrel)this;
 			BarrelState state = barrel.getState();
 			
@@ -237,16 +197,12 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 	}
 
 	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) 
-	{
-		if (direction == EnumFacing.DOWN && index == 0)
-		{
-			if (output.size() > 0)
-			{
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+		if (direction == EnumFacing.DOWN && index == 0) {
+			if (output.size() > 0) {
 				return true;
 			} 
-			else if (contents != null && state.canExtractContents((TileEntityBarrel)this))
-			{
+			else if (contents != null && state.canExtractContents((TileEntityBarrel)this)) {
 				return true;
 			}
 		}
@@ -254,36 +210,32 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 		return false;
 	}
 
-
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 
 		NBTTagList items = compound.getTagList("items", Constants.NBT.TAG_COMPOUND);
 		
-		for (int x = 0; x < items.tagCount(); x++)
-		{
+		for (int x = 0; x < items.tagCount(); x++) {
 			NBTTagCompound item = items.getCompoundTagAt(x);
 			output.add(ItemStack.loadItemStackFromNBT(item));
 		}
 
 		NBTTagList content = compound.getTagList("content", Constants.NBT.TAG_COMPOUND);
-		if (content.tagCount() > 0)
-		{
+		
+		if (content.tagCount() > 0) {
 			NBTTagCompound item = content.getCompoundTagAt(0);
 			contents = ItemStack.loadItemStackFromNBT(item);
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 
 		NBTTagList items = new NBTTagList();
-		for (int x = 0; x < output.size(); x++)
-		{
+		
+		for (int x = 0; x < output.size(); x++) {
 			NBTTagCompound item = new NBTTagCompound();
 			output.get(x).writeToNBT(item);
 			items.appendTag(item);
@@ -292,8 +244,8 @@ public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInve
 		compound.setTag("items", items);
 
 		NBTTagList content = new NBTTagList();
-		if (contents != null)
-		{
+		
+		if (contents != null) {
 			NBTTagCompound item = new NBTTagCompound();
 			contents.writeToNBT(item);
 			content.appendTag(item);

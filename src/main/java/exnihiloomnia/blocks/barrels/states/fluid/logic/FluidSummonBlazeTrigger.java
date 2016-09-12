@@ -12,7 +12,8 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidSummonBlazeTrigger extends BarrelLogic{
+public class FluidSummonBlazeTrigger extends BarrelLogic {
+	
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
@@ -21,8 +22,8 @@ public class FluidSummonBlazeTrigger extends BarrelLogic{
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.LAVA
 				&& barrel.getFluidAmount() == barrel.getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
-		{
+				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
+			
 			return item.getItem() == ENOItems.BLAZE_DOLL;
 		}
 
@@ -37,19 +38,14 @@ public class FluidSummonBlazeTrigger extends BarrelLogic{
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.LAVA
 				&& barrel.getFluidAmount() == barrel.getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
-		{
-			if (item.getItem() == ENOItems.BLAZE_DOLL)
-			{
-				if (player != null)
-				{
+				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
+			
+			if (item.getItem() == ENOItems.BLAZE_DOLL) {
+				if (player != null) {
 					if (!player.capabilities.isCreativeMode)
-					{
 						InventoryHelper.consumeItem(player, item);
-					}
 				}
-				else
-				{
+				else {
 					item.stackSize--;
 
 					if (item.stackSize <= 0)
@@ -60,7 +56,6 @@ public class FluidSummonBlazeTrigger extends BarrelLogic{
 
 				return true;
 			}
-
 		}
 
 		return false;

@@ -41,8 +41,7 @@ public class ENOWorld {
 	private static boolean mycelium_sprout_with_rain;
 	private static int mycelium_sprout_speed;
 	
-	public static void configure(Configuration config)
-	{
+	public static void configure(Configuration config) {
 		gen_surface = config.get(CATEGORY_WORLD_GEN, "void overworld", false).getBoolean(false);
 		surface_biome = config.get(CATEGORY_WORLD_GEN, "overworld biome", "all").getString();
 		gen_nether = config.get(CATEGORY_WORLD_GEN, "void nether", false).getBoolean(false);
@@ -79,43 +78,35 @@ public class ENOWorld {
 		Mycelium.setSpreadsWhileRaining(mycelium_sprout_with_rain);
 	}
 	
-	public static String getTemplatePath()
-	{
+	public static String getTemplatePath() {
 		return ENO.path + File.separator + "templates";
 	}
 	
-	public static Template getOverworldTemplate()
-	{
+	public static Template getOverworldTemplate() {
 		return template_overworld;
 	}
 	
-	public static Template getNetherTemplate()
-	{
+	public static Template getNetherTemplate() {
 		return template_nether;
 	}
 	
-	public static boolean getNetherFortressesAllowed()
-	{
+	public static boolean getNetherFortressesAllowed() {
 		return gen_nether_allow_fortresses;
 	}
 	
-	public static Template getEndTemplate()
-	{
+	public static Template getEndTemplate() {
 		return template_end;
 	}
 	
-	public static boolean getEndCrystalsAllowed()
-	{
+	public static boolean getEndCrystalsAllowed() {
 		return gen_end_allow_crystals;
 	}
 
-	public static String getSurfaceBiome()
-	{
+	public static String getSurfaceBiome() {
 		return surface_biome;
 	}
 
-	public static void registerWorldProviders()
-	{
+	public static void registerWorldProviders() {
 		if (gen_end)
 			hijackEndGeneration();
 		
@@ -126,80 +117,66 @@ public class ENOWorld {
 			hijackNetherGeneration();
 	}
 	
-	private static void hijackEndGeneration()
-	{
-		try
-		{
+	private static void hijackEndGeneration() {
+		try {
 			DimensionManager.unregisterDimension(1);
 			DimensionManager.registerDimension(1, DimensionType.register("Void End", "_end", 1, WorldProviderVoidEnd.class, true));
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			ENO.log.error("Failed to hijack world provider for the End.");
 		}
 	}
 	
-	private static void hijackSurfaceGeneration()
-	{
-		try
-		{
+	private static void hijackSurfaceGeneration() {
+		try {
 			DimensionManager.unregisterDimension(0);
 			DimensionManager.registerDimension(0, DimensionType.register("Void Overworld", "", 0, WorldProviderVoidSurface.class, true));
 		}
-		catch (Exception e)
-		{
-			ENO.log.error("Failed to hijack world provider the Overworld.");
+		catch (Exception e) {
+			ENO.log.error("Failed to hijack world provider for the Overworld.");
 		}
 	}
 	
-	private static void hijackNetherGeneration()
-	{
-		try
-		{
+	private static void hijackNetherGeneration() {
+		try {
 			DimensionManager.unregisterDimension(-1);
 			DimensionManager.registerDimension(-1, DimensionType.register("Void Nether", "_nether", -1, WorldProviderVoidHell.class, true));
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			ENO.log.error("Failed to hijack world provider for the Nether.");
 		}
 	}
 	
-	public static boolean isWorldGenerationOverridden(int dimension)
-	{
-		switch (dimension)
-		{
-		case -1:
-			return gen_nether;
-			
-		case 0:
-			return gen_surface;
-			
-		case 1:
-			return gen_end;
-			
-		default:
-			return false;
+	public static boolean isWorldGenerationOverridden(int dimension) {
+		switch (dimension) {
+			case -1:
+				return gen_nether;
+				
+			case 0:
+				return gen_surface;
+				
+			case 1:
+				return gen_end;
+				
+			default:
+				return false;
 		}
 	}
 	
-	public static void load(World world)
-	{
+	public static void load(World world) {
 		int x = (int)(world.getWorldInfo().getSpawnX() / world.provider.getMovementFactor() / 16);
         int z = (int)(world.getWorldInfo().getSpawnZ() / world.provider.getMovementFactor() / 16);
         
         world.getChunkProvider().provideChunk(x, z);  
 	}
 	
-	public static void tick(World world)
-	{
-		if (!world.isRemote)
-		{
+	public static void tick(World world) {
+		if (!world.isRemote) {
 			ChunkProviderServer provider = (ChunkProviderServer)world.getChunkProvider();
-	        for (Object o : provider.getLoadedChunks().toArray())
-	        {
-	        	Moss.grow(world, (Chunk)o);
-	        	Mycelium.grow(world, (Chunk)o);
+	        
+			for (Object o : provider.getLoadedChunks().toArray()) {
+	        	Moss.grow(world, (Chunk) o);
+	        	Mycelium.grow(world, (Chunk) o);
 	        }
 		}
 	}

@@ -1,28 +1,31 @@
 package exnihiloomnia.blocks.leaves;
 
+import exnihiloomnia.util.Color;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-
 import net.minecraft.util.EnumFacing;
 
-import exnihiloomnia.util.Color;
-
-public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntityInfestedLeaves>{
+public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntityInfestedLeaves> {
 
     @Override
-    public void renderTileEntityAt(TileEntityInfestedLeaves te, double x, double y, double z, float partialTicks, int destroyStage)
-    {
+    public void renderTileEntityAt(TileEntityInfestedLeaves te, double x, double y, double z, float partialTicks, int destroyStage) {
         if (te.getBlock() != null) {
             if (te.model.size() == 0) {
                 IBlockState blockState = te.block.getStateFromMeta(te.meta);
                 IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(blockState);
+                
                 for (EnumFacing face : EnumFacing.VALUES)
                     te.model.addAll(model.getQuads(blockState, face, 0));
             }
+            
             Color color = te.getRenderColor();
 
             GlStateManager.pushMatrix();
@@ -34,6 +37,7 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
 
             VertexBuffer vertexbuffer = Tessellator.getInstance().getBuffer();
             vertexbuffer.begin(7, DefaultVertexFormats.ITEM);
+            
             for (BakedQuad quad : te.model) {
                 vertexbuffer.addVertexData(quad.getVertexData());
                 vertexbuffer.putColorRGB_F4(color.r, color.g, color.b);
@@ -45,4 +49,3 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
         }
     }
 }
-
