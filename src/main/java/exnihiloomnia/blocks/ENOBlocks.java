@@ -109,6 +109,7 @@ public class ENOBlocks {
 
         for (Block block : getBlocks()) {
             GameRegistry.register(block);
+            
             if (block == BARREL_WOOD)
                 GameRegistry.register(new ItemBarrelWood(block).setRegistryName(block.getRegistryName()));
             else if (block == BARREL_GLASS_COLORED)

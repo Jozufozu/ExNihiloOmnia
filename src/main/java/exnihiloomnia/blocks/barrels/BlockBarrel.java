@@ -51,7 +51,6 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ) {
-
 	    if (player == null) {
 			return false;
 		}

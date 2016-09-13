@@ -105,8 +105,7 @@ public class TextureColoring {
         return (imgBackground.getWidth() == imgForeground.getWidth()) && (imgBackground.getHeight() == imgForeground.getHeight());
     }
 
-//  private static boolean animatedCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground)
-//  {
+//  private static boolean animatedCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground) {
 //  //if the width is identical and the height of one image is a multiple of the height of the other, compositing in animation mode is possible.
 //    return (imgBackground.getHeight() % imgForeground.getHeight() == 0 || imgForeground.getHeight() % imgBackground.getHeight() == 0);
 //  }

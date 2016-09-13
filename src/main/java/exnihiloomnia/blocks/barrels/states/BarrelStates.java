@@ -244,7 +244,9 @@ public class BarrelStates {
 
 		if (ALLOW_COMPOST)
 			BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_COMPOST_ITEM);
+		
 		BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_ITEM);
+		
 		if (ALLOW_RAIN_FILLING)
 			BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_WEATHER);
 
@@ -252,14 +254,17 @@ public class BarrelStates {
 		BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_MYCELIUM);
 
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_HOT);
+		
 		if (ALLOW_RAIN_FILLING)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_WEATHER);
 		if (ALLOW_ICE_FORMING)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ICE);
 		if (ALLOW_PACKED_ICE_FORMING)
 			BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_PACKING_ICE);
+		
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_GAS);
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ITEMS);
+		
 		if (ALLOW_CRAFTING_NETHERRACK)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK);
 		if (ALLOW_CRAFTING_END_STONE)
@@ -321,12 +326,10 @@ public class BarrelStates {
 	}
 
 	public static void registerState(BarrelState state) {
-		if (state != null)
-		{
+		if (state != null) {
 			String key = state.getUniqueIdentifier();
 
-			if (key != null && !key.isEmpty() && !key.trim().isEmpty() && !states.containsKey(key))
-			{
+			if (key != null && !key.isEmpty() && !key.trim().isEmpty() && !states.containsKey(key)) {
 				states.put(key, state);
 			}
 		}

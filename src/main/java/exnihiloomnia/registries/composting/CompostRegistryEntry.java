@@ -71,7 +71,8 @@ public class CompostRegistryEntry {
 		if (s != null) {
             if (behavior == EnumMetadataBehavior.IGNORED) {
                 return s.toString() + ":*";
-            } else {
+            }
+            else {
                 return s.toString() + ":" + input.getMetadata();
             }
         }

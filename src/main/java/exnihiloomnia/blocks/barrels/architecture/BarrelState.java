@@ -78,8 +78,7 @@ public abstract class BarrelState {
 	}
 
 	public void addLogic(BarrelLogic logic) {
-		if (logic != null)
-		{
+		if (logic != null) {
 			triggers.add(logic);
 		}
 	}

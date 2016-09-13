@@ -10,7 +10,8 @@ public class TemplateBlock {
 	private int z;
 	private ArrayList<TemplateItem>contents;
 	
-	public TemplateBlock(){}
+	public TemplateBlock() {}
+	
 	public TemplateBlock(String idIn, int metaIn, int xIn, int yIn, int zIn) {
 		this.id = idIn;
 		this.meta = metaIn;

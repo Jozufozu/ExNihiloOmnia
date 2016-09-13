@@ -28,6 +28,7 @@ public class ItemBucketPorcelainMilk extends ItemBucketMilk {
         }
 
         ((EntityPlayer) playerIn).addStat(StatList.getObjectUseStats(this));
+        
         return stack.stackSize <= 0 ? new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY) : stack;
     }
 }

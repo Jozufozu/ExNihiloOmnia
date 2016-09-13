@@ -32,6 +32,7 @@ import net.minecraft.item.ItemSeeds;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ENOItems {
+	
     public static final CreativeTabs ENO_TAB = new CreativeTabs("tabElse") {
         @Override public Item getTabIconItem() {
             return Item.getItemFromBlock(ENOBlocks.SIEVE_WOOD);

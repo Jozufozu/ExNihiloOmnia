@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class SieveRecipes {
+	
 	public static void register() {
 		//wood sieves
 		for (int i = 0; i < 6; i++) {

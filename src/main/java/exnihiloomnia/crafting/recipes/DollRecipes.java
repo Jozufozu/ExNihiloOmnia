@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class DollRecipes {
+	
 	public static void register() {
 		//Dolls
 		GameRegistry.addRecipe(

@@ -22,47 +22,37 @@ public class MiscRecipes {
 		
 		//cobble from stones, why did I do this as a config
         switch (ENOCrafting.stone_required) {
-            case (0): 
+            case 0: 
             	break;
             
-            case (1):
+            case 1:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (2):
+            case 2:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (3):
+            case 3:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
-                break;
-                
-            case (4):
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (5):
+            case 4:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (6):
+            case 5:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
@@ -70,9 +60,8 @@ public class MiscRecipes {
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (7):
+            case 6:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
@@ -81,9 +70,8 @@ public class MiscRecipes {
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (8):
+            case 7:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),
@@ -93,7 +81,19 @@ public class MiscRecipes {
                     new ItemStack(ENOItems.STONE));
                 break;
                 
-            case (9):
+            case 8:
+                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE),
+                    new ItemStack(ENOItems.STONE));
+                break;
+                
+            case 9:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
                     new ItemStack(ENOItems.STONE),
                     new ItemStack(ENOItems.STONE),

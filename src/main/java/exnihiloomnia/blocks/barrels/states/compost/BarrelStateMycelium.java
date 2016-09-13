@@ -35,7 +35,6 @@ public class BarrelStateMycelium extends BarrelStateCompostSpecial {
 			}
 			else {
 				BarrelRenderer.renderContentsMultiTexture(top, side, bottom, (double)barrel.getVolume() / (double)barrel.getVolumeMax(), white);
-
 			}
 		}
 	}

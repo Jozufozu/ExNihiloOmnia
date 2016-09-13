@@ -37,5 +37,4 @@ public enum EnumOreItemType implements IStringSerializable{
 	public Item getItem() {
 		return this.item;
 	}
-
 }

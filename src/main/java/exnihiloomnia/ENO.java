@@ -96,7 +96,6 @@ public class ENO {
 		
 		if(config.hasChanged())
 			config.save();
-
 	}
 
 	@EventHandler
@@ -129,16 +128,14 @@ public class ENO {
 
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
-		if (!event.getWorld().isRemote && event.getWorld() instanceof WorldServer)
-		{
+		if (!event.getWorld().isRemote && event.getWorld() instanceof WorldServer) {
 			ENOWorld.load(event.getWorld());
 		}
 	}
 
 	@SubscribeEvent
 	public void onWorldTick(TickEvent.WorldTickEvent event) {
-		if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START)
-		{
+		if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START) {
 			ENOWorld.tick(event.world);
 		}
 	}

@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public abstract class PositionHelper {
+	
 	public static BlockPos getRandomPositionInChunk(World world, Chunk chunk) {
 		return new BlockPos((chunk.xPosition * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunk.zPosition * 16) + world.rand.nextInt(16));
 	}

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class InventoryHelper {
+	
 	public static ItemStack getContainer(ItemStack full) {
 		ItemStack empty;
 		

@@ -22,13 +22,13 @@ public class Vertex {
 	
 	public int[] toIntArray() {
 		return new int[] {
-				Float.floatToRawIntBits(x),
-				Float.floatToRawIntBits(y),
-				Float.floatToRawIntBits(z),
-				color.toInt(),
-				Float.floatToRawIntBits(u),
-				Float.floatToRawIntBits(v),
-				0
+			Float.floatToRawIntBits(x),
+			Float.floatToRawIntBits(y),
+			Float.floatToRawIntBits(z),
+			color.toInt(),
+			Float.floatToRawIntBits(u),
+			Float.floatToRawIntBits(v),
+			0
 		};
 	}
 	
