@@ -1,21 +1,19 @@
 package exnihiloomnia.crafting.recipes;
 
 import exnihiloomnia.ENOConfig;
+import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.items.ENOItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.items.ENOItems;
 
-public class SieveRecipes 
-{
-	public static void register()
-	{
+public class SieveRecipes {
+	
+	public static void register() {
 		//wood sieves
-		for(int i = 0; i < 6; i++)
-		{
+		for (int i = 0; i < 6; i++) {
 			if (!ENOConfig.classic_sieve)
 				GameRegistry.addRecipe(
 					new ShapedOreRecipe(new ItemStack(ENOBlocks.SIEVE_WOOD, 1, i),

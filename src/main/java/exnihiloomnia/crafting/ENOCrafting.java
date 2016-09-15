@@ -1,6 +1,14 @@
 package exnihiloomnia.crafting;
 
-import exnihiloomnia.crafting.recipes.*;
+import exnihiloomnia.crafting.recipes.BarrelRecipes;
+import exnihiloomnia.crafting.recipes.BucketRecipes;
+import exnihiloomnia.crafting.recipes.CrookRecipes;
+import exnihiloomnia.crafting.recipes.CrucibleRecipes;
+import exnihiloomnia.crafting.recipes.DollRecipes;
+import exnihiloomnia.crafting.recipes.GrassDrops;
+import exnihiloomnia.crafting.recipes.HammerRecipes;
+import exnihiloomnia.crafting.recipes.MiscRecipes;
+import exnihiloomnia.crafting.recipes.SieveRecipes;
 import net.minecraftforge.common.config.Configuration;
 
 public class ENOCrafting {
@@ -15,8 +23,7 @@ public class ENOCrafting {
 	public static boolean dolls_allowed;
 	public static boolean porcelain_buckets_allowed;
 	
-	public static void configure(Configuration config)
-	{
+	public static void configure(Configuration config) {
 		stone_required = config.get(CATEGORY_CRAFTING_OPTIONS, "small stones in a cobblestone", 9).getInt();
 		barrels_allowed = config.get(CATEGORY_CRAFTING_OPTIONS, "allow barrels", true).getBoolean(true);
 		crooks_allowed = config.get(CATEGORY_CRAFTING_OPTIONS, "allow crooks", true).getBoolean(true);
@@ -27,8 +34,7 @@ public class ENOCrafting {
 		porcelain_buckets_allowed = config.get(CATEGORY_CRAFTING_OPTIONS, "allow porcelain buckets", true).getBoolean(true);
 	}
 
-	public static void registerRecipes()
-	{
+	public static void registerRecipes() {
 		if (barrels_allowed)
 			BarrelRecipes.register();
 		

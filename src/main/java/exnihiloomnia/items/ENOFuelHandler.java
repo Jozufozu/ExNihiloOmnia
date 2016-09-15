@@ -3,7 +3,7 @@ package exnihiloomnia.items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
-public class ENOFuelHandler implements IFuelHandler{
+public class ENOFuelHandler implements IFuelHandler {
 
 	@Override
 	public int getBurnTime(ItemStack fuel) {
@@ -12,5 +12,4 @@ public class ENOFuelHandler implements IFuelHandler{
 		
 		return 0;
 	}
-
 }

@@ -34,26 +34,20 @@ public class Mycelium {
 		Mycelium.rain_reactive = spreads;
 	}
 	
-	public static void grow(World world, Chunk chunk)
-	{		
-		for (int i = 0; i < growth; i++)
-		{
+	public static void grow(World world, Chunk chunk) {		
+		for (int i = 0; i < growth; i++) {
 			pos = PositionHelper.getRandomPositionInChunk(world, chunk);
 			state = world.getBlockState(pos);
 			
-			if (state.getBlock() == Blocks.MYCELIUM && world.getBlockState(pos.up()).getBlock() == Blocks.AIR)
-			{
-				if (PositionHelper.hasNearbyWaterSource(world, pos))
-				{
+			if (state.getBlock() == Blocks.MYCELIUM && world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
+				if (PositionHelper.hasNearbyWaterSource(world, pos)) {
 					spawnRandomMushroom(world, pos);
 				}
-				else if (getSpreadsWhileRaining() && PositionHelper.isRainingAt(world, pos))
-				{
+				else if (getSpreadsWhileRaining() && PositionHelper.isRainingAt(world, pos)) {
 					rng.setSeed(pos.getX() * pos.getZ());
 					rng.nextDouble(); //The first value is not very random at all. Skip that.
 
-					if (rng.nextInt(12) == 0)
-					{
+					if (rng.nextInt(12) == 0) {
 						spawnRandomMushroom(world, pos);
 					}
 				}
@@ -61,17 +55,15 @@ public class Mycelium {
 		}
 	}
 
-	private static void spawnRandomMushroom(World world, BlockPos pos)
-	{
-		switch (world.rand.nextInt(2))
-		{
-		case 0:
-			world.setBlockState(pos.up(), Blocks.BROWN_MUSHROOM.getDefaultState());
-			break;
-
-		case 1:
-			world.setBlockState(pos.up(), Blocks.RED_MUSHROOM.getDefaultState());
-			break;
+	private static void spawnRandomMushroom(World world, BlockPos pos) {
+		switch (world.rand.nextInt(2)) {
+			case 0:
+				world.setBlockState(pos.up(), Blocks.BROWN_MUSHROOM.getDefaultState());
+				break;
+	
+			case 1:
+				world.setBlockState(pos.up(), Blocks.RED_MUSHROOM.getDefaultState());
+				break;
 		}
 	}
 }

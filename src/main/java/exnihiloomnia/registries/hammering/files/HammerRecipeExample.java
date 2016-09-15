@@ -6,8 +6,8 @@ import exnihiloomnia.registries.hammering.pojos.HammerRecipeReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 
 public abstract class HammerRecipeExample {
-	public static HammerRecipeList getExampleRecipeList()
-	{
+	
+	public static HammerRecipeList getExampleRecipeList() {
 		HammerRecipeList example = new HammerRecipeList();
 		
 		HammerRecipe coal = new HammerRecipe("minecraft:coal_block", 0, EnumMetadataBehavior.IGNORED);

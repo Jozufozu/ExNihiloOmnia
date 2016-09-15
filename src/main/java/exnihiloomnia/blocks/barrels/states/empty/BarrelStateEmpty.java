@@ -4,7 +4,7 @@ import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 
 //Does nothing. Renders nothing. Is simply a container for triggers.
-public class BarrelStateEmpty extends BarrelState{
+public class BarrelStateEmpty extends BarrelState {
 	private static String[] description = {"Empty"};
 	
 	@Override
@@ -18,8 +18,7 @@ public class BarrelStateEmpty extends BarrelState{
 	}
 	
 	@Override
-	public String[] getWailaBody(TileEntityBarrel barrel)
-	{
+	public String[] getWailaBody(TileEntityBarrel barrel) {
 		return description;
 	}
 }

@@ -16,19 +16,18 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemSilkworm extends Item{
+public class ItemSilkworm extends Item {
+	
     public ItemSilkworm() {
         super();
         this.setCreativeTab(ENOItems.ENO_TAB);
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         IBlockState state = worldIn.getBlockState(pos);
 
         if (state.getBlock().isLeaves(state, worldIn, pos) && !state.getBlock().equals(ENOBlocks.INFESTED_LEAVES)) {
-
             Block block = worldIn.getBlockState(pos).getBlock();
             int meta = worldIn.getBlockState(pos).getBlock().getMetaFromState(worldIn.getBlockState(pos));
 
@@ -36,11 +35,14 @@ public class ItemSilkworm extends Item{
             TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) worldIn.getTileEntity(pos);
             leaves.setMimicBlock(block, meta);
             worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            
             if (!playerIn.isCreative()) {
                 stack.stackSize--;
+            
             }
             return EnumActionResult.SUCCESS;
         }
+        
         return EnumActionResult.PASS;
     }
 }

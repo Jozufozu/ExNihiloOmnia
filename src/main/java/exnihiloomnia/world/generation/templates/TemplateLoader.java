@@ -13,26 +13,21 @@ import exnihiloomnia.world.generation.templates.pojos.Template;
 public class TemplateLoader {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
-	public static Template load(String path)
-	{
+	public static Template load(String path) {
 		File file = new File(path);
 		Template template = null;
 		
-		if (file.exists())
-		{
-			try 
-			{
+		if (file.exists()) {
+			try {
 				BufferedReader reader = new BufferedReader(new FileReader(path)); 
 				
-				if (reader.ready())
-				{
+				if (reader.ready()) {
 					template = gson.fromJson(reader, Template.class);
 				}
 				
 				reader.close();
-			} 
-			catch (Exception e) 
-			{
+			}
+			catch (Exception e) {
 				ENO.log.error("Failed to read map file: '" + file + "'.");
 				ENO.log.error(e);
 			}  

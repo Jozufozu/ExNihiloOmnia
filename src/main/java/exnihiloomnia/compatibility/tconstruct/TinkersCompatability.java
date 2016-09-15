@@ -22,20 +22,26 @@ public class TinkersCompatability {
             //items
             if (ore.hasGravel())
                 TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+            
             if (ore.hasEnd())
                 TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+            
             if (ore.hasNether())
                 TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+            
             TinkerRegistry.registerMelting(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
             TinkerRegistry.registerMelting(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
 
             //blocks
             if (ore.hasGravel())
                 TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
+            
             if (ore.hasEnd())
                 TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
+            
             if (ore.hasNether())
                 TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
+            
             TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_SAND, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
             TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_DUST, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
         }
@@ -44,10 +50,8 @@ public class TinkersCompatability {
         }
     }
 
-    private static Fluid findMoltenMetal(EnumOre ore)
-    {
-        switch (ore)
-        {
+    private static Fluid findMoltenMetal(EnumOre ore) {
+        switch (ore) {
             case IRON:
                 return FluidRegistry.getFluid("iron");
 
@@ -74,10 +78,13 @@ public class TinkersCompatability {
 
             case ALUMINUM:
                 return FluidRegistry.getFluid("aluminum");
+                
             case OSMIUM:
                 return FluidRegistry.getFluid("osmium");
+                
             case COBALT:
                 return FluidRegistry.getFluid("cobalt");
+                
             case ARDITE:
                 return FluidRegistry.getFluid("ardite");
 

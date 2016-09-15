@@ -19,27 +19,21 @@ public class HammerRecipeLoader {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<HammerRegistryEntry> entries; 
 	
-	public static List<HammerRegistryEntry> load(String path)
-	{	
+	public static List<HammerRegistryEntry> load(String path) {	
 		generateExampleJsonFile(path);
 		entries = new ArrayList<HammerRegistryEntry>();
 		
 		File[] files = new File(path).listFiles();
 		
-		for (File file : files)
-		{
-			if (!file.getName().equals("example.json"))//Ignore the example file
-			{
+		for (File file : files) {
+			if (!file.getName().equals("example.json")) {//Ignore the example file 
 				HammerRecipeList list = loadRecipes(file);
 				
-				if (list != null && !list.getRecipes().isEmpty())
-				{
-					for (HammerRecipe recipe : list.getRecipes())
-					{
+				if (list != null && !list.getRecipes().isEmpty()) {
+					for (HammerRecipe recipe : list.getRecipes()) {
 						HammerRegistryEntry entry = HammerRegistryEntry.fromRecipe(recipe);
 						
-						if (entry != null)
-						{
+						if (entry != null) {
 							entries.add(entry);
 						}
 					}
@@ -50,51 +44,43 @@ public class HammerRecipeLoader {
 		return entries;
 	}
 	
-	private static void generateExampleJsonFile(String path)
-	{
+	private static void generateExampleJsonFile(String path) {
 		File file = new File(path + "example.json");
 		HammerRecipeList recipes = null;
 		
-		if (!file.exists())
-		{
+		if (!file.exists()) {
 			ENO.log.info("Attempting to generate example hammer recipe file: '" + file + "'.");
 			
 			recipes = HammerRecipeExample.getExampleRecipeList();
 			FileWriter writer;
 			
-			try 
-			{
+			try {
 				file.getParentFile().mkdirs();
 				
 				writer = new FileWriter(file);
 				writer.write(gson.toJson(recipes)); 
 				writer.close();
 			} 
-			catch (Exception e) 
-			{
+			catch (Exception e) {
 				ENO.log.error("Failed to write file: '" + file + "'.");
 				ENO.log.error(e);
 			}  
 		}
 	}
 	
-	private static HammerRecipeList loadRecipes(File file)
-	{
+	private static HammerRecipeList loadRecipes(File file) {
 		HammerRecipeList recipes = null;
 		
-		try 
-		{
+		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file)); 
 			
-			if (reader.ready())
-			{
+			if (reader.ready()) {
 				recipes = gson.fromJson(reader, HammerRecipeList.class);
 			}
 			
 			reader.close();
 		} 
-		catch (Exception e) 
-		{
+		catch (Exception e) {
 			ENO.log.error("Failed to read hammer recipe file: '" + file + "'.");
 			ENO.log.error(e);
 		}  

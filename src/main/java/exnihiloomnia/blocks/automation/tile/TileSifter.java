@@ -14,6 +14,7 @@ public class TileSifter extends TileEntity implements ITickable {
         if (!worldObj.isRemote) {
             if (attachedSieve == null) {
                 TileEntity sieve = worldObj.getTileEntity(getPos().up());
+                
                 if (sieve != null)
                     attachedSieve = (TileEntitySieve) worldObj.getTileEntity(getPos().up());
             }
