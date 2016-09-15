@@ -5,10 +5,9 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-public class BlockOtherGravel extends BlockFalling{
+public class BlockOtherGravel extends BlockFalling {
 
-	public BlockOtherGravel()
-	{
+	public BlockOtherGravel() {
 		super(Material.SAND);
 
 		this.setCreativeTab(ENOItems.ENO_TAB);

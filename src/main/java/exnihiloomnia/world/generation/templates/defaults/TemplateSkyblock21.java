@@ -9,14 +9,13 @@ import exnihiloomnia.world.generation.templates.pojos.TemplateBlock;
 import exnihiloomnia.world.generation.templates.pojos.TemplateItem;
 
 public class TemplateSkyblock21 extends TemplateGenerator {
-	public static void generate(String path)
-	{
+	
+	public static void generate(String path) {
 		generateTemplateFile(path + File.separator + "skyblock_2-1_overworld.json", getOverworldTemplate());
 		generateTemplateFile(path + File.separator + "skyblock_2-1_nether.json", getNetherTemplate());
 	}
 	
-	private static Template getOverworldTemplate()
-	{
+	private static Template getOverworldTemplate() {
 		Template map = new Template();
 
 		ArrayList<TemplateBlock> blocks = map.getBlocks();
@@ -274,8 +273,7 @@ public class TemplateSkyblock21 extends TemplateGenerator {
 		return map;
 	}
 	
-	private static Template getNetherTemplate()
-	{
+	private static Template getNetherTemplate() {
 		Template map = new Template();
 		map.setSpawnYLevel(50);
 		

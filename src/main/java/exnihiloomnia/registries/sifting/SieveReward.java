@@ -10,16 +10,13 @@ public class SieveReward {
 	private int base_chance;
 	private ItemStack item;
 	
-	public SieveReward(ItemStack item, int base_chance)
-	{
+	public SieveReward(ItemStack item, int base_chance) {
 		this.item = item;
 		this.base_chance = base_chance;
 	}
 	
-	public ItemStack generateReward()
-	{
-		if (rand.nextInt(100) < base_chance)
-		{
+	public ItemStack generateReward() {
+		if (rand.nextInt(100) < base_chance) {
 			return item.copy();
 		}
 		

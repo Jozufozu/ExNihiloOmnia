@@ -2,13 +2,6 @@ package exnihiloomnia.blocks.barrels.states;
 
 import java.util.HashMap;
 
-import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateBlaze;
-import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateEnd;
-import exnihiloomnia.blocks.barrels.states.dolls.logic.BlazeStateLogic;
-import exnihiloomnia.blocks.barrels.states.dolls.logic.EndStateLogic;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.*;
-import exnihiloomnia.blocks.barrels.states.output.logic.OutputStateLogicPackingIce;
-import net.minecraftforge.common.config.Configuration;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateCoarseDirt;
@@ -26,19 +19,40 @@ import exnihiloomnia.blocks.barrels.states.compost.logic.MyceliumStateLogicCompl
 import exnihiloomnia.blocks.barrels.states.compost.logic.MyceliumStateTrigger;
 import exnihiloomnia.blocks.barrels.states.compost.logic.PodzolStateLogicComplete;
 import exnihiloomnia.blocks.barrels.states.compost.logic.PodzolStateTrigger;
+import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateBlaze;
+import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateEnd;
+import exnihiloomnia.blocks.barrels.states.dolls.logic.BlazeStateLogic;
+import exnihiloomnia.blocks.barrels.states.dolls.logic.EndStateLogic;
 import exnihiloomnia.blocks.barrels.states.empty.BarrelStateEmpty;
 import exnihiloomnia.blocks.barrels.states.empty.logic.CompostStateTrigger;
 import exnihiloomnia.blocks.barrels.states.empty.logic.EmptyStateLogic;
 import exnihiloomnia.blocks.barrels.states.empty.logic.FluidStateTriggerItem;
 import exnihiloomnia.blocks.barrels.states.empty.logic.FluidStateTriggerWeather;
 import exnihiloomnia.blocks.barrels.states.fluid.BarrelStateFluid;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftClayTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftEndstoneTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftNetherrackTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftObsidianTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftSoulsandTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftStoneTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicFreezingIce;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicGas;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicHot;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicItems;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicRain;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidSummonBlazeTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidSummonEndermanTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidSummonSlimeTrigger;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidTransformWitchwater;
 import exnihiloomnia.blocks.barrels.states.output.BarrelStateOutput;
 import exnihiloomnia.blocks.barrels.states.output.logic.OutputStateLogicGrowingGrass;
 import exnihiloomnia.blocks.barrels.states.output.logic.OutputStateLogicGrowingMycelium;
+import exnihiloomnia.blocks.barrels.states.output.logic.OutputStateLogicPackingIce;
 import exnihiloomnia.blocks.barrels.states.slime.BarrelStateSlime;
 import exnihiloomnia.blocks.barrels.states.slime.logic.SlimeStateLogic;
 import exnihiloomnia.blocks.barrels.states.witchwater.BarrelStateTransformationWitchwater;
 import exnihiloomnia.blocks.barrels.states.witchwater.logic.WitchwaterStateLogic;
+import net.minecraftforge.common.config.Configuration;
 
 public class BarrelStates {
 	public static HashMap<String, BarrelState> states = new HashMap<String, BarrelState>();
@@ -56,7 +70,6 @@ public class BarrelStates {
 	public static BarrelState BLAZE;
 	public static BarrelState ENDERMAN;
 	public static BarrelState TRANSFORM_WITCHWATER;
-
 
 	//Logic
 	//-EMPTY
@@ -126,8 +139,7 @@ public class BarrelStates {
 	public static boolean ALLOW_BLAZE;
 	public static boolean ALLOW_ENDERMAN;
 
-	public static void configure(Configuration config)
-	{
+	public static void configure(Configuration config) {
 		loadSettings(config);
 
 		initializeLogic();
@@ -136,8 +148,7 @@ public class BarrelStates {
 		buildBehaviorTree();
 	}
 
-	private static void loadSettings(Configuration config)
-	{
+	private static void loadSettings(Configuration config) {
 		ALLOW_COMPOST = config.get(CATEGORY_BARREL_OPTIONS, "allow composting", true).getBoolean(true);
 		ALLOW_RAIN_FILLING = config.get(CATEGORY_BARREL_OPTIONS, "allow rain to fill barrels", true).getBoolean(true);
 		ALLOW_ICE_FORMING = config.get(CATEGORY_BARREL_OPTIONS, "allow ice to form in barrels", true).getBoolean(true);
@@ -154,8 +165,7 @@ public class BarrelStates {
 		ALLOW_ENDERMAN = config.get(CATEGORY_BARREL_OPTIONS, "allow summoning endermen", true).getBoolean(true);
 	}
 
-	private static void initializeLogic()
-	{
+	private static void initializeLogic() {
 		EMPTY_STATE_LOGIC = new EmptyStateLogic();
 		EMPTY_STATE_TRIGGER_COMPOST_ITEM = new CompostStateTrigger();
 		EMPTY_STATE_TRIGGER_FLUID_ITEM = new FluidStateTriggerItem();
@@ -200,8 +210,7 @@ public class BarrelStates {
 		WITCHWATER_STATE_LOGIC = new WitchwaterStateLogic();
 	}
 
-	private static void initializeStates()
-	{
+	private static void initializeStates() {
 		EMPTY = new BarrelStateEmpty();
 		OUTPUT = new BarrelStateOutput();
 		FLUID = new BarrelStateFluid();
@@ -230,13 +239,14 @@ public class BarrelStates {
 		BarrelStates.registerState(TRANSFORM_WITCHWATER);
 	}
 
-	private static void buildBehaviorTree()
-	{
+	private static void buildBehaviorTree() {
 		BarrelStates.EMPTY.addLogic(EMPTY_STATE_LOGIC);
 
 		if (ALLOW_COMPOST)
 			BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_COMPOST_ITEM);
+		
 		BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_ITEM);
+		
 		if (ALLOW_RAIN_FILLING)
 			BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_WEATHER);
 
@@ -244,14 +254,17 @@ public class BarrelStates {
 		BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_MYCELIUM);
 
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_HOT);
+		
 		if (ALLOW_RAIN_FILLING)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_WEATHER);
 		if (ALLOW_ICE_FORMING)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ICE);
 		if (ALLOW_PACKED_ICE_FORMING)
 			BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_PACKING_ICE);
+		
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_GAS);
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ITEMS);
+		
 		if (ALLOW_CRAFTING_NETHERRACK)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK);
 		if (ALLOW_CRAFTING_END_STONE)
@@ -266,24 +279,24 @@ public class BarrelStates {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_STONE);
 		if (ALLOW_SLIME_SUMMONING)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_SLIME);
+		
         if (ALLOW_BLAZE) {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_BLAZE);
 			BarrelStates.BLAZE.addLogic(BLAZE_STATE_LOGIC);
 			BarrelStates.BLAZE.addLogic(FLUID_STATE_LOGIC_HOT);
         }
+        
         if (ALLOW_ENDERMAN) {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_ENDERMAN);
 			BarrelStates.ENDERMAN.addLogic(ENDERMAN_STATE_LOGIC);
 		}
 
-		if (ALLOW_WITCHWATER)
-		{
+		if (ALLOW_WITCHWATER) {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_TRANSFORM_WITCHWATER);
 			BarrelStates.TRANSFORM_WITCHWATER.addLogic(WITCHWATER_STATE_LOGIC);
 		}
 
-		if (ALLOW_COMPOST)
-		{
+		if (ALLOW_COMPOST) {
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_LOGIC_ITEMS);
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_COMPLETE);
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_PODZOL);
@@ -312,26 +325,21 @@ public class BarrelStates {
 		BarrelStates.SLIME_GREEN.addLogic(SLIME_STATE_LOGIC);
 	}
 
-	public static void registerState(BarrelState state)
-	{
-		if (state != null)
-		{
+	public static void registerState(BarrelState state) {
+		if (state != null) {
 			String key = state.getUniqueIdentifier();
 
-			if (key != null && !key.isEmpty() && !key.trim().isEmpty() && !states.containsKey(key))
-			{
+			if (key != null && !key.isEmpty() && !key.trim().isEmpty() && !states.containsKey(key)) {
 				states.put(key, state);
 			}
 		}
 	}
 
-	public static void unregisterState(BarrelState state)
-	{
+	public static void unregisterState(BarrelState state) {
 		states.remove(state.getUniqueIdentifier());
 	}
 
-	public static BarrelState getState(String key)
-	{
+	public static BarrelState getState(String key) {
 		return states.get(key);
 	}
 }

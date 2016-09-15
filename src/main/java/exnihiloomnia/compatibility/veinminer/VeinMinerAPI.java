@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 public class VeinMinerAPI {
+	
 	public static void addTool(String type, String itemName) {
         sendWhitelistMessage("item", type, itemName);
     }

@@ -6,8 +6,8 @@ import exnihiloomnia.registries.sifting.pojos.SieveRecipeReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 
 public abstract class SieveRecipeExample {
-	public static SieveRecipeList getExampleRecipeList()
-	{
+	
+	public static SieveRecipeList getExampleRecipeList() {
 		SieveRecipeList example = new SieveRecipeList();
 		
 		SieveRecipe gravel = new SieveRecipe("minecraft:gravel", 0, EnumMetadataBehavior.IGNORED);

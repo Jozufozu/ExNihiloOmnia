@@ -2,7 +2,7 @@ package exnihiloomnia.util.enums;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum EnumOreBlockType implements IStringSerializable{
+public enum EnumOreBlockType implements IStringSerializable {
 	GRAVEL("gravel", EnumOreItemType.BROKEN),
 	GRAVEL_NETHER("gravel_nether", EnumOreItemType.BROKEN_NETHER),
 	GRAVEL_ENDER("gravel_ender", EnumOreItemType.BROKEN_ENDER),
@@ -12,8 +12,7 @@ public enum EnumOreBlockType implements IStringSerializable{
 	private final String name;
 	private final EnumOreItemType co;
 
-	EnumOreBlockType(String name, EnumOreItemType co)
-	{
+	EnumOreBlockType(String name, EnumOreItemType co) {
 		this.name = name;
 		this.co = co;
 	}
@@ -22,8 +21,8 @@ public enum EnumOreBlockType implements IStringSerializable{
 	public String getName() {
 		return this.name;
 	}
+	
 	public EnumOreItemType getCo() {
 		return this.co;
 	}
-
 }

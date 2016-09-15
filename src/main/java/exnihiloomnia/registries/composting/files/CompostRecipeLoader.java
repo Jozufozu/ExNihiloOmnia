@@ -19,27 +19,22 @@ public class CompostRecipeLoader {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<CompostRegistryEntry> entries; 
 	
-	public static List<CompostRegistryEntry> load(String path)
-	{	
+	public static List<CompostRegistryEntry> load(String path) {	
 		generateExampleJsonFile(path);
 		entries = new ArrayList<CompostRegistryEntry>();
 		
 		File[] files = new File(path).listFiles();
 		
-		for (File file : files)
-		{
-			if (!file.getName().equals("example.json"))//Ignore the example file
-			{
+		for (File file : files) {
+			//Ignore the example file
+			if (!file.getName().equals("example.json")) {
 				CompostRecipeList list = loadRecipes(file);
 				
-				if (list != null && !list.getRecipes().isEmpty())
-				{
-					for (CompostRecipe recipe : list.getRecipes())
-					{
+				if (list != null && !list.getRecipes().isEmpty()) {
+					for (CompostRecipe recipe : list.getRecipes()) {
 						CompostRegistryEntry entry = CompostRegistryEntry.fromRecipe(recipe);
 						
-						if (entry != null)
-						{
+						if (entry != null) {
 							entries.add(entry);
 						}
 					}
@@ -50,51 +45,43 @@ public class CompostRecipeLoader {
 		return entries;
 	}
 	
-	private static void generateExampleJsonFile(String path)
-	{
+	private static void generateExampleJsonFile(String path) {
 		File file = new File(path + "example.json");
 		CompostRecipeList recipes = null;
 		
-		if (!file.exists())
-		{
+		if (!file.exists()) {
 			ENO.log.info("Attempting to generate example compost recipe file: '" + file + "'.");
 			
 			recipes = CompostRecipeExample.getExampleRecipeList();
 			FileWriter writer;
 			
-			try 
-			{
+			try {
 				file.getParentFile().mkdirs();
 				
 				writer = new FileWriter(file);
 				writer.write(gson.toJson(recipes)); 
 				writer.close();
 			} 
-			catch (Exception e) 
-			{
+			catch (Exception e)  {
 				ENO.log.error("Failed to write file: '" + file + "'.");
 				ENO.log.error(e);
 			}  
 		}
 	}
 	
-	private static CompostRecipeList loadRecipes(File file)
-	{
+	private static CompostRecipeList loadRecipes(File file) {
 		CompostRecipeList recipes = null;
 		
-		try 
-		{
+		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file)); 
 			
-			if (reader.ready())
-			{
+			if (reader.ready()) {
 				recipes = gson.fromJson(reader, CompostRecipeList.class);
 			}
 			
 			reader.close();
 		} 
-		catch (Exception e) 
-		{
+		catch (Exception e)  {
 			ENO.log.error("Failed to read COMPOST recipe file: '" + file + "'.");
 			ENO.log.error(e);
 		}  

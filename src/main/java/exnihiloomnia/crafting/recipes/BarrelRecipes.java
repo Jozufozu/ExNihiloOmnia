@@ -6,11 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BarrelRecipes {
-	public static void register()
-	{
+	
+	public static void register() {
 		//wood barrels
-		for(int i = 0; i < 6; i++)
-		{
+		for(int i = 0; i < 6; i++) {
 			GameRegistry.addRecipe(new ItemStack(ENOBlocks.BARREL_WOOD, 1, i),
 					"x x",
 					"x x",
@@ -36,8 +35,7 @@ public class BarrelRecipes {
 				'y', new ItemStack(Blocks.GLASS_PANE, 1, 0));
 
 		//stained glass barrels
-		for(int i = 0; i < 16; i++)
-		{
+		for(int i = 0; i < 16; i++) {
 			GameRegistry.addRecipe(new ItemStack(ENOBlocks.BARREL_GLASS_COLORED, 1, i),
 					"x x",
 					"x x",

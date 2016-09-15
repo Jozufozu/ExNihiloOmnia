@@ -1,11 +1,11 @@
 package exnihiloomnia.blocks.sieves.tileentity;
 
+import javax.annotation.Nullable;
+
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.blocks.automation.tile.TileSifter;
 import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
-import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -21,16 +21,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 
 public class TileEntitySieve extends TileEntity implements ITickable, IInventory {
 	protected ItemStack mesh;
@@ -58,52 +56,44 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	protected int spawnParticlesTimerMax = 5;
 	
 	@Override
-	public void update() 
-	{
-		if (!this.worldObj.isRemote)
-		{
+	public void update() {
+		if (!this.worldObj.isRemote) {
 			//TileEntity sifter = worldObj.getTileEntity(pos.down());
             //hasSifter = sifter != null && sifter instanceof TileSifter;
 
 			//Speed throttling.
 			workCycleTimer++;
 
-			if (workCycleTimer > workCycleTimerMax)
-			{
+			if (workCycleTimer > workCycleTimerMax) {
 				workThisCycle = 0;
 				workCycleTimer = 0;
 			}
 
 			//Packet throttling
-			if (updateTimerRunning)
-			{
+			if (updateTimerRunning) {
 				updateTimer++;
 
-				if (updateTimer > updateTimerMax)
-				{
+				if (updateTimer > updateTimerMax) {
 					updateTimer = 0;
-					if (updateQueued)
-					{
+					
+					if (updateQueued) {
 						updateQueued = false;
                         getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 
 					}
-					else
-					{
+					else {
 						updateTimerRunning = false;
 					}
 				}
 			}
 		}
-		else
-		{
-			if (spawningParticles)
-			{
+		else {
+			if (spawningParticles) {
 				generateParticles(contentsState);
 				
 				spawnParticlesTimer++;
-				if (spawnParticlesTimer > spawnParticlesTimerMax)
-				{
+				
+				if (spawnParticlesTimer > spawnParticlesTimerMax) {
 					spawningParticles = false;
 				}
 			}
@@ -111,17 +101,13 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	}
 
 	//Send update packets to each client.
-	public void sync()
-	{
-		if (getWorld() != null && !getWorld().isRemote)
-		{
-			if (!updateTimerRunning)
-			{
+	public void sync() {
+		if (getWorld() != null && !getWorld().isRemote) {
+			if (!updateTimerRunning) {
 				updateTimerRunning = true;
 				getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 			}
-			else
-			{
+			else {
 				this.updateQueued = true;
 			}
 		}
@@ -131,65 +117,52 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
         return hasSifter;
     }
 	
-	public boolean hasMesh()
-	{
+	public boolean hasMesh() {
 		return this.mesh != null;
 	}
 	
-	public ItemStack getMesh()
-	{
+	public ItemStack getMesh() {
 		return this.mesh;
 	}
 	
-	public void setMesh(ItemStack mesh)
-	{
+	public void setMesh(ItemStack mesh) {
 		this.mesh = mesh;
 		sync();
 	}
 	
-	public ItemStack getContents()
-	{
+	public ItemStack getContents() {
 		return contents;
 	}
 	
-	public void setContents(ItemStack input)
-	{
+	public void setContents(ItemStack input) {
 		this.contents = input;
 		
-		if (contents != null)
-		{
+		if (contents != null) {
 			Block block = Block.getBlockFromItem(contents.getItem());
 
-			if (block != null)
-			{
+			if (block != null) {
 				contentsState = block.getBlockState().getBaseState();
 			}
 		}
-		else
-		{
+		else {
 			contentsState = null;
 		}
 		
 		sync();
 	}
 	
-	public boolean canWork()
-	{
+	public boolean canWork() {
 		return this.contents != null;
 	}
 	
-	public void doWork()
-	{
+	public void doWork() {
         this.spawningParticles = true;
         addThrottledWork(workSpeed);
-		if (!this.worldObj.isRemote)
-		{
-			if (work > workMax)
-			{
-				if (contentsState != null)
-				{
-					for (ItemStack i : SieveRegistry.generateRewards(contentsState))
-					{
+        
+		if (!this.worldObj.isRemote) {
+			if (work > workMax) {
+				if (contentsState != null) {
+					for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
 						EntityItem entityitem = new EntityItem(getWorld(), pos.getX() + 0.5f, pos.up().getY() + 0.5f, pos.getZ() + 0.5f, i);
 
 						entityitem.motionX = getWorld().rand.nextGaussian() * 0.05F;
@@ -204,10 +177,8 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 				work = 0;
 				contents = null;
 				
-				if (this.mesh != null)
-				{
-					if (mesh.attemptDamageItem(1, worldObj.rand))
-					{
+				if (this.mesh != null) {
+					if (mesh.attemptDamageItem(1, worldObj.rand)) {
 						getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.5f, 2.5f);
 						setMesh(null);
 					}
@@ -219,49 +190,42 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 		}
 	}
 
-	public void setWorkSpeed(int speed) {this.workSpeed = speed;}
+	public void setWorkSpeed(int speed) {
+		this.workSpeed = speed;
+	}
 	
-	private void addThrottledWork(int workIn)
-	{
-		if (workThisCycle + workIn > workPerCycleLimit)
-		{
+	private void addThrottledWork(int workIn) {
+		if (workThisCycle + workIn > workPerCycleLimit) {
 			this.work += workPerCycleLimit - workThisCycle;
 		}
-		else
-		{
+		else {
 			this.work += workIn;
 		}
 	}
 	
-	public float getProgress()
-	{
-		return (float)work / (float)workMax;
+	public float getProgress() {
+		return (float) work / (float) workMax;
 	}
 	
 	//Subclasses which don't want to use the replacable meshes can override this directly.
-	public TextureAtlasSprite getMeshTexture()
-	{
+	public TextureAtlasSprite getMeshTexture() {
 		if (mesh != null)
 			return ((ISieveMesh) mesh.getItem()).getMeshTexture();
 		else
 			return null;
 	}
 	
-	public void startSpawningParticles()
-	{
+	public void startSpawningParticles() {
 		this.spawningParticles = true;
 		this.spawnParticlesTimer = 0;
 	}
 	
 	@SideOnly(Side.CLIENT)
-	private void generateParticles(IBlockState block)
-	{
-		if (block != null)
-		{
+	private void generateParticles(IBlockState block) {
+		if (block != null) {
 			TextureAtlasSprite texture = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block);
 
-			for (int x = 0; x < 6; x++)
-			{	
+			for (int x = 0; x < 6; x++) {	
 				ParticleSieve dust = new ParticleSieve(worldObj, 
 						pos.getX() + 0.8d * worldObj.rand.nextFloat() + 0.15d, 
 						pos.getY() + 0.585d, 
@@ -274,17 +238,16 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	}
 	
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) 
-	{
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)  {
 		return !oldState.getBlock().equals(newState.getBlock());
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		
 		work = compound.getInteger("work");
+		
 		if(compound.getBoolean("particles"))
 			startSpawningParticles();
 		
@@ -298,8 +261,7 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		
 		compound.setInteger("work", work);
@@ -308,17 +270,19 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 		NBTTagList items = new NBTTagList();
 		
 		NBTTagCompound meshTag = new NBTTagCompound();
-		if (mesh != null)
-		{
+		
+		if (mesh != null) {
 			mesh.writeToNBT(meshTag);
 		}
+		
 		items.appendTag(meshTag);
 		
 		NBTTagCompound contentsTag = new NBTTagCompound();
-		if (contents != null)
-		{
+		
+		if (contents != null) {
 			contents.writeToNBT(contentsTag);
 		}
+		
 		items.appendTag(contentsTag);
 		
 		compound.setTag("items", items);
@@ -326,20 +290,17 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag)
-	{
+	public void handleUpdateTag(NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);
 
@@ -347,52 +308,63 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound tag = pkt.getNbtCompound();
 		this.readFromNBT(tag);
 	}
 
-
 	//for automation (IInventory)
     @Override
-    public int getSizeInventory() {return 2;}
+    public int getSizeInventory() {
+    	return 2;
+    }
 
     @Override
-    public ItemStack getStackInSlot(int index) {return null;}
+    public ItemStack getStackInSlot(int index) {
+    	return null;
+    }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {return null;}
+    public ItemStack decrStackSize(int index, int count) {
+    	return null;
+    }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {return null;}
+    public ItemStack removeStackFromSlot(int index) {
+    	return null;
+    }
 
     @Override
     public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
         if (isItemValidForSlot(index, stack) && ENOConfig.sieve_automation) {
             if (index == 0 && hasMesh())
                 contents = stack;
+            
             if (index == 1)
                 mesh = stack;
+            
             getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
         }
-
     }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         Block block = Block.getBlockFromItem(stack.getItem());
+        
         if (ENOConfig.sieve_automation) {
 			if (block != null)
 				return index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata()));
 			else
 				return index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
 		}
+        
 		return false;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {return false;}
+    public boolean isUseableByPlayer(EntityPlayer player) {
+    	return false;
+    }
 
     @Override
     public void openInventory(EntityPlayer player) {}
@@ -422,9 +394,15 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
     }
 
     @Override
-    public String getName() {return ENOBlocks.SIEVE_WOOD.getUnlocalizedName();}
+    public String getName() {
+    	return ENOBlocks.SIEVE_WOOD.getUnlocalizedName();
+    }
 
-    public boolean hasCustomName() {return false;}
+    public boolean hasCustomName() {
+    	return false;
+    }
 
-    public ITextComponent getDisplayName() {return null;}
+    public ITextComponent getDisplayName() {
+    	return null;
+    }
 }

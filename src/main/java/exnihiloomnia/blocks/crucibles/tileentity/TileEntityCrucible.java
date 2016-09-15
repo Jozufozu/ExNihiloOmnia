@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.crucibles.tileentity;
 
+import exnihiloomnia.blocks.crucibles.tileentity.layers.CrucibleInventoryLayer;
 import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.registries.crucible.HeatRegistry;
 import net.minecraft.block.Block;
@@ -8,13 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import exnihiloomnia.blocks.crucibles.tileentity.layers.CrucibleInventoryLayer;
 
-public class TileEntityCrucible extends CrucibleInventoryLayer implements ITickable{
+public class TileEntityCrucible extends CrucibleInventoryLayer implements ITickable {
 	protected int updateTimer = 0;
 	protected int updateTimerMax = 8; //Sync if an update is required.
 	protected boolean updateQueued = false;
@@ -26,47 +26,41 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	protected int solidContentMax = 200000;
 	protected int solidFluidExchangeRate = 100;
 	
-	public void addSolid(int amount)
-	{
-		this.solidContent += (amount * 200);
+	public void addSolid(int amount) {
+		this.solidContent += amount * 200;
 	}
 	
-	public boolean hasSpaceFor(int amount)
-	{
-		return solidContent + (amount * 200) <= solidContentMax;
+	public boolean hasSpaceFor(int amount) {
+		return solidContent + amount * 200 <= solidContentMax;
 	}
 	
-	public double getSolidFullness()
-	{
-		return ((double)this.solidContent / (double)this.solidContentMax);
+	public double getSolidFullness() {
+		return (double) this.solidContent / (double) this.solidContentMax;
 	}
 	
-	public double getFluidFullness()
-	{
+	public double getFluidFullness() {
 	    if (getFluid() != null)
-		    return (double)this.fluid.amount / (double) capacity;
-        else return 0;
+		    return (double) this.fluid.amount / (double) capacity;
+        else
+        	return 0;
 	}
 	
-	public ItemStack getLastItemAdded()
-	{
+	public ItemStack getLastItemAdded() {
 		return this.inventory;
 	}
 	
-	public FluidStack getCurrentFluid()
-	{
+	public FluidStack getCurrentFluid() {
 		return this.fluid;
 	}
-	public int getSolidContent()
-	{
+	
+	public int getSolidContent() {
 		return this.solidContent;
 	}
 
 	@Override
-	public void update() 
-	{
+	public void update()  {
 		//remove stuff if is no longer valid eg config change
-        if (fluid !=null && inventory != null) {
+        if (fluid != null && inventory != null) {
             if (!CrucibleRegistry.containsItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata())) {
                 this.solidContent = 0;
                 this.inventory = null;
@@ -74,18 +68,18 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
                     this.fluid = null;
             }
         }
+        
 		//process solids
         if (this.fluid == null && inventory != null)
             this.fluid = new FluidStack(CrucibleRegistry.getItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata()).fluid, 0);
 
         if (this.solidContent <= 0)
             this.inventory = null;
-		if (this.solidContent > 0 && getFluidFullness() < 1)
-		{
+        
+		if (this.solidContent > 0 && getFluidFullness() < 1) {
 			int speed = this.getMeltingSpeed();
 			
-			if (speed > solidContent * 2)
-			{
+			if (speed > solidContent * 2) {
 				speed = solidContent / 2;
 			}
 
@@ -104,62 +98,51 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 		
 
 		//Packet throttling
-		if (!this.worldObj.isRemote)
-		{
-			if (updateTimerRunning)
-			{
+		if (!this.worldObj.isRemote) {
+			if (updateTimerRunning) {
 				updateTimer++;
 
-				if (updateTimer > updateTimerMax)
-				{
+				if (updateTimer > updateTimerMax) {
 					updateTimer = 0;
-					if (updateQueued)
-					{
+					if (updateQueued) {
 						updateQueued = false;
 
 						getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 					}
-					else
-					{
+					else {
 						updateTimerRunning = false;
 					}
 				}
 			}
 		}
+		
 		markDirty();
         this.getWorld().checkLight(this.getPos());
 	}
 
 	//Send update packets to each client.
-	public void sync()
-	{
-		if (getWorld() != null && !getWorld().isRemote)
-		{
-			if (!updateTimerRunning)
-			{
+	public void sync() {
+		if (getWorld() != null && !getWorld().isRemote) {
+			if (!updateTimerRunning) {
 				updateTimerRunning = true;
 				getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 			}
-			else
-			{
+			else {
 				this.updateQueued = true;
 			}
 		}
 	}
 	
-	public int getMeltingSpeed()
-	{
+	public int getMeltingSpeed() {
 		if (getWorld().isAirBlock(getPos().down()))
 			return 0;
 		
 		IBlockState state = getWorld().getBlockState(getPos().down());
 
-		if (HeatRegistry.containsItem(state.getBlock(), state.getBlock().getMetaFromState(state)))
-		{
+		if (HeatRegistry.containsItem(state.getBlock(), state.getBlock().getMetaFromState(state))) {
 			return HeatRegistry.getItem(state.getBlock(), state.getBlock().getMetaFromState(state)).value;
 		}
-		else
-		{
+		else {
 			return 0;
 		}
 	}
@@ -170,14 +153,12 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	}
 	
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) 
-	{
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return !oldState.getBlock().equals(newState.getBlock());
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		
 		this.solidContent = compound.getInteger("solid");
@@ -185,8 +166,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		
 		compound.setInteger("solid", solidContent);
@@ -195,20 +175,17 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag)
-	{
+	public void handleUpdateTag(NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);
 
@@ -216,8 +193,7 @@ public class TileEntityCrucible extends CrucibleInventoryLayer implements ITicka
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound tag = pkt.getNbtCompound();
 		this.readFromNBT(tag);
 	}

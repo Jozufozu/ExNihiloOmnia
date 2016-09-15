@@ -9,20 +9,17 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.ChunkProviderOverworld;
 
-public class ChunkProviderVoidSurface extends ChunkProviderOverworld
-{
+public class ChunkProviderVoidSurface extends ChunkProviderOverworld {
 	private World world;
 
-    public ChunkProviderVoidSurface(World world)
-    {
+    public ChunkProviderVoidSurface(World world) {
         super(world, world.getSeed(), false, "");
         
         this.world = world;
     }
     
     @Override
-    public Chunk provideChunk(int x, int z)
-    {
+    public Chunk provideChunk(int x, int z) {
         Chunk chunk = new Chunk(world, new ChunkPrimer(), x, z);
 
         chunk.generateSkylightMap();
@@ -31,18 +28,14 @@ public class ChunkProviderVoidSurface extends ChunkProviderOverworld
     }
     
     @Override
-    public void populate(int x, int z)
-    {
-    	if (PositionHelper.isChunkSpawn(world, world.getChunkFromChunkCoords(x, z)))
-        {
+    public void populate(int x, int z) {
+    	if (PositionHelper.isChunkSpawn(world, world.getChunkFromChunkCoords(x, z))) {
         	Template template = ENOWorld.getOverworldTemplate();
         	
-        	if (template!= null)
-        	{
+        	if (template!= null) {
         		template.generate(world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ());
         	}
-        	else
-        	{
+        	else {
         		ENO.log.error("Failed to load overworld map template.");
         	}
         }

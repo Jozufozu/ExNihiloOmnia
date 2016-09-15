@@ -1,5 +1,9 @@
 package exnihiloomnia.blocks.barrels.states.fluid.logic;
 
+import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
+import exnihiloomnia.blocks.barrels.states.BarrelStates;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -7,12 +11,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
-import exnihiloomnia.blocks.barrels.states.BarrelStates;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.helpers.InventoryHelper;
 
-public class FluidSummonSlimeTrigger extends BarrelLogic{
+public class FluidSummonSlimeTrigger extends BarrelLogic {
+	
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
@@ -21,8 +22,8 @@ public class FluidSummonSlimeTrigger extends BarrelLogic{
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.WATER 
 				&& barrel.getFluidAmount() == barrel.getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
-		{
+				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
+			
 			return item.getItem() == Items.MILK_BUCKET;
 		}
 
@@ -37,19 +38,15 @@ public class FluidSummonSlimeTrigger extends BarrelLogic{
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.WATER 
 				&& barrel.getFluidAmount() == barrel.getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
-		{
-			if (item.getItem() == Items.MILK_BUCKET)
-			{
-				if (player != null)
-				{
-					if (!player.capabilities.isCreativeMode)
-					{
+				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
+			
+			if (item.getItem() == Items.MILK_BUCKET) {
+				if (player != null) {
+					if (!player.capabilities.isCreativeMode) {
 						InventoryHelper.consumeItem(player, item);
 					}
 				}
-				else
-				{
+				else {
 					item.stackSize--;
 
 					if (item.stackSize <= 0)
@@ -60,7 +57,6 @@ public class FluidSummonSlimeTrigger extends BarrelLogic{
 
 				return true;
 			}
-
 		}
 
 		return false;

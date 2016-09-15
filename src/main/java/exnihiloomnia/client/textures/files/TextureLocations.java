@@ -3,8 +3,8 @@ package exnihiloomnia.client.textures.files;
 import net.minecraft.util.ResourceLocation;
 
 public class TextureLocations {
-	public static ResourceLocation getBlockLocation(String source, String name)
-	{
+	
+	public static ResourceLocation getBlockLocation(String source, String name) {
 		int ind = name.indexOf(58);
 
 		if (ind >= 0) {
@@ -21,8 +21,7 @@ public class TextureLocations {
 		return new ResourceLocation(source, name);
 	}
 
-	public static ResourceLocation getItemLocation(String source, String name) 
-	{
+	public static ResourceLocation getItemLocation(String source, String name) {
 		int ind = name.indexOf(58);
 
 		if (ind >= 0) {

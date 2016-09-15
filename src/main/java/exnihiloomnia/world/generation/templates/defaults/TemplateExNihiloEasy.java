@@ -8,15 +8,13 @@ import exnihiloomnia.world.generation.templates.pojos.Template;
 import exnihiloomnia.world.generation.templates.pojos.TemplateBlock;
 import exnihiloomnia.world.generation.templates.pojos.TemplateItem;
 
-public class TemplateExNihiloEasy extends TemplateGenerator{
-
-	public static void generate(String path)
-	{
+public class TemplateExNihiloEasy extends TemplateGenerator {
+	
+	public static void generate(String path) {
 		generateTemplateFile(path + File.separator + "ex_nihilo_easy_overworld.json", getOverworldTemplate());
 	}
 
-	private static Template getOverworldTemplate()
-	{
+	private static Template getOverworldTemplate() {
 		Template map = new Template();
 
 		ArrayList<TemplateBlock> blocks = map.getBlocks();

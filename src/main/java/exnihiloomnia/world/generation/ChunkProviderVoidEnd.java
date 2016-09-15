@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.feature.WorldGenSpikes;
 
-public class ChunkProviderVoidEnd extends ChunkProviderEnd{
+public class ChunkProviderVoidEnd extends ChunkProviderEnd {
 	private World world;
 	private WorldGenSpikes crystals = new WorldGenSpikes();
 	
@@ -21,8 +21,7 @@ public class ChunkProviderVoidEnd extends ChunkProviderEnd{
 	}
 
     @Override
-    public Chunk provideChunk(int x, int z)
-    {
+    public Chunk provideChunk(int x, int z) {
         Chunk chunk = new Chunk(world, new ChunkPrimer(), x, z);
         
         chunk.generateSkylightMap();
@@ -31,14 +30,11 @@ public class ChunkProviderVoidEnd extends ChunkProviderEnd{
     }
     
     @Override
-    public void populate(int x, int z)
-    {
-    	if (x == 0 && z == 0)
-        {
+    public void populate(int x, int z) {
+    	if (x == 0 && z == 0) {
         	Template template = ENOWorld.getEndTemplate();
         	
-        	if (template!= null)
-        	{
+        	if (template!= null) {
         		template.generate(world, 8, 8); //Begin generation in the center of chunk 0,0.
         	}
         	
@@ -46,10 +42,8 @@ public class ChunkProviderVoidEnd extends ChunkProviderEnd{
             dragon.setLocationAndAngles(8.0D, 128.0D, 8.0D, world.rand.nextFloat() * 360.0F, 0.0F);
             world.spawnEntityInWorld(dragon);
         }
-    	else
-    	{
-    		if (ENOWorld.getEndCrystalsAllowed() && x >= -5 && x <= 5 && z >= -5 && z <= 5 && world.rand.nextInt(8) == 0)
-            {	
+    	else {
+    		if (ENOWorld.getEndCrystalsAllowed() && x >= -5 && x <= 5 && z >= -5 && z <= 5 && world.rand.nextInt(8) == 0) {	
         		BlockPos pos = new BlockPos(x * 16 + world.rand.nextInt(16), world.provider.getAverageGroundLevel() + (world.rand.nextInt(70) - 35), z * 16 + world.rand.nextInt(16));
         		
                 crystals.generate(world, world.rand, pos); 
