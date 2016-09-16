@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.crucibles.renderer;
 
+import exnihiloomnia.ENOConfig;
 import org.lwjgl.opengl.GL11;
 
 import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
@@ -74,7 +75,7 @@ public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucib
 		if (contents != null && contents.getFluid() != null) {
 			double height = ContentRenderHelper.getAdjustedContentLevel(MIN_RENDER_CAPACITY, MAX_RENDER_CAPACITY, crucible.getFluidFullness());
 
-			if (Minecraft.isFancyGraphicsEnabled())
+			if (Minecraft.isFancyGraphicsEnabled() && ENOConfig.fancy_crucible)
 				ContentRenderHelper.renderContentsFancy(TextureLocator.find(contents.getFluid().getStill()), height, Color.WHITE);
 			else
 				ContentRenderHelper.renderContentsSimple(TextureLocator.find(contents.getFluid().getStill()), height, Color.WHITE);

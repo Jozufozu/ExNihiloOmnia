@@ -50,7 +50,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
                         stack.stackSize--;
                         item = stack;
                         //it doubles it for some reason
-                        addSolid(meltable.getSolidVolume()/2);
+                        addSolid(meltable.getSolidVolume());
                         sync();
                         return stack.stackSize == 0 ? null : stack;
                     }
@@ -61,25 +61,6 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
     };
 
     private FluidTank fluidTank = new FluidTank(8000) {
-        @Override
-        public FluidStack drain(FluidStack resource, boolean doDrain) {
-
-            if (!canDrainFluidType(getFluid())) {
-                return null;
-            }
-            return drain(resource.amount, doDrain);
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
-            if (fluid != null) {
-                if (doDrain)
-                    fluid.amount -= maxDrain;
-                sync();
-                return new FluidStack(fluid.getFluid(), maxDrain);
-            }
-            return null;
-        }
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
@@ -99,6 +80,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         @Override
         protected void onContentsChanged() {
             markDirty();
+            sync();
         }
     };
 

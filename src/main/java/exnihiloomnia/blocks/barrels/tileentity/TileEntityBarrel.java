@@ -52,78 +52,27 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 		public int fill(FluidStack resource, boolean doFill)  {
 			BarrelState state = getState();
 
-			if (resource == null || state == null || !state.canManipulateFluids(getBarrel())) {
+			if (resource == null || state == null || !state.canManipulateFluids(getBarrel()))
 				return 0;
-			}
-
-			if (!doFill) {
-				if (fluid == null) {
-					return Math.min(capacity, resource.amount);
-				}
-
-				if (!fluid.isFluidEqual(resource)) {
-					return 0;
-				}
-
-				return Math.min(capacity - fluid.amount, resource.amount);
-			}
-
-			if (fluid == null) {
-				fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
-				setState(BarrelStates.FLUID);
-
-				return fluid.amount;
-			}
-
-			if (!fluid.isFluidEqual(resource)) {
-				return 0;
-			}
-
-			int avaliable = capacity - fluid.amount;
-
-			if (resource.amount < avaliable) {
-				fluid.amount += resource.amount;
-				avaliable = resource.amount;
-				requestSync();
-			}
-			else {
-				fluid.amount = capacity;
-				requestSync();
-			}
-
-			return avaliable;
+			else
+			    return super.fill(resource, doFill);
 		}
 
 		@Override
 		public FluidStack drain(int maxDrain, boolean doDrain) {
 			BarrelState state = getState();
 
-			if (fluid == null || state == null || !state.canManipulateFluids(getBarrel())) {
+			if (fluid == null || state == null || !state.canManipulateFluids(getBarrel()))
 				return null;
-			}
-
-			int drained = maxDrain;
-
-			if (fluid.amount < drained) {
-				drained = fluid.amount;
-			}
-
-			FluidStack stack = new FluidStack(fluid, drained);
-
-			if (doDrain) {
-				fluid.amount -= drained;
-
-				if (fluid.amount <= 0) {
-					fluid = null;
-					setState(BarrelStates.EMPTY);
-				}
-				else {
-					requestSync();
-				}
-			}
-
-			return stack;
+            else
+                return super.drain(maxDrain, doDrain);
 		}
+
+        @Override
+        protected void onContentsChanged() {
+            markDirty();
+            requestSync();
+        }
 	};
 
 	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
