@@ -58,8 +58,8 @@ public class SieveRegistryEntry {
 				SieveRegistryEntry entry = new SieveRegistryEntry(state, recipe.getBehavior());
 
 				for (SieveRecipeReward reward : recipe.getRewards()) {
-					Item item = Item.REGISTRY.getObject(new ResourceLocation(recipe.getId()));
-					
+					Item item = Item.REGISTRY.getObject(new ResourceLocation(reward.getId()));
+
 					if (item != null) {
 						entry.addReward(new ItemStack(item, reward.getAmount(), reward.getMeta()), reward.getBaseChance());
 					}
