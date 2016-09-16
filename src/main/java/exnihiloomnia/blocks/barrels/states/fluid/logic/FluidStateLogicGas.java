@@ -26,7 +26,7 @@ public class FluidStateLogicGas extends BarrelLogic {
 					world.setBlockState(above, fblock.getDefaultState(), 3);
 					world.notifyBlockOfStateChange(above, fblock);
 					
-					barrel.drain(barrel.getCapacity(), true);
+					barrel.getFluidTank().drain(barrel.getFluidTank().getCapacity(), true);
 					
 					return true;
 				}

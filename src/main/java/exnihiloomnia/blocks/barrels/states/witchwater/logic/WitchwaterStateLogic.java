@@ -16,7 +16,7 @@ public class WitchwaterStateLogic extends BarrelLogic {
 
 		if (barrel.getTimerStatus() >= 1.0d) {
 			if (!barrel.getWorld().isRemote) {
-				barrel.transformFluidTo(new FluidStack(ENOFluids.WITCHWATER, 1000));
+				barrel.getFluidTank().setFluid(new FluidStack(ENOFluids.WITCHWATER, 1000));
 				barrel.setState(BarrelStates.FLUID);
 				barrel.resetTimer();
 			}

@@ -37,7 +37,7 @@ public class FluidStateLogicHot extends BarrelLogic {
 					}
 						
 					if (barrel.getTimerStatus() == 1.0d) {
-						if (barrel.getFluidAmount() < barrel.getCapacity()) {
+						if (barrel.getFluidTank().getFluidAmount() < barrel.getFluidTank().getCapacity()) {
 							BlockPos pos = barrel.getPos();
 							BlockPos above = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
 							

@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.barrels.states.fluid;
 
+import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
@@ -58,12 +59,14 @@ public class BarrelStateFluid extends BarrelState {
 
 				GlStateManager.translate(x + 0.125d, y, z + 0.125d);
 				GlStateManager.scale(0.75d, 1.0d, 0.75d);
-				
+
+				FluidTank tank = barrel.getFluidTank();
+
 				if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
-					BarrelRenderer.renderContentsSimple(texture, (double)barrel.getFluidAmount() / (double)barrel.getCapacity(), new Color("FFFFFF"));
+					BarrelRenderer.renderContentsSimple(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color("FFFFFF"));
 				}
 				else {
-					BarrelRenderer.renderContentsComplex(texture, (double)barrel.getFluidAmount() / (double)barrel.getCapacity(), new Color("FFFFFF"));
+					BarrelRenderer.renderContentsComplex(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color("FFFFFF"));
 				}
 				
 				RenderHelper.enableStandardItemLighting();

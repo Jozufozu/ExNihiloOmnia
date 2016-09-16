@@ -21,7 +21,7 @@ public class FluidSummonBlazeTrigger extends BarrelLogic {
 		if (fluid != null  
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.LAVA
-				&& barrel.getFluidAmount() == barrel.getCapacity()
+				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
 			
 			return item.getItem() == ENOItems.BLAZE_DOLL;
@@ -37,7 +37,7 @@ public class FluidSummonBlazeTrigger extends BarrelLogic {
 		if (fluid != null  
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.LAVA
-				&& barrel.getFluidAmount() == barrel.getCapacity()
+				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
 			
 			if (item.getItem() == ENOItems.BLAZE_DOLL) {

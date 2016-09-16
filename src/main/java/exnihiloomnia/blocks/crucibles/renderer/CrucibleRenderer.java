@@ -66,15 +66,10 @@ public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucib
 			Minecraft.getMinecraft().getItemRenderer().renderItem(entity, contents, TransformType.NONE);
 		}
 	}
-	
-<<<<<<< HEAD
+
 	private void renderFluidContents(TileEntityCrucible crucible)
 	{
 		FluidStack contents = crucible.getFluid();
-=======
-	private void renderFluidContents(TileEntityCrucible crucible) {
-		FluidStack contents = crucible.getCurrentFluid();
->>>>>>> origin/master
 		
 		if (contents != null && contents.getFluid() != null) {
 			double height = ContentRenderHelper.getAdjustedContentLevel(MIN_RENDER_CAPACITY, MAX_RENDER_CAPACITY, crucible.getFluidFullness());

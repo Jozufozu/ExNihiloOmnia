@@ -19,14 +19,14 @@ public class FluidCraftClayTrigger extends BarrelLogic {
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
         return item.getItem() == Item.getItemFromBlock(ENOBlocks.DUST)
                 && barrel.getFluid().getFluid() == FluidRegistry.WATER
-                && barrel.getFluidAmount() == barrel.getCapacity();
+                && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity();
     }
 
 	@Override
 	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		if (item.getItem() == Item.getItemFromBlock(ENOBlocks.DUST)
 		    && barrel.getFluid().getFluid() == FluidRegistry.WATER
-		    && barrel.getFluidAmount() == barrel.getCapacity()) {
+		    && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()) {
 			
 			barrel.setState(BarrelStates.OUTPUT);
 			barrel.setContents(new ItemStack(Blocks.CLAY, 1));

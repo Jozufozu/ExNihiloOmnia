@@ -131,6 +131,8 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 		return this.item;
 	}
 
+	public void setLastItemAdded(ItemStack item) {this.item = item;}
+
 	public int getSolidContent()
 	{
 		return this.solidContent;

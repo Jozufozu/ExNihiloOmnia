@@ -11,7 +11,7 @@ public class FluidStateTriggerWeather extends BarrelLogic {
 	@Override
 	public boolean onUpdate(TileEntityBarrel barrel) {
 		if (PositionHelper.isRainingAt(barrel.getWorld(), barrel.getPos())) {
-			barrel.fill(new FluidStack(FluidRegistry.WATER, 0), true);
+			barrel.getFluidTank().fill(new FluidStack(FluidRegistry.WATER, 0), true);
 			return true;
 		}
 		
