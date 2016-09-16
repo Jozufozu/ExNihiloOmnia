@@ -73,8 +73,11 @@ public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucib
 		
 		if (contents != null && contents.getFluid() != null) {
 			double height = ContentRenderHelper.getAdjustedContentLevel(MIN_RENDER_CAPACITY, MAX_RENDER_CAPACITY, crucible.getFluidFullness());
-			
-			ContentRenderHelper.renderContentsSimple(TextureLocator.find(contents.getFluid().getStill()), height, Color.WHITE);
+
+			if (Minecraft.isFancyGraphicsEnabled())
+				ContentRenderHelper.renderContentsFancy(TextureLocator.find(contents.getFluid().getStill()), height, Color.WHITE);
+			else
+				ContentRenderHelper.renderContentsSimple(TextureLocator.find(contents.getFluid().getStill()), height, Color.WHITE);
 		}
 	}
 }
