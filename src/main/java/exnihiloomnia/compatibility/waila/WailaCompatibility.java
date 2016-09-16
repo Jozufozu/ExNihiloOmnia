@@ -82,7 +82,7 @@ public class WailaCompatibility implements IWailaDataProvider {
 		}
 		else {
 			if (!ENOConfig.classic_sieve)
-				tip.add(sieve.getMesh().getDisplayName() + " " + (sieve.getMesh().getMaxDamage() - sieve.getMesh().getItemDamage()) + "/" + sieve.getMesh().getMaxDamage());
+				tip.add(sieve.getMesh().getDisplayName() + " " + (sieve.getMesh().getMaxDamage() - sieve.getMesh().getItemDamage() + 1) + "/" + (sieve.getMesh().getMaxDamage() + 1));
 
 			if (!sieve.canWork()) {
 				tip.add("Empty");

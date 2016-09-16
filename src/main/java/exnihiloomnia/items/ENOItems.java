@@ -175,8 +175,8 @@ public class ENOItems {
         HAMMER_IRON = new ItemHammer(ToolMaterial.IRON).setUnlocalizedName("hammer_iron").setRegistryName("hammer_iron");
         HAMMER_GOLD = new ItemHammer(ToolMaterial.GOLD).setUnlocalizedName("hammer_gold").setRegistryName("hammer_gold");
         HAMMER_DIAMOND = new ItemHammer(ToolMaterial.DIAMOND).setUnlocalizedName("hammer_diamond").setRegistryName("hammer_diamond");
-        MESH_SILK_WHITE = new ItemMesh().setUnlocalizedName("mesh_silk_white").setRegistryName("mesh_silk_white").setMaxDamage(64);
-        MESH_WOOD = new ItemMesh().setUnlocalizedName("mesh_wood").setRegistryName("mesh_wood").setMaxDamage(10);
+        MESH_SILK_WHITE = new ItemMesh().setUnlocalizedName("mesh_silk_white").setRegistryName("mesh_silk_white").setMaxDamage(63);
+        MESH_WOOD = new ItemMesh().setUnlocalizedName("mesh_wood").setRegistryName("mesh_wood").setMaxDamage(9);
         ASH = new ItemAsh().setUnlocalizedName("ash").setRegistryName("ash");
         PORCELAIN = new Item().setUnlocalizedName("porcelain").setRegistryName("porcelain").setCreativeTab(ENOItems.ENO_TAB);
         STONE = new ItemStone().setUnlocalizedName("stone").setRegistryName("stone");
