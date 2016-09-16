@@ -21,6 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class BlockBarrel extends Block implements ITileEntityProvider {
     protected static final AxisAlignedBB AABB_BARREL = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
@@ -65,6 +67,8 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 		if (barrel != null) {
 			if (item != null) {
 				if (barrel.getState().canUseItem(barrel, item)) {
+					if (barrel.getState().canManipulateFluids(barrel))
+						FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 					barrel.getState().useItem(player, hand, barrel, item);
 				}
 			}

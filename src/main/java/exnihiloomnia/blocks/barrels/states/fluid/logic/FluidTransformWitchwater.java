@@ -17,14 +17,14 @@ public class FluidTransformWitchwater extends BarrelLogic {
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
         return item.getItem() == ENOItems.SPORES
                 && barrel.getFluid().getFluid() == FluidRegistry.WATER
-                && barrel.getFluidAmount() == barrel.getCapacity();
+                && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity();
     }
 
 	@Override
 	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		if (item.getItem() == ENOItems.SPORES
 		    && barrel.getFluid().getFluid() == FluidRegistry.WATER
-		    && barrel.getFluidAmount() == barrel.getCapacity()) {
+		    && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()) {
 			
 			barrel.setState(BarrelStates.TRANSFORM_WITCHWATER);
 			consumeItem(player, item);

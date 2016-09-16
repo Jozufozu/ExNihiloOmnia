@@ -108,7 +108,7 @@ public class WailaCompatibility implements IWailaDataProvider {
 		FluidStack fluid = crucible.getFluid();
 
 		if (fluid != null)
-			tip.add(fluid.getLocalizedName() + " " + fluid.amount + " mB");
+			tip.add(fluid.getLocalizedName() + " " + fluid.amount + "mB");
 		else
 			tip.add("No fluid");
 		

@@ -26,7 +26,7 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
         return fluid != null
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.WATER 
-				&& barrel.getFluidAmount() == barrel.getCapacity()
+				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL
 			    && item.getItem() instanceof ItemBucketMilk;
@@ -39,7 +39,7 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
 		if (fluid != null  
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.WATER 
-				&& barrel.getFluidAmount() == barrel.getCapacity()
+				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
 		{
 			Item milk = item.getItem();

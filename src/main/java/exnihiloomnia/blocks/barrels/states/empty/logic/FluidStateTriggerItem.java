@@ -40,7 +40,7 @@ public class FluidStateTriggerItem extends BarrelLogic {
 				barrel.addOutput(InventoryHelper.getContainer(item));
 			}
 
-			barrel.fill(fluid, true);
+			barrel.getFluidTank().fill(fluid, true);
 			barrel.getWorld().playSound(null, barrel.getPos(),SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 0.2f, 0.8f);
 			return true;
 		}
