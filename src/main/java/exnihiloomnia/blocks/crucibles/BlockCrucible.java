@@ -2,6 +2,7 @@ package exnihiloomnia.blocks.crucibles;
 
 import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -32,14 +33,19 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 		this.setHarvestLevel("pickaxe", 0);
 		this.setCreativeTab(ENOItems.ENO_TAB);
 	}
+
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+		return false;
+	}
 	
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
 		if (item != null && crucible != null) {
-			if (FluidContainerRegistry.isEmptyContainer(item)) {
-				ItemStack full = FluidContainerRegistry.fillFluidContainer(crucible.getCurrentFluid(), item);
+			if (FluidContainerRegistry.isEmptyContainer(item) ) {
+				ItemStack full = FluidContainerRegistry.fillFluidContainer(crucible.getFluid(), item);
 
 				if (full != null) {
 					if (player != null) {
@@ -53,7 +59,7 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 							}
 						}
 
-						crucible.drain(1000, true);
+						crucible.getTank().drain(1000, true);
 						return true;
 					}
 				}
@@ -62,8 +68,9 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 			ItemStack contents = item.copy();
 			contents.stackSize = 1;
 
-			if (crucible.isItemValidForSlot(0, contents)) {
-				crucible.setInventorySlotContents(0, contents);
+			if (crucible.canInsertItem(contents)) {
+				crucible.addSolid(CrucibleRegistry.getItem(contents).getSolidVolume());
+                crucible.sync();
 
 				world.playSound(null, pos, SoundEvents.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
 				InventoryHelper.consumeItem(player, item);
@@ -80,20 +87,24 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
 		if (crucible != null) {
+
             if (crucible.getFluid() != null) {
+
                 if (crucible.getFluidFullness() > crucible.getSolidFullness()) {
-                    FluidStack fluid = crucible.getCurrentFluid();
+                    FluidStack fluid = crucible.getFluid();
 
 					if (fluid != null && fluid.getFluid() != null) {
-						return crucible.getCurrentFluid().getFluid().getLuminosity();
+						return crucible.getFluid().getFluid().getLuminosity();
 					}
 				}
 			}
             
             if (crucible.getLastItemAdded() != null) {
+
                 if (crucible.getFluidFullness() < crucible.getSolidFullness()) {
                     ItemStack item = crucible.getLastItemAdded();
                     Block block = Block.getBlockFromItem(item.getItem());
+
                     return block.getLightValue(block.getStateFromMeta(item.getMetadata()));
                 }
             }

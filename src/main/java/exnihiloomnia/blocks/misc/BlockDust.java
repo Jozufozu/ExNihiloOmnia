@@ -11,7 +11,7 @@ public class BlockDust extends BlockFalling {
 		super(Material.SAND);
 
 		this.setCreativeTab(ENOItems.ENO_TAB);
-		this.setHardness(0.6f);
+		this.setHardness(0.4f);
 		this.setSoundType(SoundType.SNOW);
 		this.setHarvestLevel("shovel", 0);
 	}

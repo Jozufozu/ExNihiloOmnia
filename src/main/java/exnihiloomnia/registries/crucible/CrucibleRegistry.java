@@ -9,6 +9,7 @@ import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.crucible.files.CrucibleRecipeLoader;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -60,6 +61,13 @@ public class CrucibleRegistry {
         return entries.get(block + ":" + meta);
     }
 
+<<<<<<< HEAD
+    public static CrucibleRegistryEntry getItem(ItemStack item) {
+        return getItem(Block.getBlockFromItem(item.getItem()), item.getMetadata());
+    }
+
+=======
+>>>>>>> origin/master
     public static void registerMeltables() {
         register(Blocks.COBBLESTONE, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.STONE, 0, 250, FluidRegistry.LAVA, 250);

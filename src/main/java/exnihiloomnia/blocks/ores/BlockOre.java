@@ -13,6 +13,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -27,6 +28,7 @@ public class BlockOre extends BlockFalling {
     public EnumOreBlockType type;
 
     public BlockOre(EnumOreBlockType type1) {
+        this.setHardness(0.6f);
         this.type = type1;
         
         if (type1 == EnumOreBlockType.DUST)
