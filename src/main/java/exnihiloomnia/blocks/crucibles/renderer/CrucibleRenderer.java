@@ -67,8 +67,7 @@ public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucib
 		}
 	}
 	
-	private void renderFluidContents(TileEntityCrucible crucible)
-	{
+	private void renderFluidContents(TileEntityCrucible crucible) {
 		FluidStack contents = crucible.getFluid();
 		
 		if (contents != null && contents.getFluid() != null) {
