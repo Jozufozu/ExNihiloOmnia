@@ -2,27 +2,32 @@ package exnihiloomnia.blocks.barrels.tileentity;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
-import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelInventoryLayer;
 import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelStateLayer;
 import exnihiloomnia.util.Color;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
-public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable {
+public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	private TileEntityBarrel getBarrel() {return this;}
 
 	protected int luminosity = 0;
@@ -37,6 +42,10 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 	protected int updateTimerMax = 8; //Sync if an update is required.
 	protected boolean updateQueued = false;
 	protected boolean updateTimerRunning = false;
+
+    protected ArrayList<ItemStack> output = new ArrayList<ItemStack>();
+    protected ItemStack contents = null;
+    protected int maxOutputQueueSize = 1;
 
 	private FluidTank fluidTank = new FluidTank(Fluid.BUCKET_VOLUME) {
 		@Override
@@ -117,10 +126,122 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 		}
 	};
 
+	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+        @Override
+        public ItemStack getStackInSlot(int index) {
+            if (index == 0) {
+                if (contents != null && getState().canExtractContents(getBarrel())) {
+                    return contents;
+                }
+                else if (output.size() > 0) {
+                    return output.get(0);
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+
+            if (stack == null || stack.getItem() == null) {
+
+                if (contents != null) {
+                    setContents(null);
+                }
+                else if (slot == 0 && output.size() > 0) {
+                    output.remove(0);
+                }
+            }
+            else if (slot == 1 && getState().canUseItem(getBarrel(), stack)) {
+                getState().useItem(null, null, getBarrel(), stack);
+                if (!simulate) {
+                    stack.stackSize--;
+                    if (stack.stackSize == 0)
+                        stack = null;
+                }
+            }
+            return stack;
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int count, boolean simulate) {
+            ItemStack item = getStackInSlot(slot);
+
+            if (item != null && count > 0)  {
+                if (item.stackSize <= count)  {
+                    if (!simulate)
+                        setInventorySlotContents(slot, null);
+                }
+                else {
+                    item = item.splitStack(count);
+                }
+            }
+
+            return item;
+        }
+	};
+
 	public FluidTank getFluidTank() {return fluidTank;}
+
+    public ItemStackHandler getItemHandler() {return itemHandler;}
 
     public FluidStack getFluid() {
         return getFluidTank().getFluid();
+    }
+
+    public void setInventorySlotContents(int index, ItemStack stack)  {
+        if (stack == null || stack.getItem() == null) {
+            if (contents != null) {
+                setContents(null);
+            }
+            else if (index == 0 && output.size() > 0) {
+                output.remove(0);
+            }
+        }
+        else {
+            if (index == 1) {
+                TileEntityBarrel barrel = this;
+
+                barrel.getState().useItem(null, null, barrel, stack);
+            }
+        }
+    }
+
+    public void addOutput(ItemStack item) {
+        if (item != null && item.stackSize > 0) {
+            output.add(item);
+        }
+    }
+
+    public void setContents(ItemStack item) {
+        if (item != null) {
+            contents = item;
+            requestSync();
+        }
+        else {
+            if (contents != null) {
+                contents = null;
+                state.onExtractContents(this);
+            }
+        }
+    }
+
+    public ItemStack getContents() {
+        return contents;
+    }
+
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        if (index == 0) {
+            if (output.size() > 0) {
+                return true;
+            }
+            else if (contents != null && state.canExtractContents((TileEntityBarrel)this)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 	@Override
@@ -246,7 +367,7 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -255,6 +376,8 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return (T) fluidTank;
         }
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return (T) itemHandler;
         return super.getCapability(capability, facing);
     }
 	
@@ -268,6 +391,20 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 		setLuminosity(compound.getInteger("luminosity"));
 		volume = compound.getInteger("volume");
 		color = new Color(compound.getInteger("color"));
+
+        NBTTagList items = compound.getTagList("items", Constants.NBT.TAG_COMPOUND);
+
+        for (int x = 0; x < items.tagCount(); x++) {
+            NBTTagCompound item = items.getCompoundTagAt(x);
+            output.add(ItemStack.loadItemStackFromNBT(item));
+        }
+
+        NBTTagList content = compound.getTagList("content", Constants.NBT.TAG_COMPOUND);
+
+        if (content.tagCount() > 0) {
+            NBTTagCompound item = content.getCompoundTagAt(0);
+            contents = ItemStack.loadItemStackFromNBT(item);
+        }
 	}
  
 	@Override
@@ -280,7 +417,27 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 		compound.setInteger("luminosity", getLuminosity());
 		compound.setInteger("volume", volume);
 		compound.setInteger("color", this.color.toInt());
-		return compound;
+
+        NBTTagList items = new NBTTagList();
+
+        for (ItemStack itemStack : output) {
+            NBTTagCompound item = new NBTTagCompound();
+            itemStack.writeToNBT(item);
+            items.appendTag(item);
+        }
+
+        compound.setTag("items", items);
+
+        NBTTagList content = new NBTTagList();
+
+        if (contents != null) {
+            NBTTagCompound item = new NBTTagCompound();
+            contents.writeToNBT(item);
+            content.appendTag(item);
+        }
+
+        compound.setTag("content", content);
+        return compound;
 	}
 
 	@Override

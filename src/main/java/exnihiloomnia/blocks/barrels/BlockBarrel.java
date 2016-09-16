@@ -72,9 +72,9 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 					barrel.getState().useItem(player, hand, barrel, item);
 				}
 			}
-			else if (barrel.canExtractItem(0, barrel.getStackInSlot(0), EnumFacing.DOWN)) {
+			else if (barrel.canExtractItem(0, barrel.getItemHandler().getStackInSlot(0), null)) {
 				if (!world.isRemote) {
-					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.0f, pos.getZ() + 0.5f, barrel.getStackInSlot(0));
+					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.0f, pos.getZ() + 0.5f, barrel.getItemHandler().getStackInSlot(0));
 
 					double f3 = 0.05F;
 					entityitem.motionX = world.rand.nextGaussian() * f3;
