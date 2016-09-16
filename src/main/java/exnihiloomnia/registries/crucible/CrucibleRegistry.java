@@ -61,13 +61,10 @@ public class CrucibleRegistry {
         return entries.get(block + ":" + meta);
     }
 
-<<<<<<< HEAD
     public static CrucibleRegistryEntry getItem(ItemStack item) {
         return getItem(Block.getBlockFromItem(item.getItem()), item.getMetadata());
     }
-
-=======
->>>>>>> origin/master
+    
     public static void registerMeltables() {
         register(Blocks.COBBLESTONE, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.STONE, 0, 250, FluidRegistry.LAVA, 250);

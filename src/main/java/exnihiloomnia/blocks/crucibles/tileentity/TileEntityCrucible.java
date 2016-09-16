@@ -25,7 +25,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityCrucible extends TileEntity implements ITickable{
+public class TileEntityCrucible extends TileEntity implements ITickable {
 
 	protected int updateTimer = 0;
 	protected int updateTimerMax = 8; //Sync if an update is required.
@@ -63,10 +63,10 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
     private FluidTank fluidTank = new FluidTank(8000) {
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-
             if (!canDrainFluidType(getFluid())) {
                 return null;
             }
+            
             return drain(resource.amount, doDrain);
         }
 
@@ -78,6 +78,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
                 sync();
                 return new FluidStack(fluid.getFluid(), maxDrain);
             }
+            
             return null;
         }
 
@@ -102,11 +103,17 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         }
     };
 
-    public ItemStackHandler getItemHandler() {return itemHandler;}
+    public ItemStackHandler getItemHandler() {
+    	return itemHandler;
+    }
 
-    public FluidTank getTank() {return fluidTank;}
+    public FluidTank getTank() {
+    	return fluidTank;
+    }
 
-    public FluidStack getFluid() {return fluidTank.getFluid();}
+    public FluidStack getFluid() {
+    	return fluidTank.getFluid();
+    }
 
 	public void addSolid(int amount) {
 		this.solidContent += (amount * 200);
@@ -126,20 +133,18 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         else return 0;
 	}
 	
-	public ItemStack getLastItemAdded()
-	{
+	public ItemStack getLastItemAdded() {
 		return this.item;
 	}
 
-	public int getSolidContent()
-	{
+	public int getSolidContent() {
 		return this.solidContent;
 	}
 
 	@Override
 	public void update() {
 		//remove stuff if is no longer valid eg config change
-        if (getFluid() !=null && item != null) {
+        if (getFluid() != null && item != null) {
             if (!CrucibleRegistry.containsItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata())) {
                 this.solidContent = 0;
                 this.item = null;
@@ -154,8 +159,8 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 
         if (this.solidContent <= 0)
             this.item = null;
-		if (this.solidContent > 0 && getFluidFullness() < 1)
-		{
+        
+		if (this.solidContent > 0 && getFluidFullness() < 1) {
 			int speed = this.getMeltingSpeed();
 			
 			if (speed > solidContent * 2) {
@@ -183,6 +188,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 
 				if (updateTimer > updateTimerMax) {
 					updateTimer = 0;
+					
 					if (updateQueued) {
 						updateQueued = false;
 
@@ -240,6 +246,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         if (CrucibleRegistry.containsItem(Block.getBlockFromItem(stack.getItem()), stack.getMetadata())) {
             FluidStack fluid = getFluid();
             CrucibleRegistryEntry block = CrucibleRegistry.getItem(Block.getBlockFromItem(stack.getItem()), stack.getMetadata());
+            
             return item == null ? fluid == null ? hasSpaceFor(block.getSolidVolume()) : fluid.getFluid() == block.fluid && hasSpaceFor(block.getSolidVolume()) : item.getItem().equals(stack.getItem()) && hasSpaceFor(block.getSolidVolume());
         }
 
@@ -258,6 +265,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
             if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
                 return (T) fluidTank;
             }
+            
             if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
                 return (T) itemHandler;
             }

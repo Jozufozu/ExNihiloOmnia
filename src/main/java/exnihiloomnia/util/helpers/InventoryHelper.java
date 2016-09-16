@@ -1,6 +1,5 @@
 package exnihiloomnia.util.helpers;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -20,20 +19,12 @@ public class InventoryHelper {
 		return empty;
 	}
 	
-<<<<<<< HEAD
-	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item)
-	{
+	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item) {
 		if(!player.worldObj.isRemote) {
 
 			if (!player.inventory.addItemStackToInventory(item)) {
                 player.dropItem(item, false);
 			}
-=======
-	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item) {
-		if (!player.worldObj.isRemote) {
-			EntityItem entity = new EntityItem(player.worldObj, player.posX + 0.5d, player.posY + 0.5d, player.posZ + 0.5d, item);
-			player.worldObj.spawnEntityInWorld(entity);
->>>>>>> origin/master
 		}	
 	}
 	
