@@ -6,6 +6,8 @@ import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
+import exnihiloomnia.registries.crucible.CrucibleRegistry;
+import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -21,16 +23,21 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntitySieve extends TileEntity implements ITickable, IInventory {
+public class TileEntitySieve extends TileEntity implements ITickable {
 	protected ItemStack mesh;
 	protected ItemStack contents;
 	protected IBlockState contentsState;
@@ -54,7 +61,38 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	protected boolean spawningParticles = false;
 	protected int spawnParticlesTimer = 0;
 	protected int spawnParticlesTimerMax = 5;
-	
+
+	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            ItemStack copy = stack.copy();
+            copy.stackSize = 1;
+
+            if (isItemValidForSlot(slot, copy)) {
+
+				if (slot == 0 && hasMesh()) {
+                    setContents(copy);
+                    return new ItemStack(stack.getItem(), stack.stackSize - 1);
+                }
+
+				if (slot == 1) {
+                    setMesh(copy);
+                    return new ItemStack(stack.getItem(), stack.stackSize - 1);
+                }
+            }
+			return stack;
+		}
+	};
+
+    private boolean isItemValidForSlot(int index, ItemStack stack) {
+        Block block = Block.getBlockFromItem(stack.getItem());
+
+        if (block != null)
+            return index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata()));
+        else
+            return index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
+    }
+
 	@Override
 	public void update() {
 		if (!this.worldObj.isRemote) {
@@ -241,7 +279,21 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)  {
 		return !oldState.getBlock().equals(newState.getBlock());
 	}
-	
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && ENOConfig.sieve_automation) || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && ENOConfig.sieve_automation) {
+			return (T) itemHandler;
+		}
+		return super.getCapability(capability, facing);
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -312,97 +364,4 @@ public class TileEntitySieve extends TileEntity implements ITickable, IInventory
 		NBTTagCompound tag = pkt.getNbtCompound();
 		this.readFromNBT(tag);
 	}
-
-	//for automation (IInventory)
-    @Override
-    public int getSizeInventory() {
-    	return 2;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index) {
-    	return null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-    	return null;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-    	return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-        if (isItemValidForSlot(index, stack) && ENOConfig.sieve_automation) {
-            if (index == 0 && hasMesh())
-                contents = stack;
-            
-            if (index == 1)
-                mesh = stack;
-            
-            getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
-        }
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        Block block = Block.getBlockFromItem(stack.getItem());
-        
-        if (ENOConfig.sieve_automation) {
-			if (block != null)
-				return index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata()));
-			else
-				return index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
-		}
-        
-		return false;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-    	return false;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {}
-
-    @Override
-    public void closeInventory(EntityPlayer player) {}
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {}
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public void clear() {}
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
-    public String getName() {
-    	return ENOBlocks.SIEVE_WOOD.getUnlocalizedName();
-    }
-
-    public boolean hasCustomName() {
-    	return false;
-    }
-
-    public ITextComponent getDisplayName() {
-    	return null;
-    }
 }
