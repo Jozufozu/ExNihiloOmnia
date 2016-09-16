@@ -2,7 +2,7 @@ package exnihiloomnia.util.enums;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum EnumWood implements IStringSerializable{
+public enum EnumWood implements IStringSerializable {
 	OAK(0, "oak"),
 	SPRUCE(1, "spruce"),
 	BIRCH(2, "birch"),
@@ -15,33 +15,27 @@ public enum EnumWood implements IStringSerializable{
 	
 	private static final EnumWood[] META_LOOKUP = new EnumWood[values().length];
 	
-	EnumWood(int meta, String name)
-	{
+	EnumWood(int meta, String name) {
 		this.meta = meta;
 		this.name = name;
 	}
 	
-	public int getMetadata()
-    {
+	public int getMetadata() {
         return this.meta;
     }
 	
-	public static EnumWood fromMetadata(int meta)
-    {
-        if (meta < 0 || meta >= META_LOOKUP.length)
-        {
+	public static EnumWood fromMetadata(int meta) {
+        if (meta < 0 || meta >= META_LOOKUP.length) {
             meta = 0;
         }
 
         return META_LOOKUP[meta];
     }
 	
-	static
-	{
+	static {
 		EnumWood[] woods = values();
 
-        for (int x = 0; x < woods.length; ++x)
-        {
+        for (int x = 0; x < woods.length; ++x) {
         	EnumWood wood = woods[x];
             META_LOOKUP[wood.getMetadata()] = wood;
         }

@@ -24,39 +24,33 @@ public class BlockBarrelWood extends BlockBarrel {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state)
-    {
+	public int damageDropped(IBlockState state) {
         return ((EnumWood)state.getValue(WOOD)).getMetadata();
     }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
-    {
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
 		EnumWood[] woods = EnumWood.values();
 
-        for (int j = 0; j < woods.length; ++j)
-        {
+        for (int j = 0; j < woods.length; ++j) {
         	EnumWood wood = woods[j];
             list.add(new ItemStack(itemIn, 1, wood.getMetadata()));
         }
     }
 	
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-    {
+	public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(WOOD, EnumWood.fromMetadata(meta));
     }
 	
 	@Override
-	public int getMetaFromState(IBlockState state)
-    {
+	public int getMetaFromState(IBlockState state) {
         return ((EnumWood)state.getValue(WOOD)).getMetadata();
     }
 
 	@Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, WOOD);
     }
 }

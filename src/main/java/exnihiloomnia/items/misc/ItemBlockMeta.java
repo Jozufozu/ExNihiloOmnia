@@ -20,7 +20,6 @@ import net.minecraft.world.World;
  * basically the same as ItemBlockSpecial, just also includes metadata
  */
 public class ItemBlockMeta extends Item {
-
     private final Block block;
     private final int meta;
 
@@ -30,35 +29,28 @@ public class ItemBlockMeta extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
 
-        if (block == Blocks.SNOW_LAYER && iblockstate.getValue(BlockSnow.LAYERS) < 1)
-        {
+        if (block == Blocks.SNOW_LAYER && iblockstate.getValue(BlockSnow.LAYERS) < 1) {
             facing = EnumFacing.UP;
         }
-        else if (!block.isReplaceable(worldIn, pos))
-        {
+        else if (!block.isReplaceable(worldIn, pos)) {
             pos = pos.offset(facing);
         }
 
-        if (playerIn.canPlayerEdit(pos, facing, stack) && stack.stackSize != 0 && worldIn.canBlockBePlaced(this.block, pos, false, facing, null, stack))
-        {
+        if (playerIn.canPlayerEdit(pos, facing, stack) && stack.stackSize != 0 && worldIn.canBlockBePlaced(this.block, pos, false, facing, null, stack)) {
             //the only line I changed, good shit mojang
             IBlockState iblockstate1 = this.block.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, playerIn);
 
-            if (!worldIn.setBlockState(pos, iblockstate1, 11))
-            {
+            if (!worldIn.setBlockState(pos, iblockstate1, 11)) {
                 return EnumActionResult.FAIL;
             }
-            else
-            {
+            else {
                 iblockstate1 = worldIn.getBlockState(pos);
 
-                if (iblockstate1.getBlock() == this.block)
-                {
+                if (iblockstate1.getBlock() == this.block) {
                     ItemBlock.setTileEntityNBT(worldIn, playerIn, pos, stack);
                     iblockstate1.getBlock().onBlockPlacedBy(worldIn, pos, iblockstate1, playerIn, stack);
                 }
@@ -69,8 +61,7 @@ public class ItemBlockMeta extends Item {
                 return EnumActionResult.SUCCESS;
             }
         }
-        else
-        {
+        else {
             return EnumActionResult.FAIL;
         }
     }

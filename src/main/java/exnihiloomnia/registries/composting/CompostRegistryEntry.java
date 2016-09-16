@@ -1,10 +1,10 @@
 package exnihiloomnia.registries.composting;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import exnihiloomnia.registries.composting.pojos.CompostRecipe;
 import exnihiloomnia.util.Color;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class CompostRegistryEntry {
@@ -15,51 +15,43 @@ public class CompostRegistryEntry {
 	private int value;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
 	
-	public CompostRegistryEntry(ItemStack input, int value, Color color)
-	{
+	public CompostRegistryEntry(ItemStack input, int value, Color color) {
 		this.input = input;
 		this.color = color;
 		this.value = value;
 	}
 
-	public CompostRegistryEntry(ItemStack input, int value, Color color, EnumMetadataBehavior behavior)
-	{
+	public CompostRegistryEntry(ItemStack input, int value, Color color, EnumMetadataBehavior behavior) {
 		this(input, value, color);
 		
 		this.behavior = behavior;
 	}
 	
-	public static CompostRegistryEntry fromRecipe(CompostRecipe recipe)
-	{
+	public static CompostRegistryEntry fromRecipe(CompostRecipe recipe) {
 		Item item = Item.REGISTRY.getObject(new ResourceLocation(recipe.getId()));
 		Color color = new Color(recipe.getColor());
 		
-		if (item != null)
-		{
+		if (item != null) {
 			ItemStack input = new ItemStack(item, 1, recipe.getMeta()); 
 			return new CompostRegistryEntry(input, recipe.getValue(), color, recipe.getBehavior());
 		}
-		else
-		{
+		else {
 			return null;
 		}
 	}
 	
-	public Color getColor()
-	{
+	public Color getColor() {
 		if (this.color != null)
 			return this.color;
 		else
 			return DEFAULT_COLOR;
 	}
 	
-	public ItemStack getInput()
-	{
+	public ItemStack getInput() {
 		return input;
 	}
 	
-	public int getVolume()
-	{
+	public int getVolume() {
 		if (this.value > 1000)
 			return 1000;
 		
@@ -69,8 +61,7 @@ public class CompostRegistryEntry {
 		return this.value;
 	}
 	
-	public EnumMetadataBehavior getMetadataBehavior()
-	{
+	public EnumMetadataBehavior getMetadataBehavior() {
 		return this.behavior;
 	}
 
@@ -80,12 +71,12 @@ public class CompostRegistryEntry {
 		if (s != null) {
             if (behavior == EnumMetadataBehavior.IGNORED) {
                 return s.toString() + ":*";
-            } else {
+            }
+            else {
                 return s.toString() + ":" + input.getMetadata();
             }
         }
-        else {return null;}
+        else
+        	return null;
 	}
 }
-
-

@@ -13,14 +13,10 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 public class MobDrops {
 	private static Random rand = new Random();
 	
-	public static void onMobDeath(LivingDropsEvent event)
-	{
-		if(event.getSource().getSourceOfDamage() instanceof EntityPlayer)
-		{
-			if (event.getEntity() instanceof EntityCreeper)
-			{
-				if (rand.nextInt(40) == 0)
-				{
+	public static void onMobDeath(LivingDropsEvent event) {
+		if(event.getSource().getSourceOfDamage() instanceof EntityPlayer) {
+			if (event.getEntity() instanceof EntityCreeper) {
+				if (rand.nextInt(40) == 0) {
 					EntityItem entityitem = createMobDrop(event.getEntity(), new ItemStack(Blocks.CACTUS, 1));
 					
 					event.getDrops().add(entityitem);
@@ -29,9 +25,7 @@ public class MobDrops {
 		}
 	}
 	
-	
-	public static EntityItem createMobDrop(Entity entity, ItemStack item)
-	{
+	public static EntityItem createMobDrop(Entity entity, ItemStack item) {
 		EntityItem entityitem = new EntityItem(entity.getEntityWorld(), 
 				entity.getPosition().getX() + 0.5f, 
 				entity.getPosition().getY() + 0.5f, 

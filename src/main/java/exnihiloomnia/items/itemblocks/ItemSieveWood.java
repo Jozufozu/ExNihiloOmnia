@@ -5,7 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemSieveWood extends ItemBlock{
+public class ItemSieveWood extends ItemBlock {
+	
 	public ItemSieveWood(Block block) {
 		super(block);
 		
@@ -14,14 +15,12 @@ public class ItemSieveWood extends ItemBlock{
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack)
-	{
+	public String getUnlocalizedName(ItemStack stack) {
 	    return super.getUnlocalizedName() + "_" + EnumWood.fromMetadata(stack.getItemDamage()).getName();
 	}
 	
 	@Override
-    public int getMetadata(int damage)
-    {
+    public int getMetadata(int damage) {
         return damage;
     }
 }

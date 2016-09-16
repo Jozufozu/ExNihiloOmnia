@@ -9,7 +9,6 @@ public class ENOFluids {
 	public static Fluid WITCHWATER;
 
 	public static void register() {
-
 	    WITCHWATER = new Fluid("witchwater", new ResourceLocation("exnihiloomnia:blocks/witchwater_still"), new ResourceLocation("exnihiloomnia:blocks/witchwater_flowing")).setBlock(ENOBlocks.WITCHWATER);
 
 		FluidRegistry.registerFluid(WITCHWATER);

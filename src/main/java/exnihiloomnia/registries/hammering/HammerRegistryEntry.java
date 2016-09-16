@@ -18,72 +18,57 @@ public class HammerRegistryEntry {
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
 	private ArrayList<HammerReward> rewards = new ArrayList<HammerReward>();
 	
-	public HammerRegistryEntry(IBlockState input, EnumMetadataBehavior behavior)
-	{
+	public HammerRegistryEntry(IBlockState input, EnumMetadataBehavior behavior) {
 		this.input = input;
 		this.behavior = behavior;
 	}
 	
-	public IBlockState getInput()
-	{
+	public IBlockState getInput() {
 		return input;
 	}
 	
-	public void addReward(ItemStack item, int base_chance, int luck_modifier)
-	{
+	public void addReward(ItemStack item, int base_chance, int luck_modifier) {
 		this.rewards.add(new HammerReward(item, base_chance, luck_modifier));
 	}
 	
-	public ArrayList<HammerReward> getRewards()
-	{
+	public ArrayList<HammerReward> getRewards() {
 		return rewards;
 	}
 	
-	public EnumMetadataBehavior getMetadataBehavior()
-	{
+	public EnumMetadataBehavior getMetadataBehavior() {
 		return this.behavior;
 	}
 	
-	public void dropRewards(EntityPlayer player, BlockPos pos)
-	{
-		for (HammerReward reward : rewards)
-		{
+	public void dropRewards(EntityPlayer player, BlockPos pos) {
+		for (HammerReward reward : rewards) {
 			reward.dropReward(player, pos);
 		}
 	}
 	
-	public String getKey()
-	{
+	public String getKey() {
 		String s = Block.REGISTRY.getNameForObject(input.getBlock()).toString();
 		
-		if (behavior == EnumMetadataBehavior.IGNORED)
-		{
+		if (behavior == EnumMetadataBehavior.IGNORED) {
 			return s + ":*";
 		}
-		else 
-		{
+		else {
 			return s + ":" + input.getBlock().getMetaFromState(input);
 		}
 	}
 	
-	public static HammerRegistryEntry fromRecipe(HammerRecipe recipe)
-	{
+	public static HammerRegistryEntry fromRecipe(HammerRecipe recipe) {
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(recipe.getId()));
 
-		if (block != null)
-		{
+		if (block != null) {
 			IBlockState state = block.getBlockState().getBaseState();
 
-			if (state != null)
-			{
+			if (state != null) {
 				HammerRegistryEntry entry = new HammerRegistryEntry(state, recipe.getBehavior());
 
-				for (HammerRecipeReward reward : recipe.getRewards())
-				{
+				for (HammerRecipeReward reward : recipe.getRewards()) {
 					Item item = Item.REGISTRY.getObject(new ResourceLocation(reward.getId()));
 					
-					if (item != null)
-					{
+					if (item != null) {
 						entry.addReward(new ItemStack(item, reward.getAmount(), reward.getMeta()), reward.getBaseChance(), reward.getFortuneModifier());
 					}
 				}
@@ -94,7 +79,4 @@ public class HammerRegistryEntry {
 
 		return null;
 	}
-	
-	
 }
-

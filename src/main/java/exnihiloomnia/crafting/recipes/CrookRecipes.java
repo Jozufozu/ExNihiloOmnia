@@ -7,8 +7,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CrookRecipes {
-	public static void register()
-	{
+	
+	public static void register() {
 		//Crook!
 		GameRegistry.addRecipe(
 				new ShapedOreRecipe(

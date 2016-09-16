@@ -1,17 +1,14 @@
 package exnihiloomnia.client.textures.manipulation;
 
-import exnihiloomnia.ENO;
-
 import java.awt.image.BufferedImage;
 
+import exnihiloomnia.ENO;
 import exnihiloomnia.util.Color;
 
-
-public class TextureColoring
-{
+public class TextureColoring {
+	
     //Recolors an image based on the input color
-    public static BufferedImage Recolor(BufferedImage template, Color colorNew)
-    {
+    public static BufferedImage Recolor(BufferedImage template, Color colorNew) {
         int w = template.getWidth();
         int h = template.getHeight();
 
@@ -28,8 +25,7 @@ public class TextureColoring
         for (int i = 0; i < templateData.length; i++) {
             Color colorRaw = new Color(templateData[i], false);
 
-            if (colorRaw.a > 0)
-            {
+            if (colorRaw.a > 0) {
                 float a = colorRaw.a;
                 float r = (colorNew.r);
                 float g = (colorNew.g);
@@ -37,8 +33,8 @@ public class TextureColoring
 
                 //System.out.println("Blended pixel r:" + r + ", g:" +  g + ", b:" + b + ", a:" +  a);
                 outputData[i] = (new Color(r, g, b, a).toInt());
-            }else
-            {
+            }
+            else {
                 //System.out.println("Raw pixel r:" + colorRaw.r + ", g:" +  colorRaw.g + ", b:" + colorRaw.b + ", a:" +  colorRaw.a);
                 outputData[i] = templateData[i];
             }
@@ -51,10 +47,8 @@ public class TextureColoring
     }
 
     //Combines two images and returns the composite.
-    public static BufferedImage Composite(BufferedImage imgBackground, BufferedImage imgForeground)
-    {
-        if (!normalCompositePossible(imgBackground, imgForeground))
-        {
+    public static BufferedImage Composite(BufferedImage imgBackground, BufferedImage imgForeground) {
+        if (!normalCompositePossible(imgBackground, imgForeground)) {
             ENO.log.error("Images with different sizes can't be composited.");
             return null;
         }
@@ -84,8 +78,7 @@ public class TextureColoring
 
             outputData[i] = backgroundData[i];
 
-            if (colorForeground.a > 0)
-            {
+            if (colorForeground.a > 0) {
                 float alpha = colorForeground.a;
 
                 float a = colorBackground.a;
@@ -95,8 +88,8 @@ public class TextureColoring
 
                 //System.out.println("Blended pixel r:" + r + ", g:" +  g + ", b:" + b + ", a:" +  a);
                 outputData[i] = (new Color(r, g, b, a).toInt());
-            }else
-            {
+            }
+            else {
                 outputData[i] = backgroundData[i];
             }
         }
@@ -107,16 +100,13 @@ public class TextureColoring
         return imgOutput;
     }
 
-    private static boolean normalCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground)
-    {
+    private static boolean normalCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground) {
         //if the size is identical, then compositing in normal mode is possible.
         return (imgBackground.getWidth() == imgForeground.getWidth()) && (imgBackground.getHeight() == imgForeground.getHeight());
     }
 
-//  private static boolean animatedCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground)
-//  {
+//  private static boolean animatedCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground) {
 //  //if the width is identical and the height of one image is a multiple of the height of the other, compositing in animation mode is possible.
 //    return (imgBackground.getHeight() % imgForeground.getHeight() == 0 || imgForeground.getHeight() % imgBackground.getHeight() == 0);
 //  }
-
 }

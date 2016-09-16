@@ -5,22 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.hammering.files.HammerRecipeLoader;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import exnihiloomnia.util.enums.EnumOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.registries.hammering.files.HammerRecipeLoader;
-import exnihiloomnia.util.enums.EnumMetadataBehavior;
 
 public class HammerRegistry {
 	private static HashMap<String, HammerRegistryEntry> entries;
 
-	public static void initialize()
-	{
+	public static void initialize() {
 		entries = new HashMap<String, HammerRegistryEntry>();
 		
 		if (ENORegistries.loadHammerDefaults)
@@ -28,61 +27,48 @@ public class HammerRegistry {
 		
 		List<HammerRegistryEntry> loaded = HammerRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "hammer" + File.separator);
 	
-		if (loaded != null && !loaded.isEmpty())
-		{
-			for (HammerRegistryEntry entry : loaded)
-			{
-				if (entry.getRewards().size() > 0)
-				{
+		if (loaded != null && !loaded.isEmpty()) {
+			for (HammerRegistryEntry entry : loaded) {
+				if (entry.getRewards().size() > 0) {
 					add(entry);
 				}
-				else
-				{
+				else {
 					remove(entry);
 				}
 			}
 		}
 	}
 	
-	public static HashMap<String, HammerRegistryEntry> getEntryMap()
-	{
+	public static HashMap<String, HammerRegistryEntry> getEntryMap() {
 		return entries;
 	}
 	
-	public static void add(HammerRegistryEntry entry)
-	{
-		if (entry != null)
-		{
+	public static void add(HammerRegistryEntry entry) {
+		if (entry != null) {
 			entries.put(entry.getKey(), entry);
 		}
 	}
 	
-	public static void remove(HammerRegistryEntry entry)
-	{
+	public static void remove(HammerRegistryEntry entry) {
 		entries.remove(entry.getKey());
 	}
 	
-	public static boolean isHammerable(IBlockState state)
-	{
+	public static boolean isHammerable(IBlockState state) {
 		return getEntryForBlockState(state) != null;
 	}
 	
-	public static HammerRegistryEntry getEntryForBlockState(IBlockState state)
-	{
+	public static HammerRegistryEntry getEntryForBlockState(IBlockState state) {
 		HammerRegistryEntry entry = entries.get(Block.REGISTRY.getNameForObject(state.getBlock()) + ":" + state.getBlock().getMetaFromState(state));
 		
-		if (entry != null)
-		{
+		if (entry != null) {
 			return entry;
 		}
-		else
-		{
+		else {
 			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock())  + ":*");
 		}
 	}
 	
-	public static void registerVanillaRecipes()
-	{
+	public static void registerVanillaRecipes() {
 		for (EnumOre ore : ENO.oreList) {
 			if (ore.hasGravel()) {
 				HammerRegistryEntry gravel = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
@@ -94,6 +80,7 @@ public class HammerRegistry {
 				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 5, 0);
 				add(gravel);
 			}
+			
 			if (ore.hasNether()) {
 				HammerRegistryEntry nether = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL_NETHER.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
 				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
@@ -104,6 +91,7 @@ public class HammerRegistry {
 				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 5, 0);
 				add(nether);
 			}
+			
 			if (ore.hasEnd()) {
 				HammerRegistryEntry nether = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL_ENDER.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
 				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);

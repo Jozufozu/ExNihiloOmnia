@@ -1,5 +1,10 @@
 package exnihiloomnia.compatibility;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
@@ -19,10 +24,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ENOOres {
     private static String ORE_CATAGORY = "ores";
@@ -63,6 +64,7 @@ public class ENOOres {
         oredict_ingots = ENO.config.get(ORE_CATAGORY, "add ingots to the ore dictionary", true).getBoolean(true);
 
         List<EnumOre> ores = new ArrayList<EnumOre>();
+        
         //change to true to debug
         if (force_ores) {
             for (EnumOre ore : EnumOre.values())
@@ -76,20 +78,28 @@ public class ENOOres {
 
         if (OreDictionary.getOres("oreCopper").size() > 0 || force_copper)
             ores.add(EnumOre.COPPER);
+        
         if (OreDictionary.getOres("oreTin").size() > 0 || force_tin)
             ores.add(EnumOre.TIN);
+        
         if (OreDictionary.getOres("oreLead").size() > 0 || force_lead)
             ores.add(EnumOre.LEAD);
+        
         if (OreDictionary.getOres("oreSilver").size() > 0 || force_silver)
             ores.add(EnumOre.SILVER);
+        
         if (OreDictionary.getOres("oreArdite").size() > 0 || force_ardite)
             ores.add(EnumOre.ARDITE);
+        
         if (OreDictionary.getOres("oreCobalt").size() > 0 || force_cobalt)
             ores.add(EnumOre.COBALT);
+        
         if (OreDictionary.getOres("oreNickel").size() > 0 || OreDictionary.getOres("oreFerrous").size() > 0 || force_nickel)
             ores.add(EnumOre.NICKEL);
+        
         if (OreDictionary.getOres("orePlatinum").size() > 0 || OreDictionary.getOres("oreShiny").size() > 0 || force_platinum)
             ores.add(EnumOre.PLATINUM);
+        
         if (OreDictionary.getOres("oreAluminum").size() > 0 || OreDictionary.getOres("oreAluminium").size() > 0 || force_aluminum)
             ores.add(EnumOre.ALUMINUM);
 
@@ -100,14 +110,19 @@ public class ENOOres {
         for (EnumOre ore : ENO.oreList) {
             if (!(ore == EnumOre.IRON || ore == EnumOre.GOLD) && oredict_ingots)
                 OreDictionary.registerOre(ore.getOreDictName("ingot"), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+            
             if (ore.hasGravel() && oredict_gravels)
                 OreDictionary.registerOre(ore.getOreDictName("ore"), new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()));
+            
             if (ore.hasEnd() && oredict_gravels)
                 OreDictionary.registerOre(ore.getOreDictName("ore"), new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()));
+            
             if (ore.hasNether() && oredict_gravels)
                 OreDictionary.registerOre(ore.getOreDictName("ore"), new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()));
+            
             if (oredict_sand)
                 OreDictionary.registerOre(ore.getOreDictName("ore"), new ItemStack(ENOBlocks.ORE_SAND, 1, ore.getMetadata()));
+            
             if (oredict_dust)
                 OreDictionary.registerOre(ore.getOreDictName("ore"), new ItemStack(ENOBlocks.ORE_DUST, 1, ore.getMetadata()));
         }

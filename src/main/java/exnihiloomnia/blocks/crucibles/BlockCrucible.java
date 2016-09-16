@@ -14,10 +14,10 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -25,8 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class BlockCrucible extends Block implements ITileEntityProvider {
 
-	public BlockCrucible()
-	{
+	public BlockCrucible() {
 		super(Material.CLAY);
 
 		this.setSoundType(SoundType.STONE);
@@ -41,24 +40,21 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ)
-	{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
-		if (item != null && crucible != null)
-		{
-			if (FluidContainerRegistry.isEmptyContainer(item) )
-			{
+		if (item != null && crucible != null) {
+			if (FluidContainerRegistry.isEmptyContainer(item) ) {
 				ItemStack full = FluidContainerRegistry.fillFluidContainer(crucible.getFluid(), item);
 
-				if (full != null)
-				{
+				if (full != null) {
 					if (player != null) {
 						if (!player.capabilities.isCreativeMode) {
 							if (item.stackSize > 1) {
 								item.stackSize--;
 								InventoryHelper.giveItemStackToPlayer(player, full);
-							} else {
+							}
+							else {
 								player.setHeldItem(hand, full);
 							}
 						}
@@ -72,8 +68,7 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 			ItemStack contents = item.copy();
 			contents.stackSize = 1;
 
-			if (crucible.canInsertItem(contents))
-			{
+			if (crucible.canInsertItem(contents)) {
 				crucible.addSolid(CrucibleRegistry.getItem(contents).getSolidVolume());
                 crucible.sync();
 
@@ -92,9 +87,10 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
 		if (crucible != null) {
-            if (crucible.getFluid() != null) {
-                if (crucible.getFluidFullness() > crucible.getSolidFullness()) {
 
+            if (crucible.getFluid() != null) {
+
+                if (crucible.getFluidFullness() > crucible.getSolidFullness()) {
                     FluidStack fluid = crucible.getFluid();
 
 					if (fluid != null && fluid.getFluid() != null) {
@@ -102,10 +98,13 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 					}
 				}
 			}
+            
             if (crucible.getLastItemAdded() != null) {
+
                 if (crucible.getFluidFullness() < crucible.getSolidFullness()) {
                     ItemStack item = crucible.getLastItemAdded();
                     Block block = Block.getBlockFromItem(item.getItem());
+
                     return block.getLightValue(block.getStateFromMeta(item.getMetadata()));
                 }
             }
@@ -115,32 +114,27 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-	{ 
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) { 
 		return false; 
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
-    {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 	
 	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
+	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) 
-	{
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityCrucible();
 	}
 }

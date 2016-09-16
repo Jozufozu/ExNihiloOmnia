@@ -1,19 +1,18 @@
 package exnihiloomnia.blocks.barrels.states.compost;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-
 import org.lwjgl.opengl.GL11;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 
-public class BarrelStateCompost extends BarrelState{
+public class BarrelStateCompost extends BarrelState {
 	protected static Color white = new Color("FFFFFF");
 	private static String[] description = new String[]{""};
 	
@@ -43,31 +42,25 @@ public class BarrelStateCompost extends BarrelState{
 		GlStateManager.popMatrix();
 	}
 	
-	protected void renderBlockTexture(TileEntityBarrel barrel)
-	{
+	protected void renderBlockTexture(TileEntityBarrel barrel) {
 		double timer = barrel.getTimerStatus();
 
-		if (timer > 0.0d)
-		{
+		if (timer > 0.0d) {
 			TextureAtlasSprite dirt = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/dirt");
 			
-			if (barrel.getBlockType().getBlockState().getBaseState().getMaterial().isOpaque())
-			{
+			if (barrel.getBlockType().getBlockState().getBaseState().getMaterial().isOpaque()) {
 				BarrelRenderer.renderContentsSimple(dirt, (double)barrel.getVolume() / (double)barrel.getVolumeMax(), white);
 			}
-			else
-			{
+			else {
 				BarrelRenderer.renderContentsComplex(dirt, (double)barrel.getVolume() / (double)barrel.getVolumeMax(), white);
 			}
 		}
 	}
 	
-	protected void renderCompostTexture(TileEntityBarrel barrel)
-	{
+	protected void renderCompostTexture(TileEntityBarrel barrel) {
 		double timer = barrel.getTimerStatus();
 		
-		if (timer < 1.0d)
-		{
+		if (timer < 1.0d) {
 			TextureAtlasSprite compost = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("exnihiloomnia:blocks/compost");
 			
 			Color colorA = barrel.getColor();
@@ -76,27 +69,22 @@ public class BarrelStateCompost extends BarrelState{
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			
-			if (barrel.getBlockType().getBlockState().getBaseState().getMaterial().isOpaque())
-			{
+			if (barrel.getBlockType().getBlockState().getBaseState().getMaterial().isOpaque()) {
 				BarrelRenderer.renderContentsSimple(compost, barrel.getVolumeProportion(), colorB);
 			}
-			else
-			{
+			else {
 				BarrelRenderer.renderContentsComplex(compost, barrel.getVolumeProportion(), colorB);
 			}
 		}
 	}
 	
 	@Override
-	public String[] getWailaBody(TileEntityBarrel barrel)
-	{
-		if (barrel.getTimerStatus() == -1.0d)
-		{
+	public String[] getWailaBody(TileEntityBarrel barrel) {
+		if (barrel.getTimerStatus() == -1.0d) {
 			description[0] = "Collecting Compost Materials " + String.format("%.0f", barrel.getVolumeProportion() * 100) + "%";
 			return description;
 		}
-		else
-		{
+		else {
 			description[0] = "Composting " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
 		}

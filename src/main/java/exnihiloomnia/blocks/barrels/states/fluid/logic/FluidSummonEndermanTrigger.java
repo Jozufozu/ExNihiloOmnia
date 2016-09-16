@@ -12,7 +12,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidSummonEndermanTrigger extends BarrelLogic{
+public class FluidSummonEndermanTrigger extends BarrelLogic {
+	
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
@@ -21,8 +22,8 @@ public class FluidSummonEndermanTrigger extends BarrelLogic{
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == ENOFluids.WITCHWATER
 				&& barrel.getFluidAmount() == barrel.getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
-		{
+				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
+			
 			return item.getItem() == ENOItems.END_DOLL;
 		}
 
@@ -37,19 +38,15 @@ public class FluidSummonEndermanTrigger extends BarrelLogic{
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == ENOFluids.WITCHWATER
 				&& barrel.getFluidAmount() == barrel.getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
-		{
-			if (item.getItem() == ENOItems.END_DOLL)
-			{
-				if (player != null)
-				{
-					if (!player.capabilities.isCreativeMode)
-					{
+				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
+			
+			if (item.getItem() == ENOItems.END_DOLL) {
+				if (player != null) {
+					if (!player.capabilities.isCreativeMode) {
 						InventoryHelper.consumeItem(player, item);
 					}
 				}
-				else
-				{
+				else {
 					item.stackSize--;
 
 					if (item.stackSize <= 0)
@@ -60,7 +57,6 @@ public class FluidSummonEndermanTrigger extends BarrelLogic{
 
 				return true;
 			}
-
 		}
 
 		return false;

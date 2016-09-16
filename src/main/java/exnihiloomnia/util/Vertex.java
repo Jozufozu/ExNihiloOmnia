@@ -11,8 +11,7 @@ public class Vertex {
 	private float u;
 	private float v;
 	
-	public Vertex(float x, float y, float z, Color color, float u, float v)
-	{
+	public Vertex(float x, float y, float z, Color color, float u, float v) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -21,16 +20,15 @@ public class Vertex {
 		this.v = v;
 	}
 	
-	public int[] toIntArray()
-	{
+	public int[] toIntArray() {
 		return new int[] {
-				Float.floatToRawIntBits(x),
-				Float.floatToRawIntBits(y),
-				Float.floatToRawIntBits(z),
-				color.toInt(),
-				Float.floatToRawIntBits(u),
-				Float.floatToRawIntBits(v),
-				0
+			Float.floatToRawIntBits(x),
+			Float.floatToRawIntBits(y),
+			Float.floatToRawIntBits(z),
+			color.toInt(),
+			Float.floatToRawIntBits(u),
+			Float.floatToRawIntBits(v),
+			0
 		};
 	}
 	

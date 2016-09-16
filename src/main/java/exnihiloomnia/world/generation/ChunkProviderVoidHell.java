@@ -13,12 +13,11 @@ import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public class ChunkProviderVoidHell extends ChunkProviderHell{
+public class ChunkProviderVoidHell extends ChunkProviderHell {
 	private World world;
 	MapGenNetherBridge fortresses;
 	
-	public ChunkProviderVoidHell(World world, boolean shouldGenNetherFortress, long seed)
-	{
+	public ChunkProviderVoidHell(World world, boolean shouldGenNetherFortress, long seed) {
 		super(world, true, seed);
 		this.world = world;
 		
@@ -26,13 +25,11 @@ public class ChunkProviderVoidHell extends ChunkProviderHell{
 	}
 
 	@Override
-	public Chunk provideChunk(int x, int z)
-	{
+	public Chunk provideChunk(int x, int z) {
 		ChunkPrimer primer = new ChunkPrimer();
 		Chunk chunk = new Chunk(world, primer, x, z);
         
-        if (ENOWorld.getNetherFortressesAllowed() && fortresses != null)
-        {
+        if (ENOWorld.getNetherFortressesAllowed() && fortresses != null) {
             this.fortresses.generate(world, x, z, primer);
         }
         
@@ -42,14 +39,11 @@ public class ChunkProviderVoidHell extends ChunkProviderHell{
     }
     
     @Override
-    public void populate(int x, int z)
-    {
-    	if (PositionHelper.isChunkSpawn(world, world.getChunkFromChunkCoords(x, z)))
-        {
+    public void populate(int x, int z) {
+    	if (PositionHelper.isChunkSpawn(world, world.getChunkFromChunkCoords(x, z))) {
         	Template template = ENOWorld.getNetherTemplate();
         	
-        	if (template!= null)
-        	{
+        	if (template!= null) {
         		double xSpawn = (double)world.getWorldInfo().getSpawnX() / world.provider.getMovementFactor();
         		double zSpawn = (double)world.getWorldInfo().getSpawnZ() / world.provider.getMovementFactor();
         		
@@ -57,11 +51,8 @@ public class ChunkProviderVoidHell extends ChunkProviderHell{
         	}
         }
     	
-    	if (ENOWorld.getNetherFortressesAllowed() && fortresses != null)
-        {	
+    	if (ENOWorld.getNetherFortressesAllowed() && fortresses != null) {	
     		fortresses.generateStructure(world, world.rand, new ChunkPos(x,z));
         }
     }
-    
-    
 }

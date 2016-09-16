@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.crucibles.tileentity;
 
+import exnihiloomnia.blocks.crucibles.tileentity.layers.CrucibleInventoryLayer;
 import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
 import exnihiloomnia.registries.crucible.HeatRegistry;
@@ -10,14 +11,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+<<<<<<< HEAD
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+=======
+>>>>>>> origin/master
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+<<<<<<< HEAD
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -27,6 +33,10 @@ import javax.annotation.Nullable;
 
 public class TileEntityCrucible extends TileEntity implements ITickable{
 
+=======
+
+public class TileEntityCrucible extends CrucibleInventoryLayer implements ITickable {
+>>>>>>> origin/master
 	protected int updateTimer = 0;
 	protected int updateTimerMax = 8; //Sync if an update is required.
 	protected boolean updateQueued = false;
@@ -38,6 +48,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	protected int solidContentProcessed = 0;
 	protected int solidContentMax = 200000;
 	protected int solidFluidExchangeRate = 100;
+<<<<<<< HEAD
 
     private ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
@@ -114,15 +125,24 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	
 	public boolean hasSpaceFor(int amount) {
 		return solidContent + (amount * 200) <= solidContentMax;
+=======
+	
+	public void addSolid(int amount) {
+		this.solidContent += amount * 200;
 	}
 	
-	public double getSolidFullness()
-	{
-		return ((double)this.solidContent / (double)this.solidContentMax);
+	public boolean hasSpaceFor(int amount) {
+		return solidContent + amount * 200 <= solidContentMax;
+>>>>>>> origin/master
+	}
+	
+	public double getSolidFullness() {
+		return (double) this.solidContent / (double) this.solidContentMax;
 	}
 	
 	public double getFluidFullness() {
 	    if (getFluid() != null)
+<<<<<<< HEAD
 		    return (double)getFluid().amount / (double) getTank().getCapacity();
         else return 0;
 	}
@@ -134,13 +154,35 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 
 	public int getSolidContent()
 	{
+=======
+		    return (double) this.fluid.amount / (double) capacity;
+        else
+        	return 0;
+	}
+	
+	public ItemStack getLastItemAdded() {
+		return this.inventory;
+	}
+	
+	public FluidStack getCurrentFluid() {
+		return this.fluid;
+	}
+	
+	public int getSolidContent() {
+>>>>>>> origin/master
 		return this.solidContent;
 	}
 
 	@Override
+<<<<<<< HEAD
 	public void update() {
 		//remove stuff if is no longer valid eg config change
         if (getFluid() !=null && item != null) {
+=======
+	public void update()  {
+		//remove stuff if is no longer valid eg config change
+        if (fluid != null && inventory != null) {
+>>>>>>> origin/master
             if (!CrucibleRegistry.containsItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata())) {
                 this.solidContent = 0;
                 this.item = null;
@@ -148,18 +190,24 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
                     getTank().setFluid(null);
             }
         }
+        
 		//process solids
         if (getFluid() == null && item != null)
             getTank().setFluid(new FluidStack(CrucibleRegistry.getItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata()).fluid, 0));
 
         if (this.solidContent <= 0)
+<<<<<<< HEAD
             this.item = null;
 		if (this.solidContent > 0 && getFluidFullness() < 1)
 		{
+=======
+            this.inventory = null;
+        
+		if (this.solidContent > 0 && getFluidFullness() < 1) {
+>>>>>>> origin/master
 			int speed = this.getMeltingSpeed();
 			
-			if (speed > solidContent * 2)
-			{
+			if (speed > solidContent * 2) {
 				speed = solidContent / 2;
 			}
 
@@ -178,62 +226,51 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 		
 
 		//Packet throttling
-		if (!this.worldObj.isRemote)
-		{
-			if (updateTimerRunning)
-			{
+		if (!this.worldObj.isRemote) {
+			if (updateTimerRunning) {
 				updateTimer++;
 
-				if (updateTimer > updateTimerMax)
-				{
+				if (updateTimer > updateTimerMax) {
 					updateTimer = 0;
-					if (updateQueued)
-					{
+					if (updateQueued) {
 						updateQueued = false;
 
 						getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 					}
-					else
-					{
+					else {
 						updateTimerRunning = false;
 					}
 				}
 			}
 		}
+		
 		markDirty();
         this.getWorld().checkLight(this.getPos());
 	}
 
 	//Send update packets to each client.
-	public void sync()
-	{
-		if (getWorld() != null && !getWorld().isRemote)
-		{
-			if (!updateTimerRunning)
-			{
+	public void sync() {
+		if (getWorld() != null && !getWorld().isRemote) {
+			if (!updateTimerRunning) {
 				updateTimerRunning = true;
 				getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 			}
-			else
-			{
+			else {
 				this.updateQueued = true;
 			}
 		}
 	}
 	
-	public int getMeltingSpeed()
-	{
+	public int getMeltingSpeed() {
 		if (getWorld().isAirBlock(getPos().down()))
 			return 0;
 		
 		IBlockState state = getWorld().getBlockState(getPos().down());
 
-		if (HeatRegistry.containsItem(state.getBlock(), state.getBlock().getMetaFromState(state)))
-		{
+		if (HeatRegistry.containsItem(state.getBlock(), state.getBlock().getMetaFromState(state))) {
 			return HeatRegistry.getItem(state.getBlock(), state.getBlock().getMetaFromState(state)).value;
 		}
-		else
-		{
+		else {
 			return 0;
 		}
 	}
@@ -244,8 +281,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	}
 	
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) 
-	{
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return !oldState.getBlock().equals(newState.getBlock());
 	}
 
@@ -279,8 +315,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
     }
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
         getTank().readFromNBT(compound);
 		
@@ -295,8 +330,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		getTank().writeToNBT(compound);
 
@@ -314,20 +348,17 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag)
-	{
+	public void handleUpdateTag(NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);
 
@@ -335,8 +366,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound tag = pkt.getNbtCompound();
 		this.readFromNBT(tag);
 	}

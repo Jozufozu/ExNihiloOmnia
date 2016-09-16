@@ -1,5 +1,9 @@
 package exnihiloomnia.registries.crucible;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.crucible.files.CrucibleRecipeLoader;
@@ -8,10 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
 
 public class CrucibleRegistry {
     public static HashMap<String, CrucibleRegistryEntry> entries;
@@ -42,8 +42,7 @@ public class CrucibleRegistry {
         entries.put(block + ":" + meta, entry);
     }
 
-    public static boolean containsItem(Block block, int meta)
-    {
+    public static boolean containsItem(Block block, int meta) {
         return entries.containsKey(block + ":" + meta);
     }
 
@@ -54,6 +53,7 @@ public class CrucibleRegistry {
                     return true;
             }
         }
+        
         return false;
     }
 
@@ -61,10 +61,13 @@ public class CrucibleRegistry {
         return entries.get(block + ":" + meta);
     }
 
+<<<<<<< HEAD
     public static CrucibleRegistryEntry getItem(ItemStack item) {
         return getItem(Block.getBlockFromItem(item.getItem()), item.getMetadata());
     }
 
+=======
+>>>>>>> origin/master
     public static void registerMeltables() {
         register(Blocks.COBBLESTONE, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.STONE, 0, 250, FluidRegistry.LAVA, 250);

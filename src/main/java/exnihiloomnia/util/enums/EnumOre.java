@@ -3,7 +3,7 @@ package exnihiloomnia.util.enums;
 import exnihiloomnia.util.Color;
 import net.minecraft.util.IStringSerializable;
 
-public enum EnumOre implements IStringSerializable{
+public enum EnumOre implements IStringSerializable {
 	IRON(0, "iron", new Color("F2AB7C"), true, true, false, 30),
 	GOLD(1, "gold", new Color("FFD000"), true, true, false, 10),
 	TIN(2, "tin", new Color("ABC9B6"), true, false, true, 15),
@@ -27,8 +27,7 @@ public enum EnumOre implements IStringSerializable{
 
 	private static final EnumOre[] META_LOOKUP = new EnumOre[values().length];
 
-	EnumOre(int meta, String name, Color color, boolean hasGravel, boolean hasNether, boolean hasEnd, int rarity)
-	{
+	EnumOre(int meta, String name, Color color, boolean hasGravel, boolean hasNether, boolean hasEnd, int rarity) {
 		this.meta = meta;
 		this.name = name;
 		this.color = color;
@@ -38,35 +37,42 @@ public enum EnumOre implements IStringSerializable{
 		this.rarity = rarity;
 	}
 
-	public int getMetadata()
-	{
+	public int getMetadata() {
 		return this.meta;
 	}
 
-	public int getColor() {return this.color.toInt();}
+	public int getColor() {
+		return this.color.toInt();
+	}
 
-	public boolean hasGravel() {return this.hasGravel;}
-	public boolean hasNether() {return this.hasNether;}
-	public boolean hasEnd() {return this.hasEnd;}
+	public boolean hasGravel() {
+		return this.hasGravel;
+	}
+	
+	public boolean hasNether() {
+		return this.hasNether;
+	}
+	
+	public boolean hasEnd() {
+		return this.hasEnd;
+	}
 
-	public int getRarity() {return this.rarity;}
+	public int getRarity() {
+		return this.rarity;
+	}
 
-	public static EnumOre fromMetadata(int meta)
-	{
-		if (meta < 0 || meta >= META_LOOKUP.length)
-		{
+	public static EnumOre fromMetadata(int meta) {
+		if (meta < 0 || meta >= META_LOOKUP.length) {
 			meta = 0;
 		}
 
 		return META_LOOKUP[meta];
 	}
 
-	static
-	{
+	static {
 		EnumOre[] ores = values();
 
-		for (int x = 0; x < ores.length; ++x)
-		{
+		for (int x = 0; x < ores.length; ++x) {
 			EnumOre ore = ores[x];
 			META_LOOKUP[ore.getMetadata()] = ore;
 		}

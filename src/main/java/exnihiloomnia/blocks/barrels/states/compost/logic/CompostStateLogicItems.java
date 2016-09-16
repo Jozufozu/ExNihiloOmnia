@@ -1,31 +1,28 @@
 package exnihiloomnia.blocks.barrels.states.compost.logic;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
 import exnihiloomnia.util.Color;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 
 public class CompostStateLogicItems extends BarrelLogic{
 	
 	@Override
-	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) 
-	{
+	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		return  (CompostRegistry.isCompostable(item) && barrel.getVolume() < barrel.getVolumeMax());
 	}
 	
 	@Override
-	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item)
-	{
+	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		CompostRegistryEntry recipe = CompostRegistry.getEntryForItemStack(item);
 		
-		if (recipe != null)
-		{
+		if (recipe != null) {
 			barrel.setVolume(barrel.getVolume() + recipe.getVolume());
 			
 			//Set the new color.

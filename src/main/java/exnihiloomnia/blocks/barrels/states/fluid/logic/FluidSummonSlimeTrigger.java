@@ -1,6 +1,12 @@
 package exnihiloomnia.blocks.barrels.states.fluid.logic;
 
+import net.minecraftforge.fluids.FluidStack;
 import exnihiloomnia.items.ENOItems;
+
+import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
+import exnihiloomnia.blocks.barrels.states.BarrelStates;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -10,12 +16,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
-import exnihiloomnia.blocks.barrels.states.BarrelStates;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.helpers.InventoryHelper;
 
 public class FluidSummonSlimeTrigger extends BarrelLogic {
+
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
@@ -24,6 +27,7 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == FluidRegistry.WATER 
 				&& barrel.getFluidAmount() == barrel.getCapacity()
+
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL
 			    && item.getItem() instanceof ItemBucketMilk;
 	}
@@ -64,7 +68,6 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
 
 				return true;
 			}
-
 		}
 
 		return false;

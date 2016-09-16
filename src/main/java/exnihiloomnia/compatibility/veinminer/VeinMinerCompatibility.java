@@ -30,8 +30,7 @@ public class VeinMinerCompatibility {
 	private static Field permissionField;
 	private static Object permissionGranted;
 	
-	static
-	{
+	static {
 		try {
 			harvestFailureCheck = Class.forName("portablejim.veinminer.api.VeinminerHarvestFailedCheck");
 			permissionField = harvestFailureCheck.getDeclaredField("allowContinue");
@@ -41,30 +40,24 @@ public class VeinMinerCompatibility {
 			initialized = true;
 			ENO.log.info("Initialize VeinMiner: Success!");
 		} 
-		catch (Exception ex) 
-		{
+		catch (Exception ex) {
 			ENO.log.error("Unable to initialize VeinMiner compatibility.");
 		}
 	}
 	
-	public static void initialize()
-	{
-		if (initialized)
-		{
+	public static void initialize() {
+		if (initialized) {
 			registerEventHandler();
 			registerBlocksAndTools();
 		}
 	}
 	
-	public static boolean isInitialized()
-	{
+	public static boolean isInitialized() {
 		return initialized;
 	}
 	
-	public static void registerEventHandler()
-	{
-		try
-		{
+	public static void registerEventHandler() {
+		try {
 			EventBus bus = MinecraftForge.EVENT_BUS;
 			
 			Class[] args = new Class[] {Class.class, Object.class, Method.class, ModContainer.class};
@@ -75,38 +68,32 @@ public class VeinMinerCompatibility {
 			
 			ENO.log.info("Register VeinMiner event handler: SUCCESS!");
 		}
-		catch (Exception ex)
-		{
+		catch (Exception ex) {
 			ENO.log.error("Error thrown during VeinMiner event registration: " + ex.getMessage());
 		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOW)
-	public void handleEvent(Event e)
-	{
-		if (isInitialized())
-		{
+	public void handleEvent(Event e) {
+		if (isInitialized()) {
 			try {
-				if (e.getClass().equals(harvestFailureCheck))
-				{
+				if (e.getClass().equals(harvestFailureCheck)) {
 					EntityPlayer player = (EntityPlayer)playerField.get(e);
 					ItemStack item = player.getHeldItem(player.getActiveHand());
+					
                     if (item.getItem() instanceof ItemHammer) {
                         permissionField.set(e, permissionGranted);
                     }
 				}
 			} 
-			catch (Exception ex) 
-			{
+			catch (Exception ex)  {
 				ENO.log.error("Error thrown during VeinMiner event handling: " + ex);
 			}
 		}
 	}
 	
-	public static void registerBlocksAndTools()
-	{
-		if (ENOCompatibility.register_veinminer_tools)
-		{
+	public static void registerBlocksAndTools() {
+		if (ENOCompatibility.register_veinminer_tools) {
 			//crooks
 			VeinMinerAPI.addToolType("crook", "Crook", "exnihiloomnia:crook_wood");
 			VeinMinerAPI.addTool("crook", "exnihiloomnia:crook_wood");
@@ -120,22 +107,20 @@ public class VeinMinerCompatibility {
 	        VeinMinerAPI.addTool("hammer", "exnihiloomnia:hammer_gold");
 	        VeinMinerAPI.addTool("hammer", "exnihiloomnia:hammer_diamond");
 
-	        for (Block block : Block.REGISTRY)
-	        {
-	        	if (ENOCompatibility.register_veinminer_recipes_crook)
-	        	{
-	 	           if (block.getMaterial(block.getDefaultState()) == Material.LEAVES || block instanceof BlockTallGrass)
-	 	           {
+	        for (Block block : Block.REGISTRY) {
+	        	if (ENOCompatibility.register_veinminer_recipes_crook) {
+	 	           if (block.getMaterial(block.getDefaultState()) == Material.LEAVES || block instanceof BlockTallGrass) {
 	 	        	   VeinMinerAPI.addBlock("crook", Block.REGISTRY.getNameForObject(block).toString());
 	 	           }
 	        	}
 	           
-	           	if (ENOCompatibility.register_veinminer_recipes_hammer)
-	           	{
+	           	if (ENOCompatibility.register_veinminer_recipes_hammer) {
 					for (HammerRegistryEntry entry : HammerRegistry.getEntryMap().values()) {
 					    String suff = "";
+					    
                         if (entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC)
                             suff = "/" + entry.getInput().getBlock().getMetaFromState(entry.getInput());
+                        
                         VeinMinerAPI.addBlock("hammer", entry.getInput().getBlock().getRegistryName().toString() + suff);
                     }
 	           	}
