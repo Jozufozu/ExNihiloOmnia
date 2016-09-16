@@ -10,23 +10,20 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
 
-public class WorldProviderVoidSurface extends WorldProviderSurface{
-
+public class WorldProviderVoidSurface extends WorldProviderSurface {
+	
 	@Override
-	public DimensionType getDimensionType()
-	{
+	public DimensionType getDimensionType() {
 		return DimensionType.OVERWORLD;
 	}
 
 	@Override
-    public IChunkGenerator createChunkGenerator()
-    {
+    public IChunkGenerator createChunkGenerator() {
         return new ChunkProviderVoidSurface(worldObj);
     }
 
     @Override
-	public void createBiomeProvider()
-	{
+	public void createBiomeProvider() {
 		if (!ENOWorld.getSurfaceBiome().equals("all"))
 			this.biomeProvider = new BiomeProviderSingle(Biome.REGISTRY.getObject(new ResourceLocation(ENOWorld.getSurfaceBiome())));
 		else
@@ -34,23 +31,19 @@ public class WorldProviderVoidSurface extends WorldProviderSurface{
 	}
 	
 	@Override
-    public boolean canCoordinateBeSpawn(int x, int z)
-    {
+    public boolean canCoordinateBeSpawn(int x, int z) {
 		return true;
     }
 	
 	@Override
-	public BlockPos getRandomizedSpawnPoint()
-	{
+	public BlockPos getRandomizedSpawnPoint() {
 		BlockPos spawn = new BlockPos(worldObj.getSpawnPoint());
 		Template map = ENOWorld.getOverworldTemplate();
 		
-		if (map != null)
-		{
+		if (map != null) {
 			spawn = new BlockPos(spawn.getX(), map.getSpawnYLevel(), spawn.getZ());
 		}
-		else
-		{
+		else {
 			spawn = worldObj.getTopSolidOrLiquidBlock(spawn);
 		}
 		

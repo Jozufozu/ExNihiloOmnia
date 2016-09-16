@@ -9,8 +9,7 @@ public class ENOToolMaterials {
 	public static ToolMaterial STICK;
 	public static ToolMaterial BONE;
 	
-	public static void configure()
-	{
+	public static void configure() {
 		STICK = EnumHelper.addToolMaterial("STICK", 0, 59, 2.0F, 0.0F, 15);
 		STICK.setRepairItem(new ItemStack(Items.STICK, 0));
 		

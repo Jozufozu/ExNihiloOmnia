@@ -1,5 +1,10 @@
 package exnihiloomnia.blocks.barrels.states.slime;
 
+import exnihiloomnia.blocks.barrels.architecture.BarrelState;
+import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.client.textures.files.TextureLocator;
+import exnihiloomnia.util.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -7,13 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fluids.FluidStack;
 
-import exnihiloomnia.blocks.barrels.architecture.BarrelState;
-import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.client.textures.files.TextureLocator;
-import exnihiloomnia.util.Color;
-
-public class BarrelStateSlime extends BarrelState{
+public class BarrelStateSlime extends BarrelState {
 	private Color white = new Color("FFFFFF");
 	private Color slime = new Color("33ff22");
 	private static String[] description = new String[]{""};
@@ -27,8 +26,7 @@ public class BarrelStateSlime extends BarrelState{
 	public void render(TileEntityBarrel barrel, double x, double y, double z) {
 		FluidStack fluid = barrel.getFluid();
 
-		if (fluid != null && fluid.getFluid() != null)
-		{
+		if (fluid != null && fluid.getFluid() != null) {
 			GlStateManager.pushMatrix();
 			RenderHelper.disableStandardItemLighting();
 			
@@ -41,12 +39,10 @@ public class BarrelStateSlime extends BarrelState{
 			GlStateManager.translate(x + 0.125d, y, z + 0.125d);
 			GlStateManager.scale(0.75d, 1.0d, 0.75d);
 			
-			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque())
-			{
+			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
 				BarrelRenderer.renderContentsSimple(water, 1.0d, Color.average(white, slime, (float)barrel.getTimerStatus()));
 			}
-			else
-			{
+			else {
 				BarrelRenderer.renderContentsComplex(water, 1.0d, Color.average(white, slime, (float)barrel.getTimerStatus()));
 			}
 			
@@ -56,15 +52,12 @@ public class BarrelStateSlime extends BarrelState{
 	}
 	
 	@Override
-	public String[] getWailaBody(TileEntityBarrel barrel)
-	{
-		if (barrel.getTimerStatus() >= 0 && barrel.getTimerStatus() < 1.0d )
-		{
+	public String[] getWailaBody(TileEntityBarrel barrel) {
+		if (barrel.getTimerStatus() >= 0 && barrel.getTimerStatus() < 1.0d ) {
 			description[0] = "Growing Slime " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
 		}
-		else if (barrel.getTimerStatus() >= 1.0d)
-		{
+		else if (barrel.getTimerStatus() >= 1.0d) {
 			description[0] = "Slime Ready!";
 			return description;
 		}

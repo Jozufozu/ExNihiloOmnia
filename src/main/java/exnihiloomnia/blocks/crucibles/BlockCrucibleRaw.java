@@ -8,10 +8,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockCrucibleRaw extends Block{
+public class BlockCrucibleRaw extends Block {
 
-	public BlockCrucibleRaw()
-	{
+	public BlockCrucibleRaw() {
 		super(Material.CLAY);
 		
 		this.setHardness(0.6f);
@@ -21,14 +20,12 @@ public class BlockCrucibleRaw extends Block{
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-	{ 
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) { 
 		return false; 
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 }

@@ -1,15 +1,13 @@
 package exnihiloomnia.registries.crucible.pojos;
 
 public class CrucibleRecipe {
-
 	public String block;
 	public int meta;
 	public int solidVolume;
 	public String fluid;
 	public int fluidVolume;
 
-	public CrucibleRecipe(String block, int meta, int solidAmount, String fluid, int fluidAmount)
-	{
+	public CrucibleRecipe(String block, int meta, int solidAmount, String fluid, int fluidAmount) {
 		this.block = block;
 		this.meta = meta;
 		this.solidVolume = solidAmount;
@@ -37,5 +35,4 @@ public class CrucibleRecipe {
 	public int getFluidVolume() {
 		return fluidVolume;
 	}
-	
 }

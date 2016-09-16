@@ -1,12 +1,6 @@
 package exnihiloomnia.blocks.barrels.states.witchwater;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
+import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
@@ -15,8 +9,14 @@ import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.client.textures.files.TextureLocator;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.util.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
-public class BarrelStateTransformationWitchwater extends BarrelState{
+public class BarrelStateTransformationWitchwater extends BarrelState {
 	private static String[] description = new String[]{""};
 
 	@Override
@@ -30,8 +30,7 @@ public class BarrelStateTransformationWitchwater extends BarrelState{
 	}
 
 	@Override
-	public int getLuminosity(TileEntityBarrel barrel)
-	{
+	public int getLuminosity(TileEntityBarrel barrel) {
 		FluidStack fluid = barrel.getFluid();
 
 		if (fluid != null)
@@ -44,8 +43,7 @@ public class BarrelStateTransformationWitchwater extends BarrelState{
 	public void render(TileEntityBarrel barrel, double x, double y, double z) {
 		FluidStack fluid = barrel.getFluid();
 
-		if (fluid != null && fluid.getFluid() != null)
-		{
+		if (fluid != null && fluid.getFluid() != null) {
 			GlStateManager.pushMatrix();
 			RenderHelper.disableStandardItemLighting();
 
@@ -58,15 +56,14 @@ public class BarrelStateTransformationWitchwater extends BarrelState{
 			GlStateManager.translate(x + 0.125d, y, z + 0.125d);
 			GlStateManager.scale(0.75d, 1.0d, 0.75d);
 
-			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque())
-			{
-				BarrelRenderer.renderContentsSimple(TextureLocator.find(FluidRegistry.WATER.getStill()), (double)barrel.getFluidAmount() / (double)barrel.getCapacity(), new Color(1.0f, 1.0f, 1.0f, 1.0f - (float)barrel.getTimerStatus()));
-				BarrelRenderer.renderContentsSimple(TextureLocator.find(ENOFluids.WITCHWATER.getStill()), (double)barrel.getFluidAmount() / (double)barrel.getCapacity(), new Color(1.0f, 1.0f, 1.0f, (float)barrel.getTimerStatus()));
+			FluidTank tank = barrel.getFluidTank();
+			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
+				BarrelRenderer.renderContentsSimple(TextureLocator.find(FluidRegistry.WATER.getStill()), (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color(1.0f, 1.0f, 1.0f, 1.0f - (float)barrel.getTimerStatus()));
+				BarrelRenderer.renderContentsSimple(TextureLocator.find(ENOFluids.WITCHWATER.getStill()), (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color(1.0f, 1.0f, 1.0f, (float)barrel.getTimerStatus()));
 			}
-			else
-			{
-				BarrelRenderer.renderContentsComplex(TextureLocator.find(FluidRegistry.WATER.getStill()), (double)barrel.getFluidAmount() / (double)barrel.getCapacity(), new Color(1.0f, 1.0f, 1.0f, 1.0f - (float)barrel.getTimerStatus()));
-				BarrelRenderer.renderContentsComplex(TextureLocator.find(ENOFluids.WITCHWATER.getStill()), (double)barrel.getFluidAmount() / (double)barrel.getCapacity(), new Color(1.0f, 1.0f, 1.0f, (float)barrel.getTimerStatus()));
+			else {
+				BarrelRenderer.renderContentsComplex(TextureLocator.find(FluidRegistry.WATER.getStill()), (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color(1.0f, 1.0f, 1.0f, 1.0f - (float)barrel.getTimerStatus()));
+				BarrelRenderer.renderContentsComplex(TextureLocator.find(ENOFluids.WITCHWATER.getStill()), (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color(1.0f, 1.0f, 1.0f, (float)barrel.getTimerStatus()));
 			}
 
 			RenderHelper.enableStandardItemLighting();
@@ -75,15 +72,12 @@ public class BarrelStateTransformationWitchwater extends BarrelState{
 	}
 
 	@Override
-	public String[] getWailaBody(TileEntityBarrel barrel)
-	{
-		if (barrel.getTimerStatus() > 0)
-		{
+	public String[] getWailaBody(TileEntityBarrel barrel) {
+		if (barrel.getTimerStatus() > 0) {
 			description[0] = "Fermenting " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
 		}
-		else
-		{
+		else {
 			return null;
 		}
 	}

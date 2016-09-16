@@ -3,7 +3,6 @@ package exnihiloomnia.blocks.barrels;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -11,24 +10,21 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.capability.ItemFluidContainer;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-public class BlockBarrel extends Block implements ITileEntityProvider
-{
+public class BlockBarrel extends Block implements ITileEntityProvider {
     protected static final AxisAlignedBB AABB_BARREL = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 
 	public BlockBarrel(Material material, SoundType sound) {
@@ -40,6 +36,11 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 	}
 
 	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+		return false;
+	}
+
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
 		return AABB_BARREL;
 	}
@@ -48,8 +49,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
 
-		if (barrel != null)
-		{
+		if (barrel != null) {
 			return barrel.getLuminosity();
 		}
 		
@@ -58,25 +58,22 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ) {
-
-	    if (player == null)
-		{
+	    if (player == null) {
 			return false;
 		}
 
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
 
-		if (barrel != null)
-		{
+		if (barrel != null) {
 			if (item != null) {
 				if (barrel.getState().canUseItem(barrel, item)) {
+					if (barrel.getState().canManipulateFluids(barrel))
+						FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 					barrel.getState().useItem(player, hand, barrel, item);
 				}
 			}
-			else if (barrel.canExtractItem(0, barrel.getStackInSlot(0), EnumFacing.DOWN))
-			{
-				if(!world.isRemote)
-				{
+			else if (barrel.canExtractItem(0, barrel.getStackInSlot(0), EnumFacing.DOWN)) {
+				if (!world.isRemote) {
 					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.0f, pos.getZ() + 0.5f, barrel.getStackInSlot(0));
 
 					double f3 = 0.05F;
@@ -97,8 +94,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) 
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		TileEntityBarrel barrel = new TileEntityBarrel();
 		barrel.setState(BarrelStates.EMPTY);
 		
@@ -106,39 +102,32 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
+	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
 	
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-	{ 
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) { 
 		return false; 
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
 	@Override
-	public BlockRenderLayer getBlockLayer()
-	{
-		if (this.getBlockState().getBaseState().getMaterial().isOpaque())
-		{
+	public BlockRenderLayer getBlockLayer() {
+		if (this.getBlockState().getBaseState().getMaterial().isOpaque()) {
 			return BlockRenderLayer.SOLID;
 		}
-		else
-		{
+		else {
 			return BlockRenderLayer.TRANSLUCENT;
 		}
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
-    {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 	
@@ -151,8 +140,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 	}
 	
 	@Override
-	public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
-    {
+	public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
 		barrel.setLuminosity(0);
 		

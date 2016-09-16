@@ -11,17 +11,14 @@ import net.minecraft.util.ResourceLocation;
 
 public class TextureLoader {
 
-	public static BufferedImage load(ResourceLocation location)
-	{
-		try
-		{
+	public static BufferedImage load(ResourceLocation location) {
+		try {
 			IResource res = Minecraft.getMinecraft().getResourceManager().getResource(location);
 			BufferedImage imgOutput = ImageIO.read(res.getInputStream());
 
 			return imgOutput;
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			ENO.log.error("Failed to load image: " + location.toString());
 			return null;
 		}

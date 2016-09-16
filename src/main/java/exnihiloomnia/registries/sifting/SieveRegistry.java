@@ -9,22 +9,21 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.sifting.files.SieveRecipeLoader;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import exnihiloomnia.util.enums.EnumOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import exnihiloomnia.registries.sifting.files.SieveRecipeLoader;
-import exnihiloomnia.util.enums.EnumMetadataBehavior;
 
 @SuppressWarnings("deprecation")
 public class SieveRegistry {
 	private static HashMap<String, SieveRegistryEntry> entries;
 	private static List<ItemStack> EMPTY_REWARDS_ARRAY = new ArrayList<ItemStack>(){};
 
-	public static void initialize()
-	{
+	public static void initialize() {
 		entries = new HashMap<String, SieveRegistryEntry>();
 		
 		if (ENORegistries.loadSieveDefaults)
@@ -32,53 +31,41 @@ public class SieveRegistry {
 		
 		List<SieveRegistryEntry> loaded = SieveRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "sieve" + File.separator);
 	
-		if (loaded != null && !loaded.isEmpty())
-		{
-			for (SieveRegistryEntry entry : loaded)
-			{
-				if (entry.getRewards().size() > 0)
-				{
+		if (loaded != null && !loaded.isEmpty()) {
+			for (SieveRegistryEntry entry : loaded) {
+				if (entry.getRewards().size() > 0) {
 					add(entry);
 				}
-				else
-				{
+				else {
 					remove(entry);
 				}
 			}
 		}
 	}
 	
-	public static HashMap<String, SieveRegistryEntry> getEntryMap()
-	{
+	public static HashMap<String, SieveRegistryEntry> getEntryMap() {
 		return entries;
 	}
 	
-	public static void add(SieveRegistryEntry entry)
-	{
-		if (entry != null)
-		{
+	public static void add(SieveRegistryEntry entry) {
+		if (entry != null) {
 			entries.put(entry.getKey(), entry);
 		}
 	}
 	
-	public static void remove(SieveRegistryEntry entry)
-	{
+	public static void remove(SieveRegistryEntry entry) {
 		entries.remove(entry.getKey());
 	}
 	
-	public static boolean isSiftable(IBlockState state)
-	{
+	public static boolean isSiftable(IBlockState state) {
 		return getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC) != null || getEntryForBlockState(state, EnumMetadataBehavior.IGNORED) != null;
 	}
 	
-	public static List<ItemStack> generateRewards(IBlockState state)
-	{
-		if (state == null || state.getBlock().equals(Blocks.AIR))
-		{
+	public static List<ItemStack> generateRewards(IBlockState state) {
+		if (state == null || state.getBlock().equals(Blocks.AIR)) {
 			return EMPTY_REWARDS_ARRAY;
 		}
-		else
-		{
+		else {
 			List<ItemStack> rewards = new ArrayList<ItemStack>();
 			
 			SieveRegistryEntry specific = getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC);
@@ -87,10 +74,8 @@ public class SieveRegistry {
 			if (specific == null && generic == null)
 				return EMPTY_REWARDS_ARRAY;
 			
-			if (specific != null)
-			{
-				for (SieveReward r : specific.getRewards())
-				{
+			if (specific != null) {
+				for (SieveReward r : specific.getRewards()) {
 					ItemStack i = r.generateReward();
 					
 					if (i != null)
@@ -98,10 +83,8 @@ public class SieveRegistry {
 				}
 			}
 				
-			if (generic != null)
-			{
-				for (SieveReward r : generic.getRewards())
-				{
+			if (generic != null) {
+				for (SieveReward r : generic.getRewards()) {
 					ItemStack i = r.generateReward();
 					
 					if (i != null)
@@ -113,20 +96,16 @@ public class SieveRegistry {
 		}
 	}
 	
-	public static SieveRegistryEntry getEntryForBlockState(IBlockState state, EnumMetadataBehavior behavior)
-	{
-		if (behavior == EnumMetadataBehavior.SPECIFIC)
-		{
+	public static SieveRegistryEntry getEntryForBlockState(IBlockState state, EnumMetadataBehavior behavior) {
+		if (behavior == EnumMetadataBehavior.SPECIFIC) {
 			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock()) + ":" + state.getBlock().getMetaFromState(state));
 		}
-		else
-		{
+		else {
 			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock())  + ":*");
 		}
 	}
 	
-	public static void registerVanillaRecipes()
-	{
+	public static void registerVanillaRecipes() {
 		SieveRegistryEntry dirt = new SieveRegistryEntry(Blocks.DIRT.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		dirt.addReward(new ItemStack(ENOItems.STONE, 1), 100);
 		dirt.addReward(new ItemStack(ENOItems.STONE, 1), 100);
@@ -149,10 +128,12 @@ public class SieveRegistry {
 		add(dirt);
 		
 		SieveRegistryEntry gravel = new SieveRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED);
-        for (EnumOre ore : ENO.oreList) {
+        
+		for (EnumOre ore : ENO.oreList) {
         	if (ore.hasGravel())
             	gravel.addReward(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), ore.getRarity());
         }
+        
 		gravel.addReward(new ItemStack(Items.FLINT, 1), 25);
 		gravel.addReward(new ItemStack(Items.COAL, 1), 13);
 		gravel.addReward(new ItemStack(Items.DYE, 1, 4), 5); //Lapis
@@ -164,37 +145,45 @@ public class SieveRegistry {
 		add(gravel);
 
 		SieveRegistryEntry nethergravel = new SieveRegistryEntry(ENOBlocks.GRAVEL_NETHER.getDefaultState(), EnumMetadataBehavior.IGNORED);
+		
 		for (EnumOre ore : ENO.oreList) {
 			if (ore.hasNether())
 				nethergravel.addReward(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), ore.getRarity());
 		}
+		
 		nethergravel.addReward(new ItemStack(Items.GHAST_TEAR), 7);
 		nethergravel.addReward(new ItemStack(Items.GLOWSTONE_DUST), 3);
 		add(nethergravel);
 
 		SieveRegistryEntry endergravel = new SieveRegistryEntry(ENOBlocks.GRAVEL_ENDER.getDefaultState(), EnumMetadataBehavior.IGNORED);
+		
 		for (EnumOre ore : ENO.oreList) {
 			if (ore.hasEnd())
 				endergravel.addReward(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), ore.getRarity());
 		}
+		
 		add(endergravel);
 
         SieveRegistryEntry sand = new SieveRegistryEntry(Blocks.SAND.getDefaultState(), EnumMetadataBehavior.IGNORED);
-		for (EnumOre ore : ENO.oreList) {
+		
+        for (EnumOre ore : ENO.oreList) {
 			if (ore.hasGravel())
 				sand.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), ore.getRarity());
 		}
-		sand.addReward(new ItemStack(Items.DYE, 1, 3), 3); //Cocoa beans
+		
+        sand.addReward(new ItemStack(Items.DYE, 1, 3), 3); //Cocoa beans
         sand.addReward(new ItemStack(ENOItems.CACTUS_SEEDS, 1), 3);
         sand.addReward(new ItemStack(ENOItems.SPORES, 1), 1);
         add(sand);
 
         SieveRegistryEntry dust = new SieveRegistryEntry(ENOBlocks.DUST.getDefaultState(), EnumMetadataBehavior.IGNORED);
+        
         for (EnumOre ore : ENO.oreList) {
 			if (ore.hasGravel())
             	dust.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), ore.getRarity());
         }
-		dust.addReward(new ItemStack(Items.DYE, 1, 15), 20); //Bonemeal
+		
+        dust.addReward(new ItemStack(Items.DYE, 1, 15), 20); //Bonemeal
         dust.addReward(new ItemStack(Items.GUNPOWDER, 1), 7);
         dust.addReward(new ItemStack(Items.BLAZE_POWDER, 1), 5);
         dust.addReward(new ItemStack(Items.REDSTONE, 1), 13);
