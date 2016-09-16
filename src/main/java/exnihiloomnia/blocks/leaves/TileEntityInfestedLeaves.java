@@ -19,7 +19,6 @@ import java.util.List;
 public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     public Block block = Blocks.LEAVES;
     public int meta = 0;
-    public List<BakedQuad> model = new ArrayList<BakedQuad>();
     public Color color = Color.WHITE;
     public boolean dying = false;
 

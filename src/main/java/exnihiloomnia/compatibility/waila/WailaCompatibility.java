@@ -123,7 +123,7 @@ public class WailaCompatibility implements IWailaDataProvider{
 
 	public void addCrucibleBody(TileEntityCrucible crucible, List<String> tip)
 	{
-		FluidStack fluid = crucible.getCurrentFluid();
+		FluidStack fluid = crucible.getFluid();
 		IBlockState down = crucible.getWorld().getBlockState(crucible.getPos().down());
 
 		if (fluid != null)

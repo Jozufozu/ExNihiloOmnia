@@ -37,6 +37,10 @@ public class BlockSieve extends Block implements ITileEntityProvider {
         return new AxisAlignedBB(0, 0.0D, 0, 1, (double) 12/16, 1);
 	}
 
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+		return false;
+	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ)

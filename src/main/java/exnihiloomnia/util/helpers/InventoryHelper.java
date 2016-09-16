@@ -26,10 +26,11 @@ public class InventoryHelper {
 	
 	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item)
 	{
-		if(!player.worldObj.isRemote)
-		{
-			EntityItem entity = new EntityItem(player.worldObj, player.posX + 0.5d, player.posY + 0.5d, player.posZ + 0.5d, item);
-			player.worldObj.spawnEntityInWorld(entity);
+		if(!player.worldObj.isRemote) {
+
+			if (!player.inventory.addItemStackToInventory(item)) {
+                player.dropItem(item, false);
+			}
 		}	
 	}
 	

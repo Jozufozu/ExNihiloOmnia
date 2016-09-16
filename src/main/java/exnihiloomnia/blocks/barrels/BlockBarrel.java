@@ -40,6 +40,11 @@ public class BlockBarrel extends Block implements ITileEntityProvider
 	}
 
 	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+		return false;
+	}
+
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
 		return AABB_BARREL;
 	}

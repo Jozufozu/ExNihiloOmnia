@@ -108,8 +108,8 @@ public class ENOBlocks {
         ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
         ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
         ORE_GRAVEL_NETHER = new BlockOre(EnumOreBlockType.GRAVEL_NETHER).setUnlocalizedName("ore_gravel_nether").setRegistryName("ore_gravel_nether");
-        ORE_SAND = new BlockOre(EnumOreBlockType.SAND).setUnlocalizedName("ore_sand").setRegistryName("ore_sand");
-        ORE_DUST = new BlockOre(EnumOreBlockType.DUST).setUnlocalizedName("ore_dust").setRegistryName("ore_dust");
+        ORE_SAND = new BlockOre(EnumOreBlockType.SAND).setHardness(0.5F).setUnlocalizedName("ore_sand").setRegistryName("ore_sand");
+        ORE_DUST = new BlockOre(EnumOreBlockType.DUST).setHardness(0.4F).setUnlocalizedName("ore_dust").setRegistryName("ore_dust");
 
         for (Block block : getBlocks()) {
             GameRegistry.register(block);
