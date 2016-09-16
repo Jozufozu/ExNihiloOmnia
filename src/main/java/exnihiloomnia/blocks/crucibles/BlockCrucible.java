@@ -70,6 +70,7 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 
 			if (crucible.canInsertItem(contents)) {
 				crucible.addSolid(CrucibleRegistry.getItem(contents).getSolidVolume());
+				crucible.setLastItemAdded(contents);
                 crucible.sync();
 
 				world.playSound(null, pos, SoundEvents.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);

@@ -18,14 +18,14 @@ public class FluidCraftEndstoneTrigger extends BarrelLogic {
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
         return item.getItem() == Items.GLOWSTONE_DUST
                 && barrel.getFluid().getFluid() == FluidRegistry.LAVA
-                && barrel.getFluidAmount() == barrel.getCapacity();
+                && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity();
     }
 
 	@Override
 	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		if (item.getItem() == Items.GLOWSTONE_DUST
 		    && barrel.getFluid().getFluid() == FluidRegistry.LAVA
-		    && barrel.getFluidAmount() == barrel.getCapacity()) {
+		    && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()) {
 			
 			barrel.setState(BarrelStates.OUTPUT);
 			barrel.setContents(new ItemStack(Blocks.END_STONE, 1));

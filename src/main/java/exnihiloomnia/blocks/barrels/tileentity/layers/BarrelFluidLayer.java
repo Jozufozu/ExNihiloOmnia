@@ -11,7 +11,8 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class BarrelFluidLayer extends BarrelStateLayer implements IFluidTank, IFluidHandler {
+public class BarrelFluidLayer extends BarrelStateLayer {//IFluidTank, IFluidHandler {
+    /**
 	private static final int CAPACITY = 1000;
 	protected FluidStack fluid;
 	
@@ -154,13 +155,5 @@ public class BarrelFluidLayer extends BarrelStateLayer implements IFluidTank, IF
 		return  compound;
 	}
 
-	/* IFluidHandler */
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        if (resource == null || !resource.isFluidEqual(getFluid())) {
-            return null;
-        }
-        
-        return drain(resource.amount, doDrain);
-    }
+    */
 }

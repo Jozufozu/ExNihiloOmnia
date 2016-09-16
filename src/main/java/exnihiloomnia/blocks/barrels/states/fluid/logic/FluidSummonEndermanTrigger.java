@@ -21,7 +21,7 @@ public class FluidSummonEndermanTrigger extends BarrelLogic {
 		if (fluid != null  
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == ENOFluids.WITCHWATER
-				&& barrel.getFluidAmount() == barrel.getCapacity()
+				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
 			
 			return item.getItem() == ENOItems.END_DOLL;
@@ -37,7 +37,7 @@ public class FluidSummonEndermanTrigger extends BarrelLogic {
 		if (fluid != null  
 				&& fluid.getFluid() != null 
 				&& fluid.getFluid() == ENOFluids.WITCHWATER
-				&& barrel.getFluidAmount() == barrel.getCapacity()
+				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
 			
 			if (item.getItem() == ENOItems.END_DOLL) {

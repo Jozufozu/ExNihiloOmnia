@@ -1,16 +1,30 @@
 package exnihiloomnia.blocks.barrels.tileentity;
 
+import exnihiloomnia.blocks.barrels.architecture.BarrelState;
+import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelInventoryLayer;
+import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelStateLayer;
 import exnihiloomnia.util.Color;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import javax.annotation.Nullable;
 
 public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable {
+	private TileEntityBarrel getBarrel() {return this;}
+
 	protected int luminosity = 0;
 	protected int volume = 0;
 	protected int MAX_VOLUME = 1000;
@@ -23,7 +37,92 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 	protected int updateTimerMax = 8; //Sync if an update is required.
 	protected boolean updateQueued = false;
 	protected boolean updateTimerRunning = false;
-	
+
+	private FluidTank fluidTank = new FluidTank(Fluid.BUCKET_VOLUME) {
+		@Override
+		public int fill(FluidStack resource, boolean doFill)  {
+			BarrelState state = getState();
+
+			if (resource == null || state == null || !state.canManipulateFluids(getBarrel())) {
+				return 0;
+			}
+
+			if (!doFill) {
+				if (fluid == null) {
+					return Math.min(capacity, resource.amount);
+				}
+
+				if (!fluid.isFluidEqual(resource)) {
+					return 0;
+				}
+
+				return Math.min(capacity - fluid.amount, resource.amount);
+			}
+
+			if (fluid == null) {
+				fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
+				setState(BarrelStates.FLUID);
+
+				return fluid.amount;
+			}
+
+			if (!fluid.isFluidEqual(resource)) {
+				return 0;
+			}
+
+			int avaliable = capacity - fluid.amount;
+
+			if (resource.amount < avaliable) {
+				fluid.amount += resource.amount;
+				avaliable = resource.amount;
+				requestSync();
+			}
+			else {
+				fluid.amount = capacity;
+				requestSync();
+			}
+
+			return avaliable;
+		}
+
+		@Override
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			BarrelState state = getState();
+
+			if (fluid == null || state == null || !state.canManipulateFluids(getBarrel())) {
+				return null;
+			}
+
+			int drained = maxDrain;
+
+			if (fluid.amount < drained) {
+				drained = fluid.amount;
+			}
+
+			FluidStack stack = new FluidStack(fluid, drained);
+
+			if (doDrain) {
+				fluid.amount -= drained;
+
+				if (fluid.amount <= 0) {
+					fluid = null;
+					setState(BarrelStates.EMPTY);
+				}
+				else {
+					requestSync();
+				}
+			}
+
+			return stack;
+		}
+	};
+
+	public FluidTank getFluidTank() {return fluidTank;}
+
+    public FluidStack getFluid() {
+        return getFluidTank().getFluid();
+    }
+
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return !oldState.getBlock().equals(newState.getBlock());
@@ -144,10 +243,25 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return (T) fluidTank;
+        }
+        return super.getCapability(capability, facing);
+    }
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
+        getFluidTank().readFromNBT(compound);
 
 		generalTimer = compound.getInteger("timer");
 		generalTimerMax = compound.getInteger("timermax");
@@ -159,6 +273,7 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
+        getFluidTank().writeToNBT(compound);
 		
 		compound.setInteger("timer", generalTimer);
 		compound.setInteger("timermax", generalTimerMax);

@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 
-public class BarrelInventoryLayer extends BarrelFluidLayer implements ISidedInventory {
+public class BarrelInventoryLayer extends BarrelStateLayer implements ISidedInventory {
 	protected ArrayList<ItemStack> output = new ArrayList<ItemStack>();
 	protected ItemStack contents = null;
 	protected int MAX_OUTPUT_QUEUE_SIZE = 1;

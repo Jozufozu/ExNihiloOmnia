@@ -13,7 +13,8 @@ public class FluidStateLogicFreezingIce extends BarrelLogic {
 	@Override
 	public boolean onUpdate(TileEntityBarrel barrel) {
 		if (barrel.getFluid().getFluid() == FluidRegistry.WATER && barrel.getFluid().amount == 1000
-			&& barrel.getWorld().getBiomeForCoordsBody(barrel.getPos()).getTempCategory().equals(Biome.TempCategory.COLD)) {
+				&& !barrel.getWorld().isRemote
+				&& barrel.getWorld().getBiomeForCoordsBody(barrel.getPos()).getTempCategory().equals(Biome.TempCategory.COLD)) {
 			
 			if (barrel.getWorld().rand.nextInt(1000) == 0) {
 				barrel.setState(BarrelStates.OUTPUT);
