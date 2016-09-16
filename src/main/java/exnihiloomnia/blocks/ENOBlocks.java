@@ -1,8 +1,9 @@
 package exnihiloomnia.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import exnihiloomnia.ENO;
-import exnihiloomnia.blocks.automation.BlockSifter;
-import exnihiloomnia.blocks.automation.tile.TileSifter;
 import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.BlockBarrelGlassColored;
 import exnihiloomnia.blocks.barrels.BlockBarrelWood;
@@ -31,11 +32,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ENOBlocks {
-	
+public class ENOBlocks {	
 	public static Block BARREL_WOOD;
 	public static Block BARREL_STONE;
 	public static Block BARREL_GLASS;
@@ -87,8 +84,7 @@ public class ENOBlocks {
     }
 
 
-	public static void init()
-	{
+	public static void init() {
 	    BARREL_WOOD = new BlockBarrelWood().setUnlocalizedName("barrel_wood").setRegistryName("barrel_wood");
         BARREL_STONE = new BlockBarrel(Material.ROCK, SoundType.STONE).setUnlocalizedName("barrel_stone").setRegistryName("barrel_stone");
         BARREL_GLASS = new BlockBarrel(Material.GLASS, SoundType.GLASS).setUnlocalizedName("barrel_glass").setRegistryName("barrel_glass");
@@ -108,11 +104,12 @@ public class ENOBlocks {
         ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
         ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
         ORE_GRAVEL_NETHER = new BlockOre(EnumOreBlockType.GRAVEL_NETHER).setUnlocalizedName("ore_gravel_nether").setRegistryName("ore_gravel_nether");
-        ORE_SAND = new BlockOre(EnumOreBlockType.SAND).setUnlocalizedName("ore_sand").setRegistryName("ore_sand");
-        ORE_DUST = new BlockOre(EnumOreBlockType.DUST).setUnlocalizedName("ore_dust").setRegistryName("ore_dust");
+        ORE_SAND = new BlockOre(EnumOreBlockType.SAND).setHardness(0.5F).setUnlocalizedName("ore_sand").setRegistryName("ore_sand");
+        ORE_DUST = new BlockOre(EnumOreBlockType.DUST).setHardness(0.4F).setUnlocalizedName("ore_dust").setRegistryName("ore_dust");
 
         for (Block block : getBlocks()) {
             GameRegistry.register(block);
+            
             if (block == BARREL_WOOD)
                 GameRegistry.register(new ItemBarrelWood(block).setRegistryName(block.getRegistryName()));
             else if (block == BARREL_GLASS_COLORED)

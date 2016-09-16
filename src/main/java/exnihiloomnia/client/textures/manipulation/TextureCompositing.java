@@ -6,16 +6,14 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.util.Color;
 
 public class TextureCompositing {
-	public static BufferedImage composite(BufferedImage imgBackground, BufferedImage imgForeground)
-	{
-		if (imgBackground == null || imgForeground == null)
-		{
+	
+	public static BufferedImage composite(BufferedImage imgBackground, BufferedImage imgForeground) {
+		if (imgBackground == null || imgForeground == null) {
 			ENO.log.error("Null image sent to compositor.");
 			return null;
 		}
 
-		if (!normalCompositePossible(imgBackground, imgForeground))
-		{
+		if (!normalCompositePossible(imgBackground, imgForeground)) {
 			ENO.log.error("Images with different sizes can't be composited.");
 			return null;
 		}
@@ -45,8 +43,7 @@ public class TextureCompositing {
 
 			outputData[i] = backgroundData[i];
 
-			if (colorForeground.a > 0)
-			{
+			if (colorForeground.a > 0) {
 				float alpha = colorForeground.a;
 
 				float a = colorBackground.a;
@@ -56,8 +53,8 @@ public class TextureCompositing {
 
 				//ENO.log.error("Blended pixel r:" + r + ", g:" +  g + ", b:" + b + ", a:" +  a);
 				outputData[i] = (new Color(r, g, b, a).toInt());
-			}else
-			{
+			}
+			else {
 				outputData[i] = backgroundData[i];
 			}
 		}
@@ -68,8 +65,7 @@ public class TextureCompositing {
 		return imgOutput;
 	}
 
-	private static boolean normalCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground)
-	{
+	private static boolean normalCompositePossible(BufferedImage imgBackground, BufferedImage imgForeground) {
 		//if the size is identical, then compositing in normal mode is possible. 
 		return (imgBackground.getWidth() == imgForeground.getWidth()) && (imgBackground.getHeight() == imgForeground.getHeight());
 	}

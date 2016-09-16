@@ -20,8 +20,7 @@ public class ENORegistries {
 	public static boolean loadSieveOres = true;
 	public static boolean loadHammerOres = true;
 
-	public static void configure(Configuration config)
-	{
+	public static void configure(Configuration config) {
 		loadCompostDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default compost recipes", true).getBoolean(true);
 		loadHammerDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default hammer recipes", true).getBoolean(true);
 		loadSieveDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default sieve recipes", true).getBoolean(true);

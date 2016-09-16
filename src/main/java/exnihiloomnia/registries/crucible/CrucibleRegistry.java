@@ -1,22 +1,22 @@
 package exnihiloomnia.registries.crucible;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.crucible.files.CrucibleRecipeLoader;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
 
 public class CrucibleRegistry {
     public static HashMap<String, CrucibleRegistryEntry> entries;
 
-    public static void initialize()
-    {
+    public static void initialize() {
         entries = new HashMap<String, CrucibleRegistryEntry>();
 
         if (ENORegistries.loadCrucibleDefaults)
@@ -24,31 +24,25 @@ public class CrucibleRegistry {
 
         List<CrucibleRegistryEntry> loaded = CrucibleRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "crucible" + File.separator);
 
-        if (loaded != null && !loaded.isEmpty())
-        {
-            for (CrucibleRegistryEntry entry : loaded)
-            {
+        if (loaded != null && !loaded.isEmpty()) {
+            for (CrucibleRegistryEntry entry : loaded) {
                 add(entry);
             }
         }
     }
 
-    public static void add(CrucibleRegistryEntry entry)
-    {
-        if (entry != null)
-        {
+    public static void add(CrucibleRegistryEntry entry) {
+        if (entry != null) {
             entries.put(entry.getBlock() + ":" + entry.getMeta(), entry);
         }
     }
 
-    public static void register(Block block, int meta, int solidAmount, Fluid fluid, int fluidAmount)
-    {
+    public static void register(Block block, int meta, int solidAmount, Fluid fluid, int fluidAmount) {
         CrucibleRegistryEntry entry = new CrucibleRegistryEntry(block, meta, solidAmount, fluid, fluidAmount);
         entries.put(block + ":" + meta, entry);
     }
 
-    public static boolean containsItem(Block block, int meta)
-    {
+    public static boolean containsItem(Block block, int meta) {
         return entries.containsKey(block + ":" + meta);
     }
 
@@ -59,16 +53,22 @@ public class CrucibleRegistry {
                     return true;
             }
         }
+        
         return false;
     }
 
-    public static CrucibleRegistryEntry getItem(Block block, int meta)
-    {
+    public static CrucibleRegistryEntry getItem(Block block, int meta) {
         return entries.get(block + ":" + meta);
     }
 
-    public static void registerMeltables()
-    {
+<<<<<<< HEAD
+    public static CrucibleRegistryEntry getItem(ItemStack item) {
+        return getItem(Block.getBlockFromItem(item.getItem()), item.getMetadata());
+    }
+
+=======
+>>>>>>> origin/master
+    public static void registerMeltables() {
         register(Blocks.COBBLESTONE, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.STONE, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.GRAVEL, 0, 250, FluidRegistry.LAVA, 250);

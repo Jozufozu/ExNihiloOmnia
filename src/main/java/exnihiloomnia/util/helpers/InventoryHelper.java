@@ -5,38 +5,40 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import java.util.List;
-
 public class InventoryHelper {
-	public static ItemStack getContainer(ItemStack full)
-	{
+	
+	public static ItemStack getContainer(ItemStack full) {
 		ItemStack empty;
 		
-		if (full.getItem().hasContainerItem(full)) 
-		{
+		if (full.getItem().hasContainerItem(full)) {
 			empty = full.getItem().getContainerItem(full);
 		} 
-		else 
-		{
+		else {
 			empty = FluidContainerRegistry.drainFluidContainer(full);
 		}
 		
 		return empty;
 	}
 	
+<<<<<<< HEAD
 	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item)
 	{
-		if(!player.worldObj.isRemote)
-		{
+		if(!player.worldObj.isRemote) {
+
+			if (!player.inventory.addItemStackToInventory(item)) {
+                player.dropItem(item, false);
+			}
+=======
+	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item) {
+		if (!player.worldObj.isRemote) {
 			EntityItem entity = new EntityItem(player.worldObj, player.posX + 0.5d, player.posY + 0.5d, player.posZ + 0.5d, item);
 			player.worldObj.spawnEntityInWorld(entity);
+>>>>>>> origin/master
 		}	
 	}
 	
-	public static void consumeItem(EntityPlayer player, ItemStack item)
-	{
-		if (player != null && !player.capabilities.isCreativeMode)
-		{
+	public static void consumeItem(EntityPlayer player, ItemStack item) {
+		if (player != null && !player.capabilities.isCreativeMode) {
             item.stackSize--;
 		}
 	}

@@ -3,10 +3,19 @@ package exnihiloomnia.proxy;
 import java.util.ArrayList;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.blocks.crucibles.renderer.CrucibleRenderer;
+import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import exnihiloomnia.blocks.leaves.InfestedLeavesRenderer;
 import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
 import exnihiloomnia.blocks.ores.BlockOre;
+import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
+import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
+import exnihiloomnia.client.models.ENOModels;
 import exnihiloomnia.compatibility.ENOOres;
+import exnihiloomnia.entities.thrown.stone.EntityStone;
 import exnihiloomnia.entities.thrown.stone.EntityStoneRenderer;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.ores.ItemOre;
@@ -18,19 +27,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.blocks.crucibles.renderer.CrucibleRenderer;
-import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
-import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
-import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
-import exnihiloomnia.client.models.ENOModels;
-import exnihiloomnia.entities.thrown.stone.EntityStone;
 
 //Commands that only execute on the client.
 public class ClientProxy extends Proxy {
-
+	
     @Override
     public void registerModels() {
         ENOModels.register();
@@ -89,7 +89,8 @@ public class ClientProxy extends Proxy {
                     else
                         ModelLoader.setCustomModelResourceLocation(item, i.getItemDamage(), new ModelResourceLocation(ENO.MODID + ":" + i.getUnlocalizedName().substring(5)));
                 }
-            } else {
+            }
+            else {
                 ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(ENO.MODID + ":" + item.getUnlocalizedName().substring(5)));
             }
         }
@@ -108,7 +109,8 @@ public class ClientProxy extends Proxy {
                 else
                     ModelLoader.setCustomModelResourceLocation(item, i.getItemDamage(), new ModelResourceLocation(ENO.MODID + ":" + i.getUnlocalizedName().substring(5)));
             }
-        } else {
+        }
+        else {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(ENO.MODID + ":" + item.getUnlocalizedName().substring(5)));
         }
     }

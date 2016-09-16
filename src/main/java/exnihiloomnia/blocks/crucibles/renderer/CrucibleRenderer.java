@@ -18,15 +18,13 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucible>{
+public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucible> {
 	public static final double MIN_RENDER_CAPACITY = 0.30d;
 	public static final double MAX_RENDER_CAPACITY = 0.95d;
 	public static EntityLivingBase entity;
 	
 	@Override
-	public void renderTileEntityAt(TileEntityCrucible crucible, double x, double y, double z, float partialTicks, int destroyStage)
-	{
-
+	public void renderTileEntityAt(TileEntityCrucible crucible, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 		RenderHelper.disableStandardItemLighting();
 
@@ -39,30 +37,24 @@ public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucib
 		GlStateManager.translate(x + 0.025d, y, z + 0.025d);
 		GlStateManager.scale(0.95d, 1.0d, 0.95d);
 
-		if (crucible.getSolidFullness() >= crucible.getFluidFullness())
-		{
+		if (crucible.getSolidFullness() >= crucible.getFluidFullness()) {
 			renderSolidContents(crucible);
 		}
-		else
-		{
+		else {
 			renderFluidContents(crucible);
 		}
-
 
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();
 	}
 	
-	private void renderSolidContents(TileEntityCrucible crucible)
-	{
+	private void renderSolidContents(TileEntityCrucible crucible) {
 		ItemStack contents = crucible.getLastItemAdded();
 		
-		if (contents != null && Block.getBlockFromItem(contents.getItem()) != null)
-		{
-		  if (entity == null)
-		  {
-		    entity = new EntityCreeper(crucible.getWorld());
-		  }
+		if (contents != null && Block.getBlockFromItem(contents.getItem()) != null) {
+			if (entity == null) {
+				entity = new EntityCreeper(crucible.getWorld());
+			}
 		  
 			double top = ContentRenderHelper.getAdjustedContentLevel(MIN_RENDER_CAPACITY, MAX_RENDER_CAPACITY, crucible.getSolidFullness());
 			double height = top - MIN_RENDER_CAPACITY;
@@ -75,12 +67,16 @@ public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucib
 		}
 	}
 	
+<<<<<<< HEAD
 	private void renderFluidContents(TileEntityCrucible crucible)
 	{
+		FluidStack contents = crucible.getFluid();
+=======
+	private void renderFluidContents(TileEntityCrucible crucible) {
 		FluidStack contents = crucible.getCurrentFluid();
+>>>>>>> origin/master
 		
-		if (contents != null && contents.getFluid() != null)
-		{
+		if (contents != null && contents.getFluid() != null) {
 			double height = ContentRenderHelper.getAdjustedContentLevel(MIN_RENDER_CAPACITY, MAX_RENDER_CAPACITY, crucible.getFluidFullness());
 			
 			ContentRenderHelper.renderContentsSimple(TextureLocator.find(contents.getFluid().getStill()), height, Color.WHITE);

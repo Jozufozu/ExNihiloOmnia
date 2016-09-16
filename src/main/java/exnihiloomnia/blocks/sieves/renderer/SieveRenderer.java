@@ -17,15 +17,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemStack;
 
-public class SieveRenderer extends TileEntitySpecialRenderer<TileEntitySieve>{
+public class SieveRenderer extends TileEntitySpecialRenderer<TileEntitySieve> {
 	public static final double MIN_RENDER_CAPACITY = (double) 18/32;
 	public static final double MAX_RENDER_CAPACITY = (double) 31/32;
 	private static EntityLivingBase entity;
 	
 	@Override
-	public void renderTileEntityAt(TileEntitySieve sieve, double x, double y, double z, float f, int i)
-	{
-
+	public void renderTileEntityAt(TileEntitySieve sieve, double x, double y, double z, float f, int i) {
 		GlStateManager.pushMatrix();
 		RenderHelper.disableStandardItemLighting();
 
@@ -45,26 +43,21 @@ public class SieveRenderer extends TileEntitySpecialRenderer<TileEntitySieve>{
 		GlStateManager.popMatrix();
 	}
 	
-	private void renderMeshTexture(TileEntitySieve sieve)
-	{
+	private void renderMeshTexture(TileEntitySieve sieve) {
 		TextureAtlasSprite mesh = sieve.getMeshTexture();
 		
-		if (mesh != null)
-		{
+		if (mesh != null) {
 			GlStateManager.disableCull();
 			ContentRenderHelper.renderContentsSimple(mesh, MIN_RENDER_CAPACITY, Color.WHITE);
 			GlStateManager.enableCull();
 		}
 	}
 	
-	private void renderContents(TileEntitySieve sieve)
-	{
+	private void renderContents(TileEntitySieve sieve) {
 		ItemStack contents = sieve.getContents();
 		
-		if (contents != null && Block.getBlockFromItem(contents.getItem()) != null)
-		{
-			if (entity == null)
-			{
+		if (contents != null && Block.getBlockFromItem(contents.getItem()) != null) {
+			if (entity == null) {
 				entity = new EntityCreeper(sieve.getWorld());
 			}
 

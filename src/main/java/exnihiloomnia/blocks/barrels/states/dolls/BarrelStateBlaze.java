@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fluids.FluidStack;
 
-public class BarrelStateBlaze extends BarrelState{
+public class BarrelStateBlaze extends BarrelState {
 	private static String[] description = new String[]{""};
 	
 	@Override
@@ -24,8 +24,7 @@ public class BarrelStateBlaze extends BarrelState{
 	public void render(TileEntityBarrel barrel, double x, double y, double z) {
 		FluidStack fluid = barrel.getFluid();
 
-		if (fluid != null && fluid.getFluid() != null)
-		{
+		if (fluid != null && fluid.getFluid() != null) {
 			GlStateManager.pushMatrix();
 			RenderHelper.disableStandardItemLighting();
 			
@@ -38,12 +37,10 @@ public class BarrelStateBlaze extends BarrelState{
 			GlStateManager.translate(x + 0.125d, y, z + 0.125d);
 			GlStateManager.scale(0.75d, 1.0d, 0.75d);
 			
-			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque())
-			{
+			if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
 				BarrelRenderer.renderContentsSimple(lava, 1.0d, Color.WHITE);
 			}
-			else
-			{
+			else {
 				BarrelRenderer.renderContentsComplex(lava, 1.0d, Color.WHITE);
 			}
 			
@@ -53,8 +50,7 @@ public class BarrelStateBlaze extends BarrelState{
 	}
 
 	@Override
-	public int getLuminosity(TileEntityBarrel barrel)
-	{
+	public int getLuminosity(TileEntityBarrel barrel) {
 		FluidStack fluid = barrel.getFluid();
 
 		if (fluid != null)
@@ -64,15 +60,12 @@ public class BarrelStateBlaze extends BarrelState{
 	}
 	
 	@Override
-	public String[] getWailaBody(TileEntityBarrel barrel)
-	{
-		if (barrel.getTimerStatus() >= 0 && barrel.getTimerStatus() < 1.0d )
-		{
+	public String[] getWailaBody(TileEntityBarrel barrel) {
+		if (barrel.getTimerStatus() >= 0 && barrel.getTimerStatus() < 1.0d ) {
 			description[0] = "Fabricating Blaze " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
 		}
-		else if (barrel.getTimerStatus() >= 1.0d)
-		{
+		else if (barrel.getTimerStatus() >= 1.0d) {
 			description[0] = "Blaze is sleeping!";
 			return description;
 		}

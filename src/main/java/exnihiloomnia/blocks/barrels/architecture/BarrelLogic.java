@@ -1,13 +1,13 @@
 package exnihiloomnia.blocks.barrels.architecture;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import net.minecraft.util.EnumHand;
-
 import javax.annotation.Nullable;
 
-public abstract class BarrelLogic{
+import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+
+public abstract class BarrelLogic {
 	public boolean onActivate(TileEntityBarrel barrel) {
 		return false;
 	}
@@ -25,13 +25,11 @@ public abstract class BarrelLogic{
 		return false;
 	}
 
-	protected void consumeItem(EntityPlayer player, ItemStack item)
-	{
-		if (player == null || !player.capabilities.isCreativeMode)
-		{
+	protected void consumeItem(EntityPlayer player, ItemStack item) {
+		if (player == null || !player.capabilities.isCreativeMode) {
 			item.stackSize -= 1;
-			if (item.stackSize == 0)
-			{
+			
+			if (item.stackSize == 0) {
 				item = null;
 			}
 		}

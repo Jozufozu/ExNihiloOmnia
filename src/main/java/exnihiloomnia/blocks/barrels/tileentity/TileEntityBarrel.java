@@ -6,12 +6,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable
-{
+public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable {
 	protected int luminosity = 0;
 	protected int volume = 0;
 	protected int MAX_VOLUME = 1000;
@@ -26,158 +25,128 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable
 	protected boolean updateTimerRunning = false;
 	
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-	{
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return !oldState.getBlock().equals(newState.getBlock());
 	}
 
-	public void startTimer(int maxTicks)
-	{
+	public void startTimer(int maxTicks) {
 		generalTimer = 0;
 		generalTimerMax = maxTicks;
 	}
 	
-	public int getTimerTime()
-	{
+	public int getTimerTime() {
 		return generalTimer;
 	}
 	
-	public double getTimerStatus()
-	{
-		if(generalTimerMax == 0)
-		{
+	public double getTimerStatus() {
+		if (generalTimerMax == 0) {
 			return -1.0d;
 		}
 		
-		if (generalTimer >= generalTimerMax)
-		{
+		if (generalTimer >= generalTimerMax) {
 			return 1.0d;
 		}
-		else
-		{
+		else {
 			return (double)generalTimer / (double)generalTimerMax;
 		}
 	}
 	
-	public void resetTimer()
-	{
+	public void resetTimer() {
 		generalTimer = 0;
 		generalTimerMax = 0;
 	}
 	
 	@Override
-	public void update() 
-	{
+	public void update() {
 		super.update();
 		
-		if (state != null)
-		{
+		if (state != null) {
 			setLuminosity(state.getLuminosity(this));
 		}
 		
 		//Update timer used by states.
-		if (generalTimerMax != 0 && generalTimer < generalTimerMax)
-		{
+		if (generalTimerMax != 0 && generalTimer < generalTimerMax) {
 			generalTimer++;
 		}
 		
 		//Update packet throttling system
-		if (!this.worldObj.isRemote && updateTimerRunning)
-		{
+		if (!this.worldObj.isRemote && updateTimerRunning) {
 			updateTimer++;
 			
-			if (updateTimer > updateTimerMax)
-			{
+			if (updateTimer > updateTimerMax) {
 				updateTimer = 0;
-				if (updateQueued)
-				{
+				
+				if (updateQueued) {
 					updateQueued = false;
 					this.getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
-
 				}
-				else
-				{
+				else {
 					updateTimerRunning = false;
 				}
 			}
 		}
+		
 		markDirty();
 	}
 	
-	public void requestSync()
-	{
-		if (getWorld() != null && !getWorld().isRemote)
-		{
-			if (!updateTimerRunning)
-			{
+	public void requestSync() {
+		if (getWorld() != null && !getWorld().isRemote) {
+			if (!updateTimerRunning) {
 				updateTimerRunning = true;
 				getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 			}
-			else
-			{
+			else {
 				this.updateQueued = true;
 			}
 		}
 	}
 	
-	public int getLuminosity()
-	{
+	public int getLuminosity() {
 		return luminosity;
 	}
 	
 	//Call this as much as you want. 
 	//The lighting calculations don't fire unless the value is actually changed.
-	public void setLuminosity(int level)
-	{
-		if (luminosity != level)
-		{
+	public void setLuminosity(int level) {
+		if (luminosity != level) {
 			luminosity = level;
 			
-			if (getWorld() != null)
-			{
+			if (getWorld() != null) {
 				getWorld().checkLight(getPos());
 			}
 		}
 	}
 	
-	public int getVolume()
-	{
+	public int getVolume() {
 		return volume;
 	}
 	
-	public void setVolume(int volume)
-	{
+	public void setVolume(int volume) {
 		this.volume = volume;
 		
-		if (this.volume > this.getVolumeMax())
-		{
+		if (this.volume > this.getVolumeMax()) {
 			this.volume = getVolumeMax();
 		}
 	}
 	
-	public int getVolumeMax()
-	{
+	public int getVolumeMax() {
 		return this.MAX_VOLUME;
 	}
 	
-	public double getVolumeProportion()
-	{
-		return (double)this.getVolume() / (double)this.getVolumeMax();
+	public double getVolumeProportion() {
+		return (double) this.getVolume() / (double) this.getVolumeMax();
 	}
 	
-	public Color getColor()
-	{
+	public Color getColor() {
 		return color;
 	}
 	
-	public void setColor(Color color)
-	{
+	public void setColor(Color color) {
 		this.color = color;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 
 		generalTimer = compound.getInteger("timer");
@@ -188,8 +157,7 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable
 	}
  
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		
 		compound.setInteger("timer", generalTimer);
@@ -201,20 +169,17 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag)
-	{
+	public void handleUpdateTag(NBTTagCompound tag) {
 		this.readFromNBT(tag);
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		this.writeToNBT(tag);
 
@@ -222,8 +187,7 @@ public class TileEntityBarrel extends BarrelInventoryLayer implements ITickable
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound tag = pkt.getNbtCompound();
 		this.readFromNBT(tag);
 	}

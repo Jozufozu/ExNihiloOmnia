@@ -1,13 +1,11 @@
 package exnihiloomnia.registries.crucible.pojos;
 
 public class HeatValue {
-
 	private String block;
 	private int meta;
 	private int heat;
 
-	public HeatValue(String block, int meta, int heat)
-	{
+	public HeatValue(String block, int meta, int heat) {
 		this.block = block;
 		this.meta = meta;
 		this.heat = heat;
@@ -43,5 +41,4 @@ public class HeatValue {
     public void setHeat(int heat) {
         this.heat = heat;
     }
-	
 }
