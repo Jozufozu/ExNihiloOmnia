@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -56,4 +57,12 @@ public class ItemHammer extends ItemTool {
         ItemStack mat = this.material.getRepairItemStack();
         return mat != null && OreDictionary.itemMatches(mat, repair, false) || super.getIsRepairable(toRepair, repair);
     }
+
+    @Override
+	public float getStrVsBlock(ItemStack stack, IBlockState state) {
+		if (HammerRegistry.isHammerable(state))
+            return efficiencyOnProperMaterial;
+        else
+            return 1;
+	}
 }
