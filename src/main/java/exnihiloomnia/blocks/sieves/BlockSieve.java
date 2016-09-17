@@ -44,6 +44,14 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 	}
 
 	@Override
+	public boolean removedByPlayer(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		TileEntitySieve sieve = (TileEntitySieve) worldIn.getTileEntity(pos);
+		if (sieve.getMesh() != null && !ENOConfig.classic_sieve && !worldIn.isRemote && !player.isCreative())
+			Block.spawnAsEntity(worldIn, pos, sieve.getMesh());
+		return super.removedByPlayer(state, worldIn, pos, player, willHarvest);
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (player == null) {
 			return false;
@@ -92,7 +100,8 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 						mesh.stackSize = 1;
 						
 						sieve.setMesh(mesh);
-						player.setHeldItem(hand, null);
+						if (!player.isCreative())
+							item.stackSize--;
 					}
 				}
 			}
