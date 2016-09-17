@@ -158,5 +158,13 @@ public class HammerRegistry {
 		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 50, 10);
 		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 50, 10);
 		add(furnace);
+
+		HammerRegistryEntry nether_gravel = new HammerRegistryEntry(Blocks.NETHERRACK.getDefaultState(), EnumMetadataBehavior.IGNORED);
+		nether_gravel.addReward(new ItemStack(ENOBlocks.GRAVEL_NETHER), 100, 0);
+		add(nether_gravel);
+
+		HammerRegistryEntry ender_gravel = new HammerRegistryEntry(Blocks.END_STONE.getDefaultState(), EnumMetadataBehavior.IGNORED);
+		ender_gravel.addReward(new ItemStack(ENOBlocks.GRAVEL_ENDER), 100, 0);
+		add(ender_gravel);
 	}
 }

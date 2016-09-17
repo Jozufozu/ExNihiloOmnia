@@ -1,6 +1,7 @@
 package exnihiloomnia.blocks.barrels.states.empty.logic;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
+import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +42,7 @@ public class FluidStateTriggerItem extends BarrelLogic {
 			}
 
 			barrel.getFluidTank().fill(fluid, true);
+			barrel.setState(BarrelStates.FLUID);
 			barrel.getWorld().playSound(null, barrel.getPos(),SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 0.2f, 0.8f);
 			return true;
 		}

@@ -67,8 +67,8 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 		if (barrel != null) {
 			if (item != null) {
 				if (barrel.getState().canUseItem(barrel, item)) {
-					if (barrel.getState().canManipulateFluids(barrel))
-						FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
+					//if (barrel.getState().canManipulateFluids(barrel))
+					//	FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 					barrel.getState().useItem(player, hand, barrel, item);
 				}
 			}

@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.crucibles.tileentity;
 
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
 import exnihiloomnia.registries.crucible.HeatRegistry;
@@ -48,10 +49,11 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
                 if (canInsertItem(stack)) {
                     if (hasSpaceFor(meltable.getSolidVolume())) {
                         stack.stackSize--;
+
                         item = stack;
-                        //it doubles it for some reason
                         addSolid(meltable.getSolidVolume());
                         sync();
+
                         return stack.stackSize == 0 ? null : stack;
                     }
                 }
@@ -232,20 +234,30 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) && (facing == EnumFacing.UP || facing == null) || super.hasCapability(capability, facing);
+        return ENOConfig.crucible_access ? (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) && (facing == EnumFacing.UP || facing == null) || super.hasCapability(capability, facing) : (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) || super.hasCapability(capability, facing);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (facing == EnumFacing.UP || facing == null) {
-            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-                return (T) fluidTank;
-            }
-            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-                return (T) itemHandler;
-            }
+        if (ENOConfig.crucible_access) {
+			if (facing == EnumFacing.UP || facing == null) {
+				if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+					return (T) fluidTank;
+				}
+				if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+					return (T) itemHandler;
+				}
+			}
         }
+        else {
+			if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+				return (T) fluidTank;
+			}
+			if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+				return (T) itemHandler;
+			}
+		}
         return super.getCapability(capability, facing);
     }
 	

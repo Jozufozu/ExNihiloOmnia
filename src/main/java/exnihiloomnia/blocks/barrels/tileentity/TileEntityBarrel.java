@@ -50,22 +50,82 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	private FluidTank fluidTank = new FluidTank(Fluid.BUCKET_VOLUME) {
 		@Override
 		public int fill(FluidStack resource, boolean doFill)  {
-			BarrelState state = getState();
-
 			if (resource == null || state == null || !state.canManipulateFluids(getBarrel()))
+			{
 				return 0;
+			}
+
+			if (!doFill)
+			{
+				if (fluid == null)
+				{
+					return Math.min(capacity, resource.amount);
+				}
+
+				if (!fluid.isFluidEqual(resource))
+				{
+					return 0;
+				}
+
+				return Math.min(capacity - fluid.amount, resource.amount);
+			}
+
+			if (fluid == null)
+			{
+				fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
+				setState(BarrelStates.FLUID);
+
+				return fluid.amount;
+			}
+
+			if (!fluid.isFluidEqual(resource))
+			{
+				return 0;
+			}
+
+			int avaliable = capacity - fluid.amount;
+
+			if (resource.amount < avaliable)
+			{
+				fluid.amount += resource.amount;
+				avaliable = resource.amount;
+				requestSync();
+			}
 			else
-			    return super.fill(resource, doFill);
+			{
+				fluid.amount = capacity;
+				requestSync();
+			}
+
+			return avaliable;
+			/**
+			if (state.canManipulateFluids(getBarrel())) {
+				int fill = super.fill(resource, doFill);
+
+				if (fluid != null && state != BarrelStates.FLUID)
+					setState(BarrelStates.FLUID);
+
+				return fill;
+			}
+			else
+			    return 0;
+			 */
 		}
 
 		@Override
 		public FluidStack drain(int maxDrain, boolean doDrain) {
 			BarrelState state = getState();
 
-			if (fluid == null || state == null || !state.canManipulateFluids(getBarrel()))
+			if (fluid == null || state == null || !state.canManipulateFluids(getBarrel()) || !canDrainFluidType(fluid))
 				return null;
-            else
-                return super.drain(maxDrain, doDrain);
+            else {
+				FluidStack drain = drainInternal(maxDrain, doDrain);
+
+				if (fluid == null)
+					setState(BarrelStates.EMPTY);
+
+				return drain;
+			}
 		}
 
         @Override
@@ -152,7 +212,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
             if (index == 1) {
                 TileEntityBarrel barrel = this;
 
-                barrel.getState().useItem(null, null, barrel, stack);
+                getState().useItem(null, null, barrel, stack);
             }
         }
     }

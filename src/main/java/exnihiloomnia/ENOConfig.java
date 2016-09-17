@@ -6,6 +6,7 @@ public class ENOConfig {
     public static boolean classic_sieve;
     public static double string_chance;
     public static boolean sieve_automation;
+    public static boolean crucible_access;
     public static boolean fancy_crucible;
 
     public static void configure(Configuration config) {
@@ -14,6 +15,7 @@ public class ENOConfig {
 
         fancy_crucible = config.get("misc", "fancy crucible renderer", true).getBoolean(true);
 
-        sieve_automation = config.get("misc", "sieve hopper/pipe interaction", false).getBoolean(false);
+        sieve_automation = config.get("automation", "sieve hopper/pipe interaction", false).getBoolean(false);
+        crucible_access = config.get("automation", "crucibles can only interact with pipes from the top", true).getBoolean(true);
     }
 }

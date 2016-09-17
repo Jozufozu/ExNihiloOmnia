@@ -69,9 +69,7 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 			contents.stackSize = 1;
 
 			if (crucible.canInsertItem(contents)) {
-				crucible.addSolid(CrucibleRegistry.getItem(contents).getSolidVolume());
-				crucible.setLastItemAdded(contents);
-                crucible.sync();
+				crucible.getItemHandler().insertItem(0, contents, false);
 
 				world.playSound(null, pos, SoundEvents.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
 				InventoryHelper.consumeItem(player, item);
@@ -85,32 +83,35 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 	
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (crucible != null) {
+		if (tile != null) {
+			if (tile instanceof TileEntityCrucible) {
+				TileEntityCrucible crucible = (TileEntityCrucible) tile;
 
-            if (crucible.getFluid() != null) {
+				if (crucible.getFluid() != null) {
 
-                if (crucible.getFluidFullness() > crucible.getSolidFullness()) {
-                    FluidStack fluid = crucible.getFluid();
+					if (crucible.getFluidFullness() > crucible.getSolidFullness()) {
+						FluidStack fluid = crucible.getFluid();
 
-					if (fluid != null && fluid.getFluid() != null) {
-						return crucible.getFluid().getFluid().getLuminosity();
+						if (fluid != null && fluid.getFluid() != null) {
+							return crucible.getFluid().getFluid().getLuminosity();
+						}
+					}
+				}
+
+				if (crucible.getLastItemAdded() != null) {
+
+					if (crucible.getFluidFullness() < crucible.getSolidFullness()) {
+						ItemStack item = crucible.getLastItemAdded();
+						Block block = Block.getBlockFromItem(item.getItem());
+
+						return block.getLightValue(block.getStateFromMeta(item.getMetadata()));
 					}
 				}
 			}
-            
-            if (crucible.getLastItemAdded() != null) {
-
-                if (crucible.getFluidFullness() < crucible.getSolidFullness()) {
-                    ItemStack item = crucible.getLastItemAdded();
-                    Block block = Block.getBlockFromItem(item.getItem());
-
-                    return block.getLightValue(block.getStateFromMeta(item.getMetadata()));
-                }
-            }
 		}
-		
+
 		return 0;
 	}
 
