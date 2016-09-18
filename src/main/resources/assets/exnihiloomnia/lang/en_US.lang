@@ -155,6 +155,10 @@ item.seed_acacia.name=Acacia Seed
 item.seed_birch.name=Birch Seed
 item.seed_jungle.name=Exotic Seed
 
+item.sifter_iron.name=Iron Sifter
+item.sifter_diamond.name=Diamond Sifter
+item.sifter_gold.name=Gold Sifter
+
 item.doll_blaze.name= Angry Doll
 item.doll_ender.name= Spooky Doll
 item.porcelain_doll.name= Porcelain Doll

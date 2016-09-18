@@ -19,6 +19,7 @@ import exnihiloomnia.items.misc.ItemSilkworm;
 import exnihiloomnia.items.misc.ItemSpores;
 import exnihiloomnia.items.misc.ItemStone;
 import exnihiloomnia.items.ores.ItemOre;
+import exnihiloomnia.items.sieveassist.ItemSieveAssist;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -64,7 +65,11 @@ public class ENOItems {
 	public static Item HAMMER_IRON;
 	public static Item HAMMER_GOLD;
 	public static Item HAMMER_DIAMOND;
-	
+
+    public static Item SIFTER_IRON;
+    public static Item SIFTER_GOLD;
+    public static Item SIFTER_DIAMOND;
+
 	public static Item MESH_SILK_WHITE;
 	public static Item MESH_WOOD;
 	
@@ -110,13 +115,20 @@ public class ENOItems {
         items.add(BUCKET_PORCELAIN_WATER);
         items.add(BUCKET_PORCELAIN_WITCHWATER);
         items.add(BUCKET_PORCELAIN_MILK);
+
         items.add(CROOK_BONE);
         items.add(CROOK_WOOD);
+
         items.add(HAMMER_DIAMOND);
         items.add(HAMMER_GOLD);
         items.add(HAMMER_IRON);
         items.add(HAMMER_STONE);
         items.add(HAMMER_WOOD);
+
+        items.add(SIFTER_DIAMOND);
+        items.add(SIFTER_GOLD);
+        items.add(SIFTER_IRON);
+
         items.add(MESH_SILK_WHITE);
         
         if (!ENOConfig.classic_sieve)
@@ -161,6 +173,7 @@ public class ENOItems {
         GRASS_SEEDS = new ItemGrassSeeds().setUnlocalizedName("seeds_grass").setRegistryName("seeds_grass");
         SPORES = new ItemSpores().setUnlocalizedName("spores").setRegistryName("spores");
         ASTROLABE_JADE = new ItemAstrolabe().setUnlocalizedName("astrolabe_jade").setRegistryName("astrolabe_jade");
+
         BUCKET_WITCHWATER = new ItemBucket(ENOBlocks.WITCHWATER).setUnlocalizedName("bucket_witchwater").setRegistryName("bucket_witchwater").setContainerItem(Items.BUCKET);
         BUCKET_PORCELAIN_RAW = new Item().setUnlocalizedName("bucket_porcelain_raw").setRegistryName("bucket_porcelain_raw").setCreativeTab(ENO_TAB);
         BUCKET_PORCELAIN_EMPTY = new ItemBucketPorcelain(Blocks.AIR).setUnlocalizedName("bucket_porcelain_empty").setRegistryName("bucket_porcelain_empty").setMaxStackSize(16);
@@ -168,15 +181,23 @@ public class ENOItems {
         BUCKET_PORCELAIN_LAVA = new ItemBucketPorcelain(Blocks.FLOWING_LAVA).setUnlocalizedName("bucket_porcelain_lava").setRegistryName("bucket_porcelain_lava").setContainerItem(BUCKET_PORCELAIN_EMPTY);
         BUCKET_PORCELAIN_MILK = new ItemBucketPorcelainMilk().setUnlocalizedName("bucket_porcelain_milk").setRegistryName("bucket_porcelain_milk");
         BUCKET_PORCELAIN_WITCHWATER = new ItemBucketPorcelain(ENOBlocks.WITCHWATER).setUnlocalizedName("bucket_porcelain_witchwater").setRegistryName("bucket_porcelain_witchwater").setContainerItem(BUCKET_PORCELAIN_EMPTY);
+
         CROOK_WOOD = new ItemCrook(ENOToolMaterials.STICK).setUnlocalizedName("crook_wood").setRegistryName("crook_wood");
         CROOK_BONE = new ItemCrook(ENOToolMaterials.BONE).setUnlocalizedName("crook_bone").setRegistryName("crook_bone");
+
         HAMMER_WOOD = new ItemHammer(ToolMaterial.WOOD).setUnlocalizedName("hammer_wood").setRegistryName("hammer_wood");
         HAMMER_STONE = new ItemHammer(ToolMaterial.STONE).setUnlocalizedName("hammer_stone").setRegistryName("hammer_stone");
         HAMMER_IRON = new ItemHammer(ToolMaterial.IRON).setUnlocalizedName("hammer_iron").setRegistryName("hammer_iron");
         HAMMER_GOLD = new ItemHammer(ToolMaterial.GOLD).setUnlocalizedName("hammer_gold").setRegistryName("hammer_gold");
         HAMMER_DIAMOND = new ItemHammer(ToolMaterial.DIAMOND).setUnlocalizedName("hammer_diamond").setRegistryName("hammer_diamond");
+
+        SIFTER_DIAMOND = new ItemSieveAssist(ToolMaterial.DIAMOND).setMaxDamage(127).setUnlocalizedName("sifter_diamond").setRegistryName("sifter_diamond");
+        SIFTER_GOLD = new ItemSieveAssist(ToolMaterial.GOLD).setMaxDamage(47).setUnlocalizedName("sifter_gold").setRegistryName("sifter_gold");
+        SIFTER_IRON = new ItemSieveAssist(ToolMaterial.IRON).setMaxDamage(95).setUnlocalizedName("sifter_iron").setRegistryName("sifter_iron");
+
         MESH_SILK_WHITE = new ItemMesh().setUnlocalizedName("mesh_silk_white").setRegistryName("mesh_silk_white").setMaxDamage(63);
         MESH_WOOD = new ItemMesh().setUnlocalizedName("mesh_wood").setRegistryName("mesh_wood").setMaxDamage(9);
+
         ASH = new ItemAsh().setUnlocalizedName("ash").setRegistryName("ash");
         PORCELAIN = new Item().setUnlocalizedName("porcelain").setRegistryName("porcelain").setCreativeTab(ENOItems.ENO_TAB);
         STONE = new ItemStone().setUnlocalizedName("stone").setRegistryName("stone");

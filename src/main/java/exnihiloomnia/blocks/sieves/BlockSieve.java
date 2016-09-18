@@ -4,6 +4,7 @@ import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.meshs.ISieveMesh;
+import exnihiloomnia.items.sieveassist.ISieveFaster;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
@@ -62,6 +63,14 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 		if (sieve != null) {
 
 			if (sieve.canWork()) {
+                ItemStack offhand = player.getHeldItem(EnumHand.OFF_HAND);
+
+				if (item != null && item.getItem() instanceof ISieveFaster)
+					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) item.getItem()).getSpeedModifier()), item);
+				else if (offhand != null && offhand.getItem() instanceof ISieveFaster)
+					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) offhand.getItem()).getSpeedModifier()), offhand);
+                else
+					sieve.setWorkPerSecond(sieve.getBaseSpeed(), null);
 				sieve.doWork();
 				world.playSound(null, pos, SoundEvents.BLOCK_SAND_STEP, SoundCategory.BLOCKS, 0.3f, 0.6f);
 			}

@@ -50,5 +50,28 @@ public class SieveRecipes {
 				"xxx",
 				"xxx",
 				'x', new ItemStack(Items.STRING, 1)));
+
+		//sifters
+		GameRegistry.addRecipe(
+				new ShapedOreRecipe(new ItemStack(ENOItems.SIFTER_DIAMOND),
+						"ddd",
+						"sps",
+						'd', "gemDiamond",
+						's', "stickWood",
+						'p', new ItemStack(Blocks.PISTON)));
+		GameRegistry.addRecipe(
+				new ShapedOreRecipe(new ItemStack(ENOItems.SIFTER_GOLD),
+						"ddd",
+						"sps",
+						'd', "ingotGold",
+						's', "stickWood",
+						'p', new ItemStack(Blocks.PISTON)));
+		GameRegistry.addRecipe(
+				new ShapedOreRecipe(new ItemStack(ENOItems.SIFTER_IRON),
+						"ddd",
+						"sps",
+						'd', "ingotIron",
+						's', "stickWood",
+						'p', new ItemStack(Blocks.PISTON)));
 	}
 }

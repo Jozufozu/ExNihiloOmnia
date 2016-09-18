@@ -3,20 +3,14 @@ package exnihiloomnia.blocks.sieves.tileentity;
 import javax.annotation.Nullable;
 
 import exnihiloomnia.ENOConfig;
-import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
-import exnihiloomnia.registries.crucible.CrucibleRegistry;
-import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -27,38 +21,38 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntitySieve extends TileEntity implements ITickable {
+	protected ItemStack sifter;
 	protected ItemStack mesh;
 	protected ItemStack contents;
 	protected IBlockState contentsState;
 
+	protected boolean workQueued = false;
 	protected int work = 0;
 	protected int workMax = 1000;
-	protected int workSpeed = 40;
-	
-	protected int updateTimer = 0;
-	protected int updateTimerMax = 2; //Sync if an update is required.
-	protected boolean updateQueued = false;
-	protected boolean updateTimerRunning = false;
-	
-	protected int workThisCycle = 0;
-	protected int workPerCycleLimit = 120;
-	protected int workCycleTimer = 0;
-	protected int workCycleTimerMax = 20;
+	protected static int workPerSecondBase = 200;
+
+	protected int workPerSecond = 200;
+
+	protected int ticksPerCycle = 4;
+	protected int ticksThisCycle = 0;
 	
 	protected boolean spawningParticles = false;
 	protected int spawnParticlesTimer = 0;
 	protected int spawnParticlesTimerMax = 5;
+
+	protected int updateTimer = 0;
+	protected int updateTimerMax = 4; //Sync if an update is required.
+	protected boolean updateQueued = false;
+	protected boolean updateTimerRunning = false;
 
 	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
 		@Override
@@ -85,33 +79,42 @@ public class TileEntitySieve extends TileEntity implements ITickable {
     private boolean isItemValidForSlot(int index, ItemStack stack) {
         Block block = Block.getBlockFromItem(stack.getItem());
 
-        if (block != null)
-            return index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata()));
-        else
-            return index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
+		return block != null ? index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata())) : index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
     }
+
+	public void setWorkPerSecond(int workPerSecond, ItemStack sifter) {
+		this.workPerSecond = workPerSecond;
+		if (sifter != null)
+			this.sifter = sifter;
+	}
+
+	public int getBaseSpeed() {
+		return workPerSecondBase;
+	}
 
 	@Override
 	public void update() {
-		if (!this.worldObj.isRemote) {
-			//Speed throttling.
-			workCycleTimer++;
+		if (workQueued) {
+			ticksThisCycle++;
 
-			if (workCycleTimer > workCycleTimerMax) {
-				workThisCycle = 0;
-				workCycleTimer = 0;
+			if (work < workMax)
+			work += workPerSecond / 20;
+
+			if (ticksThisCycle >= ticksPerCycle) {
+				ticksThisCycle = 0;
+				workQueued = false;
 			}
-
-			//Packet throttling
+		}
+		if (!this.worldObj.isRemote) {
 			if (updateTimerRunning) {
 				updateTimer++;
 
 				if (updateTimer > updateTimerMax) {
 					updateTimer = 0;
-					
+
 					if (updateQueued) {
 						updateQueued = false;
-                        getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
+						getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 
 					}
 					else {
@@ -119,6 +122,33 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 					}
 				}
 			}
+
+			//output
+            if (work >= workMax) {
+                if (contentsState != null) {
+                    for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
+                        Block.spawnAsEntity(worldObj, getPos().up(), i);
+                    }
+                }
+
+                work = 0;
+				workQueued = false;
+				ticksThisCycle = 0;
+                contents = null;
+
+                if (this.mesh != null) {
+                    if (mesh.attemptDamageItem(1, worldObj.rand)) {
+                        getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.5f, 2.5f);
+                        setMesh(null);
+                    }
+                }
+                if (sifter != null)
+                	sifter.attemptDamageItem(1, worldObj.rand);
+
+				sifter = null;
+                sync();
+				markDirty();
+            }
 		}
 		else {
 			if (spawningParticles) {
@@ -135,13 +165,13 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 
 	//Send update packets to each client.
 	public void sync() {
-		if (getWorld() != null && !getWorld().isRemote) {
+		if (worldObj != null && !getWorld().isRemote) {
 			if (!updateTimerRunning) {
 				updateTimerRunning = true;
 				getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
 			}
 			else {
-				this.updateQueued = true;
+				updateQueued = true;
 			}
 		}
 	}
@@ -181,54 +211,16 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 	}
 	
 	public boolean canWork() {
-		return this.contents != null;
+		return contents != null;
 	}
 	
 	public void doWork() {
         this.spawningParticles = true;
-        addThrottledWork(workSpeed);
+        this.workQueued = true;
         
 		if (!this.worldObj.isRemote) {
-			if (work >= workMax) {
-				if (contentsState != null) {
-					for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
-						EntityItem entityitem = new EntityItem(getWorld(), pos.getX() + 0.5f, pos.up().getY() + 0.5f, pos.getZ() + 0.5f, i);
-
-						entityitem.motionX = getWorld().rand.nextGaussian() * 0.05F;
-						entityitem.motionY = (0.2d);
-						entityitem.motionZ = getWorld().rand.nextGaussian() * 0.05F;
-						entityitem.setDefaultPickupDelay();
-						
-						getWorld().spawnEntityInWorld(entityitem);
-					}
-				}
-				
-				work = 0;
-				contents = null;
-				
-				if (this.mesh != null) {
-					if (mesh.attemptDamageItem(1, worldObj.rand)) {
-						getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.5f, 2.5f);
-						setMesh(null);
-					}
-				}
-			}
-			
 			sync();
 			markDirty();
-		}
-	}
-
-	public void setWorkSpeed(int speed) {
-		this.workSpeed = speed;
-	}
-	
-	private void addThrottledWork(int workIn) {
-		if (workThisCycle + workIn > workPerCycleLimit) {
-			this.work += workPerCycleLimit - workThisCycle;
-		}
-		else {
-			this.work += workIn;
 		}
 	}
 	
