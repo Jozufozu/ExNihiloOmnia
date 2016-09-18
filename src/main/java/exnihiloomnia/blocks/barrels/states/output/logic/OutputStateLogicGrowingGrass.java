@@ -13,14 +13,15 @@ public class OutputStateLogicGrowingGrass extends BarrelLogic {
 	
 	@Override
 	public boolean onUpdate(TileEntityBarrel barrel)  {
-		if (barrel.getContents().getItem() == Item.getItemFromBlock(Blocks.DIRT)
+		if (!barrel.getWorld().isRemote
+			&& barrel.getContents().getItem() == Item.getItemFromBlock(Blocks.DIRT)
 			&& barrel.getContents().getMetadata() == 0) {
 			
 			if (barrel.getWorld().rand.nextInt(1000) == 0) {
 				if (isRandomNearbyBlockGrass(barrel)
 					&& PositionHelper.getLightLevelAbove(barrel.getWorld(), barrel.getPos()) >= 9) {
 					
-					barrel.setContents(new ItemStack(Blocks.MYCELIUM, 1));
+					barrel.setContents(new ItemStack(Blocks.GRASS, 1));
 				}
 			}
 		}
@@ -37,6 +38,6 @@ public class OutputStateLogicGrowingGrass extends BarrelLogic {
 		int y = world.rand.nextInt(3) - 1;
 		int z = world.rand.nextInt(3) - 1;
 
-        return world.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock() == Blocks.MYCELIUM;
+        return world.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock() == Blocks.GRASS;
     }
 }

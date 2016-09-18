@@ -13,13 +13,14 @@ public class OutputStateLogicGrowingMycelium extends BarrelLogic {
 	
 	@Override
 	public boolean onUpdate(TileEntityBarrel barrel)  {
-		if (barrel.getContents().getItem() == Item.getItemFromBlock(Blocks.DIRT)
-			&& barrel.getContents().getMetadata() == 0) {
+		if (!barrel.getWorld().isRemote
+				&& barrel.getContents().getItem() == Item.getItemFromBlock(Blocks.DIRT)
+				&& barrel.getContents().getMetadata() == 0) {
 			
 			if (barrel.getWorld().rand.nextInt(1000) == 0) {
 				if (isRandomNearbyBlockMycelium(barrel)
 					&& PositionHelper.getLightLevelAbove(barrel.getWorld(), barrel.getPos()) >= 9) {
-					barrel.setContents(new ItemStack(Blocks.GRASS, 1));
+					barrel.setContents(new ItemStack(Blocks.MYCELIUM, 1));
 				}
 			}
 		}
@@ -36,7 +37,7 @@ public class OutputStateLogicGrowingMycelium extends BarrelLogic {
 		int y = world.rand.nextInt(3) - 1;
 		int z = world.rand.nextInt(3) - 1;
 
-        return world.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock() == Blocks.GRASS;
+        return world.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock() == Blocks.MYCELIUM;
     }
 	
 	private static int getLightLevel(TileEntityBarrel barrel) {
