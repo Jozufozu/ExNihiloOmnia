@@ -45,7 +45,6 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 
     protected ArrayList<ItemStack> output = new ArrayList<ItemStack>();
     protected ItemStack contents = null;
-    protected int maxOutputQueueSize = 1;
 
 	private FluidTank fluidTank = new FluidTank(Fluid.BUCKET_VOLUME) {
 		@Override
