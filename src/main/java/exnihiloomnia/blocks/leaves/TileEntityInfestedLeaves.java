@@ -21,6 +21,7 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     public int meta = 0;
     public Color color = Color.WHITE;
     public boolean dying = false;
+    public boolean permanent = false;
 
     private static final int SPREAD_INTERVAL = 100;
     private int spreadTimer = 0;
@@ -124,6 +125,8 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
             this.block = Block.getBlockFromName(compound.getString("block"));
 
         this.meta = compound.getInteger("meta");
+        this.dying = compound.getBoolean("dying");
+        this.permanent = compound.getBoolean("permanent");
     }
 
     @Override
@@ -139,6 +142,9 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         }
         
         compound.setInteger("meta", this.meta);
+
+        compound.setBoolean("dying", dying);
+        compound.setBoolean("permanent", permanent);
 
         return compound;
     }
