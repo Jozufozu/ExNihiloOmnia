@@ -42,11 +42,9 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 	protected ItemStack contents;
 	protected IBlockState contentsState;
 
-    protected boolean hasSifter;
-	
 	protected int work = 0;
 	protected int workMax = 1000;
-	protected int workSpeed = 30;
+	protected int workSpeed = 40;
 	
 	protected int updateTimer = 0;
 	protected int updateTimerMax = 2; //Sync if an update is required.
@@ -96,9 +94,6 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 	@Override
 	public void update() {
 		if (!this.worldObj.isRemote) {
-			//TileEntity sifter = worldObj.getTileEntity(pos.down());
-            //hasSifter = sifter != null && sifter instanceof TileSifter;
-
 			//Speed throttling.
 			workCycleTimer++;
 
@@ -151,10 +146,6 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 		}
 	}
 
-    public boolean hasSifter() {
-        return hasSifter;
-    }
-	
 	public boolean hasMesh() {
 		return this.mesh != null;
 	}
@@ -198,7 +189,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
         addThrottledWork(workSpeed);
         
 		if (!this.worldObj.isRemote) {
-			if (work > workMax) {
+			if (work >= workMax) {
 				if (contentsState != null) {
 					for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
 						EntityItem entityitem = new EntityItem(getWorld(), pos.getX() + 0.5f, pos.up().getY() + 0.5f, pos.getZ() + 0.5f, i);

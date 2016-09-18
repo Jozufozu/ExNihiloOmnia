@@ -46,8 +46,6 @@ public class ENOBlocks {
 	public static Block INFESTED_LEAVES;
 	public static Block WITCHWATER;
 
-    //public static Block SIFTER;
-
     public static Block ORE_GRAVEL;
     public static Block ORE_GRAVEL_NETHER;
     public static Block ORE_GRAVEL_ENDER;
@@ -71,8 +69,6 @@ public class ENOBlocks {
         blocks.add(INFESTED_LEAVES);
 
         blocks.add(WITCHWATER);
-
-        //blocks.add(SIFTER);
 
         blocks.add(ORE_GRAVEL);
         blocks.add(ORE_GRAVEL_ENDER);
@@ -99,8 +95,6 @@ public class ENOBlocks {
 
         WITCHWATER = new BlockFluidWitchwater(ENOFluids.WITCHWATER, Material.WATER).setUnlocalizedName("witchwater").setRegistryName("witchwater");
 
-        //SIFTER = new BlockSifter().setRegistryName("sifter");
-
         ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
         ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
         ORE_GRAVEL_NETHER = new BlockOre(EnumOreBlockType.GRAVEL_NETHER).setUnlocalizedName("ore_gravel_nether").setRegistryName("ore_gravel_nether");
@@ -126,6 +120,5 @@ public class ENOBlocks {
 		GameRegistry.registerTileEntity(TileEntitySieve.class, ENO.MODID + ":tile_entity_sieve");
 		GameRegistry.registerTileEntity(TileEntityCrucible.class, ENO.MODID + ":tile_entity_crucible");
 		GameRegistry.registerTileEntity(TileEntityInfestedLeaves.class, ENO.MODID + ":tile_entity_infested_leaves");
-        //GameRegistry.registerTileEntity(TileSifter.class, ENO.MODID + ":tile_entity_sifter");
 	}
 }

@@ -60,11 +60,8 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 		TileEntitySieve sieve = (TileEntitySieve) world.getTileEntity(pos);
 
 		if (sieve != null) {
-			if (sieve.canWork() && !sieve.hasSifter()) {
-				//if (item != null && item.getItem() == Items.PRISMARINE_SHARD)
-				//	sieve.setWorkSpeed(60);
-				//else
-				//	sieve.setWorkSpeed(30);
+
+			if (sieve.canWork()) {
 				sieve.doWork();
 				world.playSound(null, pos, SoundEvents.BLOCK_SAND_STEP, SoundCategory.BLOCKS, 0.3f, 0.6f);
 			}
