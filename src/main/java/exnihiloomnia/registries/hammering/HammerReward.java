@@ -1,5 +1,6 @@
 package exnihiloomnia.registries.hammering;
 
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,14 +26,7 @@ public class HammerReward {
 		int chance = base_chance + (fortune_modifier * luck_level);
 
 		if (world.rand.nextInt(100) < chance) {
-			EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, item.copy());
-
-			entityitem.motionX = world.rand.nextGaussian() * 0.05F;
-			entityitem.motionY = (0.2d);
-			entityitem.motionZ = world.rand.nextGaussian() * 0.05F;
-			entityitem.setDefaultPickupDelay();
-
-			world.spawnEntityInWorld(entityitem);
+			Block.spawnAsEntity(player.worldObj, pos, item.copy());
 		}
 	}
 

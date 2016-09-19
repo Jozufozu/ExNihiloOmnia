@@ -70,55 +70,58 @@ public class HammerRegistry {
 	
 	public static void registerVanillaRecipes() {
 		for (EnumOre ore : ENO.oreList) {
+			ItemStack oreCrushed = new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata());
+			ItemStack orePowdered = new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata());
 			if (ore.hasGravel()) {
 				HammerRegistryEntry gravel = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
-				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 50, 0);
-				gravel.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 5, 0);
+				gravel.addReward(oreCrushed, 100, 0);
+				gravel.addReward(oreCrushed, 100, 0);
+				gravel.addReward(oreCrushed, 100, 0);
+				gravel.addReward(oreCrushed, 100, 0);
+				gravel.addReward(oreCrushed, 50, 2);
+				gravel.addReward(oreCrushed, 5, 1);
 				add(gravel);
 			}
 			
 			if (ore.hasNether()) {
 				HammerRegistryEntry nether = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL_NETHER.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 50, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 5, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 50, 2);
+				nether.addReward(oreCrushed, 5, 1);
 				add(nether);
 			}
 			
 			if (ore.hasEnd()) {
 				HammerRegistryEntry nether = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL_ENDER.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 100, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 50, 0);
-				nether.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), 5, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 50, 2);
+				nether.addReward(oreCrushed, 5, 1);
 				add(nether);
 			}
 
 			HammerRegistryEntry sand = new HammerRegistryEntry(ENOBlocks.ORE_SAND.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
-			sand.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), 100, 0);
-			sand.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), 100, 0);
-			sand.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), 100, 0);
-			sand.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), 100, 0);
-			sand.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), 50, 0);
-			sand.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), 5, 0);
+			sand.addReward(orePowdered, 100, 0);
+			sand.addReward(orePowdered, 100, 0);
+			sand.addReward(orePowdered, 100, 0);
+			sand.addReward(orePowdered, 100, 0);
+			sand.addReward(orePowdered, 50, 2);
+			sand.addReward(orePowdered, 5, 1);
 			add(sand);
 		}
 
 		HammerRegistryEntry stone = new HammerRegistryEntry(Blocks.STONE.getDefaultState(), EnumMetadataBehavior.SPECIFIC);
-		stone.addReward(new ItemStack(ENOItems.STONE, 1), 100, 0);
-		stone.addReward(new ItemStack(ENOItems.STONE, 1), 100, 0);
-		stone.addReward(new ItemStack(ENOItems.STONE, 1), 100, 0);
-		stone.addReward(new ItemStack(ENOItems.STONE, 1), 50, 0);
-		stone.addReward(new ItemStack(ENOItems.STONE, 1), 50, 0);
+		ItemStack smallStone = new ItemStack(ENOItems.STONE);
+		stone.addReward(smallStone, 100, 0);
+		stone.addReward(smallStone, 100, 0);
+		stone.addReward(smallStone, 100, 0);
+		stone.addReward(smallStone, 50, 2);
+		stone.addReward(smallStone, 50, 1);
 		add(stone);
 		
 		HammerRegistryEntry cobble = new HammerRegistryEntry(Blocks.COBBLESTONE.getDefaultState(), EnumMetadataBehavior.SPECIFIC);
@@ -136,27 +139,28 @@ public class HammerRegistry {
 		HammerRegistryEntry sandstone = new HammerRegistryEntry(Blocks.SANDSTONE.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		sandstone.addReward(new ItemStack(Blocks.SAND), 100, 0);
 		add(sandstone);
-		
+
+		ItemStack cobblestone = new ItemStack(Blocks.COBBLESTONE);
 		HammerRegistryEntry furnace = new HammerRegistryEntry(Blocks.FURNACE.getDefaultState(), EnumMetadataBehavior.IGNORED);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 50, 10);
-		furnace.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 50, 10);
+		furnace.addReward(cobblestone, 100, 0);
+		furnace.addReward(cobblestone, 100, 0);
+		furnace.addReward(cobblestone, 100, 0);
+		furnace.addReward(cobblestone, 100, 0);
+		furnace.addReward(cobblestone, 100, 0);
+		furnace.addReward(cobblestone, 100, 0);
+		furnace.addReward(cobblestone, 50, 1);
+		furnace.addReward(cobblestone, 50, 1);
 		add(furnace);
 		
 		HammerRegistryEntry furnace_lit = new HammerRegistryEntry(Blocks.LIT_FURNACE.getDefaultState(), EnumMetadataBehavior.IGNORED);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 100, 0);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 50, 10);
-		furnace_lit.addReward(new ItemStack(Blocks.COBBLESTONE, 1), 50, 10);
+		furnace_lit.addReward(cobblestone, 100, 0);
+		furnace_lit.addReward(cobblestone, 100, 0);
+		furnace_lit.addReward(cobblestone, 100, 0);
+		furnace_lit.addReward(cobblestone, 100, 0);
+		furnace_lit.addReward(cobblestone, 100, 0);
+		furnace_lit.addReward(cobblestone, 100, 0);
+		furnace_lit.addReward(cobblestone, 50, 1);
+		furnace_lit.addReward(cobblestone, 50, 1);
 		add(furnace);
 
 		HammerRegistryEntry nether_gravel = new HammerRegistryEntry(Blocks.NETHERRACK.getDefaultState(), EnumMetadataBehavior.IGNORED);

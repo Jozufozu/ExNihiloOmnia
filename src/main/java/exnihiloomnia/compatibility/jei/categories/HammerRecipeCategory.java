@@ -1,13 +1,13 @@
 
 package exnihiloomnia.compatibility.jei.categories;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import exnihiloomnia.ENO;
-import exnihiloomnia.registries.sifting.SieveRegistryEntry;
+import exnihiloomnia.registries.hammering.HammerRegistry;
+import exnihiloomnia.registries.hammering.HammerReward;
 import exnihiloomnia.registries.sifting.SieveReward;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -20,19 +20,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
+public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
 
-    public static final String UID = "exnihiloomnia:sieve";
-    private static final ResourceLocation texture = new ResourceLocation(ENO.MODID, "textures/gui/jei_sieve.png");
+    public static final String UID = "exnihiloomnia:hammer";
+    private static final ResourceLocation texture = new ResourceLocation(ENO.MODID, "textures/gui/jei_hammer.png");
 
     private final IDrawableStatic background;
     private final IDrawableStatic slotHighlight;
@@ -40,8 +36,8 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
     private int highlightX;
     private int highlightY;
 
-    public SieveRecipeCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createDrawable(texture, 0, 0, 166, 146);
+    public HammerRecipeCategory(IGuiHelper guiHelper) {
+        this.background = guiHelper.createDrawable(texture, 0, 0, 166, 92);
         this.slotHighlight = guiHelper.createDrawable(texture, 166, 0, 18, 18);
     }
 
@@ -76,7 +72,7 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEISieveRecipe recipeWrapper) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEIHammerRecipe recipeWrapper) {
 
         recipeLayout.getItemStacks().init(0, true, 74, 9);
         recipeLayout.getItemStacks().set(0, (ItemStack) recipeWrapper.getInputs().get(0));
@@ -114,7 +110,7 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
                 if(!input) {
                     Multiset<String> condensedTooltips = HashMultiset.create();
 
-                    for(SieveReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
+                    for(HammerReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
                         String s;
                         int iChance = reward.getBaseChance();
 
@@ -125,6 +121,7 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
 
                         condensedTooltips.add(s);
                     }
+
                     tooltip.add(I18n.format("jei.exnihiloomnia:sieve.dropChance"));
 
                     for(String line : condensedTooltips.elementSet()) {
