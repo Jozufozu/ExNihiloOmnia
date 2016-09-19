@@ -1,17 +1,21 @@
 package exnihiloomnia.items.sieveassist;
 
+import exnihiloomnia.ENOConfig;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemSieveAssist extends Item implements ISieveFaster {
+public class ItemSifter extends Item implements ISieveFaster {
 
     private ToolMaterial material;
 
-    public ItemSieveAssist(ToolMaterial mat) {
+    public ItemSifter(ToolMaterial mat) {
         material = mat;
         setCreativeTab(CreativeTabs.TOOLS);
         setMaxStackSize(1);
@@ -55,5 +59,22 @@ public class ItemSieveAssist extends Item implements ISieveFaster {
             return 2;
         else
             return 1;
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if (isSelected && !entityIn.isSneaking() && ENOConfig.annoying_sifter) {
+            if (worldIn.getTotalWorldTime() % 4 == 0) {
+
+                float yaw = (float) Math.toRadians(entityIn.rotationYaw), pitch = (float) Math.toRadians(entityIn.rotationPitch);
+                float strength = ENOConfig.sifter_strength * getSpeedModifier();
+
+                double x = strength * MathHelper.sin(yaw) * MathHelper.cos(pitch),
+                        y = strength * MathHelper.sin(pitch),
+                        z = strength * MathHelper.cos(yaw) * MathHelper.cos(pitch);
+
+                entityIn.addVelocity(x, y, -z);
+            }
+        }
     }
 }

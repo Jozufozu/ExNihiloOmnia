@@ -29,6 +29,7 @@ public class ENOOres {
     private static String ORE_CATAGORY = "ores";
 
     public static boolean force_ores;
+
     public static boolean force_copper;
     public static boolean force_tin;
     public static boolean force_lead;
@@ -39,6 +40,7 @@ public class ENOOres {
     public static boolean force_ardite;
     public static boolean force_cobalt;
     public static boolean force_aluminum;
+
     public static boolean oredict_gravels;
     public static boolean oredict_sand;
     public static boolean oredict_dust;
@@ -102,6 +104,9 @@ public class ENOOres {
         
         if (OreDictionary.getOres("oreAluminum").size() > 0 || OreDictionary.getOres("oreAluminium").size() > 0 || force_aluminum)
             ores.add(EnumOre.ALUMINUM);
+
+        if (OreDictionary.getOres("oreOsmium").size() > 0 || force_osmium)
+            ores.add(EnumOre.OSMIUM);
 
         return ores;
     }

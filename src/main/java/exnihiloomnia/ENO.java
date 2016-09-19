@@ -49,14 +49,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION)//, dependencies = "required-after:VeinMiner")
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION)
 public class ENO {
 	@Instance(ENO.MODID)
 	public static ENO instance;
 	
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
-	public static final String VERSION = "1.0.4";
+	public static final String VERSION = "1.1.0";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;

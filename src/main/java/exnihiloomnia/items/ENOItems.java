@@ -19,7 +19,7 @@ import exnihiloomnia.items.misc.ItemSilkworm;
 import exnihiloomnia.items.misc.ItemSpores;
 import exnihiloomnia.items.misc.ItemStone;
 import exnihiloomnia.items.ores.ItemOre;
-import exnihiloomnia.items.sieveassist.ItemSieveAssist;
+import exnihiloomnia.items.sieveassist.ItemSifter;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -191,9 +191,9 @@ public class ENOItems {
         HAMMER_GOLD = new ItemHammer(ToolMaterial.GOLD).setUnlocalizedName("hammer_gold").setRegistryName("hammer_gold");
         HAMMER_DIAMOND = new ItemHammer(ToolMaterial.DIAMOND).setUnlocalizedName("hammer_diamond").setRegistryName("hammer_diamond");
 
-        SIFTER_DIAMOND = new ItemSieveAssist(ToolMaterial.DIAMOND).setMaxDamage(127).setUnlocalizedName("sifter_diamond").setRegistryName("sifter_diamond");
-        SIFTER_GOLD = new ItemSieveAssist(ToolMaterial.GOLD).setMaxDamage(47).setUnlocalizedName("sifter_gold").setRegistryName("sifter_gold");
-        SIFTER_IRON = new ItemSieveAssist(ToolMaterial.IRON).setMaxDamage(95).setUnlocalizedName("sifter_iron").setRegistryName("sifter_iron");
+        SIFTER_DIAMOND = new ItemSifter(ToolMaterial.DIAMOND).setMaxDamage(127).setUnlocalizedName("sifter_diamond").setRegistryName("sifter_diamond");
+        SIFTER_GOLD = new ItemSifter(ToolMaterial.GOLD).setMaxDamage(47).setUnlocalizedName("sifter_gold").setRegistryName("sifter_gold");
+        SIFTER_IRON = new ItemSifter(ToolMaterial.IRON).setMaxDamage(95).setUnlocalizedName("sifter_iron").setRegistryName("sifter_iron");
 
         MESH_SILK_WHITE = new ItemMesh().setUnlocalizedName("mesh_silk_white").setRegistryName("mesh_silk_white").setMaxDamage(63);
         MESH_WOOD = new ItemMesh().setUnlocalizedName("mesh_wood").setRegistryName("mesh_wood").setMaxDamage(9);
