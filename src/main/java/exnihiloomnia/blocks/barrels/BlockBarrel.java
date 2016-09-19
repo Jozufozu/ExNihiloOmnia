@@ -21,8 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class BlockBarrel extends Block implements ITileEntityProvider {
     protected static final AxisAlignedBB AABB_BARREL = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
@@ -47,10 +45,10 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (barrel != null) {
-			return barrel.getLuminosity();
+		if (tile != null && tile instanceof TileEntityBarrel) {
+			return ((TileEntityBarrel)tile).getLuminosity();
 		}
 		
 		return 0;
