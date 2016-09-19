@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
+import exnihiloomnia.items.sieveassist.ISieveFaster;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -29,8 +30,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.ArrayList;
+
 public class TileEntitySieve extends TileEntity implements ITickable {
-	protected ItemStack sifter;
+	protected ArrayList<ItemStack> sifters = new ArrayList<ItemStack>();
+    protected ItemStack currentSifter;
+
 	protected ItemStack mesh;
 	protected ItemStack contents;
 	protected IBlockState contentsState;
@@ -84,8 +89,12 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 
 	public void setWorkPerSecond(int workPerSecond, ItemStack sifter) {
 		this.workPerSecond = workPerSecond;
-		if (sifter != null)
-			this.sifter = sifter;
+		if (sifter != null) {
+            currentSifter = sifter;
+
+            if (!sifters.contains(sifter))
+                this.sifters.add(sifter);
+        }
 	}
 
 	public int getBaseSpeed() {
@@ -97,8 +106,10 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 		if (workQueued) {
 			ticksThisCycle++;
 
-			if (work < workMax)
-			work += workPerSecond / 20;
+			if (work < workMax) {
+                work += workPerSecond / 20;
+                ((ISieveFaster)currentSifter.getItem()).addSiftTime(workPerSecond/20);
+            }
 
 			if (ticksThisCycle >= ticksPerCycle) {
 				ticksThisCycle = 0;
@@ -142,10 +153,15 @@ public class TileEntitySieve extends TileEntity implements ITickable {
                         setMesh(null);
                     }
                 }
-                if (sifter != null)
-                	sifter.attemptDamageItem(1, worldObj.rand);
+                if (sifters != null)
+                    for (ItemStack i : sifters)
+                        if (((ISieveFaster)i.getItem()).getSiftTime() >= workMax / 2) {
+                            ((ISieveFaster) i.getItem()).setSiftTime(0);
 
-				sifter = null;
+                            i.attemptDamageItem(1, worldObj.rand);
+                        }
+
+				sifters.clear();
                 sync();
 				markDirty();
             }

@@ -64,13 +64,19 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 
 			if (sieve.canWork()) {
                 ItemStack offhand = player.getHeldItem(EnumHand.OFF_HAND);
+				ItemStack sifter = null;
 
 				if (item != null && item.getItem() instanceof ISieveFaster)
-					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) item.getItem()).getSpeedModifier()), item);
+					sifter = item;
 				else if (offhand != null && offhand.getItem() instanceof ISieveFaster)
-					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) offhand.getItem()).getSpeedModifier()), offhand);
-                else
+					sifter = offhand;
+
+				if (sifter == null)
 					sieve.setWorkPerSecond(sieve.getBaseSpeed(), null);
+				else {
+					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) sifter.getItem()).getSpeedModifier()), sifter);
+				}
+
 				sieve.doWork();
 				world.playSound(null, pos, SoundEvents.BLOCK_SAND_STEP, SoundCategory.BLOCKS, 0.3f, 0.6f);
 			}

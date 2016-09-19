@@ -2,16 +2,26 @@ package exnihiloomnia.items.sieveassist;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.util.math.MathHelper;
 
 public class ItemSieveAssist extends Item implements ISieveFaster {
 
     private ToolMaterial material;
+    private int siftTime;
 
     public ItemSieveAssist(ToolMaterial mat) {
         material = mat;
         setCreativeTab(CreativeTabs.TOOLS);
         setMaxStackSize(1);
+    }
+
+    public void setSiftTime(int siftTime) {
+        this.siftTime = siftTime;
+    }
+    public int getSiftTime() {
+        return this.siftTime;
+    }
+    public void addSiftTime(int time) {
+        this.siftTime += time;
     }
 
     public float getSpeedModifier() {
