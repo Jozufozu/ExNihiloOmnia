@@ -14,9 +14,7 @@ public class TextureLoader {
 	public static BufferedImage load(ResourceLocation location) {
 		try {
 			IResource res = Minecraft.getMinecraft().getResourceManager().getResource(location);
-			BufferedImage imgOutput = ImageIO.read(res.getInputStream());
-
-			return imgOutput;
+			return ImageIO.read(res.getInputStream());
 		}
 		catch (Exception e) {
 			ENO.log.error("Failed to load image: " + location.toString());

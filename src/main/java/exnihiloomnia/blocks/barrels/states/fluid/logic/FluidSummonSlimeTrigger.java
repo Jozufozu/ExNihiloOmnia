@@ -1,6 +1,5 @@
 package exnihiloomnia.blocks.barrels.states.fluid.logic;
 
-import net.minecraftforge.fluids.FluidStack;
 import exnihiloomnia.items.ENOItems;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;

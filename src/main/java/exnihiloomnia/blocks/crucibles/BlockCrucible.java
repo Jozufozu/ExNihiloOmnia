@@ -2,7 +2,6 @@ package exnihiloomnia.blocks.crucibles;
 
 import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

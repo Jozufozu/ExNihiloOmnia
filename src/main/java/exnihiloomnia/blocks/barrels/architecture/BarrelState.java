@@ -15,7 +15,7 @@ public abstract class BarrelState {
 	public abstract String getUniqueIdentifier();
 
 	public void activate(TileEntityBarrel barrel) {
-		boolean triggered = false;
+		boolean triggered;
 
 		for (BarrelLogic entry : triggers) {
 			triggered = entry.onActivate(barrel);

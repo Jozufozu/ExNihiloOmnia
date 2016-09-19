@@ -8,8 +8,6 @@ public class WorldProviderVoidHell extends WorldProviderHell {
 
 	@Override
     public IChunkGenerator createChunkGenerator() {
-		ChunkProviderVoidHell provider = new ChunkProviderVoidHell(this.worldObj, ENOWorld.getNetherFortressesAllowed(), worldObj.getSeed());
-		
-        return provider;
+		return new ChunkProviderVoidHell(this.worldObj, ENOWorld.getNetherFortressesAllowed(), worldObj.getSeed());
     }
 }

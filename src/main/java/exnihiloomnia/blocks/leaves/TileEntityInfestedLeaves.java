@@ -1,13 +1,9 @@
 package exnihiloomnia.blocks.leaves;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.util.Color;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -23,16 +19,16 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     public boolean dying = false;
     public boolean permanent = false;
 
-    private static final int SPREAD_INTERVAL = 100;
+    private static final int maxSpreadTicks = 100;
     private int spreadTimer = 0;
 
-    private static final float PROGRESS_INTERVAL = .0005f;
+    private static final float progressPerTick = .0005f;
     private float progress = 0;
 
     @Override
     public void update() {
         if (progress < 1.0f) {
-            progress += PROGRESS_INTERVAL;
+            progress += progressPerTick;
         }
         
         if (progress > 1.0f) {
@@ -42,7 +38,7 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         if (!worldObj.isRemote && progress > 0.6f) {
             spreadTimer++;
 
-            if (spreadTimer >= SPREAD_INTERVAL) {
+            if (spreadTimer >= maxSpreadTicks) {
                 spread();
                 spreadTimer = worldObj.rand.nextInt(10);
             }
@@ -55,7 +51,7 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     }
 
     public boolean isComplete() {
-        return progress >= PROGRESS_INTERVAL;
+        return progress >= progressPerTick;
     }
 
     public Color getRenderColor() {
@@ -63,10 +59,6 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         Color white = Color.WHITE;
 
         return Color.average(base, white, getProgress());
-    }
-
-    public int getBrightness() {
-        return block.getLightValue(worldObj.getBlockState(pos), worldObj, pos);
     }
 
     public float getProgress() {
