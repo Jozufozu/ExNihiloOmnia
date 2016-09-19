@@ -1,9 +1,11 @@
 package exnihiloomnia.items.sieveassist;
 
+import net.minecraft.item.ItemStack;
+
 public interface ISieveFaster {
     float getSpeedModifier();
 
-    int getSiftTime();
-    void setSiftTime(int siftTime);
-    void addSiftTime(int time);
+    int getSiftTime(ItemStack stack);
+    void setSiftTime(ItemStack stack, int siftTime);
+    void addSiftTime(ItemStack stack, int time);
 }

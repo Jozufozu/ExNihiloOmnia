@@ -108,7 +108,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 
 			if (work < workMax) {
                 work += workPerSecond / 20;
-                ((ISieveFaster)currentSifter.getItem()).addSiftTime(workPerSecond/20);
+                ((ISieveFaster)currentSifter.getItem()).addSiftTime(currentSifter, workPerSecond/20);
             }
 
 			if (ticksThisCycle >= ticksPerCycle) {
@@ -155,8 +155,8 @@ public class TileEntitySieve extends TileEntity implements ITickable {
                 }
                 if (sifters != null)
                     for (ItemStack i : sifters)
-                        if (((ISieveFaster)i.getItem()).getSiftTime() >= workMax / 2) {
-                            ((ISieveFaster) i.getItem()).setSiftTime(0);
+                        if (((ISieveFaster)i.getItem()).getSiftTime(i) >= workMax / 2) {
+                            ((ISieveFaster) i.getItem()).setSiftTime(i, 0);
 
                             i.attemptDamageItem(1, worldObj.rand);
                         }

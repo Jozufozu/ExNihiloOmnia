@@ -1,12 +1,17 @@
 package exnihiloomnia.items.sieveassist;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemSieveAssist extends Item implements ISieveFaster {
 
     private ToolMaterial material;
-    private int siftTime;
 
     public ItemSieveAssist(ToolMaterial mat) {
         material = mat;
@@ -14,18 +19,29 @@ public class ItemSieveAssist extends Item implements ISieveFaster {
         setMaxStackSize(1);
     }
 
-    public void setSiftTime(int siftTime) {
-        this.siftTime = siftTime;
+    public void setSiftTime(ItemStack stack, int siftTime) {
+        stack.getTagCompound().setInteger("siftTime", siftTime);
     }
-    public int getSiftTime() {
-        return this.siftTime;
+
+    public int getSiftTime(ItemStack stack) {
+        return stack.getTagCompound().getInteger("siftTime");
     }
-    public void addSiftTime(int time) {
-        this.siftTime += time;
+
+    //convenience
+    public void addSiftTime(ItemStack stack, int time) {
+        setSiftTime(stack, getSiftTime(stack) + time);
     }
 
     public float getSpeedModifier() {
         return findSpeedModifier(material);
+    }
+
+    @Override
+    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+        ItemStack itemStack = new ItemStack(itemIn);
+        itemStack.setTagCompound(new NBTTagCompound());
+        itemStack.getTagCompound().setInteger("siftTime", 0);
+        subItems.add(itemStack);
     }
 
     public static float findSpeedModifier(ToolMaterial material) {
