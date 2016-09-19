@@ -36,6 +36,7 @@ public class ENOWorld {
 	private static boolean gen_end_allow_crystals;
 	private static String surface_biome;
 
+	private static boolean moss_spreads;
 	private static boolean moss_spread_with_rain;
 	private static int moss_spread_speed;
 	private static boolean mycelium_sprout_with_rain;
@@ -67,6 +68,7 @@ public class ENOWorld {
 		if (!template_end_name.equals("none") && template_end_name.trim().length() > 0)
 			template_end = TemplateLoader.load(ENO.path + File.separator + "templates" + File.separator + template_end_name);
 		
+		moss_spreads = config.get(CATEGORY_WORLD_MOD, "can moss spread at all", true).getBoolean(true);
 		moss_spread_with_rain = config.get(CATEGORY_WORLD_MOD, "moss spreads when raining", true).getBoolean(true);
 		moss_spread_speed = config.get(CATEGORY_WORLD_MOD, "moss spread speed", Moss.DEFAULT_GROWTH_SPEED).getInt();
 		mycelium_sprout_with_rain = config.get(CATEGORY_WORLD_MOD, "mycelium sprouts when raining", true).getBoolean(true);
@@ -175,7 +177,8 @@ public class ENOWorld {
 			ChunkProviderServer provider = (ChunkProviderServer)world.getChunkProvider();
 	        
 			for (Object o : provider.getLoadedChunks().toArray()) {
-	        	Moss.grow(world, (Chunk) o);
+				if (moss_spreads)
+	        		Moss.grow(world, (Chunk) o);
 	        	Mycelium.grow(world, (Chunk) o);
 	        }
 		}
