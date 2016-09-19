@@ -107,10 +107,11 @@ public class SieveRegistry {
 	
 	public static void registerVanillaRecipes() {
 		SieveRegistryEntry dirt = new SieveRegistryEntry(Blocks.DIRT.getDefaultState(), EnumMetadataBehavior.IGNORED);
-		dirt.addReward(new ItemStack(ENOItems.STONE, 1), 100);
-		dirt.addReward(new ItemStack(ENOItems.STONE, 1), 100);
-		dirt.addReward(new ItemStack(ENOItems.STONE, 1), 75);
-		dirt.addReward(new ItemStack(ENOItems.STONE, 1), 50);
+		ItemStack stone = new ItemStack(ENOItems.STONE);
+		dirt.addReward(stone, 100);
+		dirt.addReward(stone, 100);
+		dirt.addReward(stone, 75);
+		dirt.addReward(stone, 50);
 		dirt.addReward(new ItemStack(Items.WHEAT_SEEDS, 1), 7);
 		dirt.addReward(new ItemStack(ENOItems.GRASS_SEEDS, 1), 7);
 		dirt.addReward(new ItemStack(Items.MELON_SEEDS, 1), 3);
@@ -136,12 +137,18 @@ public class SieveRegistry {
         
 		gravel.addReward(new ItemStack(Items.FLINT, 1), 25);
 		gravel.addReward(new ItemStack(Items.COAL, 1), 13);
-		gravel.addReward(new ItemStack(Items.DYE, 1, 4), 5); //Lapis
-		gravel.addReward(new ItemStack(Items.DYE, 1, 4), 7); //Lapis
-		gravel.addReward(new ItemStack(Items.EMERALD, 1), 1);
-		gravel.addReward(new ItemStack(Items.EMERALD, 1), 1);
-		gravel.addReward(new ItemStack(Items.DIAMOND, 1), 1);
-		gravel.addReward(new ItemStack(Items.DIAMOND, 1), 1);
+
+		ItemStack lapis = new ItemStack(Items.DYE, 1, 4);
+		gravel.addReward(lapis, 5); //Lapis
+		gravel.addReward(lapis, 7); //Lapis
+
+		ItemStack emerald = new ItemStack(Items.EMERALD);
+		gravel.addReward(emerald, 1);
+		gravel.addReward(emerald, 1);
+
+		ItemStack diamond = new ItemStack(Items.DIAMOND);
+		gravel.addReward(diamond, 1);
+		gravel.addReward(diamond, 1);
 		add(gravel);
 
 		SieveRegistryEntry nethergravel = new SieveRegistryEntry(ENOBlocks.GRAVEL_NETHER.getDefaultState(), EnumMetadataBehavior.IGNORED);
@@ -161,8 +168,9 @@ public class SieveRegistry {
 			if (ore.hasEnd())
 				endergravel.addReward(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), ore.getRarity());
 		}
-		
-		add(endergravel);
+
+		if (endergravel.getRewards().size() > 0)
+			add(endergravel);
 
         SieveRegistryEntry sand = new SieveRegistryEntry(Blocks.SAND.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		

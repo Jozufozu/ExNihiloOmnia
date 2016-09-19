@@ -16,6 +16,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class CrucibleRegistry {
     public static HashMap<String, CrucibleRegistryEntry> entries;
 
+    public static HashMap<String, CrucibleRegistryEntry> getEntryMap() {
+        return entries;
+    }
+
     public static void initialize() {
         entries = new HashMap<String, CrucibleRegistryEntry>();
 

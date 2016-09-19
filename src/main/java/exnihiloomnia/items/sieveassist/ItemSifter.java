@@ -17,6 +17,7 @@ public class ItemSifter extends Item implements ISieveFaster {
 
     public ItemSifter(ToolMaterial mat) {
         material = mat;
+
         setCreativeTab(CreativeTabs.TOOLS);
         setMaxStackSize(1);
     }
@@ -61,6 +62,7 @@ public class ItemSifter extends Item implements ISieveFaster {
             return 1;
     }
 
+    //Why did I do this? What's wrong with me
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (isSelected && !entityIn.isSneaking() && ENOConfig.annoying_sifter) {
