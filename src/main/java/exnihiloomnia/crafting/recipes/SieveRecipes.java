@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class SieveRecipes {
@@ -56,22 +57,28 @@ public class SieveRecipes {
 				new ShapedOreRecipe(new ItemStack(ENOItems.SIFTER_DIAMOND),
 						"ddd",
 						"sps",
+                        "srs",
 						'd', "gemDiamond",
-						's', "stickWood",
+						's', "cobblestone",
+                        'r', "dustRedstone",
 						'p', new ItemStack(Blocks.PISTON)));
 		GameRegistry.addRecipe(
 				new ShapedOreRecipe(new ItemStack(ENOItems.SIFTER_GOLD),
 						"ddd",
 						"sps",
+                        "srs",
 						'd', "ingotGold",
-						's', "stickWood",
+						's', "cobblestone",
+                        'r', "dustRedstone",
 						'p', new ItemStack(Blocks.PISTON)));
 		GameRegistry.addRecipe(
 				new ShapedOreRecipe(new ItemStack(ENOItems.SIFTER_IRON),
 						"ddd",
 						"sps",
+                        "srs",
 						'd', "ingotIron",
-						's', "stickWood",
+						's', "cobblestone",
+                        'r', "dustRedstone",
 						'p', new ItemStack(Blocks.PISTON)));
 	}
 }
