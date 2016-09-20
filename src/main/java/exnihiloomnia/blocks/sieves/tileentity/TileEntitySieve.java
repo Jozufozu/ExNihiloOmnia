@@ -108,7 +108,8 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 
 			if (work < workMax) {
                 work += workPerSecond / 20;
-                ((ISieveFaster)currentSifter.getItem()).addSiftTime(currentSifter, workPerSecond/20);
+				if (currentSifter != null)
+                	((ISieveFaster)currentSifter.getItem()).addSiftTime(currentSifter, workPerSecond/20);
             }
 
 			if (ticksThisCycle >= ticksPerCycle) {
