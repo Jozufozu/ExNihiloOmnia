@@ -49,7 +49,15 @@ public class SieveRegistry {
 	
 	public static void add(SieveRegistryEntry entry) {
 		if (entry != null) {
-			entries.put(entry.getKey(), entry);
+			String key = entry.getKey();
+
+			//add the rewards for an existing entry
+			if (entries.containsKey(key)) {
+				for (SieveReward reward : entry.getRewards())
+					entries.get(key).getRewards().add(reward);
+			}
+			else
+				entries.put(key, entry);
 		}
 	}
 	

@@ -35,6 +35,10 @@ public class SieveReward {
 		return item;
 	}
 
+	public String getName() {
+		return item.getUnlocalizedName() + ":" + item.getMetadata();
+	}
+
 	public void setItem(ItemStack item) {
 		this.item = item;
 	}

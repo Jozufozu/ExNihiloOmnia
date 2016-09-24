@@ -3,7 +3,6 @@ package exnihiloomnia.blocks.barrels;
 import java.util.List;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +17,7 @@ public class BlockBarrelGlassColored extends BlockBarrel {
 	public static final PropertyEnum COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 	
 	public BlockBarrelGlassColored() {
-		super(Material.GLASS, SoundType.GLASS);
+		super(GLASS, SoundType.GLASS);
 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
 	}

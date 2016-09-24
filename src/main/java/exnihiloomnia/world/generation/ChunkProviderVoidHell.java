@@ -18,7 +18,7 @@ public class ChunkProviderVoidHell extends ChunkProviderHell {
 	MapGenNetherBridge fortresses;
 	
 	public ChunkProviderVoidHell(World world, boolean shouldGenNetherFortress, long seed) {
-		super(world, true, seed);
+		super(world, shouldGenNetherFortress, seed);
 		this.world = world;
 		
 		this.fortresses = (MapGenNetherBridge) TerrainGen.getModdedMapGen(new MapGenNetherBridge(), NETHER_BRIDGE);

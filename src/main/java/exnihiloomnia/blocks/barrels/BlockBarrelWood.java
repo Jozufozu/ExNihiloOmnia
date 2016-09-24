@@ -4,6 +4,7 @@ import java.util.List;
 
 import exnihiloomnia.util.enums.EnumWood;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,7 +19,27 @@ public class BlockBarrelWood extends BlockBarrel {
 	public static final PropertyEnum WOOD = PropertyEnum.create("wood", EnumWood.class);
 	
 	public BlockBarrelWood() {
-		super(Material.WOOD, SoundType.WOOD);
+		super(new Material(MapColor.WOOD) {
+			@Override
+			public boolean isSolid() {
+				return false;
+			}
+
+            @Override
+            public boolean blocksMovement() {
+                return false;
+            }
+
+            @Override
+            public boolean isOpaque() {
+                return true;
+            }
+
+            @Override
+            public boolean getCanBurn() {
+                return true;
+            }
+        }, SoundType.WOOD);
 		
 		this.setDefaultState(this.blockState.getBaseState().withProperty(WOOD, EnumWood.OAK));
 	}

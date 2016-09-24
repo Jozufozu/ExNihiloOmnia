@@ -82,8 +82,8 @@ public class ENOBlocks {
 
 	public static void init() {
 	    BARREL_WOOD = new BlockBarrelWood().setUnlocalizedName("barrel_wood").setRegistryName("barrel_wood");
-        BARREL_STONE = new BlockBarrel(Material.ROCK, SoundType.STONE).setUnlocalizedName("barrel_stone").setRegistryName("barrel_stone");
-        BARREL_GLASS = new BlockBarrel(Material.GLASS, SoundType.GLASS).setUnlocalizedName("barrel_glass").setRegistryName("barrel_glass");
+        BARREL_STONE = new BlockBarrel(BlockBarrel.STONE, SoundType.STONE).setUnlocalizedName("barrel_stone").setRegistryName("barrel_stone");
+        BARREL_GLASS = new BlockBarrel(BlockBarrel.GLASS, SoundType.GLASS).setUnlocalizedName("barrel_glass").setRegistryName("barrel_glass");
         BARREL_GLASS_COLORED = new BlockBarrelGlassColored().setUnlocalizedName("barrel_glass_colored").setRegistryName("barrel_glass_colored");
         CRUCIBLE = new BlockCrucible().setUnlocalizedName("crucible").setRegistryName("crucible");
         CRUCIBLE_RAW = new BlockCrucibleRaw().setUnlocalizedName("crucible_raw").setRegistryName("crucible_raw");

@@ -6,6 +6,7 @@ import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -24,6 +25,48 @@ import net.minecraft.world.World;
 
 public class BlockBarrel extends Block implements ITileEntityProvider {
     protected static final AxisAlignedBB AABB_BARREL = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+	public static final Material GLASS = new Material(MapColor.AIR) {
+        @Override
+        public boolean isSolid() {
+            return false;
+        }
+
+        @Override
+        public boolean blocksMovement() {
+            return false;
+        }
+
+        @Override
+        public boolean isOpaque() {
+            return false;
+        }
+
+        @Override
+        public boolean blocksLight() {
+            return false;
+        }
+    };
+    public static final Material STONE = new Material(MapColor.STONE) {
+        @Override
+        public boolean isSolid() {
+            return false;
+        }
+
+        @Override
+        public boolean blocksMovement() {
+            return false;
+        }
+
+        @Override
+        public boolean isOpaque() {
+            return true;
+        }
+
+        @Override
+        public boolean isToolNotRequired() {
+            return false;
+        }
+    };
 
 	public BlockBarrel(Material material, SoundType sound) {
 		super(material);
@@ -123,11 +166,6 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 			return BlockRenderLayer.TRANSLUCENT;
 		}
 	}
-	
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
 	
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
