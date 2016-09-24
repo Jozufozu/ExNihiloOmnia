@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.BlockBarrelGlassColored;
 import exnihiloomnia.blocks.barrels.BlockBarrelWood;
@@ -11,6 +12,7 @@ import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.blocks.crucibles.BlockCrucible;
 import exnihiloomnia.blocks.crucibles.BlockCrucibleRaw;
 import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
+import exnihiloomnia.blocks.endcake.BlockEndCake;
 import exnihiloomnia.blocks.fluids.BlockFluidWitchwater;
 import exnihiloomnia.blocks.leaves.BlockInfestedLeaves;
 import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
@@ -46,6 +48,8 @@ public class ENOBlocks {
 	public static Block INFESTED_LEAVES;
 	public static Block WITCHWATER;
 
+	public static Block END_CAKE;
+
     public static Block ORE_GRAVEL;
     public static Block ORE_GRAVEL_NETHER;
     public static Block ORE_GRAVEL_ENDER;
@@ -69,6 +73,9 @@ public class ENOBlocks {
         blocks.add(INFESTED_LEAVES);
 
         blocks.add(WITCHWATER);
+
+        if (ENOConfig.end_cake)
+            blocks.add(END_CAKE);
 
         blocks.add(ORE_GRAVEL);
         blocks.add(ORE_GRAVEL_ENDER);
@@ -95,6 +102,8 @@ public class ENOBlocks {
 
         WITCHWATER = new BlockFluidWitchwater(ENOFluids.WITCHWATER, Material.WATER).setUnlocalizedName("witchwater").setRegistryName("witchwater");
 
+        END_CAKE = new BlockEndCake().setUnlocalizedName("end_cake").setRegistryName("end_cake");
+
         ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
         ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
         ORE_GRAVEL_NETHER = new BlockOre(EnumOreBlockType.GRAVEL_NETHER).setUnlocalizedName("ore_gravel_nether").setRegistryName("ore_gravel_nether");
@@ -112,6 +121,8 @@ public class ENOBlocks {
                 GameRegistry.register(new ItemSieveWood(block).setRegistryName(block.getRegistryName()));
             else if (block instanceof BlockOre)
                 GameRegistry.register(new ItemBlockOre(block).setRegistryName(block.getRegistryName()));
+            else if (block == END_CAKE)
+                GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
             else if (block != WITCHWATER)
                 GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
         }

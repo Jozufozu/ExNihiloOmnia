@@ -1,5 +1,7 @@
 package exnihiloomnia.crafting.recipes;
 
+import exnihiloomnia.ENOConfig;
+import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.crafting.ENOCrafting;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.init.Blocks;
@@ -9,8 +11,21 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class MiscRecipes {
+
+    private static ItemStack stone = new ItemStack(ENOItems.STONE);
 	
 	public static void registerOtherRecipes() {
+
+        //end cake
+        if (ENOConfig.end_cake)
+            GameRegistry.addRecipe(
+                new ShapedOreRecipe(new ItemStack(ENOBlocks.END_CAKE),
+                        "eee",
+                        "cgc",
+                        "eee",
+                        'e', new ItemStack(Items.ENDER_EYE),
+                        'g', new ItemStack(Items.GOLDEN_APPLE),
+                        'c', new ItemStack(Items.CAKE)));
 		//web
 		GameRegistry.addRecipe(
 				new ShapedOreRecipe(new ItemStack(Blocks.WEB, 1),
@@ -27,83 +42,83 @@ public class MiscRecipes {
             
             case 1:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone);
                 break;
                 
             case 2:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone);
                 break;
                 
             case 3:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone);
                 break;
                 
             case 4:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone,
+                    stone);
                 break;
                 
             case 5:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone);
                 break;
                 
             case 6:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone);
                 break;
                 
             case 7:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone);
                 break;
                 
             case 8:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone);
                 break;
                 
             case 9:
                 GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE),
-                    new ItemStack(ENOItems.STONE));
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone,
+                    stone);
                 break;
         }
 

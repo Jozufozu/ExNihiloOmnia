@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cake_uneaten",
+		"textures": {
+			"particle": "exnihiloomnia:blocks/end_cake_side",
+			"bottom": "exnihiloomnia:blocks/end_cake_bottom",
+			"top": "exnihiloomnia:blocks/end_cake_top",
+			"side": "exnihiloomnia:blocks/end_cake_side",
+			"inside": "exnihiloomnia:blocks/end_cake_inner"
+		}
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}],
+        "bites": {
+            0: { "model": "cake_uneaten" },
+            1: { "model": "cake_slice1" },
+            2: { "model": "cake_slice2" },
+            3: { "model": "cake_slice3" },
+            4: { "model": "cake_slice4" },
+            5: { "model": "cake_slice5" },
+            6: { "model": "cake_slice6" }
+        }
+    }
+}
