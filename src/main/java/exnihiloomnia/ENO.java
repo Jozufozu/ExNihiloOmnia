@@ -1,14 +1,15 @@
 package exnihiloomnia;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
+import exnihiloomnia.client.textures.ENOTextures;
+import exnihiloomnia.util.enums.EnumOreBlockType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
-import exnihiloomnia.client.textures.ENTextures;
 import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.compatibility.ENOOres;
 import exnihiloomnia.crafting.ENOCrafting;
@@ -122,8 +123,9 @@ public class ENO {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onTextureStitchEvent(TextureStitchEvent.Pre event) {
-		ENTextures.registerCustomTextures(event.getMap());
-		ENTextures.setMeshTextures();
+		ENOTextures.registerCustomTextures(event.getMap());
+		ENOTextures.registerOreTextures(event.getMap());
+		ENOTextures.setMeshTextures();
 	}
 
 	@SubscribeEvent

@@ -89,10 +89,4 @@ public class BlockOre extends BlockFalling {
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
 }

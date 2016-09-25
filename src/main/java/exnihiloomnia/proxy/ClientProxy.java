@@ -84,9 +84,9 @@ public class ClientProxy extends Proxy {
 
                 for (ItemStack i : list) {
                     ModelBakery.registerItemVariants(i.getItem(), i.getItem().getRegistryName());
-                    if (Block.getBlockFromItem(i.getItem()) instanceof BlockOre)
-                        ModelLoader.setCustomModelResourceLocation(item, i.getItemDamage(), new ModelResourceLocation(ENO.MODID + ":ore_" + ((BlockOre) Block.getBlockFromItem(i.getItem())).getType().getName()));
-                    else
+                    //if (Block.getBlockFromItem(i.getItem()) instanceof BlockOre)
+                    //    ModelLoader.setCustomModelResourceLocation(item, i.getItemDamage(), new ModelResourceLocation(ENO.MODID + ":ore_" + ((BlockOre) Block.getBlockFromItem(i.getItem())).getType().getName()));
+                    //else
                         ModelLoader.setCustomModelResourceLocation(item, i.getItemDamage(), new ModelResourceLocation(ENO.MODID + ":" + i.getUnlocalizedName().substring(5)));
                 }
             }

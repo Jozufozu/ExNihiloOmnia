@@ -232,6 +232,7 @@ tile.sieve_wood_acacia.name=Acacia Sieve
 tile.sieve_wood_dark_oak.name=Dark Oak Sieve
 tile.witchwater.name=Witchwater
 tile.infested_leaves.name=Infested Leaves
+tile.end_cake.name=End Cake
 
 jei.exnihiloomnia:sieve.dropChance=Drop Chance:
 jei.exnihiloomnia:sieve=Ex Nihilo Sieve

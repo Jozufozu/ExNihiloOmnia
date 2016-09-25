@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 import exnihiloomnia.ENO;
 import exnihiloomnia.util.Color;
 
-public class TextureColoring {
+public class TextureManipulation {
 	
     //Recolors an image based on the input color
-    public static BufferedImage Recolor(BufferedImage template, Color colorNew) {
+    public static BufferedImage recolor(BufferedImage template, Color colorNew) {
         int w = template.getWidth();
         int h = template.getHeight();
 
@@ -23,7 +23,7 @@ public class TextureColoring {
 
         // blend each pixel where alpha > 0
         for (int i = 0; i < templateData.length; i++) {
-            Color colorRaw = new Color(templateData[i], false);
+            Color colorRaw = new Color(templateData[i], true);
 
             if (colorRaw.a > 0) {
                 float a = colorRaw.a;
@@ -47,7 +47,7 @@ public class TextureColoring {
     }
 
     //Combines two images and returns the composite.
-    public static BufferedImage Composite(BufferedImage imgBackground, BufferedImage imgForeground) {
+    public static BufferedImage composite(BufferedImage imgBackground, BufferedImage imgForeground) {
         if (!normalCompositePossible(imgBackground, imgForeground)) {
             ENO.log.error("Images with different sizes can't be composited.");
             return null;
@@ -70,7 +70,7 @@ public class TextureColoring {
         // 'over' blend each pixel
         for (int i = 0; i < backgroundData.length; i++) {
             Color colorBackground = new Color(backgroundData[i]);
-            Color colorForeground = new Color(foregroundData[i], false);
+            Color colorForeground = new Color(foregroundData[i], true);
 
             //Debug code!
             //System.out.println("Background pixel r:" + colorBackground.r + ", g:" +  colorBackground.g + ", b:" + colorBackground.b + ", a:" +  colorBackground.a);

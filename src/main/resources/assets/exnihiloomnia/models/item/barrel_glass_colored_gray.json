@@ -1,6 +1,5 @@
 {
     "parent": "exnihiloomnia:block/barrel_glass",
-    
     "textures": {
         "barrel": "blocks/glass_gray"
     }

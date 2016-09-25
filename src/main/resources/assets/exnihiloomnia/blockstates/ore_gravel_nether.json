@@ -1,24 +1,27 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "exnihiloomnia:ore_gravel_nether"
+        "model": "cube_all",
+        "textures": {
+            "all": "exnihiloomnia:ore_gravel_nether_iron"
+        }
     },
     "variants": {
         "normal": [{}],
         "inventory": [{}],
         "ore": {
-            "iron": {},
-            "gold": {},
-            "copper": {},
-            "aluminum": {},
-            "nickel": {},
-            "tin": {},
-            "lead": {},
-            "silver": {},
-            "platinum": {},
-            "cobalt": {},
-            "ardite": {},
-            "osmium": {}
+            "iron": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_iron" } },
+            "gold": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_gold" } },
+            "copper": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_copper" } },
+            "aluminum": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_aluminum" } },
+            "nickel": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_nickel" } },
+            "tin": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_tin" } },
+            "lead": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_lead" } },
+            "silver": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_silver" } },
+            "platinum": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_platinum" } },
+            "cobalt": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_cobalt" } },
+            "ardite": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_ardite" } },
+            "osmium": { "textures": { "all": "exnihiloomnia:ore_gravel_nether_osmium" } }
         }
     }
 }

@@ -121,8 +121,6 @@ public class ENOBlocks {
                 GameRegistry.register(new ItemSieveWood(block).setRegistryName(block.getRegistryName()));
             else if (block instanceof BlockOre)
                 GameRegistry.register(new ItemBlockOre(block).setRegistryName(block.getRegistryName()));
-            else if (block == END_CAKE)
-                GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
             else if (block != WITCHWATER)
                 GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
         }

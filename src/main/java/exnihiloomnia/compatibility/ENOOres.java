@@ -68,7 +68,7 @@ public class ENOOres {
         List<EnumOre> ores = new ArrayList<EnumOre>();
         
         //change to true to debug
-        if (force_ores) {
+        if (true) {
             for (EnumOre ore : EnumOre.values())
                 ores.add(ore);
             return ores;
@@ -191,17 +191,5 @@ public class ENOOres {
                 return tintIndex == 1 ? EnumOre.fromMetadata(stack.getMetadata()).getColor() : -1;
             }
         }, new Item[]{ENOItems.BROKEN_ORE, ENOItems.BROKEN_ORE_ENDER, ENOItems.BROKEN_ORE_NETHER, ENOItems.CRUSHED_ORE, ENOItems.POWDERED_ORE, ENOItems.INGOT_ORE});
-
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                return EnumOre.fromMetadata(stack.getMetadata()).getColor();
-            }
-        }, new Block[]{ENOBlocks.ORE_GRAVEL, ENOBlocks.ORE_GRAVEL_ENDER, ENOBlocks.ORE_GRAVEL_NETHER, ENOBlocks.ORE_SAND, ENOBlocks.ORE_DUST,});
-
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
-            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-                return EnumOre.fromMetadata(state.getBlock().getMetaFromState(state)).getColor();
-            }
-        }, new Block[]{ENOBlocks.ORE_GRAVEL, ENOBlocks.ORE_GRAVEL_ENDER, ENOBlocks.ORE_GRAVEL_NETHER, ENOBlocks.ORE_SAND, ENOBlocks.ORE_DUST,});
     }
 }

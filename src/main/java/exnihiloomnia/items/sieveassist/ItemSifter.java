@@ -27,7 +27,14 @@ public class ItemSifter extends Item implements ISieveFaster {
     }
 
     public int getSiftTime(ItemStack stack) {
-        return stack.getTagCompound().getInteger("siftTime");
+        try {
+            return stack.getTagCompound().getInteger("siftTime");
+        }
+        catch (NullPointerException e) {
+            stack.setTagCompound(new NBTTagCompound());
+            stack.getTagCompound().setInteger("siftTime", 0);
+            return 0;
+        }
     }
 
     //convenience
@@ -48,34 +55,38 @@ public class ItemSifter extends Item implements ISieveFaster {
     }
 
     public static float findSpeedModifier(ToolMaterial material) {
-        if (material == ToolMaterial.WOOD)
-            return .5f;
-        else if (material == ToolMaterial.STONE)
-            return 1;
-        else if (material == ToolMaterial.IRON)
-            return 1.3f;
-        else if (material == ToolMaterial.DIAMOND)
-            return 1.6f;
-        else if (material == ToolMaterial.GOLD)
-            return 2;
-        else
-            return 1;
+        switch (material) {
+            case WOOD:
+                return .5f;
+            case STONE:
+                return 1;
+            case IRON:
+                return 1.3f;
+            case DIAMOND:
+                return 1.6f;
+            case GOLD:
+                return 2;
+            default:
+                return 1;
+        }
     }
 
     //Why did I do this? What's wrong with me
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (isSelected && !entityIn.isSneaking() && ENOConfig.annoying_sifter) {
-            if (worldIn.getTotalWorldTime() % 4 == 0) {
+        if (ENOConfig.annoying_sifter) {
+            if (isSelected && !entityIn.isSneaking()) {
+                if (worldIn.getTotalWorldTime() % 4 == 0) {
 
-                float yaw = (float) Math.toRadians(entityIn.rotationYaw), pitch = (float) Math.toRadians(entityIn.rotationPitch);
-                float strength = ENOConfig.sifter_strength * getSpeedModifier();
+                    float yaw = (float) Math.toRadians(entityIn.rotationYaw), pitch = (float) Math.toRadians(entityIn.rotationPitch);
+                    float strength = ENOConfig.sifter_strength * getSpeedModifier();
 
-                double x = strength * MathHelper.sin(yaw) * MathHelper.cos(pitch),
-                        y = strength * MathHelper.sin(pitch),
-                        z = strength * MathHelper.cos(yaw) * MathHelper.cos(pitch);
+                    double x = strength * MathHelper.sin(yaw) * MathHelper.cos(pitch),
+                            y = strength * MathHelper.sin(pitch),
+                            z = strength * MathHelper.cos(yaw) * MathHelper.cos(pitch);
 
-                entityIn.addVelocity(x, y, -z);
+                    entityIn.addVelocity(x, y, -z);
+                }
             }
         }
     }
