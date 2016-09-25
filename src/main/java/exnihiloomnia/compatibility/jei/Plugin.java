@@ -22,13 +22,15 @@ public class Plugin implements IModPlugin{
     public void register(@Nonnull IModRegistry registry) {
         registry.addRecipeCategories(
                 new SieveRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
-                new HammerRecipeCategory(registry.getJeiHelpers().getGuiHelper())
+                new HammerRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
+                new CrucibleRecipeCategory(registry.getJeiHelpers().getGuiHelper())
 
         );
 
         registry.addRecipeHandlers(
                 new SieveRecipeHandler(),
-                new HammerRecipeHandler()
+                new HammerRecipeHandler(),
+                new CrucibleRecipeHandler()
         );
 
         ArrayList<JEISieveRecipe> sieveRecipes = new ArrayList<JEISieveRecipe>();
@@ -52,11 +54,14 @@ public class Plugin implements IModPlugin{
 
         for (EnumWood wood : EnumWood.values())
             registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.SIEVE_WOOD, 1, wood.getMetadata()), SieveRecipeCategory.UID);
+
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_DIAMOND), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_GOLD), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_IRON), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_STONE), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_WOOD), HammerRecipeCategory.UID);
+
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.CRUCIBLE), CrucibleRecipeCategory.UID);
     }
 
     @Override

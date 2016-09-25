@@ -1,12 +1,9 @@
 
 package exnihiloomnia.compatibility.jei.categories;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import exnihiloomnia.ENO;
-import exnihiloomnia.registries.sifting.SieveRegistryEntry;
 import exnihiloomnia.registries.sifting.SieveReward;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -15,18 +12,12 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {

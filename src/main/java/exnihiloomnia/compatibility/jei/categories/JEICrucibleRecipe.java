@@ -14,14 +14,21 @@ import java.util.List;
 public class JEICrucibleRecipe implements IRecipeWrapper {
     private final List<ItemStack> input = new ArrayList<ItemStack>();
     private final List<FluidStack> output = new ArrayList<FluidStack>();
+    private final CrucibleRegistryEntry entry;
 
     public JEICrucibleRecipe(CrucibleRegistryEntry entry) {
-        input.add(new ItemStack(entry.getBlock()));
-        output.add(new FluidStack(entry.getFluid(), (int)entry.getRatio()));
+        input.add(0, new ItemStack(entry.getBlock()));
+        output.add(new FluidStack(entry.getFluid(), entry.getFluidVolume()));
+
+        this.entry = entry;
+    }
+
+    public CrucibleRegistryEntry getEntry() {
+        return entry;
     }
 
     @Override
-    public List getInputs() {
+    public List<ItemStack> getInputs() {
         return input;
     }
 
@@ -47,7 +54,6 @@ public class JEICrucibleRecipe implements IRecipeWrapper {
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
     }
 
     @Nullable

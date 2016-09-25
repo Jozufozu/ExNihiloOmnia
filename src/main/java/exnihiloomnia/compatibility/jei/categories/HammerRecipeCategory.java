@@ -80,19 +80,19 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
         IFocus<ItemStack> focus = recipeLayout.getItemStacks().getFocus();
         hasHighlight = focus.getMode() == IFocus.Mode.OUTPUT;
         final List outputs = recipeWrapper.getOutputs();
-        final int INPUT_SLOTS = 1;
+        final int outputSlots = 1;
         int slotNumber = 0;
 
         for(Object output : outputs) {
             final int slotX = 2 + (slotNumber % 9 * 18);
             final int slotY = 52 + (slotNumber / 9 * 18);
 
-            recipeLayout.getItemStacks().init(INPUT_SLOTS + slotNumber, false, slotX, slotY);
+            recipeLayout.getItemStacks().init(outputSlots + slotNumber, false, slotX, slotY);
 
 
             ItemStack outputItemStack = (ItemStack) output;
 
-            recipeLayout.getItemStacks().set(INPUT_SLOTS + slotNumber, outputItemStack);
+            recipeLayout.getItemStacks().set(outputSlots + slotNumber, outputItemStack);
             ItemStack focusStack = focus.getValue();
 
             if(focus.getMode() == IFocus.Mode.OUTPUT && focusStack != null
