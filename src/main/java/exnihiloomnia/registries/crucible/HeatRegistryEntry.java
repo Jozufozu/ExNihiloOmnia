@@ -1,13 +1,15 @@
 package exnihiloomnia.registries.crucible;
 
 import exnihiloomnia.registries.crucible.pojos.HeatValue;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 
 public class HeatRegistryEntry {
-	public Block block;
-	public int meta;
-	public int value;
+	private Block block;
+	private int meta;
+	private int value;
 	
 	public HeatRegistryEntry(Block block, int meta, int value) {
 		this.block = block;
@@ -22,5 +24,17 @@ public class HeatRegistryEntry {
 			return new HeatRegistryEntry(block, value.getMeta(), value.getHeat());
 		else
 			return null;
+	}
+
+	public Block getBlock() {
+		return block;
+	}
+
+	public int getMeta() {
+		return meta;
+	}
+
+	public int getValue() {
+		return value;
 	}
 }

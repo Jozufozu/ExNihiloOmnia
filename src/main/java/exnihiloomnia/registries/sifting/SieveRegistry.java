@@ -9,6 +9,7 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.sifting.files.SieveRecipeLoader;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import exnihiloomnia.util.enums.EnumOre;
@@ -19,11 +20,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 @SuppressWarnings("deprecation")
-public class SieveRegistry {
+public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
+	public static SieveRegistry INSTANCE = new SieveRegistry();
+
 	private static HashMap<String, SieveRegistryEntry> entries;
 	private static List<ItemStack> EMPTY_REWARDS_ARRAY = new ArrayList<ItemStack>(){};
 
-	public static void initialize() {
+	public void initialize() {
 		entries = new HashMap<String, SieveRegistryEntry>();
 		
 		if (ENORegistries.loadSieveDefaults)
@@ -42,7 +45,17 @@ public class SieveRegistry {
 			}
 		}
 	}
-	
+
+	@Override
+	public HashMap<String, SieveRegistryEntry> getEntries() {
+		return entries;
+	}
+
+	@Override
+	public void clear() {
+		entries = new HashMap<String, SieveRegistryEntry>();
+	}
+
 	public static HashMap<String, SieveRegistryEntry> getEntryMap() {
 		return entries;
 	}

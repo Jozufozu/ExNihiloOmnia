@@ -4,7 +4,9 @@ import java.io.*;
 import java.util.List;
 
 import exnihiloomnia.client.textures.ENOTextures;
+import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.util.enums.EnumOreBlockType;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -126,6 +128,11 @@ public class ENO {
 		ENOTextures.registerCustomTextures(event.getMap());
 		ENOTextures.registerOreTextures(event.getMap());
 		ENOTextures.setMeshTextures();
+	}
+
+	@EventHandler
+	public void onServerLoad(FMLServerStartingEvent event) {
+		event.registerServerCommand(new CommandRegistry());
 	}
 
 	@SubscribeEvent

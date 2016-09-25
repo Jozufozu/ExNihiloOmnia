@@ -42,12 +42,12 @@ public class Plugin implements IModPlugin{
         }
         registry.addRecipes(sieveRecipes);
 
-        for (CrucibleRegistryEntry entry : CrucibleRegistry.getEntryMap().values()) {
+        for (CrucibleRegistryEntry entry : CrucibleRegistry.INSTANCE.getEntries().values()) {
             crucibleRecipes.add(new JEICrucibleRecipe(entry));
         }
         registry.addRecipes(crucibleRecipes);
 
-        for (HammerRegistryEntry entry : HammerRegistry.getEntryMap().values()) {
+        for (HammerRegistryEntry entry : HammerRegistry.INSTANCE.getEntries().values()) {
             hammerRecipes.add(new JEIHammerRecipe(entry));
         }
         registry.addRecipes(hammerRecipes);

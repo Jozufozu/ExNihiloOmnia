@@ -6,14 +6,17 @@ import java.util.List;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.crucible.files.HeatRegistryLoader;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-public class HeatRegistry {
+public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 	public static HashMap<String, HeatRegistryEntry> entries;
+
+    public static HeatRegistry INSTANCE = new HeatRegistry();
 	
-	public static void initialize() {
+	public void initialize() {
 		entries = new HashMap<String, HeatRegistryEntry>();
 
 		if (ENORegistries.loadHeatDefaults)
@@ -28,9 +31,18 @@ public class HeatRegistry {
 		}
 	}
 
-	public static void add(HeatRegistryEntry entry) {
+    @Override
+    public HashMap<String, HeatRegistryEntry> getEntries() {
+        return entries;
+    }
+
+    public void clear() {
+        entries = new HashMap<String, HeatRegistryEntry>();
+    }
+
+	public void add(HeatRegistryEntry entry) {
 		if (entry != null) {
-			entries.put(entry.block + ":" + entry.meta, entry);
+			entries.put(entry.getBlock() + ":" + entry.getMeta(), entry);
 		}
 	}
 	

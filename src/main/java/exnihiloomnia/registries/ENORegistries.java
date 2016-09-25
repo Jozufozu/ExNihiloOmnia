@@ -30,10 +30,10 @@ public class ENORegistries {
 		loadSieveOres = config.get(CATEGORY_ORE_RECIPES, "load ex nihilo ore sieve recipes", true).getBoolean(true);
 		loadHammerOres = config.get(CATEGORY_ORE_RECIPES, "load ex nihilo ore hammer recipes", true).getBoolean(true);
 
-		CompostRegistry.initialize();
-		HammerRegistry.initialize();
-		SieveRegistry.initialize();
-		HeatRegistry.initialize();
-		CrucibleRegistry.initialize();
+		CompostRegistry.INSTANCE.initialize();
+		HammerRegistry.INSTANCE.initialize();
+		SieveRegistry.INSTANCE.initialize();
+		HeatRegistry.INSTANCE.initialize();
+		CrucibleRegistry.INSTANCE.initialize();
 	}
 }

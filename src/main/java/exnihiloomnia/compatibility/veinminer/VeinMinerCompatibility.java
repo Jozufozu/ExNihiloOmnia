@@ -115,7 +115,7 @@ public class VeinMinerCompatibility {
 	        	}
 	           
 	           	if (ENOCompatibility.register_veinminer_recipes_hammer) {
-					for (HammerRegistryEntry entry : HammerRegistry.getEntryMap().values()) {
+					for (HammerRegistryEntry entry : HammerRegistry.INSTANCE.getEntries().values()) {
 					    String suff = "";
 					    
                         if (entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC)

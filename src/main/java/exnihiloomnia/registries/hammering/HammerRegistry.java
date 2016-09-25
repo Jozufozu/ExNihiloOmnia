@@ -8,6 +8,7 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.hammering.files.HammerRecipeLoader;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import exnihiloomnia.util.enums.EnumOre;
@@ -16,10 +17,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class HammerRegistry {
+public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 	private static HashMap<String, HammerRegistryEntry> entries;
+	public static HammerRegistry INSTANCE = new HammerRegistry();
 
-	public static void initialize() {
+	public void initialize() {
 		entries = new HashMap<String, HammerRegistryEntry>();
 		
 		if (ENORegistries.loadHammerDefaults)
@@ -38,8 +40,13 @@ public class HammerRegistry {
 			}
 		}
 	}
-	
-	public static HashMap<String, HammerRegistryEntry> getEntryMap() {
+
+	@Override
+	public void clear() {
+		entries = new HashMap<String, HammerRegistryEntry>();
+	}
+
+	public HashMap<String, HammerRegistryEntry> getEntries() {
 		return entries;
 	}
 	

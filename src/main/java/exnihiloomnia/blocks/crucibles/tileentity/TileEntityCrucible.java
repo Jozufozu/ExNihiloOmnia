@@ -205,7 +205,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 		IBlockState state = getWorld().getBlockState(getPos().down());
 
 		if (HeatRegistry.containsItem(state.getBlock(), state.getBlock().getMetaFromState(state))) {
-			return HeatRegistry.getItem(state.getBlock(), state.getBlock().getMetaFromState(state)).value;
+			return HeatRegistry.getItem(state.getBlock(), state.getBlock().getMetaFromState(state)).getValue();
 		}
 		else {
 			return 0;

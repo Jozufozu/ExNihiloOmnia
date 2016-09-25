@@ -6,6 +6,7 @@ import java.util.List;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.crucible.files.CrucibleRecipeLoader;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -13,14 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class CrucibleRegistry {
+public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
+    public static CrucibleRegistry INSTANCE = new CrucibleRegistry();
+
     public static HashMap<String, CrucibleRegistryEntry> entries;
 
-    public static HashMap<String, CrucibleRegistryEntry> getEntryMap() {
+    public HashMap<String, CrucibleRegistryEntry> getEntries() {
         return entries;
     }
 
-    public static void initialize() {
+    public void initialize() {
         entries = new HashMap<String, CrucibleRegistryEntry>();
 
         if (ENORegistries.loadCrucibleDefaults)
@@ -33,6 +36,11 @@ public class CrucibleRegistry {
                 add(entry);
             }
         }
+    }
+
+    @Override
+    public void clear() {
+        entries = new HashMap<String, CrucibleRegistryEntry>();
     }
 
     public static void add(CrucibleRegistryEntry entry) {

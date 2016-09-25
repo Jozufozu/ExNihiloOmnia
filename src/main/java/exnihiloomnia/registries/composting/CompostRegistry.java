@@ -7,6 +7,7 @@ import java.util.List;
 import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.composting.files.CompostRecipeLoader;
 import exnihiloomnia.util.Color;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
@@ -15,10 +16,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class CompostRegistry {
+public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 	private static HashMap<String, CompostRegistryEntry> entries;
+
+	public static CompostRegistry INSTANCE = new CompostRegistry();
 	
-	public static void initialize() {
+	public void initialize() {
 		entries = new HashMap<String, CompostRegistryEntry>();
 		
 		if (ENORegistries.loadCompostDefaults)
@@ -38,8 +41,12 @@ public class CompostRegistry {
 		}
 	}
 	
-	public static HashMap<String, CompostRegistryEntry> getEntryMap() {
+	public HashMap<String, CompostRegistryEntry> getEntries() {
 		return entries;
+	}
+
+	public void clear() {
+		entries = new HashMap<String, CompostRegistryEntry>();
 	}
 	
 	public static void add(CompostRegistryEntry entry) {
