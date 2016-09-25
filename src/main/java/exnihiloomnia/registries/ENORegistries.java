@@ -29,11 +29,21 @@ public class ENORegistries {
 
 		loadSieveOres = config.get(CATEGORY_ORE_RECIPES, "load ex nihilo ore sieve recipes", true).getBoolean(true);
 		loadHammerOres = config.get(CATEGORY_ORE_RECIPES, "load ex nihilo ore hammer recipes", true).getBoolean(true);
+	}
 
+	public static void initialize() {
 		CompostRegistry.INSTANCE.initialize();
 		HammerRegistry.INSTANCE.initialize();
 		SieveRegistry.INSTANCE.initialize();
 		HeatRegistry.INSTANCE.initialize();
 		CrucibleRegistry.INSTANCE.initialize();
+	}
+
+	public static void clear() {
+		CompostRegistry.INSTANCE.clear();
+		HammerRegistry.INSTANCE.clear();
+		SieveRegistry.INSTANCE.clear();
+		HeatRegistry.INSTANCE.clear();
+		CrucibleRegistry.INSTANCE.clear();
 	}
 }

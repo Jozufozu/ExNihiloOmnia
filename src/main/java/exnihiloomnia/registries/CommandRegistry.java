@@ -52,33 +52,44 @@ public class CommandRegistry extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (args.length < 2)
+        if (args.length < 1)
             throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
         else {
             String command = args[0];
-            IRegistry reg = getRegistryFromString(args[1]);
+            IRegistry reg = null;
+            if (args.length == 2)
+                reg = getRegistryFromString(args[1]);
 
-            if (reg != null) {
-                ENORegistries.configure(ENO.config);
-                if (ENO.config.hasChanged())
-                    ENO.config.load();
+            ENO.config.load();
+            ENORegistries.configure(ENO.config);
+            if (ENO.config.hasChanged())
+                ENO.config.save();
 
+            if (reg == null) {
                 if (command.equals("clear")) {
-                    reg.clear();
+                    ENORegistries.clear();
                 } else if (command.equals("load")) {
-                    reg.initialize();
+                    ENORegistries.initialize();
                 } else if (command.equals("reload")) {
-                    reg.clear();
-                    reg.initialize();
+                    ENORegistries.clear();
+                    ENORegistries.initialize();
                 }
                 else
                     throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
-
-                if (Loader.isModLoaded("JEI"))
-                    new JeiHelpers().reload();
+            }
+            else if (command.equals("clear")) {
+                reg.clear();
+            } else if (command.equals("load")) {
+                reg.initialize();
+            } else if (command.equals("reload")) {
+                reg.clear();
+                reg.initialize();
             }
             else
                 throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
+
+            if (Loader.isModLoaded("JEI"))
+                new JeiHelpers().reload();
         }
     }
 

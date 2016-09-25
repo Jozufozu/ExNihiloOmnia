@@ -89,6 +89,7 @@ public class ENO {
 		ENOCrafting.configure(config);
 		BarrelStates.configure(config);
 		ENOWorld.configure(config);
+        ENORegistries.configure(config);
 
 		ENOEntities.configure();
 		ENOCompatibility.configure(config);
@@ -103,7 +104,7 @@ public class ENO {
 	@EventHandler
 	public void doInitialize(FMLInitializationEvent event) {
         ENOCrafting.registerRecipes();
-        ENORegistries.configure(config);
+        ENORegistries.initialize();
 
         ENOOres.addCrafting();
 		ENOOres.addSmelting();

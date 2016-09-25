@@ -240,4 +240,4 @@ jei.exnihiloomnia:hammer=Ex Nihilo Hammer
 jei.exnihiloomnia:hammer.luck=luck
 jei.exnihiloomnia:crucible=Crucible Melting
 
-exnihiloomnia.commands.registry.usage=/exnihiloregistry <reload|clear|load> <heat|crucible|sieve|hammer|compost>
+exnihiloomnia.commands.registry.usage=/exnihiloregistry <reload|clear|load> [heat|crucible|sieve|hammer|compost]
