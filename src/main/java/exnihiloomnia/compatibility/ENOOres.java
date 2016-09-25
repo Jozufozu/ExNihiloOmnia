@@ -68,7 +68,7 @@ public class ENOOres {
         List<EnumOre> ores = new ArrayList<EnumOre>();
         
         //change to true to debug
-        if (true) {
+        if (force_ores) {
             for (EnumOre ore : EnumOre.values())
                 ores.add(ore);
             return ores;
