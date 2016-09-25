@@ -1,14 +1,12 @@
 package exnihiloomnia.registries;
 
 import exnihiloomnia.ENO;
-import exnihiloomnia.compatibility.jei.Plugin;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.registries.crucible.HeatRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import mezz.jei.JeiHelpers;
-import mezz.jei.JustEnoughItems;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -79,6 +77,8 @@ public class CommandRegistry extends CommandBase {
                 if (Loader.isModLoaded("JEI"))
                     new JeiHelpers().reload();
             }
+            else
+                throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
         }
     }
 
