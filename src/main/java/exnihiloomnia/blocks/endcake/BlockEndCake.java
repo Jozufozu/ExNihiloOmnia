@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.endcake;
 
+import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.BlockCake;
@@ -53,7 +54,7 @@ public class BlockEndCake extends BlockCake {
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return new ItemStack(this);
+        return new ItemStack(ENOBlocks.END_CAKE);
     }
 
     @Override

@@ -91,16 +91,16 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 				
 				world.spawnEntityInWorld(caveSpider);
 			}
-			
-			if (entity instanceof EntitySquid) {
+
+			if (entity instanceof EntitySquid && world.getDifficulty() != EnumDifficulty.PEACEFUL) {
 				EntitySquid squid = (EntitySquid) entity;
 				squid.setDead();
-				
+
 				EntityGhast ghast = new EntityGhast(world);
 				ghast.setLocationAndAngles(squid.posX, squid.posY + 2, squid.posZ, squid.rotationYaw, squid.rotationPitch);
 				ghast.renderYawOffset = squid.renderYawOffset;
 				ghast.setHealth(ghast.getMaxHealth());
-				
+
 				world.spawnEntityInWorld(ghast);
 			}
 			
