@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class DynamicTextureSprite extends TextureAtlasSprite {
-    private AnimationMetadataSection animationMetadata;
 
     public DynamicTextureSprite(String spriteName) {
         super(spriteName);
@@ -29,6 +28,7 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
         catch (IOException e){}
     }
 
+    //old vanilla method
     public void loadSprite(BufferedImage[] images, AnimationMetadataSection meta) throws IOException
     {
         this.resetSprite();
@@ -67,7 +67,6 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
 
     private void resetSprite()
     {
-        this.animationMetadata = null;
         this.setFramesTextureData(Lists.<int[][]>newArrayList());
         this.frameCounter = 0;
         this.tickCounter = 0;

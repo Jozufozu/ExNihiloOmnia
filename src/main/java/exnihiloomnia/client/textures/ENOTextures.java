@@ -10,17 +10,18 @@ import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.util.Color;
 import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.util.enums.EnumOreBlockType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 
 public class ENOTextures {
+
+
 	public static void registerCustomTextures(TextureMap map) {
 		map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/compost"));
 		map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/sieve_mesh_silk_white"));
@@ -30,17 +31,16 @@ public class ENOTextures {
 	}
 
 	public static void registerOreTextures(TextureMap map) {
-		for (EnumOre ore : EnumOre.values()) {
-            for (EnumOreBlockType type : EnumOreBlockType.values()) {
-                //remove stuff after gravel
-                String templateName = type.getName().substring(0, type.getName().length() < 6 ? type.getName().length(): 6);
+        for (EnumOreBlockType type : EnumOreBlockType.values()) {
+            String templateName = type.getName().substring(0, type.getName().length() < 6 ? type.getName().length(): 6);
 
-                map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/" + templateName + "_template"));
-                map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/" + type.getName() + "_base"));
+            map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/" + templateName + "_template"));
+            map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/" + type.getName() + "_base"));
 
-                BufferedImage fore = TextureLoader.load(TextureLocations.getBlockLocation("exnihiloomnia", templateName + "_template"));
-                BufferedImage back = TextureLoader.load(TextureLocations.getBlockLocation("exnihiloomnia", type.getName() + "_base"));
+            BufferedImage fore = TextureLoader.load(TextureLocations.getBlockLocation("exnihiloomnia", templateName + "_template"));
+            BufferedImage back = TextureLoader.load(TextureLocations.getBlockLocation("exnihiloomnia", type.getName() + "_base"));
 
+            for (EnumOre ore : EnumOre.values()) {
                 BufferedImage recolor = TextureManipulation.recolor(fore, new Color(ore.getColor()));
                 BufferedImage comp = TextureManipulation.composite(back, recolor);
 
@@ -60,14 +60,11 @@ public class ENOTextures {
 		map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/witchwater_flowing"));
 	}
 
-    private static void forceTextureRegistration(TextureMap map, TextureAtlasSprite sprite)
-    {
-        if (!map.setTextureEntry(sprite))
-        {
-            ENO.log.debug("Failed to register texture: " + sprite.getIconName());
+    private static void forceTextureRegistration(TextureMap map, TextureAtlasSprite sprite) {
 
-            try
-            {
+        if (!map.setTextureEntry(sprite.getIconName(), sprite)) {
+            ENO.log.debug("Failed to register texture: " + sprite.getIconName());
+            try {
                 Field f;
                 f = map.getClass().getDeclaredField("mapRegisteredSprites");
                 f.setAccessible(true);
@@ -75,13 +72,10 @@ public class ENOTextures {
                 Map mapRegisteredSprites = (Map) f.get(map);
 
                 mapRegisteredSprites.put(sprite.getIconName(), sprite);
-            }
-            catch (Exception e1)
-            {
+            } catch (Exception e1) {
                 ENO.log.debug("Failed to forcibly register texture: " + sprite.getIconName());
 
-                try
-                {
+                try {
                     Field f;
                     f = map.getClass().getDeclaredField("field_110574_e");
                     f.setAccessible(true);
@@ -89,9 +83,7 @@ public class ENOTextures {
                     Map mapRegisteredSprites = (Map) f.get(map);
 
                     mapRegisteredSprites.put(sprite.getIconName(), sprite);
-                }
-                catch (Exception e2)
-                {
+                } catch (Exception e2) {
                     ENO.log.error("Failed to forcibly register texture: " + sprite.getIconName());
                 }
             }
