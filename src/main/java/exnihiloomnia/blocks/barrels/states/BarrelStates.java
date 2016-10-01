@@ -7,7 +7,6 @@ import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateCoarseDirt;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateCompost;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateGrass;
-import exnihiloomnia.blocks.barrels.states.compost.BarrelStateMycelium;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStatePodzol;
 import exnihiloomnia.blocks.barrels.states.compost.logic.CoarseDirtStateLogicComplete;
 import exnihiloomnia.blocks.barrels.states.compost.logic.CoarseDirtStateTrigger;
@@ -15,8 +14,6 @@ import exnihiloomnia.blocks.barrels.states.compost.logic.CompostStateLogicComple
 import exnihiloomnia.blocks.barrels.states.compost.logic.CompostStateLogicItems;
 import exnihiloomnia.blocks.barrels.states.compost.logic.GrassStateLogicComplete;
 import exnihiloomnia.blocks.barrels.states.compost.logic.GrassStateTrigger;
-import exnihiloomnia.blocks.barrels.states.compost.logic.MyceliumStateLogicComplete;
-import exnihiloomnia.blocks.barrels.states.compost.logic.MyceliumStateTrigger;
 import exnihiloomnia.blocks.barrels.states.compost.logic.PodzolStateLogicComplete;
 import exnihiloomnia.blocks.barrels.states.compost.logic.PodzolStateTrigger;
 import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateBlaze;
@@ -63,7 +60,6 @@ public class BarrelStates {
 	public static BarrelState FLUID;
 	public static BarrelState COMPOST;
 	public static BarrelState PODZOL;
-	public static BarrelState MYCELIUM;
 	public static BarrelState GRASS;
 	public static BarrelState COARSE_DIRT;
 	public static BarrelState SLIME_GREEN;
@@ -104,7 +100,6 @@ public class BarrelStates {
 	public static BarrelLogic COMPOST_STATE_LOGIC_ITEMS;
 	public static BarrelLogic COMPOST_STATE_TRIGGER_COMPLETE;
 	public static BarrelLogic COMPOST_STATE_TRIGGER_PODZOL;
-	public static BarrelLogic COMPOST_STATE_TRIGGER_MYCELIUM;
 	public static BarrelLogic COMPOST_STATE_TRIGGER_GRASS;
 	public static BarrelLogic COMPOST_STATE_TRIGGER_COARSE_DIRT;
 	public static BarrelLogic PODZOL_STATE_TRIGGER_COMPLETE;
@@ -194,11 +189,9 @@ public class BarrelStates {
 		COMPOST_STATE_LOGIC_ITEMS = new CompostStateLogicItems();
 		COMPOST_STATE_TRIGGER_COMPLETE = new CompostStateLogicComplete();
 		COMPOST_STATE_TRIGGER_PODZOL = new PodzolStateTrigger();
-		COMPOST_STATE_TRIGGER_MYCELIUM = new MyceliumStateTrigger();
 		COMPOST_STATE_TRIGGER_GRASS = new GrassStateTrigger();
 		COMPOST_STATE_TRIGGER_COARSE_DIRT = new CoarseDirtStateTrigger();
 		PODZOL_STATE_TRIGGER_COMPLETE = new PodzolStateLogicComplete();
-		MYCELIUM_STATE_TRIGGER_COMPLETE = new MyceliumStateLogicComplete();
 		GRASS_STATE_TRIGGER_COMPLETE = new GrassStateLogicComplete();
 		COARSE_DIRT_STATE_TRIGGER_COMPLETE = new CoarseDirtStateLogicComplete();
 
@@ -216,7 +209,6 @@ public class BarrelStates {
 		FLUID = new BarrelStateFluid();
 		COMPOST = new BarrelStateCompost();
 		PODZOL = new BarrelStatePodzol();
-		MYCELIUM = new BarrelStateMycelium();
 		GRASS = new BarrelStateGrass();
 		COARSE_DIRT = new BarrelStateCoarseDirt();
 		SLIME_GREEN = new BarrelStateSlime();
@@ -230,7 +222,6 @@ public class BarrelStates {
 		BarrelStates.registerState(FLUID);
 		BarrelStates.registerState(COMPOST);
 		BarrelStates.registerState(PODZOL);
-		BarrelStates.registerState(MYCELIUM);
 		BarrelStates.registerState(GRASS);
 		BarrelStates.registerState(COARSE_DIRT);
 		BarrelStates.registerState(SLIME_GREEN);
@@ -300,19 +291,12 @@ public class BarrelStates {
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_LOGIC_ITEMS);
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_COMPLETE);
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_PODZOL);
-			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_MYCELIUM);
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_GRASS);
 			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
 
 			BarrelStates.PODZOL.addLogic(COMPOST_STATE_LOGIC_ITEMS);
 			BarrelStates.PODZOL.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
-			BarrelStates.PODZOL.addLogic(COMPOST_STATE_TRIGGER_MYCELIUM);
 			BarrelStates.PODZOL.addLogic(PODZOL_STATE_TRIGGER_COMPLETE);
-
-			BarrelStates.MYCELIUM.addLogic(COMPOST_STATE_LOGIC_ITEMS);
-			BarrelStates.MYCELIUM.addLogic(COMPOST_STATE_TRIGGER_GRASS);
-			BarrelStates.MYCELIUM.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
-			BarrelStates.MYCELIUM.addLogic(MYCELIUM_STATE_TRIGGER_COMPLETE);
 
 			BarrelStates.GRASS.addLogic(COMPOST_STATE_LOGIC_ITEMS);
 			BarrelStates.GRASS.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
