@@ -135,7 +135,8 @@ public class ENOOres {
 
     public static void addCrafting() {
         for (EnumOre ore : ENO.oreList) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()),
+            if (ore.hasGravel())
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()),
                     "xx",
                     "xx",
                     'x', new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata())));
@@ -147,11 +148,13 @@ public class ENOOres {
                     "xx",
                     "xx",
                     'x', new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata())));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()),
+            if (ore.hasNether())
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()),
                     "xx",
                     "xx",
                     'x', new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata())));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()),
+            if (ore.hasEnd())
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()),
                     "xx",
                     "xx",
                     'x', new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata())));
@@ -175,11 +178,14 @@ public class ENOOres {
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), new ItemStack(Items.GOLD_INGOT), 0);
             }
             else {
-                GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
+                if (ore.hasGravel())
+                    GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_SAND, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_DUST, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
-                GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
-                GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
+                if (ore.hasNether())
+                    GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
+                if (ore.hasEnd())
+                    GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
             }
         }
     }
