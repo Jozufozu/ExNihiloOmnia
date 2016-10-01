@@ -1,0 +1,74 @@
+{
+    "parent": "block/block",
+    "ambientocclusion": false,
+    "textures": {
+		"particle": "#barrel",
+        "barrel": "#barrel"
+    },
+    "elements": [
+        {
+            "name": "Base",
+            "from": [ 1, 0, 1 ],
+            "to": [ 15, 1, 15 ],
+            "faces": {
+                "down": { "texture": "#barrel", "uv": [ 0, 0, 16, 16 ] },
+                "north": { "texture": "#barrel", "uv": [ 0 , 15, 16, 16 ] },
+                "south": { "texture": "#barrel", "uv": [ 0 , 15, 16, 16 ] },
+                "east": { "texture": "#barrel", "uv": [ 0 , 15, 16, 16 ] },
+                "west": { "texture": "#barrel", "uv": [ 0 , 15, 16, 16 ] }
+            }
+        },
+        {
+            "name": "Inside Base",
+            "from": [ 2, 0, 2 ],
+            "to": [ 14, 1, 14 ],
+            "faces": {
+                "up": { "texture": "#barrel", "uv": [ 0, 0, 16, 16 ] }
+            }
+        },
+        {
+            "name": "North Side",
+            "from": [ 1, 1, 1 ],
+            "to": [ 14, 16, 2 ],
+            "faces": {
+                "north": { "texture": "#barrel", "rotation": 90, "uv": [ 1, 0, 16, 15 ] },
+                "south": { "texture": "#barrel", "rotation": 270, "uv": [ 1, 0, 16, 15 ] },
+                "west": { "texture": "#barrel", "rotation": 90, "uv": [ 0, 15, 16, 16 ] },
+                "up": { "texture": "#barrel", "rotation": 90, "uv": [ 15, 0, 16, 15 ] }
+            }
+        },
+        {
+            "name": "West Side",
+            "from": [ 1, 1, 2 ],
+            "to": [ 2, 16, 15 ],
+            "faces": {
+                "east": { "texture": "#barrel", "rotation": 270, "uv": [ 1, 0, 16, 15 ] },
+                "south": { "texture": "#barrel", "rotation": 90, "uv": [ 0, 15, 16, 16 ] },
+                "west": { "texture": "#barrel", "rotation": 90, "uv": [ 1, 0, 16, 15 ] },
+                "up": { "texture": "#barrel", "uv": [ 0, 0, 1, 15 ] }
+            }
+        },
+        {
+            "name": "South Side",
+            "from": [ 2, 1, 14 ],
+            "to": [ 15, 16, 15 ],
+            "faces": {
+                "north": { "texture": "#barrel", "rotation": 270, "uv": [ 1, 0, 16, 15 ] },
+                "east": { "texture": "#barrel", "rotation": 90, "uv": [ 0, 15, 16, 16 ] },
+                "south": { "texture": "#barrel", "rotation": 90, "uv": [ 1, 0, 16, 15 ] },
+                "up": { "texture": "#barrel", "rotation": 90, "uv": [ 15, 0, 16, 15 ] }
+            }
+        },
+        {
+            "name": "East Side",
+            "from": [ 14, 1, 1 ],
+            "to": [ 15, 16, 14 ],
+            "faces": {
+                "north": { "texture": "#barrel", "rotation": 90, "uv": [ 0, 15, 16, 16 ] },
+                "east": { "texture": "#barrel", "rotation": 90, "uv": [ 1, 0, 16, 15 ] },
+                "west": { "texture": "#barrel", "rotation": 270, "uv": [ 1, 0, 16, 15 ] },
+                "up": { "texture": "#barrel", "uv": [ 0, 0, 1, 15 ] }
+            }
+        }
+    ]
+}

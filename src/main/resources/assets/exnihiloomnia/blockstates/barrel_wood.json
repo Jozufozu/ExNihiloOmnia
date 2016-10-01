@@ -4,7 +4,7 @@
     "textures": {
       "all": "blocks/planks_oak"
     },
-    "model": "exnihiloomnia:barrel"
+    "model": "exnihiloomnia:barrel_wood"
   },
   "variants": {
     "normal": [{}],

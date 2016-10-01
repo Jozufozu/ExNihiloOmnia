@@ -1,5 +1,5 @@
 {
-    "parent": "exnihiloomnia:block/barrel",
+    "parent": "exnihiloomnia:block/barrel_wood",
     "textures": {
         "barrel": "blocks/planks_birch"
     }
