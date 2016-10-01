@@ -1,5 +1,10 @@
 package exnihiloomnia.blocks.barrels.states.fluid;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
@@ -53,7 +58,9 @@ public class BarrelStateFluid extends BarrelState {
 				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 				Minecraft mc = Minecraft.getMinecraft();
-				mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				TextureManager textureManager = mc.getTextureManager();
+
+				textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 				TextureAtlasSprite texture = mc.getTextureMapBlocks().getAtlasSprite(still.toString());
 
@@ -63,10 +70,10 @@ public class BarrelStateFluid extends BarrelState {
 				FluidTank tank = barrel.getFluidTank();
 
 				if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
-					BarrelRenderer.renderContentsSimple(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color("FFFFFF"));
+					BarrelRenderer.renderContentsSimple(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), Color.WHITE);
 				}
 				else {
-					BarrelRenderer.renderContentsComplex(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), new Color("FFFFFF"));
+					BarrelRenderer.renderContentsComplex(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), Color.WHITE);
 				}
 				
 				RenderHelper.enableStandardItemLighting();

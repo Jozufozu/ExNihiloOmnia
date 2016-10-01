@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.barrels.tileentity;
 
+import exnihiloomnia.blocks.barrels.BlockBarrelWood;
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelStateLayer;
@@ -370,6 +371,10 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public boolean isWooden() {
+		return worldObj.getBlockState(pos).getMaterial() == BlockBarrelWood.BARREL_WOOD;
 	}
 
     @Override

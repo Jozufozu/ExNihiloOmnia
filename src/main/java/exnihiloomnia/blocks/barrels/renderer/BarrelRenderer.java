@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 public class BarrelRenderer extends TileEntitySpecialRenderer<TileEntityBarrel> {
 	public static final double MIN_RENDER_CAPACITY = 0.05d;
 	public static final double MAX_RENDER_CAPACITY = 0.95d;
-	
+
 	@Override
 	public void renderTileEntityAt(TileEntityBarrel barrel, double x, double y, double z, float f, int i) {
 		BarrelState state = barrel.getState();
@@ -101,7 +101,7 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<TileEntityBarrel> 
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer renderer = tessellator.getBuffer();
 		GlStateManager.color(color.r, color.g, color.b, color.a);
-		
+
 		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		renderTexturedQuad(renderer, topTexture, top, color, 1.0d);
 		renderTexturedQuad(renderer, bottomTexture, bottom, color, 1.0d);
@@ -115,15 +115,17 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<TileEntityBarrel> 
 	}
 	
 	private static void renderTexturedQuad(VertexBuffer renderer, TextureAtlasSprite texture, Vec3d[] vertices, Color color, double contentHeight) {
-		double minU = (double)texture.getMinU();
-		double maxU = (double)texture.getMaxU();
-		double minV = (double)texture.getInterpolatedV(texture.getIconHeight() - (texture.getIconHeight() * contentHeight));
-		double maxV = (double)texture.getMaxV();
-		
-		renderer.pos(vertices[0].xCoord, vertices[0].yCoord, vertices[0].zCoord).tex(maxU, maxV).endVertex();
-		renderer.pos(vertices[1].xCoord, vertices[1].yCoord, vertices[1].zCoord).tex(maxU, minV).endVertex();
-		renderer.pos(vertices[2].xCoord, vertices[2].yCoord, vertices[2].zCoord).tex(minU, minV).endVertex();
-		renderer.pos(vertices[3].xCoord, vertices[3].yCoord, vertices[3].zCoord).tex(minU, maxV).endVertex();
+		if (texture != null) {
+			double minU = (double) texture.getMinU();
+			double maxU = (double) texture.getMaxU();
+			double minV = (double) texture.getInterpolatedV(texture.getIconHeight() - (texture.getIconHeight() * contentHeight));
+			double maxV = (double) texture.getMaxV();
+
+			renderer.pos(vertices[0].xCoord, vertices[0].yCoord, vertices[0].zCoord).tex(maxU, maxV).endVertex();
+			renderer.pos(vertices[1].xCoord, vertices[1].yCoord, vertices[1].zCoord).tex(maxU, minV).endVertex();
+			renderer.pos(vertices[2].xCoord, vertices[2].yCoord, vertices[2].zCoord).tex(minU, minV).endVertex();
+			renderer.pos(vertices[3].xCoord, vertices[3].yCoord, vertices[3].zCoord).tex(minU, maxV).endVertex();
+		}
 	}
 	
 	public static void renderContentsFromItemStack(ItemStack item) {

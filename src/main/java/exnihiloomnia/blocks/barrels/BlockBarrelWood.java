@@ -17,29 +17,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockBarrelWood extends BlockBarrel {
 	public static final PropertyEnum WOOD = PropertyEnum.create("wood", EnumWood.class);
-	
+
+    public static Material BARREL_WOOD = new Material(MapColor.WOOD) {
+        @Override
+        public boolean isSolid() {
+            return false;
+        }
+
+        @Override
+        public boolean blocksMovement() {
+            return false;
+        }
+
+        @Override
+        public boolean isOpaque() {
+            return true;
+        }
+
+        @Override
+        public boolean getCanBurn() {
+            return true;
+        }
+    };
+
 	public BlockBarrelWood() {
-		super(new Material(MapColor.WOOD) {
-			@Override
-			public boolean isSolid() {
-				return false;
-			}
-
-            @Override
-            public boolean blocksMovement() {
-                return false;
-            }
-
-            @Override
-            public boolean isOpaque() {
-                return true;
-            }
-
-            @Override
-            public boolean getCanBurn() {
-                return true;
-            }
-        }, SoundType.WOOD);
+		super(BARREL_WOOD, SoundType.WOOD);
 		
 		this.setDefaultState(this.blockState.getBaseState().withProperty(WOOD, EnumWood.OAK));
 	}

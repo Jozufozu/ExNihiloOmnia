@@ -26,21 +26,7 @@ import exnihiloomnia.blocks.barrels.states.empty.logic.EmptyStateLogic;
 import exnihiloomnia.blocks.barrels.states.empty.logic.FluidStateTriggerItem;
 import exnihiloomnia.blocks.barrels.states.empty.logic.FluidStateTriggerWeather;
 import exnihiloomnia.blocks.barrels.states.fluid.BarrelStateFluid;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftClayTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftEndstoneTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftNetherrackTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftObsidianTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftSoulsandTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidCraftStoneTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicFreezingIce;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicGas;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicHot;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicItems;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidStateLogicRain;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidSummonBlazeTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidSummonEndermanTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidSummonSlimeTrigger;
-import exnihiloomnia.blocks.barrels.states.fluid.logic.FluidTransformWitchwater;
+import exnihiloomnia.blocks.barrels.states.fluid.logic.*;
 import exnihiloomnia.blocks.barrels.states.output.BarrelStateOutput;
 import exnihiloomnia.blocks.barrels.states.output.logic.OutputStateLogicGrowingGrass;
 import exnihiloomnia.blocks.barrels.states.output.logic.OutputStateLogicGrowingMycelium;
@@ -85,6 +71,7 @@ public class BarrelStates {
 	public static BarrelLogic FLUID_STATE_LOGIC_GAS;
 	public static BarrelLogic FLUID_STATE_LOGIC_ITEMS;
 	public static BarrelLogic FLUID_STATE_LOGIC_ICE;
+	public static BarrelLogic FLUID_STATE_LOGIC_SPREADING_MOSS;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_END_STONE;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_CLAY;
@@ -133,6 +120,8 @@ public class BarrelStates {
 	public static boolean ALLOW_WITCHWATER;
 	public static boolean ALLOW_BLAZE;
 	public static boolean ALLOW_ENDERMAN;
+	public static boolean ALLOW_MOSS_SPREAD;
+	public static int MOSS_SPREAD_SPEED;
 
 	public static void configure(Configuration config) {
 		loadSettings(config);
@@ -158,6 +147,8 @@ public class BarrelStates {
 		ALLOW_WITCHWATER = config.get(CATEGORY_BARREL_OPTIONS, "allow creating witchwater", true).getBoolean(true);
 		ALLOW_BLAZE = config.get(CATEGORY_BARREL_OPTIONS, "allow summoning blazes", true).getBoolean(true);
 		ALLOW_ENDERMAN = config.get(CATEGORY_BARREL_OPTIONS, "allow summoning endermen", true).getBoolean(true);
+		ALLOW_MOSS_SPREAD = config.get(CATEGORY_BARREL_OPTIONS, "allow moss spreading", true).getBoolean(true);
+		MOSS_SPREAD_SPEED = config.get(CATEGORY_BARREL_OPTIONS, "moss speed factor", 1).getInt(1);
 	}
 
 	private static void initializeLogic() {
@@ -175,6 +166,7 @@ public class BarrelStates {
 		FLUID_STATE_LOGIC_GAS = new FluidStateLogicGas();
 		FLUID_STATE_LOGIC_ITEMS = new FluidStateLogicItems();
 		FLUID_STATE_LOGIC_ICE = new FluidStateLogicFreezingIce();
+		FLUID_STATE_LOGIC_SPREADING_MOSS = new FluidStateLogicSpreadingMoss();
 		FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK = new FluidCraftNetherrackTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_END_STONE = new FluidCraftEndstoneTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_CLAY = new FluidCraftClayTrigger();
@@ -252,6 +244,9 @@ public class BarrelStates {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ICE);
 		if (ALLOW_PACKED_ICE_FORMING)
 			BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_PACKING_ICE);
+
+		if (ALLOW_MOSS_SPREAD)
+			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_SPREADING_MOSS);
 		
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_GAS);
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ITEMS);
