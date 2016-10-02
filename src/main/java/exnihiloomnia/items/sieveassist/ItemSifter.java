@@ -1,13 +1,17 @@
 package exnihiloomnia.items.sieveassist;
 
 import exnihiloomnia.ENOConfig;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -20,6 +24,12 @@ public class ItemSifter extends Item implements ISieveFaster {
 
         setCreativeTab(CreativeTabs.TOOLS);
         setMaxStackSize(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        tooltip.add(Float.toString(((ISieveFaster) stack.getItem()).getSpeedModifier()) + I18n.format("exnihiloomnia.sifter.speedModifier") );
     }
 
     public void setSiftTime(ItemStack stack, int siftTime) {
