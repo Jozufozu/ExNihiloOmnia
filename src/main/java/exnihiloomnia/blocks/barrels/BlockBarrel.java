@@ -108,7 +108,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 			return BlockRenderLayer.SOLID;
 		}
 		else {
-			return BlockRenderLayer.CUTOUT_MIPPED;
+			return BlockRenderLayer.TRANSLUCENT;
 		}
 	}
 	
