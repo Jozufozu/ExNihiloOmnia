@@ -1,10 +1,11 @@
 package exnihiloomnia.blocks.barrels.tileentity;
 
-import exnihiloomnia.blocks.barrels.BlockBarrelWood;
+import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelStateLayer;
 import exnihiloomnia.util.Color;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -161,14 +162,9 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
                     output.remove(0);
                 }
             }
-            else if (slot == 1 && getState().canUseItem(getBarrel(), stack)) {
+            else if (slot == 1 && getState().canUseItem(getBarrel(), stack))
                 getState().useItem(null, null, getBarrel(), stack);
-                if (!simulate) {
-                    stack.stackSize--;
-                    if (stack.stackSize == 0)
-                        stack = null;
-                }
-            }
+
             return stack;
         }
 
@@ -374,7 +370,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	}
 
 	public boolean isWooden() {
-		return worldObj.getBlockState(pos).getMaterial() == BlockBarrelWood.BARREL_WOOD;
+		return worldObj.getBlockState(pos).getMaterial() == Material.WOOD;
 	}
 
     @Override

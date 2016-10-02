@@ -28,23 +28,18 @@ public class FluidStateTriggerItem extends BarrelLogic {
 		if (fluid != null && fluid.amount > 0) {
 			if (player != null) {
 				if (!player.capabilities.isCreativeMode) {
-					if(item.stackSize > 1) {
-						item.stackSize--;
-						InventoryHelper.giveItemStackToPlayer(player, InventoryHelper.getContainer(item));
-					}
-					else {
-						player.setHeldItem(hand, InventoryHelper.getContainer(item));
-					}
+					InventoryHelper.consumeItem(null, item);
+					player.setHeldItem(hand, InventoryHelper.getContainer(item));
 				}
 			}
 			else {
+				InventoryHelper.consumeItem(null, item);
 				barrel.addOutput(InventoryHelper.getContainer(item));
 			}
 
 			barrel.getFluidTank().fill(fluid, true);
 			barrel.setState(BarrelStates.FLUID);
 			barrel.getWorld().playSound(null, barrel.getPos(),SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 0.2f, 0.8f);
-			return true;
 		}
 
 		return false;

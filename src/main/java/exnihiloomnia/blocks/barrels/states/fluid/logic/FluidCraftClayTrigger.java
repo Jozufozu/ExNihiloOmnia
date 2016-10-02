@@ -30,8 +30,7 @@ public class FluidCraftClayTrigger extends BarrelLogic {
 			
 			barrel.setState(BarrelStates.OUTPUT);
 			barrel.setContents(new ItemStack(Blocks.CLAY, 1));
-			consumeItem(player, item);
-			
+
 			barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 0.12f, 4.5f);
 			
 			return true;

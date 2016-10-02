@@ -41,10 +41,9 @@ public class CompostStateLogicItems extends BarrelLogic{
 			barrel.requestSync();
 		}
 		
-		consumeItem(player, item);
 		barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.BLOCK_SNOW_STEP, SoundCategory.BLOCKS, 0.7f, 0.15f);
 		
-		return false;
+		return true;
 	}
 	
 	@Override

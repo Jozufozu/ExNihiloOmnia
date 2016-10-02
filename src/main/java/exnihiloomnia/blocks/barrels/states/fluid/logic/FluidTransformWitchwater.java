@@ -27,8 +27,7 @@ public class FluidTransformWitchwater extends BarrelLogic {
 		    && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()) {
 			
 			barrel.setState(BarrelStates.TRANSFORM_WITCHWATER);
-			consumeItem(player, item);
-			
+
 			barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.ENTITY_BOBBER_SPLASH, SoundCategory.BLOCKS, 0.12f, 4.5f);
 			
 			return true;

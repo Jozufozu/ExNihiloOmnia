@@ -16,7 +16,7 @@ public class FluidCraftNetherrackTrigger extends BarrelLogic {
 
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
-        return item.getItem() == Items.REDSTONE
+        return item != null && item.getItem() == Items.REDSTONE
                 && barrel.getFluid().getFluid() == FluidRegistry.LAVA
                 && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity();
     }
@@ -29,8 +29,7 @@ public class FluidCraftNetherrackTrigger extends BarrelLogic {
 			
 			barrel.setState(BarrelStates.OUTPUT);
 			barrel.setContents(new ItemStack(Blocks.NETHERRACK, 1));
-			consumeItem(player, item);
-			
+
 			barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 4.5f);
 			
 			return true;

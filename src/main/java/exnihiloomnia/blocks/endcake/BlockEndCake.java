@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.endcake;
 
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.helpers.InventoryHelper;
@@ -38,7 +39,7 @@ public class BlockEndCake extends BlockCake {
                 }
             }
         }
-        else if (playerIn.canEat(false) || playerIn.capabilities.isCreativeMode) {
+        else if ((playerIn.canEat(ENOConfig.end_cake_hunger)) || playerIn.capabilities.isCreativeMode) {
             playerIn.getFoodStats().addStats(2, 0.1F);
             int i = state.getValue(BITES);
 

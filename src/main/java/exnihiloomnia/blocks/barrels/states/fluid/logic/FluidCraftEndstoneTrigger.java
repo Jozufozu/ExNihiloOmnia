@@ -29,8 +29,7 @@ public class FluidCraftEndstoneTrigger extends BarrelLogic {
 			
 			barrel.setState(BarrelStates.OUTPUT);
 			barrel.setContents(new ItemStack(Blocks.END_STONE, 1));
-			consumeItem(player, item);
-			
+
 			barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 4.5f);
 			
 			return true;

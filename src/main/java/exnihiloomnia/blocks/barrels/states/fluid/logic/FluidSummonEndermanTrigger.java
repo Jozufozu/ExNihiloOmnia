@@ -41,18 +41,6 @@ public class FluidSummonEndermanTrigger extends BarrelLogic {
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
 			
 			if (item.getItem() == ENOItems.END_DOLL) {
-				if (player != null) {
-					if (!player.capabilities.isCreativeMode) {
-						InventoryHelper.consumeItem(player, item);
-					}
-				}
-				else {
-					item.stackSize--;
-
-					if (item.stackSize <= 0)
-						item = null;
-				}
-
 				barrel.setState(BarrelStates.ENDERMAN);
 
 				return true;

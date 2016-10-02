@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
+import javax.annotation.Nonnull;
+
 public abstract class BarrelState {
 	private static String[] EMPTY_STRING_ARRAY = new String[] {};
 	private ArrayList<BarrelLogic> triggers = new ArrayList<BarrelLogic>();
@@ -15,23 +17,15 @@ public abstract class BarrelState {
 	public abstract String getUniqueIdentifier();
 
 	public void activate(TileEntityBarrel barrel) {
-		boolean triggered;
-
 		for (BarrelLogic entry : triggers) {
-			triggered = entry.onActivate(barrel);
-
-			if (triggered)
+			if (entry.onActivate(barrel))
 				break;
 		}
 	}
 	
 	public void update(TileEntityBarrel barrel) {
-		boolean triggered = false;
-
 		for (BarrelLogic entry : triggers) {
-			triggered = entry.onUpdate(barrel);
-
-			if (triggered)
+			if (entry.onUpdate(barrel))
 				break;
 		}
 	}
@@ -47,10 +41,16 @@ public abstract class BarrelState {
 	
 	public void useItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		for (BarrelLogic entry : triggers) {
-			if (entry.canUseItem(barrel, item) && entry.onUseItem(player, hand, barrel, item)) {
-				barrel.getWorld().notifyBlockOfStateChange(barrel.getPos(), barrel.getBlockType());
+			if (item != null) {
+				if (entry.canUseItem(barrel, item) && entry.onUseItem(player, hand, barrel, item)) {
+					barrel.getWorld().notifyBlockOfStateChange(barrel.getPos(), barrel.getBlockType());
 
-				break;
+					if (player == null || !player.isCreative()) {
+						item.stackSize--;
+						if (item.stackSize <= 0)
+							item = null;
+					}
+				}
 			}
 		}
 	}
