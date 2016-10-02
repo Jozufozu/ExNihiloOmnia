@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -58,8 +59,13 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerCraftingItems(IModRegistry registry) {
-        for (EnumWood wood : EnumWood.values())
+        for (EnumWood wood : EnumWood.values()) {
             registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.SIEVE_WOOD, 1, wood.getMetadata()), SieveRecipeCategory.UID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_WOOD, 1, wood.getMetadata()), CompostRecipeCategory.UID);
+        }
+        for (EnumDyeColor color : EnumDyeColor.values())
+            registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS_COLORED, 1, color.getMetadata()), CompostRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS), CompostRecipeCategory.UID);
 
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_DIAMOND), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_GOLD), HammerRecipeCategory.UID);
@@ -68,8 +74,6 @@ public class Plugin implements IModPlugin{
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_WOOD), HammerRecipeCategory.UID);
 
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.CRUCIBLE), CrucibleRecipeCategory.UID);
-
-        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_WOOD), CompostRecipeCategory.UID);
     }
 
     private void registerCompostRecipes(IModRegistry registry) {
