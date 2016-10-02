@@ -5,6 +5,7 @@ import net.minecraftforge.common.config.Configuration;
 public class ENOConfig {
     public static boolean classic_sieve;
     public static double string_chance;
+    public static double silkworm_chnace;
     public static boolean sieve_automation;
     public static boolean crucible_access;
     public static boolean fancy_crucible;
@@ -21,6 +22,7 @@ public class ENOConfig {
         annoying_sifter = config.get("misc", "sifter has small knockback effect", false).getBoolean(false);
         sifter_strength = config.getFloat("sifter knockback strength", "misc", 0.03f, 0, 1, "don't get too crazy");
         string_chance = config.get("misc", "infested leaves string chance", .6d).getDouble();
+        silkworm_chnace = config.get("misc", "infested leaves silkworm chance", .2d).getDouble();
 
         fancy_crucible = config.get("misc", "fancy crucible renderer", true).getBoolean(true);
 
