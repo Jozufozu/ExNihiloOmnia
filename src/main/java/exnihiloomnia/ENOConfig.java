@@ -12,6 +12,7 @@ public class ENOConfig {
     public static boolean annoying_sifter;
     public static boolean end_cake;
     public static boolean end_cake_hunger;
+    public static boolean glitch_art;
     public static float sifter_strength;
 
     public static void configure(Configuration config) {
@@ -28,5 +29,7 @@ public class ENOConfig {
 
         sieve_automation = config.get("automation", "sieve hopper/pipe interaction", false).getBoolean(false);
         crucible_access = config.get("automation", "crucibles can only interact with pipes from the top", true).getBoolean(true);
+
+        glitch_art = config.get("misc", "make ores look all glitchy", false).getBoolean(false);
     }
 }

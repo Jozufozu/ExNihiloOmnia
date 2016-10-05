@@ -1,12 +1,66 @@
 package exnihiloomnia.client.textures.manipulation;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
+import java.util.Random;
 
+import com.google.common.math.IntMath;
 import exnihiloomnia.ENO;
 import exnihiloomnia.util.Color;
 
 public class TextureManipulation {
-	
+
+    /**
+     * Jumbles around the color data of an image
+     * @param image the image to jumble
+     * @return Chromatically aberrated image
+     */
+    public static BufferedImage aberrate(BufferedImage image, Random random) {
+        int     w = image.getWidth(),
+                h = image.getHeight();
+
+        BufferedImage out = new BufferedImage(w, h, image.getType());
+
+        byte[] inData = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        int[] outData = new int[w * h];
+
+        //individual color arrays
+        float[] rData = new float[w * h],
+                gData = new float[w * h],
+                bData = new float[w * h];
+
+        //random offset
+        int rOff = random.nextInt(7) - 3,
+            gOff = random.nextInt(7) - 3,
+            bOff = random.nextInt(7) - 3;
+
+        //separate the channels
+        for (int i = 0; i < inData.length; i++) {
+            Color color = new Color(inData[i]);
+
+            int r = i + rOff,
+                g = i + gOff,
+                b = i + bOff;
+
+            r = IntMath.mod(r, rData.length);
+            g = IntMath.mod(g, rData.length);
+            b = IntMath.mod(b, rData.length);
+
+            rData[r] = color.r;
+            gData[g] = color.g;
+            bData[b] = color.b;
+        }
+
+        for (int i = 0; i < outData.length; i++) {
+            outData[i] = new Color(rData[i], gData[i], bData[i], new Color(inData[i]).a).toInt();
+        }
+
+        out.setRGB(0, 0, w, h, outData, 0, w);
+
+        return out;
+    }
+
     //Recolors an image based on the input color
     public static BufferedImage recolor(BufferedImage template, Color colorNew) {
         int w = template.getWidth();
@@ -23,7 +77,7 @@ public class TextureManipulation {
 
         // blend each pixel where alpha > 0
         for (int i = 0; i < templateData.length; i++) {
-            Color colorRaw = new Color(templateData[i], true);
+            Color colorRaw = new Color(templateData[i]);
 
             if (colorRaw.a > 0) {
                 float a = colorRaw.a;

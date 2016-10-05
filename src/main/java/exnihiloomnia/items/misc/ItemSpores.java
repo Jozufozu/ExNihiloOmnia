@@ -1,5 +1,6 @@
 package exnihiloomnia.items.misc;
 
+import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
@@ -27,8 +28,10 @@ public class ItemSpores extends Item {
 
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (worldIn.getBlockState(pos).getBlock() == Blocks.DIRT) {
-			worldIn.setBlockState(pos, Blocks.MYCELIUM.getDefaultState(), 2);
+
+		BlockPos up = pos.add(0, hitY, 0);
+		if (playerIn.canPlayerEdit(pos, facing, stack) && stack.stackSize != 0 && worldIn.getBlockState(pos) == Blocks.DIRT.getDefaultState()) {
+			worldIn.setBlockState(pos, Blocks.MYCELIUM.getDefaultState());
 			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
 			
 			if (!playerIn.isCreative()) {
@@ -37,7 +40,14 @@ public class ItemSpores extends Item {
 			
 			return EnumActionResult.SUCCESS;
 		}
-		
+		else if(hitY == 1 && playerIn.canPlayerEdit(up, facing, stack) && worldIn.getBlockState(up).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos) == Blocks.MYCELIUM.getDefaultState()) {
+			if (worldIn.rand.nextInt(2) == 0)
+				worldIn.setBlockState(up, Blocks.BROWN_MUSHROOM.getDefaultState());
+			else
+				worldIn.setBlockState(up, Blocks.RED_MUSHROOM.getDefaultState());
+			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
+		}
+
 		return EnumActionResult.PASS;
 	}
 

@@ -1,6 +1,7 @@
 package exnihiloomnia.client.textures;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.client.textures.files.DynamicTextureSprite;
 import exnihiloomnia.client.textures.files.TextureLoader;
 import exnihiloomnia.client.textures.files.TextureLocations;
@@ -18,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Random;
 
 public class ENOTextures {
 
@@ -31,6 +33,7 @@ public class ENOTextures {
 	}
 
 	public static void registerOreTextures(TextureMap map) {
+        Random random = new Random();
         for (EnumOreBlockType type : EnumOreBlockType.values()) {
             String templateName = type.getName().substring(0, type.getName().length() < 6 ? type.getName().length(): 6);
 
@@ -42,7 +45,11 @@ public class ENOTextures {
 
             for (EnumOre ore : EnumOre.values()) {
                 BufferedImage recolor = TextureManipulation.recolor(fore, new Color(ore.getColor()));
-                BufferedImage comp = TextureManipulation.composite(back, recolor);
+                BufferedImage comp;
+                if (ENOConfig.glitch_art)
+                    comp = TextureManipulation.composite(TextureManipulation.aberrate(back, random), recolor);
+                else
+                    comp = TextureManipulation.composite(back, recolor);
 
                 DynamicTextureSprite sprite = DynamicTextureSprite.fromImage(new ResourceLocation("exnihiloomnia:ore_" + type.getName() + "_" + ore.getName()), comp);
                 forceTextureRegistration(map, sprite);

@@ -98,7 +98,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 			}
 
 			return avaliable;
-			/**
+			/*
 			if (state.canManipulateFluids(getBarrel())) {
 				int fill = super.fill(resource, doFill);
 
@@ -109,7 +109,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 			}
 			else
 			    return 0;
-			 */
+			    */
 		}
 
 		@Override
