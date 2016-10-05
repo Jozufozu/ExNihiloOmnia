@@ -34,7 +34,6 @@ public class FluidStateLogicSpreadingMoss extends BarrelLogic {
 
 		//if moss already exists try to spread downwards
 		for (int i = 0; i <= 3; i++) {
-			if (world.getBlockState(cobble) == Blocks.COBBLESTONE.getDefaultState()) {
 				world.setBlockState(cobble, Blocks.MOSSY_COBBLESTONE.getDefaultState());
 				break;
 			}

@@ -15,11 +15,11 @@ public class FluidCraftObsidianTrigger extends BarrelLogic {
 	@Override
 	public boolean onUpdate(TileEntityBarrel barrel) {
 		if (barrel.getFluid() != null && barrel.getFluid().getFluid() != null) {
-			if (barrel.getFluid().getFluid().equals(FluidRegistry.LAVA)) {
+			if (barrel.getFluid().getFluid().equals(FluidRegistry.LAVA) && barrel.getFluid().amount == 1000) {
 				IBlockState up = barrel.getWorld().getBlockState(barrel.getPos().up());
 				
 				if (up.getBlock() == Blocks.WATER) {
-					barrel.setContents(new ItemStack(Blocks.OBSIDIAN, 1));
+					barrel.setContents(new ItemStack(Blocks.OBSIDIAN));
 					barrel.setState(BarrelStates.OUTPUT);
 					
 					barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 4.5f);

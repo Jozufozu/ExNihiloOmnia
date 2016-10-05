@@ -8,7 +8,7 @@ public class EmptyStateLogic extends BarrelLogic {
 	
 	@Override
 	public boolean onActivate(TileEntityBarrel barrel) {
-		barrel.getFluidTank().drain(barrel.getFluidTank().getCapacity(), false);
+		barrel.getFluidTank().setFluid(null);
 		barrel.setContents(null);
 		barrel.setColor(Color.WHITE);
 		barrel.setVolume(0);

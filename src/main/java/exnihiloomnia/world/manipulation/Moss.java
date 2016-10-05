@@ -14,7 +14,7 @@ public class Moss {
 	private static int growth = 0;
 	private static boolean rain_reactive;
 	
-	private static BlockPos pos = null;
+	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(0, 0, 0);
 	private static IBlockState state = null;
 	
 	public static int getGrowth() {
@@ -35,17 +35,17 @@ public class Moss {
 
 	public static void grow(World world, Chunk chunk) {		
 		for (int i = 0; i < growth; i++) {
-			pos = PositionHelper.getRandomPositionInChunk(world, chunk);
+			pos.setPos(PositionHelper.getRandomPositionInChunk(world, chunk));
 			state = world.getBlockState(pos);
 
-			if (isValidCobblestone(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
-				world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
-			}
-			else if (isValidStoneBrick(state) && (PositionHelper.hasNearbyWaterSource(world, pos) ||  (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
-				world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY));
-			}
-			else if (isValidCobbleWall(state) && (PositionHelper.hasNearbyWaterSource(world, pos) ||  (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
-				world.setBlockState(pos, Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY));
+			if (world.getLight(pos, true) < 5) {
+				if (isValidCobblestone(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
+					world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
+				} else if (isValidStoneBrick(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
+					world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY));
+				} else if (isValidCobbleWall(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
+					world.setBlockState(pos, Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY));
+				}
 			}
 		}
 	}
