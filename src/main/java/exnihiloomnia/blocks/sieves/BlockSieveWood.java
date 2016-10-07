@@ -32,12 +32,9 @@ public class BlockSieveWood extends BlockSieve {
 	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-		EnumWood[] woods = EnumWood.values();
-
-        for (int j = 0; j < woods.length; ++j) {
-        	EnumWood wood = woods[j];
-            list.add(new ItemStack(itemIn, 1, wood.getMetadata()));
-        }
+		for (EnumWood wood : EnumWood.values()) {
+			list.add(new ItemStack(itemIn, 1, wood.getMetadata()));
+		}
     }
 	
 	@Override

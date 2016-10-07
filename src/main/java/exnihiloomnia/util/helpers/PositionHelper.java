@@ -1,10 +1,7 @@
 package exnihiloomnia.util.helpers;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -39,12 +36,6 @@ public abstract class PositionHelper {
 		return pos;
 	}
 
-	public static void dropItemInWorld(BlockPos pos, EntityPlayer player, ItemStack stack, double speedfactor) {
-		EntityItem droppedEntity = new EntityItem(player.getEntityWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
-		droppedEntity.setDefaultPickupDelay();
-		player.getEntityWorld().spawnEntityInWorld(droppedEntity);
-	}
-	
 	public static boolean hasNearbyWaterSource(World world, BlockPos pos) {
 		return world.getBlockState(getRandomPositionNearBlock(world, pos)).getBlock() == Blocks.WATER;
 	}

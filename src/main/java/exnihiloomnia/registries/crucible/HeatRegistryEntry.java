@@ -1,8 +1,6 @@
 package exnihiloomnia.registries.crucible;
 
 import exnihiloomnia.registries.crucible.pojos.HeatValue;
-import exnihiloomnia.util.enums.EnumMetadataBehavior;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 

@@ -1,24 +1,18 @@
 package exnihiloomnia.compatibility;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.enums.EnumOre;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -69,8 +63,7 @@ public class ENOOres {
         
         //change to true to debug
         if (force_ores) {
-            for (EnumOre ore : EnumOre.values())
-                ores.add(ore);
+            Collections.addAll(ores, EnumOre.values());
             return ores;
         }
 

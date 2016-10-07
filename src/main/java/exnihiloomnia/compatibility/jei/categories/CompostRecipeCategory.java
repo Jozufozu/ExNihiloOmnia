@@ -2,7 +2,6 @@
 package exnihiloomnia.compatibility.jei.categories;
 
 import exnihiloomnia.ENO;
-import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
 import exnihiloomnia.util.Color;
 import mezz.jei.api.IGuiHelper;

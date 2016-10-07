@@ -3,7 +3,6 @@ package exnihiloomnia.compatibility.jei.categories;
 import com.google.common.collect.Lists;
 import exnihiloomnia.registries.hammering.HammerRegistryEntry;
 import exnihiloomnia.registries.hammering.HammerReward;
-import exnihiloomnia.registries.hammering.HammerReward;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;

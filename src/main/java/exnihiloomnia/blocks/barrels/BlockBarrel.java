@@ -6,7 +6,6 @@ import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -68,7 +67,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 				//	FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 				barrel.getState().useItem(player, hand, barrel, item);
 			}
-			if (barrel.canExtractItem(0, barrel.getItemHandler().getStackInSlot(0), null)) {
+			if (barrel.canExtractItem(0)) {
 				if (!world.isRemote) {
 					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.0f, pos.getZ() + 0.5f, barrel.getItemHandler().getStackInSlot(0));
 

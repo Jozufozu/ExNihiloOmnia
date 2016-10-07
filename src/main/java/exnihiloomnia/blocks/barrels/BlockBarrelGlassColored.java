@@ -2,6 +2,7 @@ package exnihiloomnia.blocks.barrels;
 
 import java.util.List;
 
+import exnihiloomnia.util.Color;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -31,10 +32,7 @@ public class BlockBarrelGlassColored extends BlockBarrel {
 	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        EnumDyeColor[] colors = EnumDyeColor.values();
-
-        for (int j = 0; j < colors.length; ++j) {
-            EnumDyeColor color = colors[j];
+        for (EnumDyeColor color : EnumDyeColor.values()) {
             list.add(new ItemStack(itemIn, 1, color.getMetadata()));
         }
     }

@@ -1,5 +1,6 @@
 package exnihiloomnia.compatibility.waila;
 
+import java.util.Collections;
 import java.util.List;
 
 import exnihiloomnia.ENOConfig;
@@ -96,9 +97,7 @@ public class WailaCompatibility implements IWailaDataProvider {
 		String[] body = barrel.getState().getWailaBody(barrel);
 
 		if (body != null) {
-			for (String s : body) {
-				tip.add(s);
-			}
+			Collections.addAll(tip, body);
 		}
 	}
 

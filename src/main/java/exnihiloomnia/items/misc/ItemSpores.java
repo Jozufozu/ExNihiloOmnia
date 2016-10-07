@@ -1,7 +1,7 @@
 package exnihiloomnia.items.misc;
 
-import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityMooshroom;
@@ -33,10 +33,8 @@ public class ItemSpores extends Item {
 		if (playerIn.canPlayerEdit(pos, facing, stack) && stack.stackSize != 0 && worldIn.getBlockState(pos) == Blocks.DIRT.getDefaultState()) {
 			worldIn.setBlockState(pos, Blocks.MYCELIUM.getDefaultState());
 			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
-			
-			if (!playerIn.isCreative()) {
-				stack.stackSize--;
-			}
+
+			InventoryHelper.consumeItem(playerIn, stack);
 			
 			return EnumActionResult.SUCCESS;
 		}
@@ -45,7 +43,12 @@ public class ItemSpores extends Item {
 				worldIn.setBlockState(up, Blocks.BROWN_MUSHROOM.getDefaultState());
 			else
 				worldIn.setBlockState(up, Blocks.RED_MUSHROOM.getDefaultState());
+
+			InventoryHelper.consumeItem(playerIn, stack);
+
 			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
+
+			return EnumActionResult.SUCCESS;
 		}
 
 		return EnumActionResult.PASS;

@@ -5,8 +5,6 @@ import java.util.List;
 
 import exnihiloomnia.client.textures.ENOTextures;
 import exnihiloomnia.registries.CommandRegistry;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

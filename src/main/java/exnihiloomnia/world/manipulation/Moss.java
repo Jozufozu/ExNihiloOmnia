@@ -1,6 +1,7 @@
 package exnihiloomnia.world.manipulation;
 
 import exnihiloomnia.util.helpers.PositionHelper;
+import exnihiloomnia.world.ENOWorld;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
@@ -38,13 +39,14 @@ public class Moss {
 			pos.setPos(PositionHelper.getRandomPositionInChunk(world, chunk));
 			state = world.getBlockState(pos);
 
-			if (world.getLight(pos, true) < 5) {
-				if (isValidCobblestone(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
-					world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
-				} else if (isValidStoneBrick(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
-					world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY));
-				} else if (isValidCobbleWall(state) && (PositionHelper.hasNearbyWaterSource(world, pos) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
-					world.setBlockState(pos, Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY));
+			if (isValid(state)) {
+				if (world.getLight(pos, true) < ENOWorld.getMossLightLevel() && ((PositionHelper.hasNearbyWaterSource(world, pos) && ENOWorld.mossSpreadsNearWater()) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos)))) {
+					if (isValidCobblestone(state))
+						world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
+					else if (isValidStoneBrick(state))
+						world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY));
+					else if (isValidCobbleWall(state))
+						world.setBlockState(pos, Blocks.COBBLESTONE_WALL.getDefaultState().withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY));
 				}
 			}
 		}
@@ -63,5 +65,9 @@ public class Moss {
 	private static boolean isValidCobbleWall(IBlockState state) {
 		return state.getBlock() == Blocks.COBBLESTONE_WALL
 				&& (state.getValue(BlockWall.VARIANT) == BlockWall.EnumType.NORMAL);
+	}
+
+	private static boolean isValid(IBlockState state) {
+		return isValidCobblestone(state) || isValidCobbleWall(state) || isValidStoneBrick(state);
 	}
 }

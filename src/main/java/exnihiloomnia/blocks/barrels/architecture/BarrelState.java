@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
-import javax.annotation.Nonnull;
-
 public abstract class BarrelState {
 	private static String[] EMPTY_STRING_ARRAY = new String[] {};
 	private ArrayList<BarrelLogic> triggers = new ArrayList<BarrelLogic>();

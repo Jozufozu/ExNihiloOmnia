@@ -11,7 +11,6 @@ import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.util.Color;
 import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.util.enums.EnumOreBlockType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;

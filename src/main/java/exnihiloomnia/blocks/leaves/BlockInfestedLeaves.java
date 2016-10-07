@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.leaves;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -192,7 +193,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
     @Override
     public List<ItemStack> onSheared(ItemStack item, net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune) {
-        return java.util.Arrays.asList(new ItemStack(this));
+        return Collections.singletonList(new ItemStack(this));
     }
 
     @Override

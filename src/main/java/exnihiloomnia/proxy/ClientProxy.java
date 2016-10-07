@@ -10,7 +10,6 @@ import exnihiloomnia.blocks.crucibles.renderer.CrucibleRenderer;
 import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import exnihiloomnia.blocks.leaves.InfestedLeavesRenderer;
 import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
-import exnihiloomnia.blocks.ores.BlockOre;
 import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.client.models.ENOModels;

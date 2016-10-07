@@ -33,10 +33,7 @@ public enum EnumWood implements IStringSerializable {
     }
 	
 	static {
-		EnumWood[] woods = values();
-
-        for (int x = 0; x < woods.length; ++x) {
-        	EnumWood wood = woods[x];
+        for (EnumWood wood : EnumWood.values()) {
             META_LOOKUP[wood.getMetadata()] = wood;
         }
 	}

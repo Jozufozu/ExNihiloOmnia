@@ -1,7 +1,6 @@
 package exnihiloomnia.compatibility.jei.categories;
 
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import exnihiloomnia.registries.sifting.SieveRegistryEntry;
 import exnihiloomnia.registries.sifting.SieveReward;

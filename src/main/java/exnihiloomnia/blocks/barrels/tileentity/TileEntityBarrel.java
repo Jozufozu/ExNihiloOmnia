@@ -1,6 +1,5 @@
 package exnihiloomnia.blocks.barrels.tileentity;
 
-import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.layers.BarrelStateLayer;
@@ -235,12 +234,12 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
         return contents;
     }
 
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+    public boolean canExtractItem(int index) {
         if (index == 0) {
             if (output.size() > 0) {
                 return true;
             }
-            else if (contents != null && state.canExtractContents((TileEntityBarrel)this)) {
+            else if (contents != null && state.canExtractContents(this)) {
                 return true;
             }
         }

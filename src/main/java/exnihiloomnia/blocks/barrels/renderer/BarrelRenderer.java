@@ -103,18 +103,18 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<TileEntityBarrel> 
 		GlStateManager.color(color.r, color.g, color.b, color.a);
 
 		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		renderTexturedQuad(renderer, topTexture, top, color, 1.0d);
-		renderTexturedQuad(renderer, bottomTexture, bottom, color, 1.0d);
-		renderTexturedQuad(renderer, sideTexture, north, color, height);
-		renderTexturedQuad(renderer, sideTexture, east, color, height);
-		renderTexturedQuad(renderer, sideTexture, south, color, height);
-		renderTexturedQuad(renderer, sideTexture, west, color, height);
+		renderTexturedQuad(renderer, topTexture, top, 1.0d);
+		renderTexturedQuad(renderer, bottomTexture, bottom, 1.0d);
+		renderTexturedQuad(renderer, sideTexture, north, height);
+		renderTexturedQuad(renderer, sideTexture, east, height);
+		renderTexturedQuad(renderer, sideTexture, south, height);
+		renderTexturedQuad(renderer, sideTexture, west, height);
 		tessellator.draw();
 		
 		GlStateManager.popMatrix();
 	}
 	
-	private static void renderTexturedQuad(VertexBuffer renderer, TextureAtlasSprite texture, Vec3d[] vertices, Color color, double contentHeight) {
+	private static void renderTexturedQuad(VertexBuffer renderer, TextureAtlasSprite texture, Vec3d[] vertices, double contentHeight) {
 		if (texture != null) {
 			double minU = (double) texture.getMinU();
 			double maxU = (double) texture.getMaxU();

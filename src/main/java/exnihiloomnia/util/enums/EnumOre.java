@@ -70,10 +70,7 @@ public enum EnumOre implements IStringSerializable {
 	}
 
 	static {
-		EnumOre[] ores = values();
-
-		for (int x = 0; x < ores.length; ++x) {
-			EnumOre ore = ores[x];
+		for (EnumOre ore : EnumOre.values()) {
 			META_LOOKUP[ore.getMetadata()] = ore;
 		}
 	}

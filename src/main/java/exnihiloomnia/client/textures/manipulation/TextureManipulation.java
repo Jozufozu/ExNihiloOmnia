@@ -2,7 +2,6 @@ package exnihiloomnia.client.textures.manipulation;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.util.Random;
 
 import com.google.common.math.IntMath;
