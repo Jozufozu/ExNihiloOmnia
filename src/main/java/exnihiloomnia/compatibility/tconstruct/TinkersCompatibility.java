@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import slimeknights.tconstruct.library.TinkerRegistry;
 
-public class TinkersCompatability {
+public class TinkersCompatibility {
     private static int INGOT_AMOUNT = 144;
 
     public static void init() {

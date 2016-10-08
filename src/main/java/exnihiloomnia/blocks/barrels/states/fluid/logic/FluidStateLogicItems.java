@@ -38,7 +38,10 @@ public class FluidStateLogicItems extends BarrelLogic {
 
 		if (fluid != null ) {
 
-			if (FluidContainerRegistry.isEmptyContainer(item) && fluid.amount >= barrel.getFluidTank().getCapacity()) {
+			if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+				FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
+			}
+			else if (FluidContainerRegistry.isEmptyContainer(item) && fluid.amount >= barrel.getFluidTank().getCapacity()) {
 				ItemStack full = FluidContainerRegistry.fillFluidContainer(fluid, item);
 
 				if (full != null) {
@@ -72,9 +75,6 @@ public class FluidStateLogicItems extends BarrelLogic {
 				}
 				
 				barrel.getFluidTank().fill(ifluid, true);
-			}
-			else if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
-				FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 			}
 		}
 		

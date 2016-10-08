@@ -17,8 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockSieveWood extends BlockSieve {
 	public static final PropertyEnum WOOD = PropertyEnum.create("wood", EnumWood.class);
 	
-	public BlockSieveWood(Material material) {
-		super(material);
+	public BlockSieveWood() {
+		super(Material.WOOD);
 
 		this.setSoundType(SoundType.WOOD);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(WOOD, EnumWood.OAK));

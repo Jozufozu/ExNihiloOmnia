@@ -122,8 +122,7 @@ public class ItemCrook extends Item {
 
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		ItemStack mat = this.material.getRepairItemStack();
-		if (mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
-		return super.getIsRepairable(toRepair, repair);
-	}
+        ItemStack mat = this.material.getRepairItemStack();
+        return mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false) || super.getIsRepairable(toRepair, repair);
+    }
 }

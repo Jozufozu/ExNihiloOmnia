@@ -21,6 +21,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class BlockCrucible extends Block implements ITileEntityProvider {
 
@@ -43,7 +45,10 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
 		if (item != null && crucible != null) {
-			if (FluidContainerRegistry.isEmptyContainer(item) ) {
+			if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+				FluidUtil.interactWithFluidHandler(item, crucible.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
+			}
+			else if (FluidContainerRegistry.isEmptyContainer(item) ) {
 				ItemStack full = FluidContainerRegistry.fillFluidContainer(crucible.getFluid(), item);
 
 				if (full != null) {

@@ -97,10 +97,10 @@ public class ENOBlocks {
         GRAVEL_ENDER = new BlockOtherGravel().setUnlocalizedName("gravel_ender").setRegistryName("gravel_ender").setCreativeTab(ENOItems.ENO_TAB);
         GRAVEL_NETHER = new BlockOtherGravel().setUnlocalizedName("gravel_nether").setRegistryName("gravel_nether").setCreativeTab(ENOItems.ENO_TAB);
         DUST = new BlockDust().setUnlocalizedName("dust").setRegistryName("dust");
-        SIEVE_WOOD = new BlockSieveWood(Material.WOOD).setUnlocalizedName("sieve_wood").setRegistryName("sieve_wood");
+        SIEVE_WOOD = new BlockSieveWood().setUnlocalizedName("sieve_wood").setRegistryName("sieve_wood");
         INFESTED_LEAVES = new BlockInfestedLeaves().setUnlocalizedName("infested_leaves").setRegistryName("infested_leaves");
 
-        WITCHWATER = new BlockFluidWitchwater(ENOFluids.WITCHWATER, Material.WATER).setUnlocalizedName("witchwater").setRegistryName("witchwater");
+        WITCHWATER = new BlockFluidWitchwater(ENOFluids.WITCHWATER).setUnlocalizedName("witchwater").setRegistryName("witchwater");
 
         END_CAKE = new BlockEndCake().setUnlocalizedName("end_cake").setRegistryName("end_cake");
 

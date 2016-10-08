@@ -15,19 +15,11 @@ public class FluidSummonEndermanTrigger extends BarrelLogic {
 	
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
-		FluidStack fluid = barrel.getFluid();
+        FluidStack fluid = barrel.getFluid();
 
-		if (fluid != null  
-				&& fluid.getFluid() != null 
-				&& fluid.getFluid() == ENOFluids.WITCHWATER
-				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
-				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL) {
-			
-			return item.getItem() == ENOItems.END_DOLL;
-		}
+        return fluid != null && fluid.getFluid() != null && fluid.getFluid() == ENOFluids.WITCHWATER && barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity() && barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL && item.getItem() == ENOItems.END_DOLL;
 
-		return false;
-	}
+    }
 
 	@Override
 	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {

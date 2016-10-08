@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ENOOres {
-    private static String ORE_CATAGORY = "ores";
+    private static final String ORE_CATAGORY = "ores";
 
     public static boolean force_ores;
 
@@ -106,8 +106,16 @@ public class ENOOres {
 
     public static void addOreDict() {
         for (EnumOre ore : ENO.oreList) {
-            if (!(ore == EnumOre.IRON || ore == EnumOre.GOLD) && oredict_ingots)
+            if (!(ore == EnumOre.IRON || ore == EnumOre.GOLD) && oredict_ingots) {
                 OreDictionary.registerOre(ore.getOreDictName("ingot"), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+
+                if (ore == EnumOre.PLATINUM)
+                    OreDictionary.registerOre("ingotShiny", new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+                if (ore == EnumOre.ALUMINUM)
+                    OreDictionary.registerOre("ingotAluminium", new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+                if (ore == EnumOre.NICKEL)
+                    OreDictionary.registerOre("ingotFerrous", new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+            }
             
             if (ore.hasGravel() && oredict_gravels)
                 OreDictionary.registerOre(ore.getOreDictName("ore"), new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()));

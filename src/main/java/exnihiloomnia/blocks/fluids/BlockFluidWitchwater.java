@@ -25,8 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 
 public class BlockFluidWitchwater extends BlockFluidClassic {
 
-	public BlockFluidWitchwater(Fluid fluid, Material material) {
-		super(fluid, material);
+	public BlockFluidWitchwater(Fluid fluid) {
+		super(fluid, Material.WATER);
 	}
 
 	@Override

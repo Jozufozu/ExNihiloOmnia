@@ -1,6 +1,6 @@
 package exnihiloomnia.compatibility;
 
-import exnihiloomnia.compatibility.tconstruct.TinkersCompatability;
+import exnihiloomnia.compatibility.tconstruct.TinkersCompatibility;
 import exnihiloomnia.compatibility.veinminer.VeinMinerCompatibility;
 import exnihiloomnia.compatibility.waila.WailaCompatibility;
 import net.minecraftforge.common.config.Configuration;
@@ -28,6 +28,6 @@ public class ENOCompatibility {
 			VeinMinerCompatibility.initialize();
 
 		if (Loader.isModLoaded("tconstruct") && add_smeltery_melting)
-			TinkersCompatability.init();
+			TinkersCompatibility.init();
 	}
 }
