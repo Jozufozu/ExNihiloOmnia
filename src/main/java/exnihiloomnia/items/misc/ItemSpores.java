@@ -2,6 +2,8 @@ package exnihiloomnia.items.misc;
 
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.helpers.InventoryHelper;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityMooshroom;
@@ -17,6 +19,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemSpores extends Item {
 
@@ -26,6 +29,7 @@ public class ItemSpores extends Item {
 		this.setCreativeTab(ENOItems.ENO_TAB);
 	}
 
+	@NotNull
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
@@ -38,7 +42,7 @@ public class ItemSpores extends Item {
 			
 			return EnumActionResult.SUCCESS;
 		}
-		else if(hitY == 1 && playerIn.canPlayerEdit(up, facing, stack) && worldIn.getBlockState(up).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos) == Blocks.MYCELIUM.getDefaultState()) {
+		else if(hitY == 1 && playerIn.canPlayerEdit(up, facing, stack) && worldIn.getBlockState(up).getBlock().isReplaceable(worldIn, pos) && canMushroomExist(worldIn, pos)) {
 			if (worldIn.rand.nextInt(2) == 0)
 				worldIn.setBlockState(up, Blocks.BROWN_MUSHROOM.getDefaultState());
 			else
@@ -65,13 +69,21 @@ public class ItemSpores extends Item {
 			entity.worldObj.spawnEntityInWorld(mooshroom);
 			entity.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, entity.posX, entity.posY + (double)(entity.height / 2.0F), entity.posZ, 0.0D, 0.0D, 0.0D);
 
-			if (!player.isCreative()) {
-				item.stackSize--;
-			}
+			InventoryHelper.consumeItem(player, item);
 			
 			return true;
 		}
 		
 		return false;
+	}
+
+	private boolean canMushroomExist(World worldIn, BlockPos pos) {
+
+		if (pos.getY() >= 0 && pos.getY() < 256) {
+			IBlockState iblockstate = worldIn.getBlockState(pos.down());
+			return iblockstate.getBlock() == Blocks.MYCELIUM || (iblockstate.getBlock() == Blocks.DIRT && iblockstate.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.PODZOL || worldIn.getLight(pos) < 13 && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), EnumFacing.UP, Blocks.RED_MUSHROOM));
+		}
+		else
+			return false;
 	}
 }

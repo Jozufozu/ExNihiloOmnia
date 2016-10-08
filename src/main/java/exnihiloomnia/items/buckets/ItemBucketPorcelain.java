@@ -127,22 +127,6 @@ public class ItemBucketPorcelain extends ItemFluidContainer implements IFluidCon
 		}
 	}
 	
-	private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket) {
-		if (player.capabilities.isCreativeMode) {
-			return emptyBuckets;
-		}
-		else if (--emptyBuckets.stackSize <= 0) {
-			return new ItemStack(fullBucket);
-		}
-		else {
-			if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket))) {
-				player.dropItem(new ItemStack(fullBucket), false);
-			}
-
-			return emptyBuckets;
-		}
-	}
-	
     public boolean tryPlaceContainedLiquid(@Nullable EntityPlayer worldIn, World pos, BlockPos posIn) {
         if (this.isFull == Blocks.AIR) {
             return false;
