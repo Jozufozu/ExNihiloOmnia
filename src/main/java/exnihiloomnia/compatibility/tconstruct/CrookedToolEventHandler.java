@@ -43,6 +43,8 @@ public class CrookedToolEventHandler {
                             velY = 0.5d;
 
                         entity.addVelocity(velX, velY, velZ);
+
+                        stack.damageItem(1, player);
                     }
                 }
             }

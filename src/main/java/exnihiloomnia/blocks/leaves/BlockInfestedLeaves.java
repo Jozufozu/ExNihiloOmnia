@@ -212,7 +212,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
             }
         }
 
-        return world.setBlockToAir(pos);
+        return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
 
     @Override

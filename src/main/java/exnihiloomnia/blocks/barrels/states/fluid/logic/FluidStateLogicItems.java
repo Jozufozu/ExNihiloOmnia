@@ -12,7 +12,8 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class FluidStateLogicItems extends BarrelLogic {
-	
+	private static final ResourceLocation wateringCan = new ResourceLocation("extrautils2", "WateringCan");
+
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
@@ -40,7 +41,7 @@ public class FluidStateLogicItems extends BarrelLogic {
 
 		if (fluid != null ) {
 			//watering can!
-			if (item.getItem().getRegistryName().equals(new ResourceLocation("extrautils2", "WateringCan"))) {
+			if (item.getItem().getRegistryName().equals(wateringCan)) {
 				if (fluid.amount > 0 && item.getItemDamage() > 0) {
 					FluidStack out = barrel.getFluidTank().drain(item.getItemDamage(), true);
 					if (out != null)
