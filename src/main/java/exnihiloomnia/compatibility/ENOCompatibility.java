@@ -19,7 +19,7 @@ public class ENOCompatibility {
 		register_veinminer_recipes_crook = config.get(CATEGORY_COMPAT_OPTIONS, "VeinMiner: whitelist blocks for crook", true).getBoolean(true);
 		register_veinminer_recipes_hammer = config.get(CATEGORY_COMPAT_OPTIONS, "VeinMiner: whitelist blocks for hammer", true).getBoolean(true);
 		add_smeltery_melting = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add smelting recipes for Ex Nihilo ores", true).getBoolean(true);
-		add_tcon_modifiers = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add \"Hammered\" and \"Crook'd\" modifiers", true).getBoolean(true);
+		add_tcon_modifiers = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add Hammered and Crook'd modifiers", true).getBoolean(true);
 	}
 	
 	public static void initialize() {

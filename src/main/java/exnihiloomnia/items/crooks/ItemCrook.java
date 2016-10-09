@@ -3,6 +3,7 @@ package exnihiloomnia.items.crooks;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -101,9 +102,12 @@ public class ItemCrook extends Item {
 				block.getBlock().dropBlockAsItem(player.worldObj, pos, player.worldObj.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
 				
 				if ((block.getMaterial().equals(Material.LEAVES) && player.worldObj.rand.nextInt(100) == 0) || (block.getBlock() == ENOBlocks.INFESTED_LEAVES && player.worldObj.rand.nextFloat() < ENOConfig.silkworm_chnace)) {
+					Block.spawnAsEntity(player.worldObj, pos, new ItemStack(ENOItems.SILKWORM));
+					/*
 					EntityItem silky = new EntityItem(player.worldObj, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(ENOItems.SILKWORM));
 					silky.setDefaultPickupDelay();
 					player.worldObj.spawnEntityInWorld(silky);
+					*/
 				}
 			}
 		}
