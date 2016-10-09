@@ -91,7 +91,6 @@ public class ItemCrook extends Item {
 		return 1.0F;
 	}
 
-	/*
 	@Override
 	public boolean onBlockStartBreak(ItemStack item, BlockPos pos, EntityPlayer player) {
 		IBlockState block = player.worldObj.getBlockState(pos);
@@ -112,7 +111,7 @@ public class ItemCrook extends Item {
 		//Returning false causes the leaves/grass to break as normal and causes items to drop a second time.
 		return false;
 	}
-	*/
+
 
 	@Override
 	public boolean onBlockDestroyed(ItemStack item, World world, IBlockState block, BlockPos pos, EntityLivingBase player) {
