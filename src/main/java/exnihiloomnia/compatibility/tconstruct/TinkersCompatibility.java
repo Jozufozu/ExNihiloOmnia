@@ -2,19 +2,43 @@ package exnihiloomnia.compatibility.tconstruct;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.compatibility.tconstruct.modifiers.ModCrooked;
+import exnihiloomnia.compatibility.tconstruct.modifiers.ModHammered;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.enums.EnumOre;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.modifiers.IModifier;
+import slimeknights.tconstruct.library.modifiers.Modifier;
 
 public class TinkersCompatibility {
+
+    public static Modifier modCrooked;
+    public static Modifier modHammered;
+
     private static int INGOT_AMOUNT = 144;
 
     public static void init() {
+        registerModifiers();
+        MinecraftForge.EVENT_BUS.register(new CrookedToolEventHandler());
+
         for (EnumOre ore : ENO.oreList)
             tryRegisterOre(ore);
+    }
+
+    private static void registerModifiers() {
+        modCrooked = registerModifier(new ModCrooked());
+        modCrooked.addItem(ENOItems.CROOK_BONE);
+        modHammered = registerModifier(new ModHammered());
+        modHammered.addItem(ENOItems.HAMMER_DIAMOND);
+    }
+
+    private static  <T extends IModifier> T registerModifier(T modifier) {
+        TinkerRegistry.registerModifier(modifier);
+        return modifier;
     }
 
     private static void tryRegisterOre(EnumOre ore) {

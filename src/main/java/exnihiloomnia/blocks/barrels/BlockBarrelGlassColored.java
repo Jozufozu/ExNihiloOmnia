@@ -2,7 +2,6 @@ package exnihiloomnia.blocks.barrels;
 
 import java.util.List;
 
-import exnihiloomnia.util.Color;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;

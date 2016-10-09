@@ -51,7 +51,6 @@ public class ItemCrook extends Item {
 		}
 
 		//Don't do damage
-		item.damageItem(1, player);
 		return true;
 	}
 
@@ -100,12 +99,10 @@ public class ItemCrook extends Item {
 				//Simulate a block break to cause the first round of items to drop.
 				block.getBlock().dropBlockAsItem(player.worldObj, pos, player.worldObj.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
 				
-				if (block.getMaterial().equals(Material.LEAVES)) {
-					if (player.worldObj.rand.nextInt(100) == 0 || (block.getBlock() == ENOBlocks.INFESTED_LEAVES && player.worldObj.rand.nextFloat() < ENOConfig.silkworm_chnace)) {
-						EntityItem silky = new EntityItem(player.worldObj, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(ENOItems.SILKWORM));
-						silky.setDefaultPickupDelay();
-						player.worldObj.spawnEntityInWorld(silky);
-					}
+				if ((block.getMaterial().equals(Material.LEAVES) && player.worldObj.rand.nextInt(100) == 0) || (block.getBlock() == ENOBlocks.INFESTED_LEAVES && player.worldObj.rand.nextFloat() < ENOConfig.silkworm_chnace)) {
+					EntityItem silky = new EntityItem(player.worldObj, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(ENOItems.SILKWORM));
+					silky.setDefaultPickupDelay();
+					player.worldObj.spawnEntityInWorld(silky);
 				}
 			}
 		}

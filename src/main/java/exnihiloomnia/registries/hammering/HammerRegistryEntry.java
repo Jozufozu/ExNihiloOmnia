@@ -1,6 +1,7 @@
 package exnihiloomnia.registries.hammering;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import exnihiloomnia.registries.hammering.pojos.HammerRecipe;
 import exnihiloomnia.registries.hammering.pojos.HammerRecipeReward;
@@ -43,6 +44,15 @@ public class HammerRegistryEntry {
 		for (HammerReward reward : rewards) {
 			reward.dropReward(player, pos);
 		}
+	}
+
+	public List<ItemStack> rollRewards(EntityPlayer player) {
+		ArrayList<ItemStack> rewards = new ArrayList<ItemStack>();
+
+		for (HammerReward reward : this.rewards)
+			rewards.add(reward.getReward(player));
+
+		return rewards;
 	}
 	
 	public String getKey() {

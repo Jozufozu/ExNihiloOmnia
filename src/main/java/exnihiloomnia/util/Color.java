@@ -9,7 +9,13 @@ public class Color {
 	public float a;
 	
 	public static Color WHITE = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-	
+
+	public Color(int red, int green, int blue) {
+		this.r = red / 255f;
+		this.g = green / 255f;
+		this.b = blue / 255f;
+	}
+
 	public Color(float red, float green, float blue, float alpha) {
 		this.r = red;
 		this.g = green;

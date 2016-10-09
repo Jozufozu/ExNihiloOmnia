@@ -8,13 +8,9 @@ import exnihiloomnia.registries.hammering.HammerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemHammer extends ItemTool {
@@ -29,6 +25,7 @@ public class ItemHammer extends ItemTool {
 		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 
+	/*
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
 		if (HammerRegistry.isHammerable(state) && canHarvestBlock(state)) {
@@ -44,6 +41,7 @@ public class ItemHammer extends ItemTool {
 		stack.damageItem(1, entityLiving);
 		return false;
 	}
+	*/
 	
 	@Override
 	public boolean canHarvestBlock(IBlockState block) {

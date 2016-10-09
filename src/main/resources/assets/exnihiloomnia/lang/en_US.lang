@@ -244,3 +244,8 @@ jei.exnihiloomnia:crucible=Crucible Melting
 jei.exnihiloomnia:compost=Composting
 
 exnihiloomnia.commands.registry.usage=/exnihiloregistry <reload|clear|load> [heat|crucible|sieve|hammer|compost]
+
+modifier.crooked.name=Crook'd
+modifier.crooked.desc=§oGet over here!§r\nAllows you to pull entities with your tool.
+modifier.hammered.name=Hammered
+modifier.hammered.desc=§oPlayer smash!§r\nCan break apart blocks.

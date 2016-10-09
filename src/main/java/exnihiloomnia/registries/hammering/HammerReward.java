@@ -20,13 +20,20 @@ public class HammerReward {
 	}
 
 	public void dropReward(EntityPlayer player, BlockPos pos) {
+		ItemStack reward = getReward(player);
+		if (reward != null)
+			Block.spawnAsEntity(player.worldObj, pos, reward);
+	}
+
+	public ItemStack getReward(EntityPlayer player) {
 		World world = player.worldObj;
 		int luck_level = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getActiveItemStack());
 		int chance = base_chance + (fortune_modifier * luck_level);
 
 		if (world.rand.nextInt(100) < chance) {
-			Block.spawnAsEntity(player.worldObj, pos, item.copy());
+			return item.copy();
 		}
+		return null;
 	}
 
 	public int getBaseChance() {

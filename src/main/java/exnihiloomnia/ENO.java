@@ -4,8 +4,15 @@ import java.io.*;
 import java.util.List;
 
 import exnihiloomnia.client.textures.ENOTextures;
+import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.registries.CommandRegistry;
+import exnihiloomnia.registries.hammering.HammerRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -159,6 +166,26 @@ public class ENO {
 		if (event.getName().equals(LootTableList.GAMEPLAY_FISHING_TREASURE)) {
 			LootPool main = event.getTable().getPool("main");
 			main.addEntry(new LootEntryItem(Items.REEDS, 1, 2, new LootFunction[0], new LootCondition[0], MODID + ":sugarcane"));
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public void onHammer(BlockEvent.HarvestDropsEvent event) {
+		if (event.getHarvester() != null) {
+			ItemStack stack = event.getHarvester().getHeldItemMainhand();
+
+			if (stack != null) {
+				IBlockState block = event.getState();
+				World world = event.getWorld();
+
+				if (stack.getItem() instanceof ItemHammer) {
+					if (HammerRegistry.isHammerable(event.getState())) {
+						event.getDrops().clear();
+
+						event.getDrops().addAll(HammerRegistry.getEntryForBlockState(event.getState()).rollRewards(event.getHarvester()));
+					}
+				}
+			}
 		}
 	}
 }

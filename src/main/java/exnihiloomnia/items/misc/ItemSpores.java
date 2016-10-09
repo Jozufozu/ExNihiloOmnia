@@ -32,29 +32,29 @@ public class ItemSpores extends Item {
 	@NotNull
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!playerIn.worldObj.isRemote) {
+			BlockPos up = pos.add(0, hitY, 0);
+			if (playerIn.canPlayerEdit(pos, facing, stack) && stack.stackSize != 0 && worldIn.getBlockState(pos) == Blocks.DIRT.getDefaultState()) {
+				worldIn.setBlockState(pos, Blocks.MYCELIUM.getDefaultState());
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
 
-		BlockPos up = pos.add(0, hitY, 0);
-		if (playerIn.canPlayerEdit(pos, facing, stack) && stack.stackSize != 0 && worldIn.getBlockState(pos) == Blocks.DIRT.getDefaultState()) {
-			worldIn.setBlockState(pos, Blocks.MYCELIUM.getDefaultState());
-			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
+				InventoryHelper.consumeItem(playerIn, stack);
 
-			InventoryHelper.consumeItem(playerIn, stack);
-			
-			return EnumActionResult.SUCCESS;
+				return EnumActionResult.SUCCESS;
+			}
+			else if (hitY == 1 && playerIn.canPlayerEdit(up, facing, stack) && worldIn.getBlockState(up).getBlock().isReplaceable(worldIn, pos) && canMushroomExist(worldIn, pos)) {
+				if (worldIn.rand.nextInt(2) == 0)
+					worldIn.setBlockState(up, Blocks.BROWN_MUSHROOM.getDefaultState());
+				else
+					worldIn.setBlockState(up, Blocks.RED_MUSHROOM.getDefaultState());
+
+				InventoryHelper.consumeItem(playerIn, stack);
+
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 0.3f, 1.5f);
+
+				return EnumActionResult.SUCCESS;
+			}
 		}
-		else if(hitY == 1 && playerIn.canPlayerEdit(up, facing, stack) && worldIn.getBlockState(up).getBlock().isReplaceable(worldIn, pos) && canMushroomExist(worldIn, pos)) {
-			if (worldIn.rand.nextInt(2) == 0)
-				worldIn.setBlockState(up, Blocks.BROWN_MUSHROOM.getDefaultState());
-			else
-				worldIn.setBlockState(up, Blocks.RED_MUSHROOM.getDefaultState());
-
-			InventoryHelper.consumeItem(playerIn, stack);
-
-			worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.3f, 1.5f);
-
-			return EnumActionResult.SUCCESS;
-		}
-
 		return EnumActionResult.PASS;
 	}
 
@@ -81,7 +81,7 @@ public class ItemSpores extends Item {
 
 		if (pos.getY() >= 0 && pos.getY() < 256) {
 			IBlockState iblockstate = worldIn.getBlockState(pos.down());
-			return iblockstate.getBlock() == Blocks.MYCELIUM || (iblockstate.getBlock() == Blocks.DIRT && iblockstate.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.PODZOL || worldIn.getLight(pos) < 13 && iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), EnumFacing.UP, Blocks.RED_MUSHROOM));
+			return  iblockstate.getBlock().canSustainPlant(iblockstate, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, Blocks.RED_MUSHROOM) && (iblockstate.getBlock() == Blocks.MYCELIUM || (iblockstate.getBlock() == Blocks.DIRT && iblockstate.getValue(BlockDirt.VARIANT) == BlockDirt.DirtType.PODZOL || worldIn.getLight(pos) < 13));
 		}
 		else
 			return false;

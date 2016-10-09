@@ -22,13 +22,12 @@ import net.minecraft.world.World;
 
 public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider {
 
-    int[] surroundings;
+    private int[] surroundings;
 
     public BlockInfestedLeaves() {
         super();
         this.setCreativeTab(ENOItems.ENO_TAB);
         this.isBlockContainer = true;
-        this.setLightOpacity(1);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DECAYABLE, true).withProperty(CHECK_DECAY, true));
     }
 
@@ -202,13 +201,14 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
             TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) world.getTileEntity(pos);
 
             if (leaves != null) {
-                if (world.rand.nextFloat() < leaves.getProgress() * ENOConfig.string_chance) {
+                if (world.rand.nextFloat() < leaves.getProgress() * ENOConfig.string_chance / 4.0d)
                     Block.spawnAsEntity(world, pos, new ItemStack(Items.STRING));
-                }
 
-                if (world.rand.nextFloat() < leaves.getProgress() * ENOConfig.string_chance / 4.0d) {
+                if (world.rand.nextFloat() < leaves.getProgress() * ENOConfig.string_chance)
                     Block.spawnAsEntity(world, pos, new ItemStack(Items.STRING));
-                }
+
+                if (world.rand.nextFloat() < ENOConfig.silkworm_chnace)
+                    Block.spawnAsEntity(world, pos, new ItemStack(ENOItems.SILKWORM));
             }
         }
 
