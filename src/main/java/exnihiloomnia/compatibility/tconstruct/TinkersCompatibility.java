@@ -2,6 +2,7 @@ package exnihiloomnia.compatibility.tconstruct;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.compatibility.tconstruct.modifiers.ModCrooked;
 import exnihiloomnia.compatibility.tconstruct.modifiers.ModHammered;
 import exnihiloomnia.items.ENOItems;
@@ -22,16 +23,21 @@ public class TinkersCompatibility {
     private static int INGOT_AMOUNT = 144;
 
     public static void init() {
-        registerModifiers();
-        MinecraftForge.EVENT_BUS.register(new CrookedToolEventHandler());
+        if (ENOCompatibility.add_tcon_modifiers) {
+            registerModifiers();
+            MinecraftForge.EVENT_BUS.register(new CrookedToolEventHandler());
+        }
 
-        for (EnumOre ore : ENO.oreList)
-            tryRegisterOre(ore);
+        if (ENOCompatibility.add_smeltery_melting) {
+            for (EnumOre ore : ENO.oreList)
+                tryRegisterOre(ore);
+        }
     }
 
     private static void registerModifiers() {
         modCrooked = registerModifier(new ModCrooked());
         modCrooked.addItem(ENOItems.CROOK_BONE);
+
         modHammered = registerModifier(new ModHammered());
         modHammered.addItem(ENOItems.HAMMER_DIAMOND);
     }
