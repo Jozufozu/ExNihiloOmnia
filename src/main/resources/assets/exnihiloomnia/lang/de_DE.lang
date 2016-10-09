@@ -244,3 +244,8 @@ jei.exnihiloomnia:crucible=Schmelzen
 jei.exnihiloomnia:compost=Kompostieren
 
 exnihiloomnia.commands.registry.usage=/exnihiloregistry <reload|clear|load> [heat|crucible|sieve|hammer|compost]
+
+modifier.crooked.name=Gekrümmt
+modifier.crooked.desc=§oKomm rüber!§r\nLässt dich mit diesem Werkzeug Kreaturen anziehen.
+modifier.hammered.name=Gehämmert
+modifier.hammered.desc=§oSpielerschlag!§r\nLässt Blöcke auseinanderbrechen.
