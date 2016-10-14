@@ -11,7 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
-import slimeknights.tconstruct.tools.item.*;
+import slimeknights.tconstruct.tools.melee.item.*;
+import slimeknights.tconstruct.tools.tools.*;
 
 public class ModCrooked extends ModifierTrait {
 

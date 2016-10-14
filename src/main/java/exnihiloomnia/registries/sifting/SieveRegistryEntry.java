@@ -52,7 +52,7 @@ public class SieveRegistryEntry {
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(recipe.getId()));
 
 		if (block != null) {
-			IBlockState state = block.getBlockState().getBaseState();
+			IBlockState state = recipe.getBehavior() == EnumMetadataBehavior.SPECIFIC ? block.getStateFromMeta(recipe.getMeta()) : block.getDefaultState();
 
 			if (state != null) {
 				SieveRegistryEntry entry = new SieveRegistryEntry(state, recipe.getBehavior());

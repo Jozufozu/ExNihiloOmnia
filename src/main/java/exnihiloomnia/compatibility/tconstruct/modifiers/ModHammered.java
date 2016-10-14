@@ -8,10 +8,8 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
-import slimeknights.tconstruct.tools.item.Excavator;
-import slimeknights.tconstruct.tools.item.Hammer;
-import slimeknights.tconstruct.tools.item.Pickaxe;
-import slimeknights.tconstruct.tools.item.Shovel;
+import slimeknights.tconstruct.tools.tools.*;
+
 
 /**
  * Modifier that makes tools behave like a hammer
