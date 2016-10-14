@@ -15,7 +15,7 @@ public class CompostStateLogicItems extends BarrelLogic{
 	
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
-		return  (CompostRegistry.isCompostable(item) && barrel.getVolume() < barrel.getVolumeMax());
+		return CompostRegistry.isCompostable(item) && barrel.getVolume() < barrel.getVolumeMax();
 	}
 	
 	@Override

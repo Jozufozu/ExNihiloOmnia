@@ -10,9 +10,9 @@ import net.minecraft.util.EnumHand;
 public abstract class BarrelLogic {
 
 	/**
-	 * Called when a barrel is placed
+	 * Called when a barrel state is set
 	 * @param barrel the fresh new barrel
-	 * @return true to be THE thing to run, or something like that
+	 * @return true to be THE thing to run, or something like that. I actually don't know
 	 */
 	public boolean onActivate(TileEntityBarrel barrel) {
 		return false;

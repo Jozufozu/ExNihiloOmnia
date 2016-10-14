@@ -172,11 +172,9 @@ public class ENO {
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onHammer(BlockEvent.HarvestDropsEvent event) {
 		if (event.getHarvester() != null) {
-			ItemStack stack = event.getHarvester().getHeldItemMainhand();
+			ItemStack stack = event.getHarvester().getActiveItemStack();
 
 			if (stack != null) {
-				IBlockState block = event.getState();
-				World world = event.getWorld();
 
 				if (stack.getItem() instanceof ItemHammer) {
 					if (HammerRegistry.isHammerable(event.getState())) {

@@ -5,6 +5,7 @@ import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
+import exnihiloomnia.util.Color;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -22,7 +23,11 @@ public class CompostStateTrigger extends BarrelLogic {
 		
 		if (recipe != null) {
 			barrel.setState(BarrelStates.COMPOST);
-			barrel.getState().useItem(player, hand, barrel, item);
+			barrel.setVolume(barrel.getVolume() + recipe.getVolume());
+
+			barrel.setColor(recipe.getColor());
+
+			barrel.requestSync();
 			
 			return true;
 		}

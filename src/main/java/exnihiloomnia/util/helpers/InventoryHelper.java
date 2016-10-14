@@ -31,8 +31,7 @@ public class InventoryHelper {
 	
 	public static void consumeItem(EntityPlayer player, ItemStack item) {
 		if (player == null || !player.capabilities.isCreativeMode) {
-			item.stackSize--;
-			if (item.stackSize < 1)
+			if (--item.stackSize <= 0)
 				item = null;
 		}
 	}
