@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -139,7 +140,9 @@ public class TileEntitySieve extends TileEntity implements ITickable {
             if (work >= workMax) {
                 if (contentsState != null) {
                     for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
-                        Block.spawnAsEntity(worldObj, getPos().up(), i);
+						EntityItem drop = new EntityItem(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
+                        drop.setNoPickupDelay();
+						worldObj.spawnEntityInWorld(drop);
                     }
                 }
 
@@ -154,15 +157,19 @@ public class TileEntitySieve extends TileEntity implements ITickable {
                         setMesh(null);
                     }
                 }
-                if (sifters != null)
-                    for (ItemStack i : sifters)
-                        if (((ISieveFaster)i.getItem()).getSiftTime(i) >= workMax / 2) {
-                            ((ISieveFaster) i.getItem()).setSiftTime(i, 0);
+                if (sifters != null) {
+					for (ItemStack i : sifters) {
+						ISieveFaster sifter = ((ISieveFaster) i.getItem());
 
-                            i.attemptDamageItem(1, worldObj.rand);
-                        }
+						if (sifter.getSiftTime(i) >= workMax / 2) {
+							sifter.setSiftTime(i, 0);
 
-				sifters.clear();
+							i.attemptDamageItem(1, worldObj.rand);
+						}
+					}
+
+					sifters.clear();
+				}
                 sync();
 				markDirty();
             }
