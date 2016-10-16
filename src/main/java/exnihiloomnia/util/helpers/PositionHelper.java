@@ -7,33 +7,55 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public abstract class PositionHelper {
-	
-	public static BlockPos getRandomPositionInChunk(World world, Chunk chunk) {
-		return new BlockPos((chunk.xPosition * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunk.zPosition * 16) + world.rand.nextInt(16));
+
+	private static BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+	private static BlockPos.MutableBlockPos random = new BlockPos.MutableBlockPos();
+
+	/**
+	 * Assigns a random position in a given chunk to a given {@link net.minecraft.util.math.BlockPos.MutableBlockPos}
+	 * @param world the world in which you want to get a position
+	 * @param chunk the chunk in which you want to get a position
+	 * @param pos a {@link net.minecraft.util.math.BlockPos.MutableBlockPos} that will be changed to a random position in {@see chunk}
+	 * @return the random position
+	 */
+	public static BlockPos getRandomPositionInChunk(World world, Chunk chunk, BlockPos.MutableBlockPos pos) {
+		return pos.setPos((chunk.xPosition * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunk.zPosition * 16) + world.rand.nextInt(16));
 	}
-	
+
+	/**
+	 * Gets a random position is a 3x3x3 cube centered around a given pos
+	 * @param world to get a random value
+	 * @param pos to get a random position around
+	 * @return the random BlockPos
+	 */
 	public static BlockPos getRandomPositionNearBlock(World world, BlockPos pos) {
-		return new BlockPos(pos.getX() + (world.rand.nextInt(3) - 1), pos.getY() + (world.rand.nextInt(3) - 1), pos.getZ() + (world.rand.nextInt(3) - 1));
+		return probe.setPos(pos.getX() + (world.rand.nextInt(3) - 1), pos.getY() + (world.rand.nextInt(3) - 1), pos.getZ() + (world.rand.nextInt(3) - 1));
 	}
-	
+
+	/**
+	 * Gets a random position in a cardinal direction
+	 * @param world to get a random value
+	 * @param pos to get a random position around
+	 * @return the random BlockPos
+	 */
 	public static BlockPos getRandomPositionAdjacentToBlock(World world, BlockPos pos) {
 		int i = world.rand.nextInt(4);
 		
 		switch(i) {
 			case 0:
-				return new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ());
+				return random.setPos(pos.getX() + 1, pos.getY(), pos.getZ());
 				
 			case 1:
-				return new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ());
+				return random.setPos(pos.getX() - 1, pos.getY(), pos.getZ());
 				
 			case 2:
-				return new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1);
+				return random.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);
 				
 			case 3:
-				return new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1);
+				return random.setPos(pos.getX(), pos.getY(), pos.getZ() - 1);
 		}
 		
-		return pos;
+		return random;
 	}
 
 	public static boolean hasNearbyWaterSource(World world, BlockPos pos) {
@@ -41,19 +63,17 @@ public abstract class PositionHelper {
 	}
 	
 	public static boolean isTopBlock(World world, BlockPos pos) {
-		for (int y = world.getChunkFromBlockCoords(pos).getTopFilledSegment() + 16; y >= pos.getY(); y--) {
-			if (world.getBlockState(new BlockPos(pos.getX(), y, pos.getZ())).getBlock() != Blocks.AIR) {
-				if (y > pos.getY()) {
-					return false;
-				}				
-				else if (y == pos.getY()) {
-					return true;
-				}
-			}
+		return world.getChunkFromBlockCoords(pos).canSeeSky(pos);
+		/*
+		for (int y = world.getHeight(); y > pos.getY(); y--) {
+
+			probe.setPos(pos.getX(), y, pos.getZ());
+
+			if (world.getBlockState(pos).getBlock() != Blocks.AIR)
+				return false;
 		}
-		
-		//There are no blocks above the current position. It technically counts.
 		return true;
+		*/
 	}
 	
 	public static boolean isRainingAt(World world, BlockPos pos) {
@@ -101,7 +121,7 @@ public abstract class PositionHelper {
 			return 0;
 		}
 		else {
-			return world.getLight(new BlockPos(above.getX(), above.getY() + 1, above.getZ()));
+			return world.getLight(probe.setPos(above.getX(), above.getY() + 1, above.getZ()));
 		}
 	}
 }
