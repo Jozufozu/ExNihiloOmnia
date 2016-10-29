@@ -6,6 +6,7 @@ import exnihiloomnia.registries.composting.CompostRegistryEntry;
 import exnihiloomnia.util.Color;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -79,5 +80,16 @@ public class CompostRecipeCategory implements IRecipeCategory<JEICompostRecipe> 
 
         recipeLayout.getItemStacks().init(1, true, 87, 23);
         recipeLayout.getItemStacks().set(1, (ItemStack) recipeWrapper.getOutputs().get(0));
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, JEICompostRecipe recipeWrapper, IIngredients ingredients) {
+        this.entry = recipeWrapper.getEntry();
+
+        recipeLayout.getItemStacks().init(0, true, 23, 23);
+        recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
+
+        recipeLayout.getItemStacks().init(1, true, 87, 23);
+        recipeLayout.getItemStacks().set(1, ingredients.getOutputs(ItemStack.class).get(0));
     }
 }

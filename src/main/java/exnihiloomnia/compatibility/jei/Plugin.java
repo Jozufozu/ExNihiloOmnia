@@ -13,6 +13,7 @@ import exnihiloomnia.registries.sifting.SieveRegistry;
 import exnihiloomnia.registries.sifting.SieveRegistryEntry;
 import exnihiloomnia.util.enums.EnumWood;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -26,6 +27,11 @@ import java.util.ArrayList;
 @JEIPlugin
 public class Plugin implements IModPlugin{
     private static ItemStack dirt = new ItemStack(Blocks.DIRT);
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {
+
+    }
 
     @Override
     public void register(@Nonnull IModRegistry registry) {
@@ -113,6 +119,11 @@ public class Plugin implements IModPlugin{
             hammerRecipes.add(new JEIHammerRecipe(entry));
         }
         registry.addRecipes(hammerRecipes);
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+
     }
 
     @Override

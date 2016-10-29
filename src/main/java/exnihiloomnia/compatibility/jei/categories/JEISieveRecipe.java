@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import exnihiloomnia.registries.sifting.SieveRegistryEntry;
 import exnihiloomnia.registries.sifting.SieveReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -43,6 +44,12 @@ public class JEISieveRecipe implements IRecipeWrapper{
 
         ItemStack inputStack = new ItemStack(entry.getInput().getBlock(), 1, entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC ? entry.getInput().getBlock().getMetaFromState(entry.getInput()) : 0);
         inputs.add(inputStack);
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, inputs);
+        ingredients.setOutputs(ItemStack.class, outputs);
     }
 
     Collection<SieveReward> getRewardFromItemStack(ItemStack stack) {

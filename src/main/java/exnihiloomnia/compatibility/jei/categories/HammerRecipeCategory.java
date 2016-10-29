@@ -10,6 +10,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
@@ -64,6 +65,64 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft) {
 
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEIHammerRecipe recipeWrapper, IIngredients ingredients) {
+
+        recipeLayout.getItemStacks().init(0, true, 74, 9);
+        recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
+
+        IFocus<ItemStack> focus = recipeLayout.getItemStacks().getFocus();
+        hasHighlight = focus.getMode() == IFocus.Mode.OUTPUT;
+        final List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+        final int outputSlots = 1;
+        int slotNumber = 0;
+
+        for(ItemStack output : outputs) {
+            final int slotX = 2 + (slotNumber % 9 * 18);
+            final int slotY = 52 + (slotNumber / 9 * 18);
+
+            recipeLayout.getItemStacks().init(outputSlots + slotNumber, false, slotX, slotY);
+
+            recipeLayout.getItemStacks().set(outputSlots + slotNumber, output);
+            ItemStack focusStack = focus.getValue();
+
+            if(focus.getMode() == IFocus.Mode.OUTPUT && focusStack != null
+                    && focusStack.getItem() == output.getItem()
+                    && focusStack.getItemDamage() == output.getItemDamage()) {
+                highlightX = slotX;
+                highlightY = slotY;
+
+            }
+            slotNumber++;
+        }
+        recipeLayout.getItemStacks().addTooltipCallback(new ITooltipCallback<ItemStack>() {
+            @Override
+            public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+                if(!input) {
+                    Multiset<String> condensedTooltips = HashMultiset.create();
+
+                    for(HammerReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
+                        String s;
+                        int iChance = reward.getBaseChance();
+
+                        if(iChance > 0)
+                            s = String.format("%3d%%", (int) (reward.getBaseChance()));
+                        else
+                            s = String.format("%1.1f%%", (float) (reward.getBaseChance()));
+
+                        condensedTooltips.add(s);
+                    }
+
+                    tooltip.add(I18n.format("jei.exnihiloomnia:sieve.dropChance"));
+
+                    for(String line : condensedTooltips.elementSet()) {
+                        tooltip.add(" * " + condensedTooltips.count(line) + "x " + line);
+                    }
+                }
+            }
+        });
     }
 
     @Override

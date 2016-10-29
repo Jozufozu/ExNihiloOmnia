@@ -1,6 +1,7 @@
 package exnihiloomnia.compatibility.jei.categories;
 
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -21,6 +22,12 @@ public class JEICrucibleRecipe implements IRecipeWrapper {
         output.add(new FluidStack(entry.getFluid(), entry.getFluidVolume()));
 
         this.entry = entry;
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, input);
+        ingredients.setOutputs(FluidStack.class, output);
     }
 
     public CrucibleRegistryEntry getEntry() {

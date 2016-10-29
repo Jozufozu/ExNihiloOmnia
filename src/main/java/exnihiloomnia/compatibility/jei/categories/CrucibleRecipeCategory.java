@@ -6,10 +6,13 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 
@@ -58,5 +61,14 @@ public class CrucibleRecipeCategory implements IRecipeCategory<JEICrucibleRecipe
 
         recipeLayout.getFluidStacks().init(0, false, 52, 30, 24, 24, 8000, true, null);
         recipeLayout.getFluidStacks().set(0, recipeWrapper.getFluidOutputs());
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, JEICrucibleRecipe recipeWrapper, IIngredients ingredients) {
+        recipeLayout.getItemStacks().init(0, true, 55, 2);
+        recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
+
+        recipeLayout.getFluidStacks().init(0, false, 52, 30, 24, 24, 8000, true, null);
+        recipeLayout.getFluidStacks().set(0, ingredients.getOutputs(FluidStack.class));
     }
 }

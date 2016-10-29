@@ -3,6 +3,7 @@ package exnihiloomnia.compatibility.jei.categories;
 import com.google.common.collect.Lists;
 import exnihiloomnia.registries.hammering.HammerRegistryEntry;
 import exnihiloomnia.registries.hammering.HammerReward;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -45,6 +46,12 @@ public class JEIHammerRecipe implements IRecipeWrapper{
 
     Collection<HammerReward> getRewardFromItemStack(ItemStack stack) {
         return rewards.get(stack);
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, input);
+        ingredients.setOutputs(ItemStack.class, outputs);
     }
 
     @Override
