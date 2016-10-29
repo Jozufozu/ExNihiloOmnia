@@ -34,7 +34,7 @@ public class FluidStateTriggerItem extends BarrelLogic {
 		else if (fluid != null && fluid.amount > 0) {
 			if (player != null) {
 				if (!player.capabilities.isCreativeMode) {
-					InventoryHelper.consumeItem(null, item);
+					InventoryHelper.consumeItem(player, item);
 					player.setHeldItem(hand, InventoryHelper.getContainer(item));
 				}
 			}

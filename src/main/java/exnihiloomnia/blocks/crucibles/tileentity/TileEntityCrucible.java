@@ -50,7 +50,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
                     if (hasSpaceFor(meltable.getSolidVolume())) {
                         stack.stackSize--;
 
-                        item = stack;
+                        item = stack.copy();
                         addSolid(meltable.getSolidVolume());
                         sync();
 
@@ -76,7 +76,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 
         @Override
         public boolean canFill() {
-            return itemHandler.getStackInSlot(0) == null;
+            return false;
         }
 
         @Override

@@ -1,13 +1,16 @@
 package exnihiloomnia.items.buckets;
 
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.items.PorcelainBucketWrapper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemBucketPorcelainMilk extends ItemBucketMilk {
 	
@@ -30,5 +33,11 @@ public class ItemBucketPorcelainMilk extends ItemBucketMilk {
         ((EntityPlayer) playerIn).addStat(StatList.getObjectUseStats(this));
         
         return stack.stackSize <= 0 ? new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY) : stack;
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
+    {
+        return new PorcelainBucketWrapper(stack);
     }
 }
