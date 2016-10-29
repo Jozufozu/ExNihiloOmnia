@@ -7,16 +7,23 @@ import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
 import exnihiloomnia.items.sieveassist.ISieveFaster;
 import exnihiloomnia.registries.sifting.SieveRegistry;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketPlayerListItem;
+import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -24,17 +31,20 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TileEntitySieve extends TileEntity implements ITickable {
-	protected ArrayList<ItemStack> sifters = new ArrayList<ItemStack>();
+	protected HashMap<ItemStack, EntityPlayer> sifters = new HashMap<ItemStack, EntityPlayer>();
     protected ItemStack currentSifter;
 
 	protected ItemStack mesh;
@@ -88,13 +98,11 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 		return block != null ? index == 0 && contents == null && SieveRegistry.isSiftable(block.getStateFromMeta(stack.getMetadata())) : index == 1 && stack.getItem() instanceof ISieveMesh && mesh == null && !ENOConfig.classic_sieve;
     }
 
-	public void setWorkPerSecond(int workPerSecond, ItemStack sifter) {
+	public void setWorkPerSecond(int workPerSecond, ItemStack sifter, EntityPlayer player) {
 		this.workPerSecond = workPerSecond;
 		if (sifter != null) {
             currentSifter = sifter;
-
-            if (!sifters.contains(sifter))
-                this.sifters.add(sifter);
+            sifters.put(sifter, player);
         }
 	}
 
@@ -135,44 +143,52 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 					}
 				}
 			}
+			if (work >= workMax) {
+				if (!this.worldObj.isRemote) {
+					if (contentsState != null) {
+						for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
+							EntityItem drop = new EntityItem(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
+							drop.setNoPickupDelay();
+							worldObj.spawnEntityInWorld(drop);
+						}
+					}
 
-			//output
-            if (work >= workMax) {
-                if (contentsState != null) {
-                    for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
-						EntityItem drop = new EntityItem(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
-                        drop.setNoPickupDelay();
-						worldObj.spawnEntityInWorld(drop);
-                    }
-                }
+					work = 0;
+					workQueued = false;
+					ticksThisCycle = 0;
+					contents = null;
+				}
 
-                work = 0;
-				workQueued = false;
-				ticksThisCycle = 0;
-                contents = null;
-
-                if (this.mesh != null) {
-                    if (mesh.attemptDamageItem(1, worldObj.rand)) {
-                        getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.5f, 2.5f);
-                        setMesh(null);
-                    }
-                }
-                if (sifters != null) {
-					for (ItemStack i : sifters) {
+				if (this.mesh != null) {
+					if (mesh.attemptDamageItem(1, worldObj.rand)) {
+						getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.5f, 2.5f);
+						setMesh(null);
+					}
+				}
+				if (sifters != null) {
+					for (ItemStack i : sifters.keySet()) {
 						ISieveFaster sifter = ((ISieveFaster) i.getItem());
 
 						if (sifter.getSiftTime(i) >= workMax / 2) {
 							sifter.setSiftTime(i, 0);
+							EntityPlayer player = sifters.get(i);
 
-							i.attemptDamageItem(1, worldObj.rand);
+							i.damageItem(1, player);
+
+							if (i.stackSize <= 0) {
+								player.renderBrokenItemStack(i);
+								if (i.equals(player.inventory.offHandInventory[0]))
+									player.inventory.offHandInventory[0] = null;
+							}
 						}
 					}
 
 					sifters.clear();
 				}
-                sync();
+
+				sync();
 				markDirty();
-            }
+			}
 		}
 		else {
 			if (spawningParticles) {
@@ -343,6 +359,22 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 		}
 		
 		items.appendTag(contentsTag);
+
+		/*
+		NBTTagList sifters = new NBTTagList();
+
+		if (this.sifters.size() > 0) {
+			for (ItemStack i : this.sifters) {
+				NBTTagCompound sift = new NBTTagCompound();
+
+				i.writeToNBT(sift);
+
+				sifters.appendTag(sift);
+			}
+		}
+
+		items.appendTag(sifters);
+		*/
 		
 		compound.setTag("items", items);
 		return compound;

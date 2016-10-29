@@ -72,9 +72,9 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 					sifter = offhand;
 
 				if (sifter == null)
-					sieve.setWorkPerSecond(sieve.getBaseSpeed(), null);
+					sieve.setWorkPerSecond(sieve.getBaseSpeed(), null, player);
 				else {
-					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) sifter.getItem()).getSpeedModifier()), sifter);
+					sieve.setWorkPerSecond((int) (sieve.getBaseSpeed() * ((ISieveFaster) sifter.getItem()).getSpeedModifier()), sifter, player);
 				}
 
 				sieve.doWork();
@@ -112,8 +112,7 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 						mesh.stackSize = 1;
 						
 						sieve.setMesh(mesh);
-						if (!player.isCreative())
-							item.stackSize--;
+						InventoryHelper.consumeItem(player, item);
 					}
 				}
 			}
