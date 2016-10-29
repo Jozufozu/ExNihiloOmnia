@@ -82,7 +82,7 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
         register(Blocks.STONE, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.GRAVEL, 0, 250, FluidRegistry.LAVA, 250);
         register(Blocks.NETHERRACK, 0, 250, FluidRegistry.LAVA, 1000);
-        register(Blocks.field_189877_df, 0, 250, FluidRegistry.LAVA, 2000);
+        register(Blocks.MAGMA, 0, 250, FluidRegistry.LAVA, 2000);
 
         register(Blocks.SNOW, 0, 250, FluidRegistry.WATER, 250);
         register(Blocks.ICE, 0, 250, FluidRegistry.WATER, 1000);

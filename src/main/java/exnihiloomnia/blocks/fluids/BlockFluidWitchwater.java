@@ -65,9 +65,9 @@ public class BlockFluidWitchwater extends BlockFluidClassic {
 			}
 			
 			if (entity instanceof EntitySkeleton) {
-				if (((EntitySkeleton) entity).func_189771_df() == SkeletonType.NORMAL) {
+				if (((EntitySkeleton) entity).getSkeletonType() == SkeletonType.NORMAL) {
 					EntitySkeleton skeleton = (EntitySkeleton) entity;
-					skeleton.func_189768_a(SkeletonType.WITHER);
+					skeleton.setSkeletonType(SkeletonType.WITHER);
 					skeleton.setHealth(skeleton.getMaxHealth());
 				}
 			}

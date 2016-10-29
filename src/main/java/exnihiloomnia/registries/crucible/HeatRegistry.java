@@ -71,6 +71,6 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 		register(Blocks.FLOWING_LAVA, 12);
 		register(Blocks.LIT_FURNACE, 12);
 		register(Blocks.FIRE, 20);
-		register(Blocks.field_189877_df, 20);
+		register(Blocks.MAGMA, 20);
 	}
 }

@@ -27,10 +27,6 @@ public class EntityStone extends EntitySnowball {
         super(worldIn, x, y, z);
     }
 
-    public static void func_189662_a(DataFixer p_189662_0_) {
-        EntityThrowable.func_189661_a(p_189662_0_, "Stone");
-    }
-
     /**
      * Called when this EntityThrowable hits a block or entity.
      */

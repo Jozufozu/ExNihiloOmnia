@@ -13,7 +13,8 @@ public class Mycelium {
 	public static final int DEFAULT_GROWTH_SPEED = 8;
 	private static int growth = 0;
 	private static boolean rain_reactive;
-	
+
+	private static PositionHelper helper = new PositionHelper();
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 	private static IBlockState state;
 	private static Random rng = new Random();
@@ -41,7 +42,7 @@ public class Mycelium {
 			state = world.getBlockState(pos);
 			
 			if (state.getBlock() == Blocks.MYCELIUM && world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
-				if (PositionHelper.hasNearbyWaterSource(world, pos)) {
+				if (helper.hasNearbyWaterSource(world, pos)) {
 					spawnRandomMushroom(world, pos);
 				}
 				else if (getSpreadsWhileRaining() && PositionHelper.isRainingAt(world, pos)) {

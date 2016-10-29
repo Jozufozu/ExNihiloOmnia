@@ -19,7 +19,7 @@ public class OutputStateLogicGrowingMycelium extends BarrelLogic {
 			
 			if (barrel.getWorld().rand.nextInt(1000) == 0) {
 				if (isRandomNearbyBlockMycelium(barrel)
-					&& PositionHelper.getLightLevelAbove(barrel.getWorld(), barrel.getPos()) >= 9) {
+					&& helper.getLightLevelAbove(barrel.getWorld(), barrel.getPos()) >= 9) {
 					barrel.setContents(new ItemStack(Blocks.MYCELIUM, 1));
 				}
 			}
@@ -31,8 +31,7 @@ public class OutputStateLogicGrowingMycelium extends BarrelLogic {
 	private static boolean isRandomNearbyBlockMycelium(TileEntityBarrel barrel) {
 		World world = barrel.getWorld();
 		BlockPos pos = barrel.getPos();
-		int grass = 0;
-		
+
 		int x = world.rand.nextInt(3) - 1;
 		int y = world.rand.nextInt(3) - 1;
 		int z = world.rand.nextInt(3) - 1;

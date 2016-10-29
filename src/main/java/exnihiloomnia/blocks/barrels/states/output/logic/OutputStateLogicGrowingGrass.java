@@ -19,7 +19,7 @@ public class OutputStateLogicGrowingGrass extends BarrelLogic {
 			
 			if (barrel.getWorld().rand.nextInt(1000) == 0) {
 				if (isRandomNearbyBlockGrass(barrel)
-					&& PositionHelper.getLightLevelAbove(barrel.getWorld(), barrel.getPos()) >= 9) {
+					&& helper.getLightLevelAbove(barrel.getWorld(), barrel.getPos()) >= 9) {
 					
 					barrel.setContents(new ItemStack(Blocks.GRASS, 1));
 				}

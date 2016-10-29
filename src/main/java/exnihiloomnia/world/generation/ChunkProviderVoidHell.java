@@ -75,7 +75,7 @@ public class ChunkProviderVoidHell extends ChunkProviderHell {
 			}
 		}
 
-		Biome biome = this.world.getBiomeGenForCoords(pos);
+		Biome biome = this.world.getBiomeForCoordsBody(pos);
 		return biome.getSpawnableList(creatureType);
 	}
 

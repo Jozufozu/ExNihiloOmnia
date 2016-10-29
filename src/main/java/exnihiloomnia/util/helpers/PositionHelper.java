@@ -6,10 +6,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-public abstract class PositionHelper {
+public class PositionHelper {
 
-	private static BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
-	private static BlockPos.MutableBlockPos random = new BlockPos.MutableBlockPos();
+	private BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+	private BlockPos.MutableBlockPos random = new BlockPos.MutableBlockPos();
+
+	public PositionHelper() {
+
+	}
 
 	/**
 	 * Assigns a random position in a given chunk to a given {@link net.minecraft.util.math.BlockPos.MutableBlockPos}
@@ -28,7 +32,7 @@ public abstract class PositionHelper {
 	 * @param pos to get a random position around
 	 * @return the random BlockPos
 	 */
-	public static BlockPos getRandomPositionNearBlock(World world, BlockPos pos) {
+	public BlockPos getRandomPositionNearBlock(World world, BlockPos pos) {
 		return probe.setPos(pos.getX() + (world.rand.nextInt(3) - 1), pos.getY() + (world.rand.nextInt(3) - 1), pos.getZ() + (world.rand.nextInt(3) - 1));
 	}
 
@@ -38,7 +42,7 @@ public abstract class PositionHelper {
 	 * @param pos to get a random position around
 	 * @return the random BlockPos
 	 */
-	public static BlockPos getRandomPositionAdjacentToBlock(World world, BlockPos pos) {
+	public BlockPos getRandomPositionAdjacentToBlock(World world, BlockPos pos) {
 		int i = world.rand.nextInt(4);
 		
 		switch(i) {
@@ -58,7 +62,7 @@ public abstract class PositionHelper {
 		return random;
 	}
 
-	public static boolean hasNearbyWaterSource(World world, BlockPos pos) {
+	public boolean hasNearbyWaterSource(World world, BlockPos pos) {
 		return world.getBlockState(getRandomPositionNearBlock(world, pos)).getBlock() == Blocks.WATER;
 	}
 	
@@ -77,10 +81,10 @@ public abstract class PositionHelper {
 	}
 	
 	public static boolean isRainingAt(World world, BlockPos pos) {
-		return world.isRaining() && world.getBiomeGenForCoords(pos).getRainfall() > 0f && isTopBlock(world, pos);
+		return world.isRaining() && world.getBiomeForCoordsBody(pos).getRainfall() > 0f && isTopBlock(world, pos);
 	}
 	
-	public static boolean canRainReach(World world, BlockPos pos) {
+	public boolean canRainReach(World world, BlockPos pos) {
 		if (world.isRaining()) {
 			if (isRainingAt(world, pos)) {
 				return true;
@@ -114,7 +118,7 @@ public abstract class PositionHelper {
 		}
 	}
 	
-	public static int getLightLevelAbove(World world, BlockPos pos) {
+	public int getLightLevelAbove(World world, BlockPos pos) {
 		BlockPos above = pos.up();
 		
 		if (!world.isAirBlock(above)) {

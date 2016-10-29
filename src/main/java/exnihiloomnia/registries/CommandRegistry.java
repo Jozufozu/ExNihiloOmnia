@@ -7,6 +7,7 @@ import exnihiloomnia.registries.crucible.HeatRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.registries.sifting.SieveRegistry;
 import mezz.jei.JeiHelpers;
+import mezz.jei.JustEnoughItems;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -89,7 +90,7 @@ public class CommandRegistry extends CommandBase {
                 throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
 
             if (Loader.isModLoaded("JEI"))
-                new JeiHelpers().reload();
+                JustEnoughItems.getProxy().restartJEI();
         }
     }
 

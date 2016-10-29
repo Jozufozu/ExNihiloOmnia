@@ -3,11 +3,14 @@ package exnihiloomnia.blocks.barrels.architecture;
 import javax.annotation.Nullable;
 
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.util.helpers.PositionHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
 public abstract class BarrelLogic {
+
+	protected static PositionHelper helper = new PositionHelper();
 
 	/**
 	 * Called when a barrel state is set

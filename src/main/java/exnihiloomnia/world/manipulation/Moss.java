@@ -15,6 +15,7 @@ public class Moss {
 	private static int growth = 0;
 	private static boolean rain_reactive;
 
+	private static PositionHelper helper = new PositionHelper();
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 	private static IBlockState state;
 
@@ -43,7 +44,7 @@ public class Moss {
 			if (state.getBlock() == Blocks.AIR)
 				continue;
 
-			if (isValid() && (world.getLight(pos, true) < ENOWorld.getMossLightLevel() && ((PositionHelper.hasNearbyWaterSource(world, pos) && ENOWorld.mossSpreadsNearWater()) || (getSpreadsWhileRaining() && PositionHelper.canRainReach(world, pos))))) {
+			if (isValid() && (world.getLight(pos, true) < ENOWorld.getMossLightLevel() && ((helper.hasNearbyWaterSource(world, pos) && ENOWorld.mossSpreadsNearWater()) || (getSpreadsWhileRaining() && helper.canRainReach(world, pos))))) {
 
 				if (isValidCobblestone())
 					world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
