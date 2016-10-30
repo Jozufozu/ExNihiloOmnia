@@ -13,7 +13,9 @@ import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
 import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.client.models.ENOModels;
+import exnihiloomnia.client.textures.ENOTextures;
 import exnihiloomnia.compatibility.ENOOres;
+import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.entities.thrown.stone.EntityStone;
 import exnihiloomnia.entities.thrown.stone.EntityStoneRenderer;
 import exnihiloomnia.items.ENOItems;
@@ -26,26 +28,39 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 //Commands that only execute on the client.
 public class ClientProxy extends Proxy {
-	
-    @Override
-    public void registerModels() {
-        ENOModels.register();
-    }
 
     @Override
-    public void registerRenderers() {
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+
+        ENOModels.register();
+
         registerItemModels();
         registerBlockModels();
+
         registerBlockRenderers();
         registerEntityRenderers();
+
+        if (IC2.SEED_RUBBER != null)
+            IC2.loadTexture();
     }
 
     @Override
-    public void registerColors() {
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+
         ENOOres.regColors();
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
     }
 
     public static void registerItemModels() {

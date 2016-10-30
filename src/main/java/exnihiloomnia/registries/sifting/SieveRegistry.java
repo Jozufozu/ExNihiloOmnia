@@ -7,6 +7,7 @@ import java.util.List;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
@@ -147,6 +148,8 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 		dirt.addReward(new ItemStack(ENOItems.SEED_JUNGLE), 2);
 		dirt.addReward(new ItemStack(ENOItems.SEED_OAK), 5);
 		dirt.addReward(new ItemStack(ENOItems.SEED_SPRUCE), 2);
+		if (IC2.SEED_RUBBER != null)
+			dirt.addReward(new ItemStack(IC2.SEED_RUBBER), 2);
 		add(dirt);
 		
 		SieveRegistryEntry gravel = new SieveRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED);

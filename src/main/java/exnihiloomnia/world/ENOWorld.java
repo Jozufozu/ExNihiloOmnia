@@ -20,6 +20,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 
 public class ENOWorld {
 	private static String CATEGORY_WORLD_GEN = "world generation";
@@ -186,7 +187,7 @@ public class ENOWorld {
 	}
 	
 	public static void tick(World world) {
-		if (!world.isRemote) {
+		if (!world.isRemote && world.playerEntities.size() > 0 && world.provider.getDimension() != -11325) {
 			ChunkProviderServer provider = (ChunkProviderServer)world.getChunkProvider();
 	        
 			for (Object chunk : provider.getLoadedChunks().toArray()) {

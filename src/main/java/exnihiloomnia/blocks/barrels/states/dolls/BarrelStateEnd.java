@@ -70,7 +70,7 @@ public class BarrelStateEnd extends BarrelState {
 
 	@Override
 	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-		info.text(I18n.format("exnihiloomnia.info.barrel.enderman") + " " + I18n.format("entity.Enderman.name"));
+		info.text("Relocating Enderman");
 		info.progress((int)(barrel.getTimerStatus() * 100), 100);
 
 		info.entity("Enderman");

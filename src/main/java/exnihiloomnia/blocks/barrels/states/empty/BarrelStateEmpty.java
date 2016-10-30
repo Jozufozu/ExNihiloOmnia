@@ -6,7 +6,7 @@ import net.minecraft.client.resources.I18n;
 
 //Does nothing. Renders nothing. Is simply a container for triggers.
 public class BarrelStateEmpty extends BarrelState {
-	private static String[] description = {I18n.format("exnihiloomnia.info.barrel.empty")};
+	private static String[] description = {};
 	
 	@Override
 	public String getUniqueIdentifier() {
@@ -20,6 +20,7 @@ public class BarrelStateEmpty extends BarrelState {
 	
 	@Override
 	public String[] getWailaBody(TileEntityBarrel barrel) {
+		description[0] = I18n.format("exnihiloomnia.info.barrel.empty");
 		return description;
 	}
 }

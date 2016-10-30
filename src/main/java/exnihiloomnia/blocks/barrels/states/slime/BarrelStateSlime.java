@@ -78,11 +78,11 @@ public class BarrelStateSlime extends BarrelState {
 	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
 
 		if (barrel.getTimerStatus() >= 0 && barrel.getTimerStatus() < 1.0d ) {
-			info.text(I18n.format("exnihiloomnia.info.barrel.slime.summoning") + " " + I18n.format("entity.Slime.name"));
+			info.text("Growing Slime");
 			info.progress((int) (barrel.getTimerStatus() * 100), 100, info.defaultProgressStyle().filledColor(0xff339922).alternateFilledColor(0xff339922));
 		}
 		else {
-			info.text(I18n.format("exnihiloomnia.info.barrel.slime.summoned"));
+			info.text("Slime Ready!");
 			info.entity("Slime", info.defaultEntityStyle().scale(4));
 		}
 	}

@@ -79,7 +79,7 @@ public class BarrelStateBlaze extends BarrelState {
 
 	@Override
 	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-		info.text(I18n.format("exnihiloomnia.info.barrel.blaze") + " " + I18n.format("entity.Blaze.name"));
+		info.text("Fabricating Blaze");
 		info.progress((int) (barrel.getTimerStatus() * 100), 100);
 		info.entity("Blaze");
 	}

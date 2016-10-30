@@ -91,7 +91,7 @@ public class BarrelStateTransformationWitchwater extends BarrelState {
 
 	@Override
 	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-		info.text(I18n.format("exnihiloomnia.info.barrel.witchwater"));
+		info.text("Fermenting");
 		info.progress((int)(barrel.getTimerStatus() * 100), 100, info.defaultProgressStyle().filledColor(0xff5305cf).alternateFilledColor(0xff000000));
 	}
 }

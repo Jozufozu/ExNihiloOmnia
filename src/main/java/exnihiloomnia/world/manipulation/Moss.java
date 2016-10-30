@@ -44,7 +44,7 @@ public class Moss {
 			if (state.getBlock() == Blocks.AIR)
 				continue;
 
-			if (isValid() && (world.getLight(pos, true) < ENOWorld.getMossLightLevel() && ((helper.hasNearbyWaterSource(world, pos) && ENOWorld.mossSpreadsNearWater()) || (getSpreadsWhileRaining() && helper.canRainReach(world, pos))))) {
+			if (isValid() && (world.getLight(pos, true) < ENOWorld.getMossLightLevel() && ((helper.hasNearbyWaterSource(world, pos) && ENOWorld.mossSpreadsNearWater()) || (world.provider.getDimension() == 0 && getSpreadsWhileRaining() && helper.canRainReach(world, pos))))) {
 
 				if (isValidCobblestone())
 					world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());

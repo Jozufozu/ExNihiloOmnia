@@ -2,6 +2,7 @@ package exnihiloomnia.items.misc;
 
 import exnihiloomnia.entities.thrown.stone.EntityStone;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -23,9 +24,7 @@ public class ItemStone extends Item {
 	
 	@Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if (!playerIn.capabilities.isCreativeMode) {
-            --itemStackIn.stackSize;
-        }
+        InventoryHelper.consumeItem(playerIn, itemStackIn);
 
         worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 

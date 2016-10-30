@@ -3,6 +3,7 @@ package exnihiloomnia.items.misc;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,11 +36,8 @@ public class ItemSilkworm extends Item {
             TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) worldIn.getTileEntity(pos);
             leaves.setMimicBlock(block, meta);
             worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f);
-            
-            if (!playerIn.isCreative()) {
-                stack.stackSize--;
-            
-            }
+
+            InventoryHelper.consumeItem(playerIn, stack);
             return EnumActionResult.SUCCESS;
         }
         

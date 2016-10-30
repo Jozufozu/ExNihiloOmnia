@@ -4,18 +4,12 @@ import java.io.*;
 import java.util.List;
 
 import exnihiloomnia.client.textures.ENOTextures;
-import exnihiloomnia.compatibility.top.TOPCompatibility;
 import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import org.apache.logging.log4j.LogManager;
@@ -63,10 +57,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism")
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2")
 public class ENO {
 	@Instance(ENO.MODID)
-	public static ENO instance;
+	public static ENO INSTANCE;
 	
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
@@ -83,63 +77,20 @@ public class ENO {
 
 	@EventHandler
 	public void preInitialize(FMLPreInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(this);
-
-		path = event.getModConfigurationDirectory().getAbsolutePath() + File.separator + "ExNihiloOmnia" + File.separator;
-		config = new Configuration(new File(path + "ExNihiloOmnia.cfg"));
-
-		config.load();
-		ENOConfig.configure(config);
-        oreList = ENOOres.getActiveOres();
-
-		ENOFluids.register();
-		ENOToolMaterials.configure();
-		ENOBlocks.init();
-		ENOItems.init();
-
-        ENOBucketHandler.registerBuckets();
-		ENOCrafting.configure(config);
-		BarrelStates.configure(config);
-		ENOWorld.configure(config);
-        ENORegistries.configure(config);
-
-		ENOEntities.configure();
-		ENOCompatibility.configure(config);
-
-		proxy.registerModels();
-		proxy.registerRenderers();
-		
-		if(config.hasChanged())
-			config.save();
-
-		if (Loader.isModLoaded("theoneprobe"))
-			TOPCompatibility.register();
+		proxy.preInit(event);
 	}
 
 	@EventHandler
 	public void doInitialize(FMLInitializationEvent event) {
-        ENOCrafting.registerRecipes();
-        ENORegistries.initialize();
-
-        ENOOres.addCrafting();
-		ENOOres.addSmelting();
-        proxy.registerColors();
-
-		ENOWorld.registerWorldProviders();
-
-		GameRegistry.registerFuelHandler(new ENOFuelHandler());
-        MinecraftForge.EVENT_BUS.register(new ENOBucketHandler());
-        ENOCompatibility.initialize();
+        proxy.init(event);
 	}
 
 	@EventHandler
 	public void postInitialize(FMLPostInitializationEvent event) {
-		ENOOres.addOreDict();
-		//FluidRegistry.registerFluid(new Fluid("milk", new ResourceLocation("exnihiloomnia:blocks/milk_still"), new ResourceLocation("exnihiloomnia:blocks/milk_flowing")));
+		proxy.postInit(event);
     }
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
 	public void onTextureStitchEvent(TextureStitchEvent.Pre event) {
 		ENOTextures.registerCustomTextures(event.getMap());
 		ENOTextures.registerOreTextures(event.getMap());

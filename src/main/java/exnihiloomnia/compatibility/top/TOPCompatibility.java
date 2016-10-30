@@ -62,17 +62,17 @@ public class TOPCompatibility {
 
                 private void provideSieveData(TileEntitySieve sieve, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
                     if (!sieve.hasMesh() && !ENOConfig.classic_sieve) {
-                        info.text(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + I18n.format("exnihiloomnia.info.sieve.missingMesh"));
+                        info.text(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "No Mesh");
                     }
                     else {
                         if (!ENOConfig.classic_sieve)
                             info.text(sieve.getMesh().getDisplayName() + " " + (sieve.getMesh().getMaxDamage() - sieve.getMesh().getItemDamage() + 1) + "/" + (sieve.getMesh().getMaxDamage() + 1));
 
                         if (!sieve.canWork()) {
-                            info.text(TextFormatting.RED + I18n.format("exnihiloomnia.info.sieve.empty"));
+                            info.text(TextFormatting.RED + "Empty");
                         }
                         else {
-                            info.text(I18n.format("exnihiloomnia.info.sieve.sifting") + " " + sieve.getContents().getDisplayName() + ": " + format(sieve.getProgress() * 100) + "%");
+                            info.text("Sifting: " + sieve.getContents().getDisplayName() + ": " + format(sieve.getProgress() * 100) + "%");
                             info.progress((int)(sieve.getProgress() * 100), 100);
                         }
                     }
@@ -80,28 +80,31 @@ public class TOPCompatibility {
 
                 private void provideCrucibleData(TileEntityCrucible crucible, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
                     if (crucible.getLastItemAdded() != null) {
-                        info.text(I18n.format("exnihiloomnia.info.crucible.solid") + " " + crucible.getLastItemAdded().getDisplayName());
+                        info.text("Solid: " + crucible.getLastItemAdded().getDisplayName());
                         info.progress(crucible.getSolidContent() / 200, 1000);
                     }
                     else
-                        info.text(TextFormatting.RED + I18n.format("exnihiloomnia.info.crucible.missingMaterial"));
+                        info.text(TextFormatting.RED + "No Material");
 
                     if (crucible.getMeltingSpeed() != 0)
-                        info.text(I18n.format("exnihiloomnia.info.crucible.speed") + " " + Math.round(crucible.getTrueSpeed()) + "mB/s");
+                        info.text("Speed: " + Math.round(crucible.getTrueSpeed()) + "mB/s");
                     else
-                        info.text(TextFormatting.RED + I18n.format("exnihiloomnia.info.crucible.missingHeatSource"));
+                        info.text(TextFormatting.RED + "No Heat Source");
                 }
 
                 private void provideBarrelData(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
                     barrel.getState().provideInformation(barrel, mode, info, player, world, blockState, data);
+
+                    if (mode == ProbeMode.DEBUG)
+                        info.text("State: " + barrel.getState().getUniqueIdentifier());
                 }
 
                 private void provideLeavesData(TileEntityInfestedLeaves infestedLeaves, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
                     if (infestedLeaves.getProgress() == 1.0f)
-                        info.text(I18n.format("exnihiloomnia.info.leaves.complete"));
+                        info.text("Infested");
                     else {
-                        info.text(I18n.format("exnihiloomnia.info.leaves.inProgress"));
-                        info.progress((int) (infestedLeaves.getProgress() * 100), 100, info.defaultProgressStyle().showText(false));
+                        info.text("Infesting");
+                        info.progress((int) (infestedLeaves.getProgress() * 100), 100, info.defaultProgressStyle().alternateFilledColor(0xffffffff));
                     }
                 }
             });

@@ -154,6 +154,7 @@ item.seed_spruce.name=Spruce Seed
 item.seed_acacia.name=Acacia Seed
 item.seed_birch.name=Birch Seed
 item.seed_jungle.name=Exotic Seed
+item.seed_rubber.name=Rubber Seed
 
 item.sifter_iron.name=Iron Sifter
 item.sifter_diamond.name=Diamond Sifter

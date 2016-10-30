@@ -102,12 +102,12 @@ public class BarrelStateCompost extends BarrelState {
 		int color = barrel.getColor().toInt();
 
 		if (barrel.getTimerStatus() == -1.0d) {
-			info.text(I18n.format("exnihiloomnia.info.barrel.compost.collecting"));
+			info.text("Collecting Compost Materials");
 			info.progress(barrel.getVolume(), barrel.getVolumeMax(), info.defaultProgressStyle().filledColor(color).alternateFilledColor(color).showText(false));
 		}
 		else {
-			info.text(I18n.format("exnihiloomnia.info.barrel.compost.composting"));
-			info.progress((int)(barrel.getTimerStatus() * 100), 100, info.defaultProgressStyle().filledColor(color).alternateFilledColor(color).showText(false));
+			info.text("Composting");
+			info.progress(100 - (int)(barrel.getTimerStatus() * 100), 100, info.defaultProgressStyle().filledColor(color).alternateFilledColor(color).showText(false));
 		}
 	}
 }

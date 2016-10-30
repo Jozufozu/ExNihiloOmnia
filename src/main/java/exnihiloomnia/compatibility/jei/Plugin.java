@@ -30,7 +30,6 @@ public class Plugin implements IModPlugin{
 
     @Override
     public void registerIngredients(IModIngredientRegistration registry) {
-
     }
 
     @Override
@@ -123,7 +122,6 @@ public class Plugin implements IModPlugin{
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-
     }
 
     @Override

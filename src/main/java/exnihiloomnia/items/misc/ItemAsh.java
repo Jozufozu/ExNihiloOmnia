@@ -1,6 +1,7 @@
 package exnihiloomnia.items.misc;
 
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,8 +36,8 @@ public class ItemAsh extends Item {
 						}
 					}
 				}
-				
-				--stack.stackSize;
+
+				InventoryHelper.consumeItem(playerIn, stack);
 				return EnumActionResult.SUCCESS;
 			}
 		}
