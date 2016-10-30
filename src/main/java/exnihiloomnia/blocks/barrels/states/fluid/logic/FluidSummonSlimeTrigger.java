@@ -23,8 +23,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class FluidSummonSlimeTrigger extends BarrelLogic {
-	public static FluidStack milk = new FluidStack(FluidRegistry.getFluid("milk"), Fluid.BUCKET_VOLUME);
-
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = barrel.getFluid();
@@ -36,7 +34,7 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
 
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL
 			    && (item.getItem() instanceof ItemBucketMilk
-				|| (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && item.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).drain(Fluid.BUCKET_VOLUME, false) == milk));
+				|| item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null));
 	}
 
 	@Override
@@ -49,31 +47,15 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
 				&& barrel.getFluidTank().getFluidAmount() == barrel.getFluidTank().getCapacity()
 				&& barrel.getWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
 		{
-			//Item milk = item.getItem();
+			Item milk = item.getItem();
 
-			IFluidHandler cap = item.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			if (milk instanceof ItemBucketMilk) {
 
-			if (cap != null && milk.equals(cap.drain(milk, true))) {
-				barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, .5f, 1);
-				barrel.setState(BarrelStates.SLIME_GREEN);
-				return false;
-			}
-			/*
-			else if (milk instanceof ItemBucketMilk) {
-
-                if (player == null){
-                    item.stackSize--;
-
-                    if (item.stackSize <= 0)
-                        item = null;
-                }
-				else if (!player.capabilities.isCreativeMode) {
-					InventoryHelper.consumeItem(player, item);
-
+				if (!player.capabilities.isCreativeMode) {
 					if (milk == Items.MILK_BUCKET)
-						InventoryHelper.giveItemStackToPlayer(player, new ItemStack(Items.BUCKET));
+						item.deserializeNBT(new ItemStack(Items.BUCKET).serializeNBT());
 					else if (milk == ENOItems.BUCKET_PORCELAIN_MILK)
-						InventoryHelper.giveItemStackToPlayer(player, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY));
+						item.deserializeNBT(new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY).serializeNBT());
 				}
 
 				barrel.getWorld().playSound(null, barrel.getPos(), SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, .5f, 1);
@@ -81,7 +63,6 @@ public class FluidSummonSlimeTrigger extends BarrelLogic {
 
 				return false;
 			}
-			*/
 		}
 
 		return false;

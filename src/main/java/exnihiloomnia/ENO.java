@@ -10,8 +10,11 @@ import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -132,6 +135,7 @@ public class ENO {
 	@EventHandler
 	public void postInitialize(FMLPostInitializationEvent event) {
 		ENOOres.addOreDict();
+		//FluidRegistry.registerFluid(new Fluid("milk", new ResourceLocation("exnihiloomnia:blocks/milk_still"), new ResourceLocation("exnihiloomnia:blocks/milk_flowing")));
     }
 
 	@SubscribeEvent
@@ -176,15 +180,17 @@ public class ENO {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onHammer(BlockEvent.HarvestDropsEvent event) {
-		ItemStack stack = event.getHarvester().getHeldItemMainhand();
+		if (event.getHarvester() != null) {
+			ItemStack stack = event.getHarvester().getHeldItemMainhand();
 
-		if (stack != null && stack.getItem() instanceof ItemHammer) {
-			IBlockState block = event.getState();
+			if (stack != null && stack.getItem() instanceof ItemHammer) {
+				IBlockState block = event.getState();
 
-			if (!event.isSilkTouching() && HammerRegistry.isHammerable(block)) {
-				event.getDrops().clear();
+				if (!event.isSilkTouching() && HammerRegistry.isHammerable(block)) {
+					event.getDrops().clear();
 
-				event.getDrops().addAll(HammerRegistry.getEntryForBlockState(block).rollRewards(event.getHarvester()));
+					event.getDrops().addAll(HammerRegistry.getEntryForBlockState(block).rollRewards(event.getHarvester()));
+				}
 			}
 		}
 	}
