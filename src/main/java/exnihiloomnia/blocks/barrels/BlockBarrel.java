@@ -55,18 +55,12 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack item, EnumFacing side, float hitX, float hitY, float hitZ) {
-	    if (player == null) {
+	    if (player == null)
 			return false;
-		}
 
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
 
 		if (barrel != null) {
-			if (item != null) {
-				//if (barrel.getState().canManipulateFluids(barrel))
-				//	FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
-				barrel.getState().useItem(player, hand, barrel, item);
-			}
 			if (barrel.canExtractItem(0)) {
 				if (!world.isRemote) {
 					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.0f, pos.getZ() + 0.5f, barrel.getItemHandler().getStackInSlot(0));
@@ -82,6 +76,8 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 				
 				barrel.setInventorySlotContents(0, null);
 			}
+			else if (item != null)
+				barrel.getState().useItem(player, hand, barrel, item);
 		}
 
 		//Return true to keep buckets from pouring all over the damn place.

@@ -16,11 +16,13 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -78,17 +80,17 @@ public class WailaCompatibility implements IWailaDataProvider {
 
 	public void addSieveBody(TileEntitySieve sieve, List<String> tip) {
 		if (!sieve.hasMesh() && !ENOConfig.classic_sieve) {
-			tip.add("No Mesh");
+			tip.add(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + I18n.format("exnihiloomnia.info.sieve.missingMesh"));
 		}
 		else {
 			if (!ENOConfig.classic_sieve)
 				tip.add(sieve.getMesh().getDisplayName() + " " + (sieve.getMesh().getMaxDamage() - sieve.getMesh().getItemDamage() + 1) + "/" + (sieve.getMesh().getMaxDamage() + 1));
 
 			if (!sieve.canWork()) {
-				tip.add("Empty");
+				tip.add(TextFormatting.RED + I18n.format("exnihiloomnia.info.sieve.empty"));
 			}
 			else {
-				tip.add("Processing " + sieve.getContents().getDisplayName() + ": " + format(sieve.getProgress() * 100) + "%");
+				tip.add(I18n.format("exnihiloomnia.info.sieve.sifting") + " " + sieve.getContents().getDisplayName() + ": " + format(sieve.getProgress() * 100) + "%");
 			}
 		}
 	}
@@ -107,25 +109,23 @@ public class WailaCompatibility implements IWailaDataProvider {
 
 		if (fluid != null)
 			tip.add(fluid.getLocalizedName() + " " + fluid.amount + "mB");
-		else
-			tip.add("No fluid");
 		
 		if (crucible.getLastItemAdded() != null)
-			tip.add(crucible.getLastItemAdded().getDisplayName() + " " + crucible.getSolidContent() / 200 + "/1000");
+			tip.add(I18n.format("exnihiloomnia.info.crucible.solid") + " " + crucible.getLastItemAdded().getDisplayName() + " " + crucible.getSolidContent() / 200 + "/1000");
 		else 
-			tip.add("No material");
+			tip.add(TextFormatting.RED + I18n.format("exnihiloomnia.info.crucible.missingMaterial"));
 		
 		if (crucible.getMeltingSpeed() != 0)
-			tip.add("Speed " + Math.round(crucible.getTrueSpeed()) + "mB/s");
+			tip.add(I18n.format("exnihiloomnia.info.crucible.speed") + " " + Math.round(crucible.getTrueSpeed()) + "mB/s");
 		else
-			tip.add("No heat source");
+			tip.add(TextFormatting.RED + I18n.format("exnihiloomnia.info.crucible.missingHeatSource"));
 	}
 
 	public void addInfestedLeavesBody(TileEntityInfestedLeaves leaves, List<String> tip) {
 	    if (leaves.getProgress() == 1.0f)
-	        tip.add("Infested");
+	        tip.add(I18n.format("exnihiloomnia.info.leaves.complete"));
         else
-		    tip.add("Infesting " + Math.round(leaves.getProgress() * 100) + "%");
+		    tip.add(I18n.format("exnihiloomnia.info.leaves.inProgress") + " " + Math.round(leaves.getProgress() * 100) + "%");
 	}
 
 	public String format(float input) {

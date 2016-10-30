@@ -2,12 +2,18 @@ package exnihiloomnia.blocks.barrels.states.output;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class BarrelStateOutput extends BarrelState {
 	private static String[] description = new String[]{""};
@@ -56,6 +62,14 @@ public class BarrelStateOutput extends BarrelState {
 		}
 		else {
 			return null;
+		}
+	}
+
+	@Override
+	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+		if (barrel.getContents() != null) {
+			info.text(barrel.getContents().getDisplayName());
+			info.item(barrel.getContents());
 		}
 	}
 }

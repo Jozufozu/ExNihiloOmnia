@@ -37,7 +37,7 @@ public class ENOBucketHandler {
         EntityPlayer player = event.getEntityPlayer();
 
         if (!player.capabilities.isCreativeMode) {
-        	if (equipped.stackSize-- == 1) {
+        	if (--equipped.stackSize == 1) {
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK));
             }
             else if (!player.inventory.addItemStackToInventory(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK))) {

@@ -21,9 +21,18 @@ public class ItemSifter extends Item implements ISieveFaster {
 
     public ItemSifter(ToolMaterial mat) {
         material = mat;
-
         setCreativeTab(CreativeTabs.TOOLS);
         setMaxStackSize(1);
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return super.hasEffect(stack);
+    }
+
+    @Override
+    public int getItemEnchantability() {
+        return material.getEnchantability();
     }
 
     @SideOnly(Side.CLIENT)
@@ -67,9 +76,9 @@ public class ItemSifter extends Item implements ISieveFaster {
     public static float findSpeedModifier(ToolMaterial material) {
         switch (material) {
             case WOOD:
-                return .5f;
+                return 1f;
             case STONE:
-                return 1;
+                return 1.1f;
             case IRON:
                 return 1.3f;
             case DIAMOND:

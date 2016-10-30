@@ -1,5 +1,12 @@
 package exnihiloomnia.blocks.barrels.states.witchwater;
 
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
@@ -74,11 +81,17 @@ public class BarrelStateTransformationWitchwater extends BarrelState {
 	@Override
 	public String[] getWailaBody(TileEntityBarrel barrel) {
 		if (barrel.getTimerStatus() > 0) {
-			description[0] = "Fermenting " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
+			description[0] = I18n.format("exnihiloomnia.info.barrel.witchwater") + " " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
 		}
 		else {
 			return null;
 		}
+	}
+
+	@Override
+	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+		info.text(I18n.format("exnihiloomnia.info.barrel.witchwater"));
+		info.progress((int)(barrel.getTimerStatus() * 100), 100, info.defaultProgressStyle().filledColor(0xff5305cf).alternateFilledColor(0xff000000));
 	}
 }

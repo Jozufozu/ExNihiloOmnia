@@ -16,7 +16,7 @@ public class OutputStateLogicPackingIce extends BarrelLogic {
 				&& barrel.getContents().getItem() == Item.getItemFromBlock(Blocks.ICE)
 				&& PositionHelper.isRainingAt(barrel.getWorld(), barrel.getPos()) && barrel.getWorld().getBiomeForCoordsBody(barrel.getPos()).getTempCategory().equals(Biome.TempCategory.COLD)) {
 			
-			if (barrel.getWorld().rand.nextInt(1200) == 0) {
+			if (barrel.getWorld().rand.nextInt(2000) == 0) {
 				barrel.setContents(new ItemStack(Blocks.PACKED_ICE));
 			}
 		}

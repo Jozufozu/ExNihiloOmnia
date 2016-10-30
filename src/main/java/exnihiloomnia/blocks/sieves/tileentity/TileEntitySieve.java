@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -144,20 +145,21 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 				}
 			}
 			if (work >= workMax) {
-				if (!this.worldObj.isRemote) {
-					if (contentsState != null) {
-						for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
-							EntityItem drop = new EntityItem(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
-							drop.setNoPickupDelay();
-							worldObj.spawnEntityInWorld(drop);
-						}
-					}
+				if (contentsState != null) {
+					for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
+						EntityItem drop = new EntityItem(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
+						drop.setNoPickupDelay();
+						worldObj.spawnEntityInWorld(drop);
 
-					work = 0;
-					workQueued = false;
-					ticksThisCycle = 0;
-					contents = null;
+						for (int j = 0; j < worldObj.rand.nextInt(3); j++)
+							worldObj.spawnEntityInWorld(new EntityXPOrb(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, 1));
+					}
 				}
+
+				work = 0;
+				workQueued = false;
+				ticksThisCycle = 0;
+				contents = null;
 
 				if (this.mesh != null) {
 					if (mesh.attemptDamageItem(1, worldObj.rand)) {

@@ -249,3 +249,29 @@ modifier.crooked.name=Crook'd
 modifier.crooked.desc=§oGet over here!§r\nAllows you to pull entities with your tool.
 modifier.hammered.name=Hammered
 modifier.hammered.desc=§oPlayer smash!§r\nCan break apart blocks.
+
+exnihiloomnia.info.barrel.empty=Empty
+
+exnihiloomnia.info.barrel.blaze=Fabricating
+exnihiloomnia.info.barrel.enderman=Relocating
+exnihiloomnia.info.barrel.slime.summoning=Growing
+exnihiloomnia.info.barrel.slime.summoned=Slime Ready!
+
+exnihiloomnia.info.barrel.compost.collecting=Collecting Compost Materials
+exnihiloomnia.info.barrel.compost.composting=Composting
+
+exnihiloomnia.info.barrel.witchwater=Fermenting
+
+
+exnihiloomnia.info.sieve.missingMesh=No Mesh
+exnihiloomnia.info.sieve.empty=Empty
+exnihiloomnia.info.sieve.sifting=Sifting
+
+exnihiloomnia.info.crucible.missingMaterial=No Material
+exnihiloomnia.info.crucible.missingHeatSource=No Heat Source
+exnihiloomnia.info.crucible.solid=Solid:
+exnihiloomnia.info.crucible.speed=Speed:
+
+exnihiloomnia.info.leaves.inProgress=Infesting
+exnihiloomnia.info.leaves.complete=Infested
+exnihiloomnia.info.leaves.original=Infested

@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 
 import exnihiloomnia.client.textures.ENOTextures;
+import exnihiloomnia.compatibility.top.TOPCompatibility;
 import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import org.apache.logging.log4j.LogManager;
@@ -106,6 +108,9 @@ public class ENO {
 		
 		if(config.hasChanged())
 			config.save();
+
+		if (Loader.isModLoaded("theoneprobe"))
+			TOPCompatibility.register();
 	}
 
 	@EventHandler

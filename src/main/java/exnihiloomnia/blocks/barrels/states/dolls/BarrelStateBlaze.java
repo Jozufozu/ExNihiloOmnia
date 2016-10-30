@@ -5,11 +5,19 @@ import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.client.textures.files.TextureLocator;
 import exnihiloomnia.util.Color;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class BarrelStateBlaze extends BarrelState {
@@ -62,14 +70,17 @@ public class BarrelStateBlaze extends BarrelState {
 	@Override
 	public String[] getWailaBody(TileEntityBarrel barrel) {
 		if (barrel.getTimerStatus() >= 0 && barrel.getTimerStatus() < 1.0d ) {
-			description[0] = "Fabricating Blaze " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
-			return description;
-		}
-		else if (barrel.getTimerStatus() >= 1.0d) {
-			description[0] = "Blaze is sleeping!";
+			description[0] = I18n.format("exnihiloomnia.info.barrel.blaze") + " " + I18n.format("entity.Blaze.name") + " " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+		info.text(I18n.format("exnihiloomnia.info.barrel.blaze") + " " + I18n.format("entity.Blaze.name"));
+		info.progress((int) (barrel.getTimerStatus() * 100), 100);
+		info.entity("Blaze");
 	}
 }

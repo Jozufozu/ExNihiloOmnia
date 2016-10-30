@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.helpers.InventoryHelper;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.world.World;
 
 public abstract class BarrelState {
 	private static String[] EMPTY_STRING_ARRAY = new String[] {};
@@ -45,6 +50,7 @@ public abstract class BarrelState {
 					barrel.getWorld().notifyBlockOfStateChange(barrel.getPos(), barrel.getBlockType());
 
 					InventoryHelper.consumeItem(player, item);
+					return;
 				}
 			}
 		}
@@ -70,6 +76,9 @@ public abstract class BarrelState {
 	
 	public String[] getWailaBody(TileEntityBarrel barrel) {
 		return EMPTY_STRING_ARRAY;
+	}
+
+	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
 	}
 
 	public void addLogic(BarrelLogic logic) {

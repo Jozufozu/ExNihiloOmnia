@@ -85,20 +85,7 @@ public class PositionHelper {
 	}
 	
 	public boolean canRainReach(World world, BlockPos pos) {
-		if (world.isRaining()) {
-			if (isRainingAt(world, pos)) {
-				return true;
-			}
-
-			else {
-				if (isRainingAt(world, getRandomPositionAdjacentToBlock(world, pos))) {
-					return true;
-				}
-
-			}
-		}
-
-		return false;
+		return world.isRaining() && (isRainingAt(world, pos) || isRainingAt(world, getRandomPositionAdjacentToBlock(world, pos)));
 	}
 	
 	public static boolean isChunkSpawn(World world, Chunk chunk) {

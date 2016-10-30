@@ -1,5 +1,12 @@
 package exnihiloomnia.blocks.barrels.states.compost;
 
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
@@ -81,12 +88,26 @@ public class BarrelStateCompost extends BarrelState {
 	@Override
 	public String[] getWailaBody(TileEntityBarrel barrel) {
 		if (barrel.getTimerStatus() == -1.0d) {
-			description[0] = "Collecting Compost Materials " + String.format("%.0f", barrel.getVolumeProportion() * 100) + "%";
+			description[0] = I18n.format("exnihiloomnia.info.barrel.compost.collecting") + " " + String.format("%.0f", barrel.getVolumeProportion() * 100) + "%";
 			return description;
 		}
 		else {
-			description[0] = "Composting " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
+			description[0] = I18n.format("exnihiloomnia.info.barrel.compost.composting") + " " + String.format("%.0f", barrel.getTimerStatus() * 100) + "%";
 			return description;
+		}
+	}
+
+	@Override
+	public void provideInformation(TileEntityBarrel barrel, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+		int color = barrel.getColor().toInt();
+
+		if (barrel.getTimerStatus() == -1.0d) {
+			info.text(I18n.format("exnihiloomnia.info.barrel.compost.collecting"));
+			info.progress(barrel.getVolume(), barrel.getVolumeMax(), info.defaultProgressStyle().filledColor(color).alternateFilledColor(color).showText(false));
+		}
+		else {
+			info.text(I18n.format("exnihiloomnia.info.barrel.compost.composting"));
+			info.progress((int)(barrel.getTimerStatus() * 100), 100, info.defaultProgressStyle().filledColor(color).alternateFilledColor(color).showText(false));
 		}
 	}
 }
