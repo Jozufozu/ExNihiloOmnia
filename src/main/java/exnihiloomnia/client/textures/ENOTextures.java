@@ -14,12 +14,15 @@ import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Random;
 
+@SideOnly(Side.CLIENT)
 public class ENOTextures {
 
 

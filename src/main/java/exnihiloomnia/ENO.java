@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -75,6 +76,7 @@ public class ENO {
     }
 
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void onTextureStitchEvent(TextureStitchEvent.Pre event) {
 		ENOTextures.registerCustomTextures(event.getMap());
 		ENOTextures.registerOreTextures(event.getMap());
