@@ -5,7 +5,6 @@ import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -15,12 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.EnumDifficulty;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class FluidSummonSlimeTrigger extends BarrelLogic {
 	@Override

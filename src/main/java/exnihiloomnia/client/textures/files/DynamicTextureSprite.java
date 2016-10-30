@@ -1,6 +1,7 @@
 package exnihiloomnia.client.textures.files;
 
 import com.google.common.collect.Lists;
+import exnihiloomnia.ENO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
@@ -25,7 +26,9 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
         {
             this.loadSprite(images, null);
         }
-        catch (IOException e){}
+        catch (IOException e){
+            ENO.log.error("Could not load BufferedImage: " + e);
+        }
     }
 
     //old vanilla method

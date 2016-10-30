@@ -66,6 +66,7 @@ public class ENOTextures {
 		map.registerSprite(new ResourceLocation("exnihiloomnia:blocks/witchwater_flowing"));
 	}
 
+    @SuppressWarnings("unchecked")
     private static void forceTextureRegistration(TextureMap map, TextureAtlasSprite sprite) {
 
         if (!map.setTextureEntry(sprite.getIconName(), sprite)) {

@@ -1,6 +1,5 @@
 package exnihiloomnia;
 
-import java.io.*;
 import java.util.List;
 
 import exnihiloomnia.client.textures.ENOTextures;
@@ -15,20 +14,8 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.blocks.barrels.states.BarrelStates;
-import exnihiloomnia.compatibility.ENOCompatibility;
-import exnihiloomnia.compatibility.ENOOres;
-import exnihiloomnia.crafting.ENOCrafting;
 import exnihiloomnia.crafting.recipes.MobDrops;
-import exnihiloomnia.entities.ENOEntities;
-import exnihiloomnia.fluids.ENOFluids;
-import exnihiloomnia.items.ENOBucketHandler;
-import exnihiloomnia.items.ENOFuelHandler;
-import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.materials.ENOToolMaterials;
 import exnihiloomnia.proxy.Proxy;
-import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.world.ENOWorld;
 import net.minecraft.init.Items;
@@ -39,7 +26,6 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -53,9 +39,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2")
 public class ENO {

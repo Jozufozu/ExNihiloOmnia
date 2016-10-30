@@ -5,7 +5,6 @@ import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
-import exnihiloomnia.util.Color;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;

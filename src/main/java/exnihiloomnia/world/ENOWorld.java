@@ -20,7 +20,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
 
 public class ENOWorld {
 	private static String CATEGORY_WORLD_GEN = "world generation";

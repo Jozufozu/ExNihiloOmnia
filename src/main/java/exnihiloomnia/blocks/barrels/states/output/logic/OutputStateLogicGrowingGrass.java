@@ -2,7 +2,6 @@ package exnihiloomnia.blocks.barrels.states.output.logic;
 
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.helpers.PositionHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

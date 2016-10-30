@@ -13,7 +13,6 @@ import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
 import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.client.models.ENOModels;
-import exnihiloomnia.client.textures.ENOTextures;
 import exnihiloomnia.compatibility.ENOOres;
 import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.entities.thrown.stone.EntityStone;
