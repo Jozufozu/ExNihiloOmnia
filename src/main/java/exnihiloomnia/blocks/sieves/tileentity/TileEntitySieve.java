@@ -151,7 +151,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 						drop.setNoPickupDelay();
 						worldObj.spawnEntityInWorld(drop);
 
-						for (int j = 0; j < worldObj.rand.nextInt(3); j++)
+						for (int j = 0; j < worldObj.rand.nextInt(2); j++)
 							worldObj.spawnEntityInWorld(new EntityXPOrb(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, 1));
 					}
 				}

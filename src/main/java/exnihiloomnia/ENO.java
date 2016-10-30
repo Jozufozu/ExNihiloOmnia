@@ -176,18 +176,15 @@ public class ENO {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onHammer(BlockEvent.HarvestDropsEvent event) {
-		if (event.getHarvester() != null) {
-			ItemStack stack = event.getHarvester().getActiveItemStack();
+		ItemStack stack = event.getHarvester().getHeldItemMainhand();
 
-			if (stack != null) {
+		if (stack != null && stack.getItem() instanceof ItemHammer) {
+			IBlockState block = event.getState();
 
-				if (stack.getItem() instanceof ItemHammer) {
-					if (HammerRegistry.isHammerable(event.getState())) {
-						event.getDrops().clear();
+			if (!event.isSilkTouching() && HammerRegistry.isHammerable(block)) {
+				event.getDrops().clear();
 
-						event.getDrops().addAll(HammerRegistry.getEntryForBlockState(event.getState()).rollRewards(event.getHarvester()));
-					}
-				}
+				event.getDrops().addAll(HammerRegistry.getEntryForBlockState(block).rollRewards(event.getHarvester()));
 			}
 		}
 	}

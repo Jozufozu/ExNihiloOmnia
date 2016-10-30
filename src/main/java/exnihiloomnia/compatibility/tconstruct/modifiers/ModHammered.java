@@ -40,7 +40,7 @@ public class ModHammered extends ModifierTrait {
         if (!event.isSilkTouching() && HammerRegistry.isHammerable(block)) {
             event.getDrops().clear();
 
-            event.getDrops().addAll(HammerRegistry.getEntryForBlockState(event.getState()).rollRewards(event.getHarvester()));
+            event.getDrops().addAll(HammerRegistry.getEntryForBlockState(block).rollRewards(event.getHarvester()));
         }
     }
 }
