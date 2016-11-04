@@ -232,9 +232,8 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 		if (contents != null) {
 			Block block = Block.getBlockFromItem(contents.getItem());
 
-			if (block != null) {
-				contentsState = block.getBlockState().getBaseState();
-			}
+			if (block != null)
+				contentsState = block.getStateFromMeta(input.getMetadata());
 		}
 		else {
 			contentsState = null;
