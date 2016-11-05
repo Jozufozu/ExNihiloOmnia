@@ -39,7 +39,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{DECAYABLE, CHECK_DECAY}) {};
+        return new BlockStateContainer(this, DECAYABLE, CHECK_DECAY) {};
     }
 
     @Override
@@ -201,10 +201,10 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
             TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) world.getTileEntity(pos);
 
             if (leaves != null) {
-                if (world.rand.nextFloat() < leaves.getProgress() * ENOConfig.string_chance / 4.0d)
+                if ((float)(world.rand.nextInt(100)) / 100f < leaves.getProgress() * ENOConfig.string_chance / 4.0d)
                     Block.spawnAsEntity(world, pos, new ItemStack(Items.STRING));
 
-                if (world.rand.nextFloat() < leaves.getProgress() * ENOConfig.string_chance)
+                if ((float)(world.rand.nextInt(100)) / 100f < leaves.getProgress() * ENOConfig.string_chance)
                     Block.spawnAsEntity(world, pos, new ItemStack(Items.STRING));
             }
         }

@@ -169,14 +169,12 @@ public class ENOOres {
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_SAND, 1, ore.getMetadata()), new ItemStack(Items.IRON_INGOT), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_DUST, 1, ore.getMetadata()), new ItemStack(Items.IRON_INGOT), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()), new ItemStack(Items.IRON_INGOT), 0);
-                GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), new ItemStack(Items.IRON_INGOT), 0);
             }
             else if (ore.equals(EnumOre.GOLD)) {
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()), new ItemStack(Items.GOLD_INGOT), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_SAND, 1, ore.getMetadata()), new ItemStack(Items.GOLD_INGOT), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_DUST, 1, ore.getMetadata()), new ItemStack(Items.GOLD_INGOT), 0);
                 GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()), new ItemStack(Items.GOLD_INGOT), 0);
-                GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), new ItemStack(Items.GOLD_INGOT), 0);
             }
             else {
                 if (ore.hasGravel())

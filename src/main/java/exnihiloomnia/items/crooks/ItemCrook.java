@@ -1,8 +1,11 @@
 package exnihiloomnia.items.crooks;
 
+import com.google.common.collect.Sets;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.crook.CrookRegistry;
+import exnihiloomnia.registries.crook.CrookRegistryEntry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
@@ -12,24 +15,32 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemCrook extends Item {
+import java.util.Set;
+
+public class ItemCrook extends ItemTool {
+	private final static Set<Block> EMPTY_SET = Sets.newHashSet(new Block[]{});
 	public static final double pullingForce = 1d;
 	public static final double pushingForce = 1d;
 
-	private final Item.ToolMaterial material;
-
 	public ItemCrook(Item.ToolMaterial material) {
-		this.material = material;
+		super(0f, 0f, material, EMPTY_SET);
 		this.maxStackSize = 1;
 		this.setMaxDamage((int)(material.getMaxUses() * 1.5));
 		this.setCreativeTab(CreativeTabs.TOOLS);
+	}
+
+	@Override
+	public int getItemEnchantability() {
+		return this.toolMaterial.getEnchantability();
 	}
 
 	@Override
@@ -85,7 +96,7 @@ public class ItemCrook extends Item {
 	@Override
 	public float getStrVsBlock(ItemStack item, IBlockState block) {
 		if (block.getMaterial() == Material.LEAVES) {
-			return material.getEfficiencyOnProperMaterial() + 1;
+			return toolMaterial.getEfficiencyOnProperMaterial() + 1;
 		}
 
 		return 1.0F;
@@ -94,20 +105,22 @@ public class ItemCrook extends Item {
 	@Override
 	public boolean onBlockStartBreak(ItemStack item, BlockPos pos, EntityPlayer player) {
 		IBlockState block = player.worldObj.getBlockState(pos);
+		World world = player.worldObj;
 		
-		if (!player.worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (block.getMaterial() == Material.LEAVES || block instanceof BlockTallGrass) {
 				//Simulate a block break to cause the first round of items to drop.
-				block.getBlock().dropBlockAsItem(player.worldObj, pos, player.worldObj.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
-				
-				if ((block.getMaterial().equals(Material.LEAVES) && player.worldObj.rand.nextInt(100) == 0) || (block.getBlock() == ENOBlocks.INFESTED_LEAVES && player.worldObj.rand.nextFloat() < ENOConfig.silkworm_chnace)) {
-					Block.spawnAsEntity(player.worldObj, pos, new ItemStack(ENOItems.SILKWORM));
-					/*
-					EntityItem silky = new EntityItem(player.worldObj, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(ENOItems.SILKWORM));
-					silky.setDefaultPickupDelay();
-					player.worldObj.spawnEntityInWorld(silky);
-					*/
+				block.getBlock().dropBlockAsItem(world, pos, world.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
+				if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock()) && block.getMaterial() == Material.LEAVES) {
+					for (ItemStack itemStack : CrookRegistry.SILKWORM.rollRewards(player))
+						Block.spawnAsEntity(world, pos, itemStack);
 				}
+			}
+			if (CrookRegistry.isCrookable(block)) {
+				for (ItemStack itemStack : CrookRegistry.getEntryForBlockState(block).rollRewards(player)) {
+					Block.spawnAsEntity(world, pos, itemStack);
+				}
+
 			}
 		}
 
@@ -124,7 +137,7 @@ public class ItemCrook extends Item {
 
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        ItemStack mat = this.material.getRepairItemStack();
+        ItemStack mat = this.toolMaterial.getRepairItemStack();
         return mat != null && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false) || super.getIsRepairable(toRepair, repair);
     }
 }
