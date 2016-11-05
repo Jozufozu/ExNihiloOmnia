@@ -46,13 +46,13 @@ public class ENOBucketHandler {
 
     @SubscribeEvent
     public void bucketFill(FillBucketEvent event) {
-        Block block = event.getWorld().getBlockState(event.getTarget().getBlockPos()).getBlock();
-
-        if (event.getEmptyBucket().getItem() == Items.BUCKET && event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK) {
-            if (block == ENOBlocks.WITCHWATER) {
-                event.setResult(Event.Result.ALLOW);
-                event.setFilledBucket(new ItemStack(ENOItems.BUCKET_WITCHWATER));
-                event.getWorld().setBlockToAir(event.getTarget().getBlockPos());
+        if (event.getTarget() != null) {
+            if (event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK && event.getEmptyBucket().getItem() == Items.BUCKET) {
+                if (event.getWorld().getBlockState(event.getTarget().getBlockPos()) == ENOBlocks.WITCHWATER.getDefaultState()) {
+                    event.setResult(Event.Result.ALLOW);
+                    event.setFilledBucket(new ItemStack(ENOItems.BUCKET_WITCHWATER));
+                    event.getWorld().setBlockToAir(event.getTarget().getBlockPos());
+                }
             }
         }
     }
