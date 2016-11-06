@@ -1,10 +1,11 @@
 
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.sieve;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.sifting.SieveReward;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -17,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nonnull;
 import java.util.List;

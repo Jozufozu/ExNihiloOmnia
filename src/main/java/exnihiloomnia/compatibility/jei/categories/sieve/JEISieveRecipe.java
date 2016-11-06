@@ -1,4 +1,4 @@
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.sieve;
 
 
 import com.google.common.collect.Lists;
@@ -24,8 +24,11 @@ public class JEISieveRecipe implements IRecipeWrapper{
     private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
 
     private HashMap<ItemStack, ArrayList<SieveReward>> rewards = new HashMap<ItemStack, ArrayList<SieveReward>>();
+    private SieveRegistryEntry entry;
 
     public JEISieveRecipe(SieveRegistryEntry entry) {
+
+        this.entry = entry;
 
         for(SieveReward reward : entry.getRewards()) {
 
@@ -44,6 +47,10 @@ public class JEISieveRecipe implements IRecipeWrapper{
 
         ItemStack inputStack = new ItemStack(entry.getInput().getBlock(), 1, entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC ? entry.getInput().getBlock().getMetaFromState(entry.getInput()) : 0);
         inputs.add(inputStack);
+    }
+
+    public SieveRegistryEntry getEntry() {
+        return entry;
     }
 
     @Override

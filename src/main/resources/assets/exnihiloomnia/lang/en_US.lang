@@ -240,6 +240,7 @@ exnihiloomnia.sifter.speedModifier=x Speed
 jei.exnihiloomnia:sieve.dropChance=Drop Chance:
 jei.exnihiloomnia:sieve=Ex Nihilo Sieve
 jei.exnihiloomnia:hammer=Ex Nihilo Hammer
+jei.exnihiloomnia:crook=Ex Nihilo Crook
 jei.exnihiloomnia:hammer.luck=luck
 jei.exnihiloomnia:crucible=Crucible Melting
 jei.exnihiloomnia:compost=Composting
@@ -262,7 +263,6 @@ exnihiloomnia.info.barrel.compost.collecting=Collecting Compost Materials
 exnihiloomnia.info.barrel.compost.composting=Composting
 
 exnihiloomnia.info.barrel.witchwater=Fermenting
-
 
 exnihiloomnia.info.sieve.missingMesh=No Mesh
 exnihiloomnia.info.sieve.empty=Empty

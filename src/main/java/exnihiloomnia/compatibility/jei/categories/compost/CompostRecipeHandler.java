@@ -1,4 +1,4 @@
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.compost;
 
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

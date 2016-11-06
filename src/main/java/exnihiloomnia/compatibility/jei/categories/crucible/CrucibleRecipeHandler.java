@@ -1,4 +1,4 @@
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.crucible;
 
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

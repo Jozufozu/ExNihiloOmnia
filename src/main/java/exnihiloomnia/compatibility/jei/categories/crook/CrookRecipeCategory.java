@@ -1,10 +1,10 @@
 
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.crook;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import exnihiloomnia.ENO;
-import exnihiloomnia.registries.hammering.HammerReward;
+import exnihiloomnia.registries.crook.CrookReward;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -14,6 +14,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,10 +22,11 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
+public class CrookRecipeCategory implements IRecipeCategory<JEICrookRecipe> {
 
-    public static final String UID = "exnihiloomnia:hammer";
-    private static final ResourceLocation texture = new ResourceLocation(ENO.MODID, "textures/gui/jei_hammer.png");
+    public static final String UID = "exnihiloomnia:crook";
+    private static final ResourceLocation texture = new ResourceLocation(ENO.MODID, "textures/gui/jei_generic.png");
+    private static final ResourceLocation crook = new ResourceLocation(ENO.MODID, "textures/items/crook_bone.png");
 
     private final IDrawableStatic background;
     private final IDrawableStatic slotHighlight;
@@ -32,8 +34,8 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
     private int highlightX;
     private int highlightY;
 
-    public HammerRecipeCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createDrawable(texture, 0, 0, 166, 92);
+    public CrookRecipeCategory(IGuiHelper guiHelper) {
+        this.background = guiHelper.createDrawable(texture, 0, 0, 166, 74);
         this.slotHighlight = guiHelper.createDrawable(texture, 166, 0, 18, 18);
     }
 
@@ -57,6 +59,8 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
 
     @Override
     public void drawExtras(@Nonnull Minecraft minecraft) {
+        minecraft.getTextureManager().bindTexture(crook);
+        Gui.drawScaledCustomSizeModalRect(75, 32, 0, 0, 16, 16, 16, 16, 16, 16);
         if(hasHighlight) {
             slotHighlight.draw(minecraft, highlightX, highlightY);
         }
@@ -68,7 +72,7 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEIHammerRecipe recipeWrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEICrookRecipe recipeWrapper, IIngredients ingredients) {
 
         recipeLayout.getItemStacks().init(0, true, 74, 9);
         recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
@@ -103,7 +107,7 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
                 if(!input) {
                     Multiset<String> condensedTooltips = HashMultiset.create();
 
-                    for(HammerReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
+                    for(CrookReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
                         String s;
                         int iChance = reward.getBaseChance();
 
@@ -126,7 +130,7 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEIHammerRecipe recipeWrapper) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEICrookRecipe recipeWrapper) {
 
         recipeLayout.getItemStacks().init(0, true, 74, 9);
         recipeLayout.getItemStacks().set(0, (ItemStack) recipeWrapper.getInputs().get(0));
@@ -164,7 +168,7 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
                 if(!input) {
                     Multiset<String> condensedTooltips = HashMultiset.create();
 
-                    for(HammerReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
+                    for(CrookReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
                         String s;
                         int iChance = reward.getBaseChance();
 

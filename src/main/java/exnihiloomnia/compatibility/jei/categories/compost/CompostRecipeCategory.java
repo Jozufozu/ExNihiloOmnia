@@ -1,5 +1,5 @@
 
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.compost;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;

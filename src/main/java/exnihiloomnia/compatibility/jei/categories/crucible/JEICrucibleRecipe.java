@@ -1,4 +1,4 @@
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.crucible;
 
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
 import mezz.jei.api.ingredients.IIngredients;

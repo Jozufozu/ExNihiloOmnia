@@ -1,10 +1,26 @@
 package exnihiloomnia.compatibility.jei;
 
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.jei.categories.*;
+import exnihiloomnia.compatibility.jei.categories.compost.CompostRecipeCategory;
+import exnihiloomnia.compatibility.jei.categories.compost.CompostRecipeHandler;
+import exnihiloomnia.compatibility.jei.categories.compost.JEICompostRecipe;
+import exnihiloomnia.compatibility.jei.categories.crook.CrookRecipeCategory;
+import exnihiloomnia.compatibility.jei.categories.crook.CrookRecipeHandler;
+import exnihiloomnia.compatibility.jei.categories.crook.JEICrookRecipe;
+import exnihiloomnia.compatibility.jei.categories.crucible.CrucibleRecipeCategory;
+import exnihiloomnia.compatibility.jei.categories.crucible.CrucibleRecipeHandler;
+import exnihiloomnia.compatibility.jei.categories.crucible.JEICrucibleRecipe;
+import exnihiloomnia.compatibility.jei.categories.hammer.HammerRecipeCategory;
+import exnihiloomnia.compatibility.jei.categories.hammer.HammerRecipeHandler;
+import exnihiloomnia.compatibility.jei.categories.hammer.JEIHammerRecipe;
+import exnihiloomnia.compatibility.jei.categories.sieve.JEISieveRecipe;
+import exnihiloomnia.compatibility.jei.categories.sieve.SieveRecipeCategory;
+import exnihiloomnia.compatibility.jei.categories.sieve.SieveRecipeHandler;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
+import exnihiloomnia.registries.crook.CrookRegistry;
+import exnihiloomnia.registries.crook.CrookRegistryEntry;
 import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
@@ -20,9 +36,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 @JEIPlugin
 public class Plugin implements IModPlugin{
@@ -37,14 +55,15 @@ public class Plugin implements IModPlugin{
         registry.addRecipeCategories(
                 new SieveRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
                 new HammerRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
+                new CrookRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
                 new CrucibleRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
                 new CompostRecipeCategory(registry.getJeiHelpers().getGuiHelper())
-
         );
 
         registry.addRecipeHandlers(
                 new SieveRecipeHandler(),
                 new HammerRecipeHandler(),
+                new CrookRecipeHandler(),
                 new CrucibleRecipeHandler(),
                 new CompostRecipeHandler()
         );
@@ -52,6 +71,7 @@ public class Plugin implements IModPlugin{
         registerSieveRecipes(registry);
         registerCrucibleRecipes(registry);
         registerHammerRecipes(registry);
+        registerCrookRecipes(registry);
 
         registerCompostRecipes(registry);
 
@@ -118,6 +138,15 @@ public class Plugin implements IModPlugin{
             hammerRecipes.add(new JEIHammerRecipe(entry));
         }
         registry.addRecipes(hammerRecipes);
+    }
+
+    private void registerCrookRecipes(IModRegistry registry) {
+        ArrayList<JEICrookRecipe> crookRecipes = new ArrayList<JEICrookRecipe>();
+
+        for (CrookRegistryEntry entry : CrookRegistry.INSTANCE.getEntries().values()) {
+            crookRecipes.add(new JEICrookRecipe(entry));
+        }
+        registry.addRecipes(crookRecipes);
     }
 
     @Override

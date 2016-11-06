@@ -1,5 +1,5 @@
 
-package exnihiloomnia.compatibility.jei.categories;
+package exnihiloomnia.compatibility.jei.categories.crucible;
 
 import exnihiloomnia.ENO;
 import mezz.jei.api.IGuiHelper;
