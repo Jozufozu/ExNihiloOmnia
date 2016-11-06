@@ -2,7 +2,6 @@ package exnihiloomnia.compatibility.jei.categories.crook;
 
 import com.google.common.collect.Lists;
 import exnihiloomnia.registries.crook.CrookRegistryEntry;
-import exnihiloomnia.registries.hammering.HammerRegistryEntry;
 import exnihiloomnia.registries.crook.CrookReward;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;

@@ -7,7 +7,6 @@ import java.util.Random;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.*;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;

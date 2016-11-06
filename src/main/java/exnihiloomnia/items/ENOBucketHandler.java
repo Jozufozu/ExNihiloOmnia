@@ -2,7 +2,6 @@ package exnihiloomnia.items;
 
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.fluids.ENOFluids;
-import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

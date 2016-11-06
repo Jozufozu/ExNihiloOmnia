@@ -1,11 +1,8 @@
 package exnihiloomnia.items.crooks;
 
 import com.google.common.collect.Sets;
-import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.crook.CrookRegistry;
-import exnihiloomnia.registries.crook.CrookRegistryEntry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
@@ -15,7 +12,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
