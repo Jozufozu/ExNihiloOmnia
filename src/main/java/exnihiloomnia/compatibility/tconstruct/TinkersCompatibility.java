@@ -22,7 +22,7 @@ public class TinkersCompatibility {
 
     private static int INGOT_AMOUNT = 144;
 
-    public static void init() {
+    public static void initilize() {
         if (ENOCompatibility.add_tcon_modifiers) {
             registerModifiers();
             MinecraftForge.EVENT_BUS.register(new CrookedToolEventHandler());

@@ -1,5 +1,6 @@
 package exnihiloomnia.compatibility;
 
+import exnihiloomnia.compatibility.appliedenergistics.AE2;
 import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.compatibility.tconstruct.TinkersCompatibility;
 import exnihiloomnia.compatibility.top.TOPCompatibility;
@@ -39,6 +40,9 @@ public class ENOCompatibility {
 			VeinMinerCompatibility.initialize();
 
 		if (Loader.isModLoaded("tconstruct"))
-			TinkersCompatibility.init();
+			TinkersCompatibility.initilize();
+
+		if (Loader.isModLoaded("appliedenergistics2"))
+			AE2.initialize();
 	}
 }
