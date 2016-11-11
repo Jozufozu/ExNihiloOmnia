@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CrucibleRecipeCategory implements IRecipeCategory<JEICrucibleRecipe> {
 
@@ -31,6 +32,12 @@ public class CrucibleRecipeCategory implements IRecipeCategory<JEICrucibleRecipe
     @Override
     public String getUid() {
         return UID;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon() {
+        return null;
     }
 
     @Nonnull

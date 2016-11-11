@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class CrookRecipeCategory implements IRecipeCategory<JEICrookRecipe> {
@@ -43,6 +44,12 @@ public class CrookRecipeCategory implements IRecipeCategory<JEICrookRecipe> {
     @Override
     public String getUid() {
         return UID;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon() {
+        return null;
     }
 
     @Nonnull

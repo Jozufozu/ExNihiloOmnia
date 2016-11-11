@@ -93,6 +93,9 @@ public class Plugin implements IModPlugin{
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_WOOD), HammerRecipeCategory.UID);
 
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.CRUCIBLE), CrucibleRecipeCategory.UID);
+
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.CROOK_BONE), CrookRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.CROOK_WOOD), CrookRecipeCategory.UID);
     }
 
     private void registerCompostRecipes(IModRegistry registry) {

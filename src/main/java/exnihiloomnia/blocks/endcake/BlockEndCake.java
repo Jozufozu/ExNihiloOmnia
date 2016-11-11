@@ -48,7 +48,8 @@ public class BlockEndCake extends BlockCake {
             else
                 worldIn.setBlockToAir(pos);
 
-            playerIn.changeDimension(1);
+            if (playerIn.dimension == 0)
+                playerIn.changeDimension(1);
         }
         return true;
     }

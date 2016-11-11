@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CompostRecipeCategory implements IRecipeCategory<JEICompostRecipe> {
 
@@ -37,6 +38,12 @@ public class CompostRecipeCategory implements IRecipeCategory<JEICompostRecipe> 
     @Override
     public String getUid() {
         return UID;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon() {
+        return null;
     }
 
     @Nonnull

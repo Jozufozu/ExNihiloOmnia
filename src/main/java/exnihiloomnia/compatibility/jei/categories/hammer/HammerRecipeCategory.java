@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
@@ -43,6 +44,12 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
     @Override
     public String getUid() {
         return UID;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon() {
+        return null;
     }
 
     @Nonnull
