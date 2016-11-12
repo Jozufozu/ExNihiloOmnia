@@ -4,6 +4,7 @@ import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.util.Color;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -13,9 +14,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
 public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
-    public Block block = Blocks.LEAVES;
-    public int meta = 0;
-    public Color color = Color.WHITE;
+    public IBlockState state = Blocks.LEAVES.getDefaultState();
     public boolean dying = false;
     public boolean permanent = false;
 
@@ -44,9 +43,9 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
             }
         }
         
-        if ((int) (progress * 100) % 20 == 0 && progress != 1)
+        if ((int) (progress * 100) % 20 == 0 && progress != 1) {
             getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
-        
+        }
         markDirty();
     }
 
@@ -54,11 +53,10 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         return progress >= progressPerTick;
     }
 
-    public Color getRenderColor() {
-        Color base = new Color(worldObj.getBiomeForCoordsBody(pos).getFoliageColorAtPos(pos));
-        Color white = Color.WHITE;
+    public Color getRenderColor(IBlockState state) {
+        Color base = new Color(Minecraft.getMinecraft().getBlockColors().colorMultiplier(state, getWorld(), getPos(), 0));
 
-        return Color.average(base, white, getProgress());
+        return Color.average(base, Color.WHITE, getProgress());
     }
 
     public float getProgress() {
@@ -83,29 +81,24 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         IBlockState target = worldObj.getBlockState(place);
 
         if (target.getBlock().isLeaves(target, worldObj, place) && !target.getBlock().equals(ENOBlocks.INFESTED_LEAVES)) {
-            Block block = worldObj.getBlockState(place).getBlock();
-            int meta = worldObj.getBlockState(place).getBlock().getMetaFromState(worldObj.getBlockState(place));
+            IBlockState block = worldObj.getBlockState(place);
+
             worldObj.setBlockState(place, ENOBlocks.INFESTED_LEAVES.getDefaultState(), 2);
             TileEntityInfestedLeaves te = (TileEntityInfestedLeaves)worldObj.getTileEntity(place);
 
             if (te != null) {
-                te.setMimicBlock(block, meta);
+                te.setMimicBlock(block);
                 te.setProgress(((float) worldObj.rand.nextInt(15))/100);
             }
         }
     }
 
-    public Block getBlock() {
-        return block;
+    public IBlockState getState() {
+        return state;
     }
 
-    public int getMeta() {
-        return meta;
-    }
-
-    public void setMimicBlock(Block block, int meta) {
-        this.block = block;
-        this.meta = meta;
+    public void setMimicBlock(IBlockState state) {
+        this.state = state;
     }
 
     @Override
@@ -113,10 +106,9 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         super.readFromNBT(compound);
         this.progress = compound.getFloat("progress");
 
-        if (!compound.getString("block").equals(""))
-            this.block = Block.getBlockFromName(compound.getString("block"));
+        if (!compound.getString("state").equals(""))
+            this.state = Block.getBlockFromName(compound.getString("state")).getStateFromMeta(compound.getInteger("meta"));
 
-        this.meta = compound.getInteger("meta");
         this.dying = compound.getBoolean("dying");
         this.permanent = compound.getBoolean("permanent");
     }
@@ -126,14 +118,14 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         super.writeToNBT(compound);
         compound.setFloat("progress", this.progress);
         
-        if (this.block == null) {
-            compound.setString("block", "");
+        if (this.state == null) {
+            compound.setString("state", "");
         }
         else {
-            compound.setString("block", Block.REGISTRY.getNameForObject(this.block).toString());
+            compound.setString("state", Block.REGISTRY.getNameForObject(this.state.getBlock()).toString());
         }
         
-        compound.setInteger("meta", this.meta);
+        compound.setInteger("meta", this.state.getBlock().getMetaFromState(this.state));
 
         compound.setBoolean("dying", dying);
         compound.setBoolean("permanent", permanent);

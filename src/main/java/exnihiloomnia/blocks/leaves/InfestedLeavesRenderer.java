@@ -15,30 +15,33 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntityInfestedLeaves> {
 
+    public static HashMap<IBlockState, List<BakedQuad>> models = new HashMap<IBlockState, List<BakedQuad>>();
+
     @Override
     public void renderTileEntityAt(TileEntityInfestedLeaves te, double x, double y, double z, float partialTicks, int destroyStage) {
-        if (te.getBlock() != null) {
-            IBlockState blockState = te.block.getStateFromMeta(te.meta);
+        if (te.getState() != null) {
+            IBlockState blockState = te.state;
 
-            //if (!models.containsKey(blockState)) {
+            if (!models.containsKey(blockState)) {
                 IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(blockState);
                 List<BakedQuad> temp = new ArrayList<BakedQuad>();
 
-                for (EnumFacing face : EnumFacing.VALUES) {
-                    if (te.getBlock().shouldSideBeRendered(blockState, te.getWorld(), te.getPos(), face))
-                        temp.addAll(model.getQuads(blockState, face, 0));
-                }
-                //models.put(blockState, temp);
-            //}
+                for (EnumFacing face : EnumFacing.VALUES)
+                    temp.addAll(model.getQuads(blockState, face, te.getWorld().rand.nextLong()));
 
-            Color color = te.getRenderColor();
+                models.put(blockState, temp);
+            }
+
+            Color color = te.getRenderColor(blockState);
 
             GlStateManager.pushMatrix();
             RenderHelper.disableStandardItemLighting();
+
             GlStateManager.bindTexture(Minecraft.getMinecraft().getTextureMapBlocks().getGlTextureId());
 
             GlStateManager.translate(x, y, z);
@@ -47,10 +50,11 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
             VertexBuffer vertexbuffer = Tessellator.getInstance().getBuffer();
             vertexbuffer.begin(7, DefaultVertexFormats.ITEM);
 
-            for (BakedQuad quad : temp) {
-
-                vertexbuffer.addVertexData(quad.getVertexData());
-                vertexbuffer.putColorRGB_F4(color.r, color.g, color.b);
+            for (BakedQuad quad : models.get(blockState)) {
+                if (blockState.shouldSideBeRendered(getWorld(), te.getPos(), quad.getFace())) {
+                    vertexbuffer.addVertexData(quad.getVertexData());
+                    vertexbuffer.putColorRGB_F4(color.r, color.g, color.b);
+                }
             }
 
             Tessellator.getInstance().draw();

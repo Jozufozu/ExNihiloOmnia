@@ -15,6 +15,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -67,14 +68,11 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
     //do the same thing as leaves, but store stuff in the tile entity so it doesn't get reset every time
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if (!worldIn.isRemote)
-        {
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (!worldIn.isRemote) {
             TileEntityInfestedLeaves te = (TileEntityInfestedLeaves) worldIn.getTileEntity(pos);
 
-            if (te != null && te.dying && !te.permanent)
-            {
+            if (te != null && te.dying && !te.permanent) {
                 int i = 4;
                 int j = 5;
                 int k = pos.getX();
@@ -85,81 +83,56 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
                 int l1 = 16;
 
                 if (this.surroundings == null)
-                {
                     this.surroundings = new int[32768];
-                }
 
-                if (worldIn.isAreaLoaded(new BlockPos(k - 5, l - 5, i1 - 5), new BlockPos(k + 5, l + 5, i1 + 5)))
-                {
+                if (worldIn.isAreaLoaded(new BlockPos(k - 5, l - 5, i1 - 5), new BlockPos(k + 5, l + 5, i1 + 5))) {
                     BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-                    for (int i2 = -4; i2 <= 4; ++i2)
-                    {
-                        for (int j2 = -4; j2 <= 4; ++j2)
-                        {
-                            for (int k2 = -4; k2 <= 4; ++k2)
-                            {
+                    for (int i2 = -4; i2 <= 4; ++i2) {
+
+                        for (int j2 = -4; j2 <= 4; ++j2) {
+
+                            for (int k2 = -4; k2 <= 4; ++k2) {
                                 IBlockState iblockstate = worldIn.getBlockState(blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2));
                                 Block block = iblockstate.getBlock();
 
-                                if (!block.canSustainLeaves(iblockstate, worldIn, blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2)))
-                                {
+                                if (!block.canSustainLeaves(iblockstate, worldIn, blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2))) {
+
                                     if (block.isLeaves(iblockstate, worldIn, blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2)))
-                                    {
                                         this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -2;
-                                    }
                                     else
-                                    {
                                         this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -1;
-                                    }
                                 }
                                 else
-                                {
                                     this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = 0;
-                                }
                             }
                         }
                     }
 
-                    for (int i3 = 1; i3 <= 4; ++i3)
-                    {
-                        for (int j3 = -4; j3 <= 4; ++j3)
-                        {
-                            for (int k3 = -4; k3 <= 4; ++k3)
-                            {
-                                for (int l3 = -4; l3 <= 4; ++l3)
-                                {
-                                    if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16] == i3 - 1)
-                                    {
+                    for (int i3 = 1; i3 <= 4; ++i3) {
+                        for (int j3 = -4; j3 <= 4; ++j3) {
+                            for (int k3 = -4; k3 <= 4; ++k3) {
+                                for (int l3 = -4; l3 <= 4; ++l3) {
+
+                                    if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16] == i3 - 1) {
+
                                         if (this.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
-                                        {
                                             this.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
-                                        }
 
                                         if (this.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
-                                        {
                                             this.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
-                                        }
 
                                         if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] == -2)
-                                        {
                                             this.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] = i3;
-                                        }
 
                                         if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] == -2)
-                                        {
                                             this.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] = i3;
-                                        }
 
                                         if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] == -2)
-                                        {
                                             this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] = i3;
-                                        }
 
                                         if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] == -2)
-                                        {
                                             this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] = i3;
-                                        }
                                     }
                                 }
                             }
@@ -170,15 +143,13 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
                 int l2 = this.surroundings[16912];
 
                 if (l2 >= 0)
-                {
                     te.dying = false;
-                }
-                else
-                {
+                else {
+
                     worldIn.setBlockToAir(pos);
-                    if (worldIn.rand.nextFloat() < te.getProgress() * ENOConfig.string_chance / 4.0d) {
+
+                    if (worldIn.rand.nextFloat() < te.getProgress() * ENOConfig.string_chance / 10.0d)
                         Block.spawnAsEntity(worldIn, pos, new ItemStack(Items.STRING));
-                    }
                 }
             }
         }
@@ -209,6 +180,11 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
         }
 
         return super.removedByPlayer(state, world, pos, player, willHarvest);
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        return this.getDefaultState().withProperty(DECAYABLE, false).withProperty(CHECK_DECAY, false);
     }
 
     @Override

@@ -29,12 +29,10 @@ public class ItemSilkworm extends Item {
         IBlockState state = worldIn.getBlockState(pos);
 
         if (state.getBlock().isLeaves(state, worldIn, pos) && !state.getBlock().equals(ENOBlocks.INFESTED_LEAVES)) {
-            Block block = worldIn.getBlockState(pos).getBlock();
-            int meta = worldIn.getBlockState(pos).getBlock().getMetaFromState(worldIn.getBlockState(pos));
 
             worldIn.setBlockState(pos, ENOBlocks.INFESTED_LEAVES.getDefaultState(), 2);
             TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) worldIn.getTileEntity(pos);
-            leaves.setMimicBlock(block, meta);
+            leaves.setMimicBlock(state);
             worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f);
 
             InventoryHelper.consumeItem(playerIn, stack);
