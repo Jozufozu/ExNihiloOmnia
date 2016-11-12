@@ -23,10 +23,7 @@ import exnihiloomnia.blocks.sieves.BlockSieveWood;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.itemblocks.ItemBarrelGlassColored;
-import exnihiloomnia.items.itemblocks.ItemBarrelWood;
-import exnihiloomnia.items.itemblocks.ItemBlockOre;
-import exnihiloomnia.items.itemblocks.ItemSieveWood;
+import exnihiloomnia.items.itemblocks.*;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -121,6 +118,8 @@ public class ENOBlocks {
                 GameRegistry.register(new ItemSieveWood(block).setRegistryName(block.getRegistryName()));
             else if (block instanceof BlockOre)
                 GameRegistry.register(new ItemBlockOre(block).setRegistryName(block.getRegistryName()));
+            else if (block == INFESTED_LEAVES)
+                GameRegistry.register(new ItemInfestedLeaves(block).setRegistryName(block.getRegistryName()));
             else if (block != WITCHWATER)
                 GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
         }

@@ -106,8 +106,8 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         super.readFromNBT(compound);
         this.progress = compound.getFloat("progress");
 
-        if (!compound.getString("state").equals(""))
-            this.state = Block.getBlockFromName(compound.getString("state")).getStateFromMeta(compound.getInteger("meta"));
+        if (!compound.getString("block").equals(""))
+            this.state = Block.getBlockFromName(compound.getString("block")).getStateFromMeta(compound.getInteger("meta"));
 
         this.dying = compound.getBoolean("dying");
         this.permanent = compound.getBoolean("permanent");
@@ -117,14 +117,14 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setFloat("progress", this.progress);
-        
+
         if (this.state == null) {
-            compound.setString("state", "");
+            compound.setString("block", "");
         }
         else {
-            compound.setString("state", Block.REGISTRY.getNameForObject(this.state.getBlock()).toString());
+            compound.setString("block", Block.REGISTRY.getNameForObject(this.state.getBlock()).toString());
         }
-        
+
         compound.setInteger("meta", this.state.getBlock().getMetaFromState(this.state));
 
         compound.setBoolean("dying", dying);

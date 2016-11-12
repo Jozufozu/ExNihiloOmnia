@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import exnihiloomnia.ENOConfig;
+import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.*;
 import net.minecraft.block.state.BlockStateContainer;
@@ -13,12 +14,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvider {
 
@@ -33,8 +37,15 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
         TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) worldIn.getTileEntity(pos);
-        leaves.permanent = true;
+
+        if (leaves != null) {
+            if (tag != null)
+                leaves.state = Block.getBlockFromName(tag.getString("block")).getStateFromMeta(tag.getInteger("meta"));
+
+            leaves.permanent = true;
+        }
     }
 
     @Override
@@ -162,7 +173,26 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
     @Override
     public List<ItemStack> onSheared(ItemStack item, net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune) {
-        return Collections.singletonList(new ItemStack(this));
+        TileEntityInfestedLeaves leaves = (TileEntityInfestedLeaves) world.getTileEntity(pos);
+
+        if (leaves != null) {
+            NBTTagCompound tag = new NBTTagCompound();
+
+            if (leaves.state == null) {
+                tag.setString("block", "");
+            } else {
+                tag.setString("block", Block.REGISTRY.getNameForObject(leaves.state.getBlock()).toString());
+            }
+
+            tag.setInteger("meta", leaves.state.getBlock().getMetaFromState(leaves.state));
+
+            ItemStack drop = new ItemStack(ENOBlocks.INFESTED_LEAVES);
+            drop.setTagCompound(tag);
+
+            return Collections.singletonList(drop);
+        }
+
+        return null;
     }
 
     @Override
@@ -179,7 +209,7 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
             }
         }
 
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
+        return world.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
     }
 
     @Override
