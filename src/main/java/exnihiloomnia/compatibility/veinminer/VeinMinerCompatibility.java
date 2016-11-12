@@ -41,7 +41,7 @@ public class VeinMinerCompatibility {
 			ENO.log.info("Initialize VeinMiner: Success!");
 		} 
 		catch (Exception ex) {
-			ENO.log.error("Unable to init VeinMiner compatibility.");
+			ENO.log.error("Unable to initialize VeinMiner compatibility.");
 		}
 	}
 	

@@ -42,14 +42,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2")
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2")
 public class ENO {
 	@Instance(ENO.MODID)
 	public static ENO INSTANCE;
 	
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
-	public static final String VERSION = "1.1.6";
+	public static final String VERSION = "1.1.7";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;

@@ -46,19 +46,19 @@ public class TOPCompatibility {
                 @Override
                 public void addProbeInfo(ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
                     if (blockState.getBlock() instanceof BlockSieve && world.getTileEntity(data.getPos()) instanceof TileEntitySieve)
-                        provideSieveData((TileEntitySieve) world.getTileEntity(data.getPos()), mode, info, player, world, blockState, data);
+                        provideSieveData((TileEntitySieve) world.getTileEntity(data.getPos()), info);
 
                     if (blockState.getBlock() instanceof BlockCrucible && world.getTileEntity(data.getPos()) instanceof TileEntityCrucible)
-                        provideCrucibleData((TileEntityCrucible) world.getTileEntity(data.getPos()), mode, info, player, world, blockState, data);
+                        provideCrucibleData((TileEntityCrucible) world.getTileEntity(data.getPos()), info);
 
                     if (blockState.getBlock() instanceof BlockBarrel && world.getTileEntity(data.getPos()) instanceof TileEntityBarrel)
                         provideBarrelData((TileEntityBarrel) world.getTileEntity(data.getPos()), mode, info, player, world, blockState, data);
 
                     if (blockState.getBlock() instanceof BlockInfestedLeaves && world.getTileEntity(data.getPos()) instanceof TileEntityInfestedLeaves)
-                        provideLeavesData((TileEntityInfestedLeaves) world.getTileEntity(data.getPos()), mode, info, player, world, blockState, data);
+                        provideLeavesData((TileEntityInfestedLeaves) world.getTileEntity(data.getPos()), info);
                 }
 
-                private void provideSieveData(TileEntitySieve sieve, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+                private void provideSieveData(TileEntitySieve sieve, IProbeInfo info) {
                     if (!sieve.hasMesh() && !ENOConfig.classic_sieve) {
                         info.text(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "No Mesh");
                     }
@@ -76,7 +76,7 @@ public class TOPCompatibility {
                     }
                 }
 
-                private void provideCrucibleData(TileEntityCrucible crucible, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+                private void provideCrucibleData(TileEntityCrucible crucible, IProbeInfo info) {
                     if (crucible.getLastItemAdded() != null) {
                         info.text("Solid: " + crucible.getLastItemAdded().getDisplayName());
                         info.progress(crucible.getSolidContent() / 200, 1000);
@@ -97,7 +97,7 @@ public class TOPCompatibility {
                         info.text("State: " + barrel.getState().getUniqueIdentifier());
                 }
 
-                private void provideLeavesData(TileEntityInfestedLeaves infestedLeaves, ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+                private void provideLeavesData(TileEntityInfestedLeaves infestedLeaves, IProbeInfo info) {
                     if (infestedLeaves.getProgress() == 1.0f)
                         info.text("Infested");
                     else {

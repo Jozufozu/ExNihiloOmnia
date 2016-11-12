@@ -26,11 +26,6 @@ public class ItemSifter extends Item implements ISieveFaster {
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
-        return super.hasEffect(stack);
-    }
-
-    @Override
     public int getItemEnchantability() {
         return material.getEnchantability();
     }

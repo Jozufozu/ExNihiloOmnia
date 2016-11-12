@@ -27,12 +27,10 @@ public class ItemAstrolabe extends Item {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack item, World world, EntityPlayer player, EnumHand hand) {
 		if (!world.isRemote) {
 			if (ENOWorld.isWorldGenerationOverridden(world.provider.getDimension())) {
-				if (item.hasDisplayName()) {
+				if (item.hasDisplayName())
 					TemplateWorldExporter.generate(item.getDisplayName(), world, player);
-				}
-				else {
+				else
 					TemplateWorldExporter.generate("export_" + format.format(new Date()), world, player);
-				}
 			}
 			
 			player.setHeldItem(hand, null);

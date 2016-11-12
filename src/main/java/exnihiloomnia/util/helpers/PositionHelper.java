@@ -22,8 +22,8 @@ public class PositionHelper {
 	 * @param pos a {@link net.minecraft.util.math.BlockPos.MutableBlockPos} that will be changed to a random position in {@see chunk}
 	 * @return the random position
 	 */
-	public static BlockPos getRandomPositionInChunk(World world, Chunk chunk, BlockPos.MutableBlockPos pos) {
-		return pos.setPos((chunk.xPosition * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunk.zPosition * 16) + world.rand.nextInt(16));
+	public static void getRandomPositionInChunk(World world, Chunk chunk, BlockPos.MutableBlockPos pos) {
+		pos.setPos((chunk.xPosition * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunk.zPosition * 16) + world.rand.nextInt(16));
 	}
 
 	/**
@@ -68,16 +68,6 @@ public class PositionHelper {
 	
 	public static boolean isTopBlock(World world, BlockPos pos) {
 		return world.getChunkFromBlockCoords(pos).canSeeSky(pos);
-		/*
-		for (int y = world.getHeight(); y > pos.getY(); y--) {
-
-			probe.setPos(pos.getX(), y, pos.getZ());
-
-			if (world.getBlockState(pos).getBlock() != Blocks.AIR)
-				return false;
-		}
-		return true;
-		*/
 	}
 	
 	public static boolean isRainingAt(World world, BlockPos pos) {

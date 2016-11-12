@@ -57,11 +57,6 @@ public class ClientProxy extends Proxy {
         ENOOres.regColors();
     }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        super.postInit(event);
-    }
-
     public static void registerItemModels() {
         for (Item item : ENOItems.getItems()) {
             registerRenderer(item);
