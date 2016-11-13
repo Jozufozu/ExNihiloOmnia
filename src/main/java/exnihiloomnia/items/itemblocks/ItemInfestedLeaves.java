@@ -18,8 +18,8 @@ public class ItemInfestedLeaves extends ItemBlock {
 
         String extra = "";
 
-        if (tag != null) {
-            ItemStack itemStack = new ItemStack(Item.getItemFromBlock(Block.getBlockFromName(tag.getString("block"))), 1,tag.getInteger("meta"));
+        if (tag != null && tag.hasKey("block") && tag.hasKey("meta")) {
+            ItemStack itemStack = new ItemStack(Item.getItemFromBlock(Block.getBlockFromName(tag.getString("block"))), 1, tag.getInteger("meta"));
             extra = " (" + itemStack.getItem().getItemStackDisplayName(itemStack) + ")";
         }
 

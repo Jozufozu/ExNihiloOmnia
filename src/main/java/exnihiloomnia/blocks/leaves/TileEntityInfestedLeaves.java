@@ -3,15 +3,23 @@ package exnihiloomnia.blocks.leaves;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.util.Color;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashMap;
 
 public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     public IBlockState state = Blocks.LEAVES.getDefaultState();
@@ -23,16 +31,18 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
 
     private static final float progressPerTick = .0005f;
     private float progress = 0;
+    private float lastProgress = 0;
 
     @Override
     public void update() {
-        if (progress < 1.0f) {
+        if (lastProgress != progress)
+            lastProgress = progress;
+
+        if (progress < 1.0f)
             progress += progressPerTick;
-        }
         
-        if (progress > 1.0f) {
+        if (progress > 1.0f)
             progress = 1.0f;
-        }
 
         if (!worldObj.isRemote && progress > 0.6f) {
             spreadTimer++;
@@ -43,20 +53,10 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
             }
         }
         
-        if ((int) (progress * 100) % 20 == 0 && progress != 1) {
+        if ((int) (progress * 100) % 50 == 0 && lastProgress != progress)
             getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
-        }
+
         markDirty();
-    }
-
-    public boolean isComplete() {
-        return progress >= progressPerTick;
-    }
-
-    public Color getRenderColor(IBlockState state) {
-        Color base = new Color(Minecraft.getMinecraft().getBlockColors().colorMultiplier(state, getWorld(), getPos(), 0));
-
-        return Color.average(base, Color.WHITE, getProgress());
     }
 
     public float getProgress() {
@@ -65,6 +65,33 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
 
     public void setProgress(float progress) {
     	this.progress = progress;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private HashMap<Integer, Color> colors = new HashMap<Integer, Color>();
+
+    @SideOnly(Side.CLIENT)
+    public Color getColorForTint(int tintIndex) {
+        Color ret;
+
+        if (lastProgress != progress || !colors.containsKey(tintIndex)) {
+            float percentage = getProgress();
+
+            int color = Minecraft.getMinecraft().getBlockColors().colorMultiplier(this.state, getWorld(), this.pos, tintIndex);
+
+            int r = color >> 16 & 255;
+            int g = color >> 8 & 255;
+            int b = color & 255;
+
+            ret = new Color((r + (255 - r) * percentage) / 255f, (g + (255 - g) * percentage) / 255f, (b + (255 - b) * percentage) / 255f, 1f);
+
+            colors.remove(tintIndex);
+            colors.put(tintIndex, ret);
+        }
+        else
+            ret = colors.get(tintIndex);
+
+        return ret;
     }
 
     private void spread() {
@@ -78,19 +105,35 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
 
         BlockPos place = new BlockPos(placeX, placeY, placeZ);
 
-        IBlockState target = worldObj.getBlockState(place);
+        if (infest(worldObj, place, false)) {
 
-        if (target.getBlock().isLeaves(target, worldObj, place) && !target.getBlock().equals(ENOBlocks.INFESTED_LEAVES)) {
-            IBlockState block = worldObj.getBlockState(place);
+            TileEntityInfestedLeaves te = (TileEntityInfestedLeaves) worldObj.getTileEntity(place);
 
-            worldObj.setBlockState(place, ENOBlocks.INFESTED_LEAVES.getDefaultState(), 2);
-            TileEntityInfestedLeaves te = (TileEntityInfestedLeaves)worldObj.getTileEntity(place);
-
-            if (te != null) {
-                te.setMimicBlock(block);
-                te.setProgress(((float) worldObj.rand.nextInt(15))/100);
-            }
+            if (te != null)
+                te.setProgress(((float) worldObj.rand.nextInt(15)) / 100);
         }
+    }
+
+    public static boolean infest(World world, BlockPos pos, boolean makeNoise) {
+        IBlockState target = world.getBlockState(pos);
+        Block block = target.getBlock();
+
+        if (block.isLeaves(target, world, pos) && !block.equals(ENOBlocks.INFESTED_LEAVES) && !("forestry".equals(Block.REGISTRY.getNameForObject(block).getResourceDomain()) && block instanceof ITileEntityProvider)) {
+
+            world.setBlockState(pos, ENOBlocks.INFESTED_LEAVES.getDefaultState(), 2);
+
+            TileEntityInfestedLeaves te = (TileEntityInfestedLeaves) world.getTileEntity(pos);
+
+            if (te != null)
+                te.setMimicBlock(target);
+
+            if (makeNoise)
+                world.playSound(null, pos, SoundEvents.BLOCK_GRASS_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f);
+
+            return true;
+        }
+
+        return false;
     }
 
     public IBlockState getState() {

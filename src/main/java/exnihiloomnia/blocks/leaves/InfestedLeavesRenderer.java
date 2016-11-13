@@ -10,9 +10,12 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,25 +27,28 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
 
     @Override
     public void renderTileEntityAt(TileEntityInfestedLeaves te, double x, double y, double z, float partialTicks, int destroyStage) {
-        if (te.getState() != null) {
-            IBlockState blockState = te.state;
+        Minecraft mc = Minecraft.getMinecraft();
+        World world = getWorld();
+        BlockPos pos = te.getPos();
 
-            if (!models.containsKey(blockState)) {
-                IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(blockState);
+        if (te.getState() != null) {
+            mc.mcProfiler.startSection("renderLeaves");
+            IBlockState state = te.state;
+
+            if (!models.containsKey(state)) {
+                IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
                 List<BakedQuad> temp = new ArrayList<BakedQuad>();
 
                 for (EnumFacing face : EnumFacing.VALUES)
-                    temp.addAll(model.getQuads(blockState, face, te.getWorld().rand.nextLong()));
+                    temp.addAll(model.getQuads(state, face, world.rand.nextLong()));
 
-                models.put(blockState, temp);
+                models.put(state, temp);
             }
-
-            Color color = te.getRenderColor(blockState);
 
             GlStateManager.pushMatrix();
             RenderHelper.disableStandardItemLighting();
 
-            GlStateManager.bindTexture(Minecraft.getMinecraft().getTextureMapBlocks().getGlTextureId());
+            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
             GlStateManager.translate(x, y, z);
             GlStateManager.scale(1.0D, 1.0D, 1.0D);
@@ -50,16 +56,25 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
             VertexBuffer vertexbuffer = Tessellator.getInstance().getBuffer();
             vertexbuffer.begin(7, DefaultVertexFormats.ITEM);
 
-            for (BakedQuad quad : models.get(blockState)) {
-                if (blockState.shouldSideBeRendered(getWorld(), te.getPos(), quad.getFace())) {
+            for (BakedQuad quad : models.get(state)) {
+                if (state.shouldSideBeRendered(getWorld(), pos, quad.getFace())) {
                     vertexbuffer.addVertexData(quad.getVertexData());
-                    vertexbuffer.putColorRGB_F4(color.r, color.g, color.b);
+                    vertexbuffer.addVertexData(quad.getVertexData());
+
+                    mc.mcProfiler.startSection("colorMath");
+
+                    Color color = te.getColorForTint(quad.getTintIndex());
+
+                    vertexbuffer.putColorMultiplier(color.r, color.r, color.r, 1);
+
+                    mc.mcProfiler.endSection();
                 }
             }
 
             Tessellator.getInstance().draw();
             RenderHelper.enableStandardItemLighting();
             GlStateManager.popMatrix();
+            mc.mcProfiler.endSection();
         }
     }
 }

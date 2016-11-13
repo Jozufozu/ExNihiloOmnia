@@ -20,20 +20,15 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.1.5"
+version = "1.1.7"
 group= "jozufozu" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloomnia"
 
 minecraft {
-    version = "1.10.2-12.18.2.2114"
+    version = "1.10.2-12.18.2.2125"
     runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161029"
+
+    mappings = "snapshot_20161111"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
@@ -53,32 +48,11 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.10-1.1.4-35"
-    deobfCompile "mezz.jei:jei_1.10.2:3.12.7.318"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.10-1.2.0-40"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.2.360"
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
-    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.0.0.jenkins170"
-    deobfCompile "slimeknights:TConstruct:1.10.2-2.5.6.jenkins406"
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.1.194"
+    deobfCompile "slimeknights:TConstruct:1.10.2-2.5.6b.jenkins425"
 }
 
 processResources

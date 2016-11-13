@@ -209,7 +209,14 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
             }
         }
 
+        world.removeTileEntity(pos);
         return world.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        super.breakBlock(worldIn, pos, state);
+        worldIn.removeTileEntity(pos);
     }
 
     @Override
