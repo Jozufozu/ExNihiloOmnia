@@ -8,7 +8,9 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.crucible.files.HeatRegistryLoader;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
@@ -40,37 +42,43 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
         entries = new HashMap<String, HeatRegistryEntry>();
     }
 
-	public void add(HeatRegistryEntry entry) {
+	public static void add(HeatRegistryEntry entry) {
 		if (entry != null) {
-			entries.put(entry.getBlock() + ":" + entry.getMeta(), entry);
+			entries.put(entry.getKey(), entry);
 		}
 	}
 	
-	public static void register(Block block, int meta, int value) {
-		HeatRegistryEntry entry = new HeatRegistryEntry(block, meta, value);
-		entries.put(block + ":" + meta, entry);
+	public static boolean hasHeat(IBlockState state) {
+		return getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC) != null || getEntryForBlockState(state, EnumMetadataBehavior.IGNORED) != null;
 	}
-	
-	public static void register(Block block, int value) {
-		for(int x = 0; x <= 15; x++) {
-			register(block, x, value);
+
+	public static HeatRegistryEntry getEntryForBlockState(IBlockState state, EnumMetadataBehavior behavior) {
+		if (behavior == EnumMetadataBehavior.SPECIFIC) {
+			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock()) + ":" + state.getBlock().getMetaFromState(state));
+		}
+		else {
+			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock())  + ":*");
 		}
 	}
-	
-	public static boolean containsItem(Block block, int meta) {
-		return entries.containsKey(block + ":" + meta);
-	}
-	
-	public static HeatRegistryEntry getItem(Block block, int meta) {
-		return entries.get(block + ":" + meta);
+
+	public static int getHeatForState(IBlockState state) {
+		HeatRegistryEntry specific = getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC);
+		HeatRegistryEntry generic = getEntryForBlockState(state, EnumMetadataBehavior.IGNORED);
+
+		if (specific != null)
+			return specific.getHeat();
+		else if (generic != null)
+			return generic.getHeat();
+		else
+			return 0;
 	}
 	
 	public static void registerVanillaHeatSources() {
-		register(Blocks.TORCH, 5);
-		register(Blocks.LAVA, 16);
-		register(Blocks.FLOWING_LAVA, 12);
-		register(Blocks.LIT_FURNACE, 12);
-		register(Blocks.FIRE, 20);
-		register(Blocks.MAGMA, 20);
+		add(new HeatRegistryEntry(Blocks.TORCH.getDefaultState(), EnumMetadataBehavior.IGNORED, 5));
+		add(new HeatRegistryEntry(Blocks.LAVA.getDefaultState(), EnumMetadataBehavior.IGNORED, 16));
+		add(new HeatRegistryEntry(Blocks.FLOWING_LAVA.getDefaultState(), EnumMetadataBehavior.IGNORED, 12));
+		add(new HeatRegistryEntry(Blocks.LIT_FURNACE.getDefaultState(), EnumMetadataBehavior.IGNORED, 12));
+		add(new HeatRegistryEntry(Blocks.FIRE.getDefaultState(), EnumMetadataBehavior.IGNORED, 20));
+		add(new HeatRegistryEntry(Blocks.MAGMA.getDefaultState(), EnumMetadataBehavior.IGNORED, 20));
 	}
 }

@@ -1,38 +1,50 @@
 package exnihiloomnia.registries.crucible;
 
 import exnihiloomnia.registries.crucible.pojos.HeatValue;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 
 public class HeatRegistryEntry {
-	private Block block;
-	private int meta;
+	private IBlockState input;
+	private EnumMetadataBehavior behavior;
 	private int value;
 	
-	public HeatRegistryEntry(Block block, int meta, int value) {
-		this.block = block;
-		this.meta = meta;
+	public HeatRegistryEntry(IBlockState state, EnumMetadataBehavior behavior, int value) {
+		this.input = state;
 		this.value = value;
+	}
+
+	public String getKey() {
+		String s = Block.REGISTRY.getNameForObject(input.getBlock()).toString();
+
+		if (behavior == EnumMetadataBehavior.IGNORED) {
+			return s + ":*";
+		}
+		else {
+			return s + ":" + input.getBlock().getMetaFromState(input);
+		}
 	}
 
 	public static HeatRegistryEntry fromRecipe(HeatValue value) {
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(value.getBlock()));
 
 		if (block != null)
-			return new HeatRegistryEntry(block, value.getMeta(), value.getHeat());
+			return new HeatRegistryEntry(block.getStateFromMeta(value.getMeta()), value.getMeta() == -1 ? EnumMetadataBehavior.IGNORED : EnumMetadataBehavior.SPECIFIC, value.getHeat());
 		else
 			return null;
 	}
 
-	public Block getBlock() {
-		return block;
+	public IBlockState getInput() {
+		return input;
 	}
 
-	public int getMeta() {
-		return meta;
+	public EnumMetadataBehavior getBehavior() {
+		return behavior;
 	}
 
-	public int getValue() {
+	public int getHeat() {
 		return value;
 	}
 }
