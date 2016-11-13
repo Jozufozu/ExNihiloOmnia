@@ -85,6 +85,7 @@ public class Plugin implements IModPlugin{
         for (EnumDyeColor color : EnumDyeColor.values())
             registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS_COLORED, 1, color.getMetadata()), CompostRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS), CompostRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_STONE), CompostRecipeCategory.UID);
 
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_DIAMOND), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_GOLD), HammerRecipeCategory.UID);
