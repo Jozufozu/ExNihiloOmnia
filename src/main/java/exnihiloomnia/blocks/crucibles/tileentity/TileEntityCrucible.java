@@ -136,7 +136,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         
 		//process solids
         if (getFluid() == null && item != null)
-            getTank().setFluid(new FluidStack(CrucibleRegistry.getItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata()).fluid, 0));
+            getTank().setFluid(new FluidStack(CrucibleRegistry.getItem(item).getFluid(), 0));
 
         if (this.solidContent <= 0)
             this.item = null;
@@ -157,7 +157,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         if (getFluid() != null) {
             while (getFluid().amount < getTank().getCapacity() && this.solidContentProcessed >= solidFluidExchangeRate) {
                 this.solidContentProcessed -= solidFluidExchangeRate;
-                getFluid().amount += CrucibleRegistry.getItem(Block.getBlockFromItem(item.getItem()), item.getMetadata()).getRatio();
+                getFluid().amount += CrucibleRegistry.getItem(item).getRatio();
             }
         }
 		
@@ -209,7 +209,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 
 	public double getTrueSpeed() {
         double speed = this.adjustedSpeed;
-	    return speed != 0 ? getLastItemAdded() != null ? ((double) 4 / 15 * speed - (double) 1 / 3) * CrucibleRegistry.getItem(Block.getBlockFromItem(getLastItemAdded().getItem()), getLastItemAdded().getMetadata()).getRatio() : 0 : 0;
+	    return speed != 0 ? getLastItemAdded() != null ? ((double) 4 / 15 * speed - (double) 1 / 3) * CrucibleRegistry.getItem(item).getRatio() : 0 : 0;
 	}
 	
 	@Override
@@ -220,7 +220,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
     public boolean canInsertItem(ItemStack stack) {
         if (CrucibleRegistry.containsItem(Block.getBlockFromItem(stack.getItem()), stack.getMetadata())) {
             FluidStack fluid = getFluid();
-            CrucibleRegistryEntry block = CrucibleRegistry.getItem(Block.getBlockFromItem(stack.getItem()), stack.getMetadata());
+            CrucibleRegistryEntry block = CrucibleRegistry.getItem(item);
             return item == null ? fluid == null ? hasSpaceFor(block.getSolidVolume()) : fluid.getFluid() == block.fluid && hasSpaceFor(block.getSolidVolume()) : item.getItem().equals(stack.getItem()) && hasSpaceFor(block.getSolidVolume());
         }
 
