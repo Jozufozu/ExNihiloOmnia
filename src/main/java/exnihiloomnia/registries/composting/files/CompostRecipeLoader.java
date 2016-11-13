@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -27,7 +28,7 @@ public class CompostRecipeLoader {
 		
 		for (File file : files) {
 			//Ignore the example file
-			if (!file.getName().equals("example.json")) {
+			if (!file.getName().equals("example.json") && !file.getName().equals("defaults.json")) {
 				CompostRecipeList list = loadRecipes(file);
 				
 				if (list != null && !list.getRecipes().isEmpty()) {
@@ -87,5 +88,32 @@ public class CompostRecipeLoader {
 		}  
 		
 		return recipes;
+	}
+
+	public static void dumpRecipes(HashMap<String, CompostRegistryEntry> recipes, String path) {
+		if (!recipes.isEmpty()) {
+			CompostRecipeList list = new CompostRecipeList();
+
+			for (CompostRegistryEntry entry : recipes.values()) {
+				list.addRecipe(entry.toRecipe());
+			}
+
+			File file = new File(path + "defaults.json");
+
+			ENO.log.info("Attempting to dump compost recipe list: '" + file + "'.");
+
+			FileWriter writer;
+
+			try {
+				file.getParentFile().mkdirs();
+
+				writer = new FileWriter(file);
+				writer.write(gson.toJson(list));
+				writer.close();
+			} catch (Exception e) {
+				ENO.log.error("Failed to write file: '" + file + "'.");
+				ENO.log.error(e);
+			}
+		}
 	}
 }

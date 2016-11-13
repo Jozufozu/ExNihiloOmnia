@@ -36,6 +36,10 @@ public class HeatRegistryEntry {
 			return null;
 	}
 
+	public HeatValue toRecipe() {
+		return new HeatValue(Block.REGISTRY.getNameForObject(this.getInput().getBlock()).toString(), this.getBehavior() == EnumMetadataBehavior.SPECIFIC ? this.getInput().getBlock().getMetaFromState(this.getInput()) : -1, this.getHeat());
+	}
+
 	public IBlockState getInput() {
 		return input;
 	}

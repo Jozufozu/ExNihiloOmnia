@@ -12,4 +12,8 @@ public class CrookRecipeList {
 	public void setRecipes(ArrayList<CrookRecipe> recipes) {
 		this.recipes = recipes;
 	}
+
+	public void addRecipe(CrookRecipe recipe) {
+		this.recipes.add(recipe);
+	}
 }

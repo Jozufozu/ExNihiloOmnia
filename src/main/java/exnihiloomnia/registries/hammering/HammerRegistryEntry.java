@@ -93,4 +93,19 @@ public class HammerRegistryEntry {
 
 		return null;
 	}
+
+	public HammerRecipe toRecipe() {
+		String block = Block.REGISTRY.getNameForObject(this.getInput().getBlock()).toString();
+
+		HammerRecipe recipe = new HammerRecipe(block, this.getInput().getBlock().getMetaFromState(this.getInput()), this.getMetadataBehavior());
+
+		ArrayList<HammerRecipeReward> rewards = new ArrayList<HammerRecipeReward>();
+
+		for (HammerReward reward : this.getRewards())
+			rewards.add(new HammerRecipeReward(Item.REGISTRY.getNameForObject(reward.getItem().getItem()).toString(), reward.getItem().getMetadata(), reward.getItem().stackSize, reward.getBaseChance(), reward.getFortuneModifier()));
+
+		recipe.setRewards(rewards);
+
+		return recipe;
+	}
 }

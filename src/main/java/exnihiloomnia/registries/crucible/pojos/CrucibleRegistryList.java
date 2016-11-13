@@ -12,4 +12,8 @@ public class CrucibleRegistryList {
 	public void setRecipes(ArrayList<CrucibleRecipe> recipes) {
 		this.recipes = recipes;
 	}
+
+	public void addRecipe(CrucibleRecipe recipe) {
+		this.recipes.add(recipe);
+	}
 }

@@ -12,4 +12,8 @@ public class SieveRecipeList {
 	public void setRecipes(ArrayList<SieveRecipe> recipes) {
 		this.recipes = recipes;
 	}
+
+	public void addRecipe(SieveRecipe recipe) {
+		this.recipes.add(recipe);
+	}
 }

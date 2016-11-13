@@ -15,16 +15,19 @@ import net.minecraft.init.Blocks;
 
 public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 	public static HashMap<String, HeatRegistryEntry> entries;
+	public static String path = ENO.path + File.separator + "registries" + File.separator + "heat" + File.separator;
 
     public static HeatRegistry INSTANCE = new HeatRegistry();
 	
 	public void initialize() {
 		entries = new HashMap<String, HeatRegistryEntry>();
 
-		if (ENORegistries.loadHeatDefaults)
+		if (ENORegistries.loadHeatDefaults) {
 			registerVanillaHeatSources();
+			HeatRegistryLoader.dumpRecipes(entries, path);
+		}
 
-		List<HeatRegistryEntry> loaded = HeatRegistryLoader.load(ENO.path + File.separator + "registries" + File.separator + "heat" + File.separator);
+		List<HeatRegistryEntry> loaded = HeatRegistryLoader.load(path);
 
 		if (loaded != null && !loaded.isEmpty()) {
 			for (HeatRegistryEntry entry : loaded) {

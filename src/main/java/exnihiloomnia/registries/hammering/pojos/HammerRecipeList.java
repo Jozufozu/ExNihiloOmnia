@@ -12,4 +12,8 @@ public class HammerRecipeList {
 	public void setRecipes(ArrayList<HammerRecipe> recipes) {
 		this.recipes = recipes;
 	}
+
+	public void addRecipe(HammerRecipe recipe) {
+		this.recipes.add(recipe);
+	}
 }

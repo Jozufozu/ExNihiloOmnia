@@ -12,4 +12,8 @@ public class HeatValueList {
 	public void setRecipes(ArrayList<HeatValue> recipes) {
 		this.recipes = recipes;
 	}
+
+	public void addRecipe(HeatValue recipe) {
+		this.recipes.add(recipe);
+	}
 }

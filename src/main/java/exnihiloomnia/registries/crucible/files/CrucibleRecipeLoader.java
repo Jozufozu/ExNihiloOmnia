@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -26,7 +27,7 @@ public class CrucibleRecipeLoader {
 		File[] files = new File(path).listFiles();
 		
 		for (File file : files) {
-			if (!file.getName().equals("example.json")) {//Ignore the example file 
+			if (!file.getName().equals("example.json") && !file.getName().equals("defaults.json")) {//Ignore the example file
 				CrucibleRegistryList list = loadRecipes(file);
 				
 				if (list != null && !list.getRecipes().isEmpty()) {
@@ -86,5 +87,32 @@ public class CrucibleRecipeLoader {
 		}  
 		
 		return recipes;
+	}
+
+	public static void dumpRecipes(HashMap<String, CrucibleRegistryEntry> recipes, String path) {
+		if (!recipes.isEmpty()) {
+			CrucibleRegistryList list = new CrucibleRegistryList();
+
+			for (CrucibleRegistryEntry entry : recipes.values()) {
+				list.addRecipe(entry.toRecipe());
+			}
+
+			File file = new File(path + "defaults.json");
+
+			ENO.log.info("Attempting to dump crucible melting list: '" + file + "'.");
+
+			FileWriter writer;
+
+			try {
+				file.getParentFile().mkdirs();
+
+				writer = new FileWriter(file);
+				writer.write(gson.toJson(list));
+				writer.close();
+			} catch (Exception e) {
+				ENO.log.error("Failed to write file: '" + file + "'.");
+				ENO.log.error(e);
+			}
+		}
 	}
 }

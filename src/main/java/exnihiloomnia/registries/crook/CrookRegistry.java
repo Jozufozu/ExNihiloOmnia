@@ -19,7 +19,10 @@ import java.util.List;
 
 public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 	private static HashMap<String, CrookRegistryEntry> entries;
+
 	public static CrookRegistry INSTANCE = new CrookRegistry();
+	public static String path = ENO.path + File.separator + "registries" + File.separator + "crook" + File.separator;
+
 	public static CrookRegistryEntry SILKWORM;
 
 	public void initialize() {
@@ -28,10 +31,12 @@ public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 
 		entries = new HashMap<String, CrookRegistryEntry>();
 		
-		if (ENORegistries.loadCrookDefaults)
+		if (ENORegistries.loadCrookDefaults) {
 			registerVanillaRecipes();
+			CrookRecipeLoader.dumpRecipes(entries, path);
+		}
 		
-		List<CrookRegistryEntry> loaded = CrookRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "crook" + File.separator);
+		List<CrookRegistryEntry> loaded = CrookRecipeLoader.load(path);
 	
 		if (loaded != null && !loaded.isEmpty()) {
 			for (CrookRegistryEntry entry : loaded) {

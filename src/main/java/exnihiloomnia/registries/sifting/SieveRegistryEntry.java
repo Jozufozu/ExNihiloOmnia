@@ -71,4 +71,19 @@ public class SieveRegistryEntry {
 
 		return null;
 	}
+
+	public SieveRecipe toRecipe() {
+		String block = Block.REGISTRY.getNameForObject(this.getInput().getBlock()).toString();
+
+		SieveRecipe recipe = new SieveRecipe(block, this.getInput().getBlock().getMetaFromState(this.getInput()), this.getMetadataBehavior());
+
+		ArrayList<SieveRecipeReward> rewards = new ArrayList<SieveRecipeReward>();
+
+		for (SieveReward reward : this.getRewards())
+			rewards.add(new SieveRecipeReward(Item.REGISTRY.getNameForObject(reward.getItem().getItem()).toString(), reward.getItem().getMetadata(), reward.getItem().stackSize, reward.getBaseChance()));
+
+		recipe.setRewards(rewards);
+
+		return recipe;
+	}
 }

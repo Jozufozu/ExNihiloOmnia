@@ -19,15 +19,19 @@ import net.minecraft.item.ItemStack;
 
 public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 	private static HashMap<String, HammerRegistryEntry> entries;
+
 	public static HammerRegistry INSTANCE = new HammerRegistry();
+	public static String path = ENO.path + File.separator + "registries" + File.separator + "hammer" + File.separator;
 
 	public void initialize() {
 		entries = new HashMap<String, HammerRegistryEntry>();
 		
-		if (ENORegistries.loadHammerDefaults)
+		if (ENORegistries.loadHammerDefaults) {
 			registerVanillaRecipes();
+			HammerRecipeLoader.dumpRecipes(entries, path);
+		}
 		
-		List<HammerRegistryEntry> loaded = HammerRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "hammer" + File.separator);
+		List<HammerRegistryEntry> loaded = HammerRecipeLoader.load(path);
 	
 		if (loaded != null && !loaded.isEmpty()) {
 			for (HammerRegistryEntry entry : loaded) {

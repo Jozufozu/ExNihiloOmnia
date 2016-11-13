@@ -76,4 +76,9 @@ public class Color {
 		
 		return new Color(avgR, avgG, avgB, avgA);
 	}
+
+	@Override
+	public String toString() {
+		return Integer.toHexString(toInt());
+	}
 }

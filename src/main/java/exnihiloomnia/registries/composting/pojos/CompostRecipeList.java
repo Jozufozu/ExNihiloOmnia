@@ -12,4 +12,8 @@ public class CompostRecipeList {
 	public void setRecipes(ArrayList<CompostRecipe> recipes) {
 		this.recipes = recipes;
 	}
+
+	public void addRecipe(CompostRecipe recipe) {
+		this.recipes.add(recipe);
+	}
 }

@@ -3,6 +3,7 @@ package exnihiloomnia.registries.composting;
 import exnihiloomnia.registries.composting.pojos.CompostRecipe;
 import exnihiloomnia.util.Color;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -12,13 +13,13 @@ public class CompostRegistryEntry {
 	
 	private Color color;
 	private ItemStack input; 
-	private int value;
+	private int volume;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
 	
 	public CompostRegistryEntry(ItemStack input, int value, Color color) {
 		this.input = input;
 		this.color = color;
-		this.value = value;
+		this.volume = value;
 	}
 
 	public CompostRegistryEntry(ItemStack input, int value, Color color, EnumMetadataBehavior behavior) {
@@ -39,6 +40,14 @@ public class CompostRegistryEntry {
 			return null;
 		}
 	}
+
+	public CompostRecipe toRecipe() {
+		ResourceLocation item = Item.REGISTRY.getNameForObject(input.getItem());
+		if (item == null)
+			item = Block.REGISTRY.getNameForObject(Block.getBlockFromItem(input.getItem()));
+
+		return new CompostRecipe(item.toString(), getInput().getMetadata(), getMetadataBehavior(), getVolume(), color.toString());
+	}
 	
 	public Color getColor() {
 		if (this.color != null)
@@ -52,13 +61,13 @@ public class CompostRegistryEntry {
 	}
 	
 	public int getVolume() {
-		if (this.value > 1000)
+		if (this.volume > 1000)
 			return 1000;
 		
-		if (this.value < 0)
+		if (this.volume < 0)
 			return 0;
 		
-		return this.value;
+		return this.volume;
 	}
 	
 	public EnumMetadataBehavior getMetadataBehavior() {

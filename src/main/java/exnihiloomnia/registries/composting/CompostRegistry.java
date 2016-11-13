@@ -18,16 +18,19 @@ import net.minecraft.item.ItemStack;
 
 public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 	private static HashMap<String, CompostRegistryEntry> entries;
+	public static String path = ENO.path + File.separator + "registries" + File.separator + "compost" + File.separator;
 
 	public static CompostRegistry INSTANCE = new CompostRegistry();
 	
 	public void initialize() {
 		entries = new HashMap<String, CompostRegistryEntry>();
 		
-		if (ENORegistries.loadCompostDefaults)
+		if (ENORegistries.loadCompostDefaults) {
 			registerVanillaRecipes();
+			CompostRecipeLoader.dumpRecipes(entries, path);
+		}
 		
-		List<CompostRegistryEntry> loaded = CompostRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "compost" + File.separator);
+		List<CompostRegistryEntry> loaded = CompostRecipeLoader.load(path);
 	
 		if (loaded != null && !loaded.isEmpty()) {
 			for (CompostRegistryEntry entry : loaded) {
@@ -74,6 +77,7 @@ public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 		}
 	}
 	
+	@SuppressWarnings("ConstantConditions")
 	public static void registerVanillaRecipes() {
 		//saplings
 		add(new CompostRegistryEntry(new ItemStack(Item.getItemFromBlock(Blocks.SAPLING), 1, 0), 125, new Color("35A82A"), EnumMetadataBehavior.SPECIFIC)); //oak

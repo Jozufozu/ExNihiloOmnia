@@ -93,4 +93,19 @@ public class CrookRegistryEntry {
 
 		return null;
 	}
+
+	public CrookRecipe toRecipe() {
+		String block = Block.REGISTRY.getNameForObject(this.getInput().getBlock()).toString();
+
+		CrookRecipe recipe = new CrookRecipe(block, this.getInput().getBlock().getMetaFromState(this.getInput()), this.getMetadataBehavior());
+
+		ArrayList<CrookRecipeReward> rewards = new ArrayList<CrookRecipeReward>();
+
+		for (CrookReward reward : this.getRewards())
+			rewards.add(new CrookRecipeReward(Item.REGISTRY.getNameForObject(reward.getItem().getItem()).toString(), reward.getItem().getMetadata(), reward.getItem().stackSize, reward.getBaseChance(), reward.getFortuneModifier()));
+
+		recipe.setRewards(rewards);
+
+		return recipe;
+	}
 }

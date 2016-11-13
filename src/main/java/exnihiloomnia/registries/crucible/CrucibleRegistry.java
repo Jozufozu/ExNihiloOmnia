@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
     public static CrucibleRegistry INSTANCE = new CrucibleRegistry();
+    public static String path = ENO.path + File.separator + "registries" + File.separator + "crucible" + File.separator;
 
     public static HashMap<String, CrucibleRegistryEntry> entries;
 
@@ -28,10 +29,12 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
     public void initialize() {
         entries = new HashMap<String, CrucibleRegistryEntry>();
 
-        if (ENORegistries.loadCrucibleDefaults)
+        if (ENORegistries.loadCrucibleDefaults) {
             registerMeltables();
+            CrucibleRecipeLoader.dumpRecipes(entries, path);
+        }
 
-        List<CrucibleRegistryEntry> loaded = CrucibleRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "crucible" + File.separator);
+        List<CrucibleRegistryEntry> loaded = CrucibleRecipeLoader.load(path);
 
         if (loaded != null && !loaded.isEmpty()) {
             for (CrucibleRegistryEntry entry : loaded) {
@@ -49,10 +52,6 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
         if (entry != null) {
             entries.put(entry.getKey(), entry);
         }
-    }
-
-    public static boolean containsItem(Block block, int meta) {
-        return entries.containsKey(block + ":" + meta);
     }
 
     public static boolean containsFluid(Fluid fluid) {
@@ -80,29 +79,31 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
     }
 
     public static CrucibleRegistryEntry getItem(ItemStack item) {
-        Block block = Block.getBlockFromItem(item.getItem());
-        IBlockState state = block.getStateFromMeta(item.getMetadata());
+        if (item != null) {
+            Block block = Block.getBlockFromItem(item.getItem());
+            IBlockState state = block.getStateFromMeta(item.getMetadata());
 
-        CrucibleRegistryEntry specific = getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC);
-        CrucibleRegistryEntry generic = getEntryForBlockState(state, EnumMetadataBehavior.IGNORED);
+            CrucibleRegistryEntry specific = getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC);
+            CrucibleRegistryEntry generic = getEntryForBlockState(state, EnumMetadataBehavior.IGNORED);
 
-        if (specific != null)
-            return specific;
-        else if (generic != null)
-            return generic;
-        else
-            return null;
+            if (specific != null)
+                return specific;
+            else if (generic != null)
+                return generic;
+        }
+
+        return null;
     }
 
     public static void registerMeltables() {
-        new CrucibleRegistryEntry(Blocks.COBBLESTONE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 250);
-        new CrucibleRegistryEntry(Blocks.STONE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 250);
-        new CrucibleRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 250);
-        new CrucibleRegistryEntry(Blocks.NETHERRACK.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 1000);
-        new CrucibleRegistryEntry(Blocks.MAGMA.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 2000);
+        add(new CrucibleRegistryEntry(Blocks.COBBLESTONE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 250));
+        add(new CrucibleRegistryEntry(Blocks.STONE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 250));
+        add(new CrucibleRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 250));
+        add(new CrucibleRegistryEntry(Blocks.NETHERRACK.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 1000));
+        add(new CrucibleRegistryEntry(Blocks.MAGMA.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.LAVA, 2000));
 
-        new CrucibleRegistryEntry(Blocks.SNOW.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.WATER, 250);
-        new CrucibleRegistryEntry(Blocks.ICE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.WATER, 1000);
-        new CrucibleRegistryEntry(Blocks.PACKED_ICE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.WATER, 2000);
+        add(new CrucibleRegistryEntry(Blocks.SNOW.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.WATER, 250));
+        add(new CrucibleRegistryEntry(Blocks.ICE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.WATER, 1000));
+        add(new CrucibleRegistryEntry(Blocks.PACKED_ICE.getDefaultState(), EnumMetadataBehavior.IGNORED, 250, FluidRegistry.WATER, 2000));
     }
 }

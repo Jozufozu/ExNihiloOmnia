@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("deprecation")
 public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 	public static SieveRegistry INSTANCE = new SieveRegistry();
+	private static String path = ENO.path + File.separator + "registries" + File.separator + "sieve" + File.separator;
 
 	private static HashMap<String, SieveRegistryEntry> entries;
 	private static List<ItemStack> EMPTY_REWARDS_ARRAY = new ArrayList<ItemStack>(){};
@@ -30,10 +31,12 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 	public void initialize() {
 		entries = new HashMap<String, SieveRegistryEntry>();
 		
-		if (ENORegistries.loadSieveDefaults)
+		if (ENORegistries.loadSieveDefaults) {
 			registerVanillaRecipes();
+			SieveRecipeLoader.dumpRecipes(entries, path);
+		}
 		
-		List<SieveRegistryEntry> loaded = SieveRecipeLoader.load(ENO.path + File.separator + "registries" + File.separator + "sieve" + File.separator);
+		List<SieveRegistryEntry> loaded = SieveRecipeLoader.load(path);
 	
 		if (loaded != null && !loaded.isEmpty()) {
 			for (SieveRegistryEntry entry : loaded) {
