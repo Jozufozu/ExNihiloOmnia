@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.barrels.states.fluid;
 
+import exnihiloomnia.util.Color;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
@@ -7,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
-import exnihiloomnia.util.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -18,12 +18,18 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class BarrelStateFluid extends BarrelState {
 	private static String[] description = new String[]{""};
-	
+
 	@Override
 	public String getUniqueIdentifier() {
 		return "barrel.fluid";
 	}
-	
+
+	@Override
+	public void activate(TileEntityBarrel barrel) {
+		super.activate(barrel);
+		barrel.setColor(new Color(barrel.getFluid().getFluid().getColor()));
+	}
+
 	@Override
 	public boolean canManipulateFluids(TileEntityBarrel barrel) {
 		return true;
@@ -66,10 +72,10 @@ public class BarrelStateFluid extends BarrelState {
 				FluidTank tank = barrel.getFluidTank();
 
 				if (barrel.getBlockType().getDefaultState().getMaterial().isOpaque()) {
-					BarrelRenderer.renderContentsSimple(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), Color.WHITE);
+					BarrelRenderer.renderContentsSimple(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), barrel.getColor());
 				}
 				else {
-					BarrelRenderer.renderContentsComplex(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), Color.WHITE);
+					BarrelRenderer.renderContentsComplex(texture, (double)tank.getFluidAmount() / (double)tank.getCapacity(), barrel.getColor());
 				}
 				
 				RenderHelper.enableStandardItemLighting();

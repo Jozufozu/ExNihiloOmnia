@@ -7,7 +7,6 @@ import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -45,6 +44,7 @@ public class FluidStateTriggerItem extends BarrelLogic {
 
 			barrel.getFluidTank().fill(fluid, true);
 			barrel.setState(BarrelStates.FLUID);
+
 			barrel.getWorld().playSound(null, barrel.getPos(),SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 0.2f, 0.8f);
 		}
 
