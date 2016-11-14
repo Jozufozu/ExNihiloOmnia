@@ -6,7 +6,7 @@ import net.minecraft.client.resources.I18n;
 
 //Does nothing. Renders nothing. Is simply a container for triggers.
 public class BarrelStateEmpty extends BarrelState {
-	private static String[] description = {};
+	private static String[] description = new String[1];
 	
 	@Override
 	public String getUniqueIdentifier() {

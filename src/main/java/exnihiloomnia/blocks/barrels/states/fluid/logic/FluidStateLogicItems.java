@@ -20,18 +20,11 @@ public class FluidStateLogicItems extends BarrelLogic {
 		FluidStack ifluid = FluidContainerRegistry.getFluidForFilledItem(item);
 		ItemStack full = FluidContainerRegistry.fillFluidContainer(fluid, item);
 
-		if (fluid != null) {
-			if (ifluid != null && barrel.getFluidTank().fill(ifluid, false) > 0)
-				return true;
-			
-			if (full != null && fluid.amount >= barrel.getFluidTank().getCapacity())
-				return true;
-
-			if (item.getItem().getRegistryName().equals(new ResourceLocation("extrautils2", "WateringCan")))
-				return true;
-		}
-		
-		return false;
+		return item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+				|| (fluid != null
+				&& (ifluid != null && barrel.getFluidTank().fill(ifluid, false) > 0
+				|| full != null && fluid.amount >= barrel.getFluidTank().getCapacity()))
+				|| item.getItem().getRegistryName().equals(wateringCan);
 	}
 
 	@Override

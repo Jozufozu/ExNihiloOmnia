@@ -21,14 +21,14 @@ public class FluidStateTriggerItem extends BarrelLogic {
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item)  {
 		FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
 		
-		return fluid != null;
+		return fluid != null || item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 	}
 	
 	@Override
 	public boolean onUseItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
 		FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
 
-		if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+		if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 		}
 		else if (fluid != null && fluid.amount > 0) {
