@@ -78,6 +78,15 @@ public class Color {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Color) {
+			Color object = (Color) obj;
+			return object.r == this.r && object.g == this.g && object.b == this.b && object.a == this.a;
+		}
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return Integer.toHexString(toInt());
 	}

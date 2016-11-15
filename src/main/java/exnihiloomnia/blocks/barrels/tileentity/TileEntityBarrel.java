@@ -33,7 +33,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	protected int luminosity = 0;
 	protected int volume = 0;
 	protected int MAX_VOLUME = 1000;
-	protected Color color = new Color("FFFFFF");
+	protected Color color = Color.WHITE;
 	
 	protected int generalTimer = 0;
 	protected int generalTimerMax = 0;
@@ -73,6 +73,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 			{
 				fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
 				setState(BarrelStates.FLUID);
+				setColor(fluid.getFluid().getColor());
 
 				return fluid.amount;
 			}
@@ -97,18 +98,6 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 			}
 
 			return avaliable;
-			/*
-			if (state.canManipulateFluids(getBarrel())) {
-				int fill = super.fill(resource, doFill);
-
-				if (fluid != null && state != BarrelStates.FLUID)
-					setState(BarrelStates.FLUID);
-
-				return fill;
-			}
-			else
-			    return 0;
-			    */
 		}
 
 		@Override
@@ -120,8 +109,10 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
             else {
 				FluidStack drain = drainInternal(maxDrain, doDrain);
 
-				if (fluid == null)
+				if (fluid == null) {
 					setState(BarrelStates.EMPTY);
+					setColor(Color.WHITE);
+				}
 
 				return drain;
 			}
@@ -366,6 +357,10 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public void setColor(int color) {
+		this.color = new Color(color);
 	}
 
 	public boolean isWooden() {

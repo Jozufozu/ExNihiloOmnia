@@ -10,7 +10,7 @@ public class BarrelStateEmpty extends BarrelState {
 	
 	@Override
 	public String getUniqueIdentifier() {
-		return "barrel.EMPTY";
+		return "barrel.empty";
 	}
 
 	@Override

@@ -90,7 +90,6 @@ public class BarrelStates {
 	public static BarrelLogic COMPOST_STATE_TRIGGER_GRASS;
 	public static BarrelLogic COMPOST_STATE_TRIGGER_COARSE_DIRT;
 	public static BarrelLogic PODZOL_STATE_TRIGGER_COMPLETE;
-	public static BarrelLogic MYCELIUM_STATE_TRIGGER_COMPLETE;
 	public static BarrelLogic GRASS_STATE_TRIGGER_COMPLETE;
 	public static BarrelLogic COARSE_DIRT_STATE_TRIGGER_COMPLETE;
 
@@ -237,7 +236,7 @@ public class BarrelStates {
 		BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_MYCELIUM);
 
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_HOT);
-		
+
 		if (ALLOW_RAIN_FILLING)
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_WEATHER);
 		if (ALLOW_ICE_FORMING)

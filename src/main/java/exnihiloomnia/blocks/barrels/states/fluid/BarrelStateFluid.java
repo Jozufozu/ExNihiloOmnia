@@ -25,12 +25,6 @@ public class BarrelStateFluid extends BarrelState {
 	}
 
 	@Override
-	public void activate(TileEntityBarrel barrel) {
-		super.activate(barrel);
-		barrel.setColor(new Color(barrel.getFluid().getFluid().getColor()));
-	}
-
-	@Override
 	public boolean canManipulateFluids(TileEntityBarrel barrel) {
 		return true;
 	}
