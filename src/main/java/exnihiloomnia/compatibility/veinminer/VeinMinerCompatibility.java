@@ -107,24 +107,24 @@ public class VeinMinerCompatibility {
 	        VeinMinerAPI.addTool("hammer", "exnihiloomnia:hammer_gold");
 	        VeinMinerAPI.addTool("hammer", "exnihiloomnia:hammer_diamond");
 
-	        for (Block block : Block.REGISTRY) {
-	        	if (ENOCompatibility.register_veinminer_recipes_crook) {
-	 	           if (block.getMaterial(block.getDefaultState()) == Material.LEAVES || block instanceof BlockTallGrass) {
-	 	        	   VeinMinerAPI.addBlock("crook", Block.REGISTRY.getNameForObject(block).toString());
-	 	           }
-	        	}
-	           
-	           	if (ENOCompatibility.register_veinminer_recipes_hammer) {
-					for (HammerRegistryEntry entry : HammerRegistry.INSTANCE.getEntries().values()) {
-					    String suff = "";
-					    
-                        if (entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC)
-                            suff = "/" + entry.getInput().getBlock().getMetaFromState(entry.getInput());
-                        
-                        VeinMinerAPI.addBlock("hammer", entry.getInput().getBlock().getRegistryName().toString() + suff);
-                    }
-	           	}
-	        }
+			if (ENOCompatibility.register_veinminer_recipes_crook) {
+				for (Block block : Block.REGISTRY) {
+					if (block.getMaterial(block.getDefaultState()) == Material.LEAVES || block instanceof BlockTallGrass) {
+						VeinMinerAPI.addBlock("crook", Block.REGISTRY.getNameForObject(block).toString());
+					}
+				}
+			}
+
+			if (ENOCompatibility.register_veinminer_recipes_hammer) {
+				for (HammerRegistryEntry entry : HammerRegistry.INSTANCE.getEntries().values()) {
+					String suff = "";
+
+					if (entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC)
+						suff = "/" + entry.getInput().getBlock().getMetaFromState(entry.getInput());
+
+					VeinMinerAPI.addBlock("hammer", entry.getInput().getBlock().getRegistryName().toString() + suff);
+				}
+			}
 		}
 	}
 }
