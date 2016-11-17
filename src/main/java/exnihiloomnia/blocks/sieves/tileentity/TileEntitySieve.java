@@ -118,7 +118,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 				workQueued = false;
 			}
 		}
-		if (!this.worldObj.isRemote) {
+		if (!this.getWorld().isRemote) {
 			if (updateTimerRunning) {
 				updateTimer++;
 
@@ -138,12 +138,12 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 			if (work >= workMax) {
 				if (contentsState != null) {
 					for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
-						EntityItem drop = new EntityItem(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
+						EntityItem drop = new EntityItem(getWorld(), pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
 						drop.setNoPickupDelay();
-						worldObj.spawnEntityInWorld(drop);
+						getWorld().spawnEntityInWorld(drop);
 
-						for (int j = 0; j < worldObj.rand.nextInt(2); j++)
-							worldObj.spawnEntityInWorld(new EntityXPOrb(worldObj, pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, 1));
+						for (int j = 0; j < getWorld().rand.nextInt(2); j++)
+							getWorld().spawnEntityInWorld(new EntityXPOrb(getWorld(), pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, 1));
 					}
 				}
 
@@ -153,7 +153,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 				contents = null;
 
 				if (this.mesh != null) {
-					if (mesh.attemptDamageItem(1, worldObj.rand)) {
+					if (mesh.attemptDamageItem(1, getWorld().rand)) {
 						getWorld().playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.5f, 2.5f);
 						setMesh(null);
 					}
@@ -198,7 +198,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 
 	//Send update packets to each client.
 	public void sync() {
-		if (worldObj != null && !getWorld().isRemote) {
+		if (getWorld() != null && !getWorld().isRemote) {
 			if (!updateTimerRunning) {
 				updateTimerRunning = true;
 				getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
@@ -250,7 +250,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
         this.spawningParticles = true;
         this.workQueued = true;
         
-		if (!this.worldObj.isRemote) {
+		if (!this.getWorld().isRemote) {
 			sync();
 			markDirty();
 		}
@@ -279,10 +279,10 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 			TextureAtlasSprite texture = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block);
 
 			for (int x = 0; x < 6; x++) {	
-				ParticleSieve dust = new ParticleSieve(worldObj, 
-						pos.getX() + 0.8d * worldObj.rand.nextFloat() + 0.15d, 
+				ParticleSieve dust = new ParticleSieve(getWorld(),
+						pos.getX() + 0.8d * getWorld().rand.nextFloat() + 0.15d,
 						pos.getY() + 0.585d, 
-						pos.getZ() + 0.8d * worldObj.rand.nextFloat() + 0.15d, 
+						pos.getZ() + 0.8d * getWorld().rand.nextFloat() + 0.15d,
 						0.0d, 0.0d, 0.0d, texture);
 				
 				Minecraft.getMinecraft().effectRenderer.addEffect(dust);

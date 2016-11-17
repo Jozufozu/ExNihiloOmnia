@@ -164,7 +164,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 		
 
 		//Packet throttling
-		if (!this.worldObj.isRemote) {
+		if (!this.getWorld().isRemote) {
 			if (updateTimerRunning) {
 				updateTimer++;
 

@@ -284,7 +284,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 		}
 		
 		//Update packet throttling system
-		if (!this.worldObj.isRemote && updateTimerRunning) {
+		if (!this.getWorld().isRemote && updateTimerRunning) {
 			updateTimer++;
 			
 			if (updateTimer > updateTimerMax) {
@@ -364,7 +364,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	}
 
 	public boolean isWooden() {
-		return worldObj.getBlockState(pos).getMaterial() == Material.WOOD;
+		return getWorld().getBlockState(pos).getMaterial() == Material.WOOD;
 	}
 
     @Override

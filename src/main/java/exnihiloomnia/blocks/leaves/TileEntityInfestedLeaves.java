@@ -44,12 +44,12 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
         if (progress > 1.0f)
             progress = 1.0f;
 
-        if (!worldObj.isRemote && progress > 0.6f) {
+        if (!getWorld().isRemote && progress > 0.6f) {
             spreadTimer++;
 
             if (spreadTimer >= maxSpreadTicks) {
                 spread();
-                spreadTimer = worldObj.rand.nextInt(10);
+                spreadTimer = getWorld().rand.nextInt(10);
             }
         }
         
@@ -95,9 +95,9 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     }
 
     private void spread() {
-        int x = this.worldObj.rand.nextInt(3) - 1;
-        int y = this.worldObj.rand.nextInt(3) - 1;
-        int z = this.worldObj.rand.nextInt(3) - 1;
+        int x = this.getWorld().rand.nextInt(3) - 1;
+        int y = this.getWorld().rand.nextInt(3) - 1;
+        int z = this.getWorld().rand.nextInt(3) - 1;
 
         int placeX = pos.getX() + x;
         int placeY = pos.getY() + y;
@@ -105,12 +105,12 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
 
         BlockPos place = new BlockPos(placeX, placeY, placeZ);
 
-        if (infest(worldObj, place, false)) {
+        if (infest(getWorld(), place, false)) {
 
-            TileEntityInfestedLeaves te = (TileEntityInfestedLeaves) worldObj.getTileEntity(place);
+            TileEntityInfestedLeaves te = (TileEntityInfestedLeaves) getWorld().getTileEntity(place);
 
             if (te != null)
-                te.setProgress(((float) worldObj.rand.nextInt(15)) / 100);
+                te.setProgress(((float) getWorld().rand.nextInt(15)) / 100);
         }
     }
 
