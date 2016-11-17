@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class CrookReward {
 	private int base_chance;
 	private int fortune_modifier; //the effectiveness of Fortune enchantments.
@@ -25,7 +27,7 @@ public class CrookReward {
 			Block.spawnAsEntity(player.worldObj, pos, reward);
 	}
 
-	public ItemStack getReward(EntityPlayer player) {
+	public ItemStack getReward(@Nonnull EntityPlayer player) {
 		World world = player.worldObj;
 		int luck_level = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getActiveItemStack());
 		int chance = base_chance + (fortune_modifier * luck_level);

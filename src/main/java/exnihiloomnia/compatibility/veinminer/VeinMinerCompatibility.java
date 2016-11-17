@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import exnihiloomnia.ENO;
 import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.items.hammers.ItemHammer;
+import exnihiloomnia.registries.crook.CrookRegistry;
+import exnihiloomnia.registries.crook.CrookRegistryEntry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistryEntry;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
@@ -108,10 +110,13 @@ public class VeinMinerCompatibility {
 	        VeinMinerAPI.addTool("hammer", "exnihiloomnia:hammer_diamond");
 
 			if (ENOCompatibility.register_veinminer_recipes_crook) {
-				for (Block block : Block.REGISTRY) {
-					if (block.getMaterial(block.getDefaultState()) == Material.LEAVES || block instanceof BlockTallGrass) {
-						VeinMinerAPI.addBlock("crook", Block.REGISTRY.getNameForObject(block).toString());
-					}
+				for (CrookRegistryEntry entry : CrookRegistry.INSTANCE.getEntries().values()) {
+					String suff = "";
+
+					if (entry.getMetadataBehavior() == EnumMetadataBehavior.SPECIFIC)
+						suff = "/" + entry.getInput().getBlock().getMetaFromState(entry.getInput());
+
+					VeinMinerAPI.addBlock("crook", entry.getInput().getBlock().getRegistryName().toString() + suff);
 				}
 			}
 

@@ -3,14 +3,18 @@ package exnihiloomnia.registries.crook;
 import exnihiloomnia.ENO;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.compatibility.veinminer.VeinMinerAPI;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.crook.files.CrookRecipeLoader;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTallGrass;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.io.File;
@@ -23,6 +27,7 @@ public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 	public static CrookRegistry INSTANCE = new CrookRegistry();
 	public static String path = ENO.path + File.separator + "registries" + File.separator + "crook" + File.separator;
 
+	public static ItemStack SILK = new ItemStack(ENOItems.SILKWORM);
 	public static CrookRegistryEntry SILKWORM;
 
 	public void initialize() {
@@ -85,8 +90,12 @@ public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 	}
 	
 	public static void registerVanillaRecipes() {
-		CrookRegistryEntry infestedLeaves = new CrookRegistryEntry(ENOBlocks.INFESTED_LEAVES.getDefaultState(), EnumMetadataBehavior.IGNORED);
-		infestedLeaves.addReward(new ItemStack(ENOItems.SILKWORM), (int)(100 * ENOConfig.silkworm_chance), 0);
-		add(infestedLeaves);
+		for (Block block : Block.REGISTRY) {
+			if (block != ENOBlocks.INFESTED_LEAVES && (block.getMaterial(block.getDefaultState()) == Material.LEAVES || block instanceof BlockTallGrass)) {
+				CrookRegistryEntry leaves = new CrookRegistryEntry(block.getDefaultState(), EnumMetadataBehavior.IGNORED);
+				leaves.addReward(SILK, 1, 0);
+				add(leaves);
+			}
+		}
 	}
 }

@@ -1,13 +1,19 @@
 package exnihiloomnia.compatibility.tconstruct.modifiers;
 
+import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.crook.CrookRegistry;
 import exnihiloomnia.util.Color;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
@@ -41,15 +47,20 @@ public class ModCrooked extends ModifierTrait {
     @Override
     public void blockHarvestDrops(ItemStack tool, BlockEvent.HarvestDropsEvent event) {
         IBlockState block = event.getState();
-        World world = event.getWorld();
 
-        if (block.getMaterial() == Material.LEAVES || block.getBlock() instanceof BlockTallGrass) {
-            //drop doubling
-            event.getDrops().addAll(block.getBlock().getDrops(world, event.getPos(), block, event.getFortuneLevel()));
+        if (CrookRegistry.isCrookable(block)) {
+            World world = event.getWorld();
+            BlockPos pos = event.getPos();
+            EntityPlayer player = event.getHarvester();
 
-            if ((block.getMaterial().equals(Material.LEAVES) && world.rand.nextInt(100) == 0)) {
-                //silkworms!
-                event.getDrops().add(new ItemStack(ENOItems.SILKWORM));
+            if (player != null) {
+                ItemStack item = player.getActiveItemStack();
+                //Simulate a block break to cause the first round of items to drop.
+                block.getBlock().dropBlockAsItem(world, pos, world.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
+                if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock())) {
+                    for (ItemStack itemStack : CrookRegistry.getEntryForBlockState(block).rollRewards(player))
+                        Block.spawnAsEntity(world, pos, itemStack);
+                }
             }
         }
     }

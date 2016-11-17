@@ -104,19 +104,13 @@ public class ItemCrook extends ItemTool {
 		World world = player.worldObj;
 		
 		if (!world.isRemote) {
-			if (block.getMaterial() == Material.LEAVES || block instanceof BlockTallGrass) {
+			if (CrookRegistry.isCrookable(block)) {
 				//Simulate a block break to cause the first round of items to drop.
 				block.getBlock().dropBlockAsItem(world, pos, world.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
-				if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock()) && block.getMaterial() == Material.LEAVES) {
-					for (ItemStack itemStack : CrookRegistry.SILKWORM.rollRewards(player))
+				if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock())) {
+					for (ItemStack itemStack : CrookRegistry.getEntryForBlockState(block).rollRewards(player))
 						Block.spawnAsEntity(world, pos, itemStack);
 				}
-			}
-			if (CrookRegistry.isCrookable(block)) {
-				for (ItemStack itemStack : CrookRegistry.getEntryForBlockState(block).rollRewards(player)) {
-					Block.spawnAsEntity(world, pos, itemStack);
-				}
-
 			}
 		}
 
