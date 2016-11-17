@@ -9,6 +9,7 @@ import exnihiloomnia.registries.hammering.HammerRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,6 +45,11 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2")
 public class ENO {
+
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
+
 	@Instance(ENO.MODID)
 	public static ENO INSTANCE;
 	

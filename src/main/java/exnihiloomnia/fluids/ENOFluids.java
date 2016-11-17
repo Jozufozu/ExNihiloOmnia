@@ -12,5 +12,7 @@ public class ENOFluids {
 	    WITCHWATER = new Fluid("witchwater", new ResourceLocation("exnihiloomnia:blocks/witchwater_still"), new ResourceLocation("exnihiloomnia:blocks/witchwater_flowing")).setBlock(ENOBlocks.WITCHWATER);
 
 		FluidRegistry.registerFluid(WITCHWATER);
+
+		FluidRegistry.addBucketForFluid(WITCHWATER);
 	}
 }
