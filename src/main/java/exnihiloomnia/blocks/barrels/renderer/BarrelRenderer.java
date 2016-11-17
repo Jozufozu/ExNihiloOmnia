@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.barrels.renderer;
 
-import org.lwjgl.opengl.GL11;
-
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.Color;
@@ -16,6 +14,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
 
 public class BarrelRenderer extends TileEntitySpecialRenderer<TileEntityBarrel> {
 	public static final double MIN_RENDER_CAPACITY = 0.05d;

@@ -1,21 +1,12 @@
 package exnihiloomnia.blocks.barrels.states;
 
-import java.util.HashMap;
-
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateCoarseDirt;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateCompost;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStateGrass;
 import exnihiloomnia.blocks.barrels.states.compost.BarrelStatePodzol;
-import exnihiloomnia.blocks.barrels.states.compost.logic.CoarseDirtStateLogicComplete;
-import exnihiloomnia.blocks.barrels.states.compost.logic.CoarseDirtStateTrigger;
-import exnihiloomnia.blocks.barrels.states.compost.logic.CompostStateLogicComplete;
-import exnihiloomnia.blocks.barrels.states.compost.logic.CompostStateLogicItems;
-import exnihiloomnia.blocks.barrels.states.compost.logic.GrassStateLogicComplete;
-import exnihiloomnia.blocks.barrels.states.compost.logic.GrassStateTrigger;
-import exnihiloomnia.blocks.barrels.states.compost.logic.PodzolStateLogicComplete;
-import exnihiloomnia.blocks.barrels.states.compost.logic.PodzolStateTrigger;
+import exnihiloomnia.blocks.barrels.states.compost.logic.*;
 import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateBlaze;
 import exnihiloomnia.blocks.barrels.states.dolls.BarrelStateEnd;
 import exnihiloomnia.blocks.barrels.states.dolls.logic.BlazeStateLogic;
@@ -36,6 +27,8 @@ import exnihiloomnia.blocks.barrels.states.slime.logic.SlimeStateLogic;
 import exnihiloomnia.blocks.barrels.states.witchwater.BarrelStateTransformationWitchwater;
 import exnihiloomnia.blocks.barrels.states.witchwater.logic.WitchwaterStateLogic;
 import net.minecraftforge.common.config.Configuration;
+
+import java.util.HashMap;
 
 public class BarrelStates {
 	public static HashMap<String, BarrelState> states = new HashMap<String, BarrelState>();

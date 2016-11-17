@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.sieves;
 
-import java.util.List;
-
 import exnihiloomnia.util.enums.EnumWood;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -13,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockSieveWood extends BlockSieve {
 	public static final PropertyEnum WOOD = PropertyEnum.create("wood", EnumWood.class);

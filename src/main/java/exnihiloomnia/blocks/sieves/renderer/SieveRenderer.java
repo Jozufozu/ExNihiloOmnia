@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.sieves.renderer;
 
-import org.lwjgl.opengl.GL11;
-
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.util.Color;
 import exnihiloomnia.util.helpers.ContentRenderHelper;
@@ -16,6 +14,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 public class SieveRenderer extends TileEntitySpecialRenderer<TileEntitySieve> {
 	public static final double MIN_RENDER_CAPACITY = (double) 18/32;

@@ -1,10 +1,10 @@
 package exnihiloomnia.blocks.barrels.states.compost.logic;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 public class CompostStateLogicComplete extends BarrelLogic {
 	

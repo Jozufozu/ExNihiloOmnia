@@ -1,13 +1,13 @@
 package exnihiloomnia.world.manipulation;
 
-import java.util.Random;
-
 import exnihiloomnia.util.helpers.PositionHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+
+import java.util.Random;
 
 public class Mycelium {
 	public static final int DEFAULT_GROWTH_SPEED = 8;

@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.ores;
 
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.enums.EnumOre;
@@ -19,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockOre extends BlockFalling {
     public static final PropertyEnum ORE = PropertyEnum.create("ore", EnumOre.class);

@@ -1,9 +1,5 @@
 package exnihiloomnia.registries.crucible;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
@@ -12,6 +8,10 @@ import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 	public static HashMap<String, HeatRegistryEntry> entries;

@@ -1,13 +1,12 @@
 package exnihiloomnia.world.generation.templates.io;
 
-import java.io.File;
-import java.io.FileWriter;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.world.generation.templates.pojos.Template;
+
+import java.io.File;
+import java.io.FileWriter;
 
 public class TemplateGenerator {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -1,7 +1,5 @@
 package exnihiloomnia.registries.sifting;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.registries.sifting.pojos.SieveRecipe;
 import exnihiloomnia.registries.sifting.pojos.SieveRecipeReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
@@ -10,6 +8,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
 
 public class SieveRegistryEntry {
 	private IBlockState input;

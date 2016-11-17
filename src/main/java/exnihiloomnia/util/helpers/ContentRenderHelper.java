@@ -1,15 +1,14 @@
 package exnihiloomnia.util.helpers;
 
-import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
-
 import exnihiloomnia.util.Color;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
 
 public class ContentRenderHelper {
 	public static double getAdjustedContentLevel(double min, double max, double fullness) {

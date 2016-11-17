@@ -1,8 +1,8 @@
 package exnihiloomnia.registries.hammering.pojos;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
+
+import java.util.ArrayList;
 
 public class HammerRecipe {
 	private String id;

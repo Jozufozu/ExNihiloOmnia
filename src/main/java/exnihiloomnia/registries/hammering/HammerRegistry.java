@@ -1,9 +1,5 @@
 package exnihiloomnia.registries.hammering;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
@@ -16,6 +12,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 	private static HashMap<String, HammerRegistryEntry> entries;

@@ -1,8 +1,5 @@
 package exnihiloomnia.items;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.buckets.ItemBucketPorcelain;
@@ -11,26 +8,21 @@ import exnihiloomnia.items.crooks.ItemCrook;
 import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.items.materials.ENOToolMaterials;
 import exnihiloomnia.items.meshs.ItemMesh;
-import exnihiloomnia.items.misc.ItemAsh;
-import exnihiloomnia.items.misc.ItemAstrolabe;
-import exnihiloomnia.items.misc.ItemBlockMeta;
-import exnihiloomnia.items.misc.ItemGrassSeeds;
-import exnihiloomnia.items.misc.ItemSilkworm;
-import exnihiloomnia.items.misc.ItemSpores;
-import exnihiloomnia.items.misc.ItemStone;
+import exnihiloomnia.items.misc.*;
 import exnihiloomnia.items.ores.ItemOre;
 import exnihiloomnia.items.sieveassist.ItemSifter;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlockSpecial;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ENOItems {
 	

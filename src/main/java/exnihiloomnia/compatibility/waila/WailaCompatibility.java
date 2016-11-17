@@ -1,8 +1,5 @@
 package exnihiloomnia.compatibility.waila;
 
-import java.util.Collections;
-import java.util.List;
-
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.barrels.BlockBarrel;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
@@ -26,6 +23,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+
+import java.util.Collections;
+import java.util.List;
 
 public class WailaCompatibility implements IWailaDataProvider {
 

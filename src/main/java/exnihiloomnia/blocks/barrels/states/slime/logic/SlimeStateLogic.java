@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.barrels.states.slime.logic;
 
-import javax.annotation.Nullable;
-
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
@@ -13,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+
+import javax.annotation.Nullable;
 
 public class SlimeStateLogic extends BarrelLogic {
 	

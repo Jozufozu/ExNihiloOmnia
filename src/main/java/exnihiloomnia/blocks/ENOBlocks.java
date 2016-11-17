@@ -1,8 +1,5 @@
 package exnihiloomnia.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.barrels.BlockBarrel;
@@ -30,6 +27,9 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ENOBlocks {	
 	public static Block BARREL_WOOD;

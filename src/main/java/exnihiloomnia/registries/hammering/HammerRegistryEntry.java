@@ -1,8 +1,5 @@
 package exnihiloomnia.registries.hammering;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import exnihiloomnia.registries.hammering.pojos.HammerRecipe;
 import exnihiloomnia.registries.hammering.pojos.HammerRecipeReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
@@ -13,6 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HammerRegistryEntry {
 	private IBlockState input;

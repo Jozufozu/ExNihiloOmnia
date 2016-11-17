@@ -1,8 +1,5 @@
 package exnihiloomnia.compatibility.veinminer;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.items.hammers.ItemHammer;
@@ -11,9 +8,6 @@ import exnihiloomnia.registries.crook.CrookRegistryEntry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistryEntry;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,6 +17,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class VeinMinerCompatibility {
 	private static boolean initialized = false;

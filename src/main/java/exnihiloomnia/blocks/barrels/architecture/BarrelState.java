@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.barrels.architecture;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.helpers.InventoryHelper;
@@ -13,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
 
 public abstract class BarrelState {
 	private static String[] EMPTY_STRING_ARRAY = new String[] {};

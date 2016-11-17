@@ -1,10 +1,10 @@
 package exnihiloomnia.blocks.barrels.states.compost;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
 
 public class BarrelStateCompostSpecial extends BarrelStateCompost {
 	private ArrayList<String> ingredients = new ArrayList<String>();

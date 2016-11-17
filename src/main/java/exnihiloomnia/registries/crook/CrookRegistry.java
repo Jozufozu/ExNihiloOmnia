@@ -1,9 +1,7 @@
 package exnihiloomnia.registries.crook;
 
 import exnihiloomnia.ENO;
-import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.veinminer.VeinMinerAPI;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
@@ -14,7 +12,6 @@ import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.io.File;

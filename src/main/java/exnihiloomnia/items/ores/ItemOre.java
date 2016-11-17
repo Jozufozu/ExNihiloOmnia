@@ -1,7 +1,5 @@
 package exnihiloomnia.items.ores;
 
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.enums.EnumOre;
@@ -9,6 +7,8 @@ import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public class ItemOre extends Item {
     public EnumOreItemType type;

@@ -1,5 +1,12 @@
 package exnihiloomnia.registries.hammering.files;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import exnihiloomnia.ENO;
+import exnihiloomnia.registries.hammering.HammerRegistryEntry;
+import exnihiloomnia.registries.hammering.pojos.HammerRecipe;
+import exnihiloomnia.registries.hammering.pojos.HammerRecipeList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,14 +14,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import exnihiloomnia.ENO;
-import exnihiloomnia.registries.hammering.HammerRegistryEntry;
-import exnihiloomnia.registries.hammering.pojos.HammerRecipe;
-import exnihiloomnia.registries.hammering.pojos.HammerRecipeList;
 
 public class HammerRecipeLoader {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();

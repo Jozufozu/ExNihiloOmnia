@@ -1,10 +1,5 @@
 package exnihiloomnia.blocks.barrels.states.fluid;
 
-import exnihiloomnia.util.Color;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraftforge.fluids.FluidTank;
-import org.lwjgl.opengl.GL11;
-
 import exnihiloomnia.blocks.barrels.architecture.BarrelState;
 import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
@@ -12,9 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import org.lwjgl.opengl.GL11;
 
 public class BarrelStateFluid extends BarrelState {
 	private static String[] description = new String[]{""};

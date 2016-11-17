@@ -8,7 +8,10 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
-import slimeknights.tconstruct.tools.tools.*;
+import slimeknights.tconstruct.tools.tools.Excavator;
+import slimeknights.tconstruct.tools.tools.Hammer;
+import slimeknights.tconstruct.tools.tools.Pickaxe;
+import slimeknights.tconstruct.tools.tools.Shovel;
 
 
 /**

@@ -17,7 +17,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandRegistry extends CommandBase {
     private static List<String> aliases = new ArrayList<String>();

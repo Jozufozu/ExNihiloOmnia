@@ -1,12 +1,9 @@
 package exnihiloomnia.compatibility.tconstruct.modifiers;
 
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.crook.CrookRegistry;
 import exnihiloomnia.util.Color;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -17,7 +14,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
-import slimeknights.tconstruct.tools.melee.item.*;
+import slimeknights.tconstruct.tools.melee.item.BroadSword;
+import slimeknights.tconstruct.tools.melee.item.Cleaver;
+import slimeknights.tconstruct.tools.melee.item.LongSword;
+import slimeknights.tconstruct.tools.melee.item.Rapier;
 import slimeknights.tconstruct.tools.tools.*;
 
 public class ModCrooked extends ModifierTrait {

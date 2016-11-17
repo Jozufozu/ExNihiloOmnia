@@ -1,7 +1,5 @@
 package exnihiloomnia.world.generation.templates.pojos;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.ENO;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -15,6 +13,8 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+
+import java.util.ArrayList;
 
 public class Template {
 	private int spawnYLevel = 64;

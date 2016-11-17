@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.barrels;
 
-import java.util.List;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -13,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockBarrelGlassColored extends BlockBarrel {
 	public static final PropertyEnum COLOR = PropertyEnum.create("color", EnumDyeColor.class);

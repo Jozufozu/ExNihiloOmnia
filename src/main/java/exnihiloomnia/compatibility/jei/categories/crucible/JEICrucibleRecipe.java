@@ -1,7 +1,6 @@
 package exnihiloomnia.compatibility.jei.categories.crucible;
 
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
-import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;

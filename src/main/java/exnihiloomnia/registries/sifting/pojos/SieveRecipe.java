@@ -1,8 +1,8 @@
 package exnihiloomnia.registries.sifting.pojos;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
+
+import java.util.ArrayList;
 
 public class SieveRecipe {
 	private String id;

@@ -1,9 +1,5 @@
 package exnihiloomnia.compatibility;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
@@ -18,6 +14,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ENOOres {
     private static final String ORE_CATAGORY = "ores";

@@ -1,12 +1,12 @@
 package exnihiloomnia.blocks.barrels.architecture;
 
-import javax.annotation.Nullable;
-
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.helpers.PositionHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+
+import javax.annotation.Nullable;
 
 public abstract class BarrelLogic {
 

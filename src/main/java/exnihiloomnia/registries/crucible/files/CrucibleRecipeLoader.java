@@ -1,5 +1,12 @@
 package exnihiloomnia.registries.crucible.files;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import exnihiloomnia.ENO;
+import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
+import exnihiloomnia.registries.crucible.pojos.CrucibleRecipe;
+import exnihiloomnia.registries.crucible.pojos.CrucibleRegistryList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,14 +14,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import exnihiloomnia.ENO;
-import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
-import exnihiloomnia.registries.crucible.pojos.CrucibleRecipe;
-import exnihiloomnia.registries.crucible.pojos.CrucibleRegistryList;
 
 public class CrucibleRecipeLoader {
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();

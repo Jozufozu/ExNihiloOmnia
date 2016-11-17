@@ -1,7 +1,5 @@
 package exnihiloomnia.world.generation;
 
-import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.NETHER_BRIDGE;
-
 import exnihiloomnia.util.helpers.PositionHelper;
 import exnihiloomnia.world.ENOWorld;
 import exnihiloomnia.world.generation.templates.pojos.Template;
@@ -18,6 +16,8 @@ import net.minecraft.world.gen.structure.MapGenNetherBridge;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.List;
+
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.NETHER_BRIDGE;
 
 public class ChunkProviderVoidHell extends ChunkProviderHell {
 	private World world;

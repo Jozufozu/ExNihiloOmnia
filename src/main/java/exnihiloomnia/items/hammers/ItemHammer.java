@@ -1,9 +1,6 @@
 package exnihiloomnia.items.hammers;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
-
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -11,6 +8,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Set;
 
 public class ItemHammer extends ItemTool {
 	private final static Set<Block> EMPTY_SET = Sets.newHashSet(new Block[]{});

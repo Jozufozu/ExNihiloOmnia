@@ -1,9 +1,5 @@
 package exnihiloomnia.items.misc;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.world.ENOWorld;
 import exnihiloomnia.world.generation.templates.io.TemplateWorldExporter;
@@ -14,6 +10,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ItemAstrolabe extends Item {
 	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");

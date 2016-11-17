@@ -1,7 +1,5 @@
 package exnihiloomnia.world;
 
-import java.io.File;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.world.generation.WorldProviderVoidEnd;
 import exnihiloomnia.world.generation.WorldProviderVoidHell;
@@ -20,6 +18,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
 
 public class ENOWorld {
 	private static String CATEGORY_WORLD_GEN = "world generation";

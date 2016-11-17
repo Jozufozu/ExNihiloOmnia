@@ -1,11 +1,11 @@
 package exnihiloomnia.world.generation.templates.defaults;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import exnihiloomnia.world.generation.templates.io.TemplateGenerator;
 import exnihiloomnia.world.generation.templates.pojos.Template;
 import exnihiloomnia.world.generation.templates.pojos.TemplateBlock;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class TemplateExNihiloHard extends TemplateGenerator {
 

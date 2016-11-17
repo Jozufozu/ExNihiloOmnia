@@ -1,12 +1,12 @@
 package exnihiloomnia.client.textures.manipulation;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.util.Random;
-
 import com.google.common.math.IntMath;
 import exnihiloomnia.ENO;
 import exnihiloomnia.util.Color;
+
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.util.Random;
 
 public class TextureManipulation {
 

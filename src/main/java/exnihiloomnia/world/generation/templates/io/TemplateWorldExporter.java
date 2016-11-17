@@ -1,8 +1,5 @@
 package exnihiloomnia.world.generation.templates.io;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import exnihiloomnia.world.ENOWorld;
 import exnihiloomnia.world.generation.templates.pojos.Template;
 import exnihiloomnia.world.generation.templates.pojos.TemplateBlock;
@@ -17,6 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class TemplateWorldExporter extends TemplateGenerator {
 	private static final int X_SEARCH_RADIUS = 100;

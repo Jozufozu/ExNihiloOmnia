@@ -1,9 +1,5 @@
 package exnihiloomnia.registries.composting;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
@@ -15,6 +11,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 	private static HashMap<String, CompostRegistryEntry> entries;

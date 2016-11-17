@@ -1,13 +1,12 @@
 package exnihiloomnia.client.textures.files;
 
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-
 import exnihiloomnia.ENO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 public class TextureLoader {
 

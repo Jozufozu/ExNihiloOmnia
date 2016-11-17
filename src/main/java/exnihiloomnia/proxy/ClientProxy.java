@@ -1,7 +1,5 @@
 package exnihiloomnia.proxy;
 
-import java.util.ArrayList;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
@@ -28,8 +26,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import java.util.ArrayList;
 
 //Commands that only execute on the client.
 public class ClientProxy extends Proxy {

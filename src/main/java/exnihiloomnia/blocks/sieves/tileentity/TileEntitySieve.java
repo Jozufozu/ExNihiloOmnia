@@ -1,7 +1,5 @@
 package exnihiloomnia.blocks.sieves.tileentity;
 
-import javax.annotation.Nullable;
-
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
@@ -33,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class TileEntitySieve extends TileEntity implements ITickable {

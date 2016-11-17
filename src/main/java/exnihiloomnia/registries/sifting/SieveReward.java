@@ -1,8 +1,8 @@
 package exnihiloomnia.registries.sifting;
 
-import java.util.Random;
-
 import net.minecraft.item.ItemStack;
+
+import java.util.Random;
 
 public class SieveReward {
 	private static Random rand = new Random();

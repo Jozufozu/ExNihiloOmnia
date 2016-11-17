@@ -1,9 +1,5 @@
 package exnihiloomnia.registries.crucible;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
@@ -15,6 +11,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
     public static CrucibleRegistry INSTANCE = new CrucibleRegistry();

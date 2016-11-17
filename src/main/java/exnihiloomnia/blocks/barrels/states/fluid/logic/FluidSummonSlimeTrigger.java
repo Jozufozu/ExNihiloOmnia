@@ -1,10 +1,9 @@
 package exnihiloomnia.blocks.barrels.states.fluid.logic;
 
-import exnihiloomnia.items.ENOItems;
-
 import exnihiloomnia.blocks.barrels.architecture.BarrelLogic;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
+import exnihiloomnia.items.ENOItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;

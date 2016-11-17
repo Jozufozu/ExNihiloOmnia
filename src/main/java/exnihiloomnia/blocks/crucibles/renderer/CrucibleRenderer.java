@@ -1,8 +1,6 @@
 package exnihiloomnia.blocks.crucibles.renderer;
 
 import exnihiloomnia.ENOConfig;
-import org.lwjgl.opengl.GL11;
-
 import exnihiloomnia.blocks.crucibles.tileentity.TileEntityCrucible;
 import exnihiloomnia.client.textures.files.TextureLocator;
 import exnihiloomnia.util.Color;
@@ -18,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.opengl.GL11;
 
 public class CrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucible> {
 	public static final double MIN_RENDER_CAPACITY = 0.30d;
