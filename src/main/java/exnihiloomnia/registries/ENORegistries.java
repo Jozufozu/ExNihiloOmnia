@@ -15,6 +15,7 @@ public class ENORegistries {
 	public static boolean loadCompostDefaults = true;
 	public static boolean loadHammerDefaults = true;
 	public static boolean loadCrookDefaults = true;
+	public static boolean findLeaves = true;
 	public static boolean loadSieveDefaults = true;
 	public static boolean loadHeatDefaults = true;
 	public static boolean loadCrucibleDefaults = true;
@@ -26,6 +27,7 @@ public class ENORegistries {
 		loadCompostDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default compost recipes", true).getBoolean(true);
 		loadHammerDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default hammer recipes", true).getBoolean(true);
 		loadCrookDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default crook recipes", true).getBoolean(true);
+		findLeaves = config.get(CATEGORY_DEFAULT_RECIPES, "find leaves for the crook registry", true).getBoolean(true);
 		loadSieveDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default sieve recipes", true).getBoolean(true);
         loadCrucibleDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default melting recipes", true).getBoolean(true);
         loadHeatDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default heat indexes", true).getBoolean(true);

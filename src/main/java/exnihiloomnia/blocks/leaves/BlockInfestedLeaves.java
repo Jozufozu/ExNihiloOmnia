@@ -207,6 +207,9 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
                 if ((float)(world.rand.nextInt(100)) / 100f < leaves.getProgress() * ENOConfig.string_chance)
                     Block.spawnAsEntity(world, pos, new ItemStack(Items.STRING));
+
+                if (world.rand.nextFloat() < ENOConfig.silkworm_chance)
+                    Block.spawnAsEntity(world, pos, new ItemStack(Items.STRING));
             }
         }
 
