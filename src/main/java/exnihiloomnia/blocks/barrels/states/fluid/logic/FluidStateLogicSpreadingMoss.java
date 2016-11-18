@@ -14,7 +14,14 @@ public class FluidStateLogicSpreadingMoss extends BarrelLogic {
 	public boolean onUpdate(TileEntityBarrel barrel) {
 		World world = barrel.getWorld();
 		if (barrel.getFluid() != null && barrel.getFluid().getFluid() == FluidRegistry.WATER && barrel.isWooden()) {
-			if (world.isRemote && world.rand.nextInt(2000000 / (barrel.getFluid().amount * BarrelStates.MOSS_SPREAD_SPEED)) == 0)
+
+			int probability = 2000000;
+			int divisor = barrel.getFluid().amount * BarrelStates.MOSS_SPREAD_SPEED;
+
+			if (divisor != 0)
+				probability /= divisor;
+
+			if (world.isRemote && world.rand.nextInt(probability) == 0)
 				spreadMoss(barrel);
 		}
 		
