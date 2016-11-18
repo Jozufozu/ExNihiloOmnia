@@ -5,6 +5,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import exnihiloomnia.ENO;
 import exnihiloomnia.registries.hammering.HammerReward;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
@@ -131,6 +132,11 @@ public class HammerRecipeCategory implements IRecipeCategory<JEIHammerRecipe> {
                     for(String line : condensedTooltips.elementSet()) {
                         tooltip.add(" * " + condensedTooltips.count(line) + "x " + line);
                     }
+                }
+                else {
+                    String format = "exnihiloomnia.info.meta.";
+                    format += recipeWrapper.getEntry().getMetadataBehavior() == EnumMetadataBehavior.IGNORED ? "ignored" : "specific";
+                    tooltip.add(I18n.format(format));
                 }
             }
         });

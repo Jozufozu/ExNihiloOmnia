@@ -252,6 +252,9 @@ modifier.crooked.desc=§oGet over here!§r\nAllows you to pull entities with you
 modifier.hammered.name=Hammered
 modifier.hammered.desc=§oPlayer smash!§r\nCan break apart blocks.
 
+exnihiloomnia.info.meta.ignored=Meta Ignored
+exnihiloomnia.info.meta.specific=Meta Specific
+
 exnihiloomnia.info.barrel.empty=Empty
 
 exnihiloomnia.info.barrel.blaze=Fabricating

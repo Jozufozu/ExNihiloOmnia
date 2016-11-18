@@ -22,9 +22,11 @@ public class JEIHammerRecipe implements IRecipeWrapper{
     private ArrayList<ItemStack> input = new ArrayList<ItemStack>();
     private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
     private HashMap<ItemStack, ArrayList<HammerReward>> rewards = new HashMap<ItemStack, ArrayList<HammerReward>>();
-
+    private HammerRegistryEntry entry;
 
     public JEIHammerRecipe(HammerRegistryEntry entry) {
+        this.entry = entry;
+
         for(HammerReward reward : entry.getRewards()) {
 
             if (!rewards.containsKey(reward.getItem()))
@@ -46,6 +48,10 @@ public class JEIHammerRecipe implements IRecipeWrapper{
 
     Collection<HammerReward> getRewardFromItemStack(ItemStack stack) {
         return rewards.get(stack);
+    }
+
+    public HammerRegistryEntry getEntry() {
+        return entry;
     }
 
     @Override

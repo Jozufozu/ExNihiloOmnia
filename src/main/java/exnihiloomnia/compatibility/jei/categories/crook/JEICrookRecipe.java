@@ -3,28 +3,27 @@ package exnihiloomnia.compatibility.jei.categories.crook;
 import com.google.common.collect.Lists;
 import exnihiloomnia.registries.crook.CrookRegistryEntry;
 import exnihiloomnia.registries.crook.CrookReward;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class JEICrookRecipe implements IRecipeWrapper{
 
-    private ArrayList<ItemStack> input = new ArrayList<ItemStack>();
+    private ItemStack input;
     private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
     private HashMap<ItemStack, ArrayList<CrookReward>> rewards = new HashMap<ItemStack, ArrayList<CrookReward>>();
-
+    private CrookRegistryEntry entry;
 
     public JEICrookRecipe(CrookRegistryEntry entry) {
+        this.entry = entry;
+
         for(CrookReward reward : entry.getRewards()) {
 
             if (!rewards.containsKey(reward.getItem()))
@@ -40,23 +39,27 @@ public class JEICrookRecipe implements IRecipeWrapper{
                 outputs.add(stack);
         }
 
-        ItemStack inputStack = new ItemStack(entry.getInput().getBlock(), 1, entry.getInput().getBlock() != Blocks.FURNACE ? entry.getInput().getBlock().getMetaFromState(entry.getInput()) : 0);
-        input.add(inputStack);
+        int meta = entry.getMetadataBehavior() == EnumMetadataBehavior.IGNORED ? 0 : entry.getInput().getBlock().getMetaFromState(entry.getInput());
+        input = new ItemStack(entry.getInput().getBlock(), 1, meta);
     }
 
     Collection<CrookReward> getRewardFromItemStack(ItemStack stack) {
         return rewards.get(stack);
     }
 
+    public CrookRegistryEntry getEntry() {
+        return entry;
+    }
+
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, input);
+        ingredients.setInput(ItemStack.class, input);
         ingredients.setOutputs(ItemStack.class, outputs);
     }
 
     @Override
     public List getInputs() {
-        return input;
+        return Collections.singletonList(input);
     }
 
     @Override
