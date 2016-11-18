@@ -28,7 +28,8 @@ public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 		
 		if (ENORegistries.loadHammerDefaults) {
 			registerVanillaRecipes();
-			HammerRecipeLoader.dumpRecipes(entries, path);
+			if (ENORegistries.dumpRegistries)
+				HammerRecipeLoader.dumpRecipes(entries, path);
 		}
 		
 		List<HammerRegistryEntry> loaded = HammerRecipeLoader.load(path);

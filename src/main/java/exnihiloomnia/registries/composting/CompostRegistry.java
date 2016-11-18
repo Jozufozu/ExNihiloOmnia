@@ -27,7 +27,8 @@ public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 		
 		if (ENORegistries.loadCompostDefaults) {
 			registerVanillaRecipes();
-			CompostRecipeLoader.dumpRecipes(entries, path);
+			if (ENORegistries.dumpRegistries)
+				CompostRecipeLoader.dumpRecipes(entries, path);
 		}
 		
 		List<CompostRegistryEntry> loaded = CompostRecipeLoader.load(path);

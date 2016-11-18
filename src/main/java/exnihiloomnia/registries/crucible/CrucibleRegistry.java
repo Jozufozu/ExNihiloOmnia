@@ -31,7 +31,8 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
 
         if (ENORegistries.loadCrucibleDefaults) {
             registerMeltables();
-            CrucibleRecipeLoader.dumpRecipes(entries, path);
+            if (ENORegistries.dumpRegistries)
+                CrucibleRecipeLoader.dumpRecipes(entries, path);
         }
 
         List<CrucibleRegistryEntry> loaded = CrucibleRecipeLoader.load(path);

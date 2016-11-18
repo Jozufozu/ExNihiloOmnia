@@ -33,7 +33,8 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 		
 		if (ENORegistries.loadSieveDefaults) {
 			registerVanillaRecipes();
-			SieveRecipeLoader.dumpRecipes(entries, path);
+			if (ENORegistries.dumpRegistries)
+				SieveRecipeLoader.dumpRecipes(entries, path);
 		}
 		
 		List<SieveRegistryEntry> loaded = SieveRecipeLoader.load(path);

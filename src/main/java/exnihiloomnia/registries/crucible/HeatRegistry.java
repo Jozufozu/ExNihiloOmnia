@@ -24,7 +24,8 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 
 		if (ENORegistries.loadHeatDefaults) {
 			registerVanillaHeatSources();
-			HeatRegistryLoader.dumpRecipes(entries, path);
+			if (ENORegistries.dumpRegistries)
+				HeatRegistryLoader.dumpRecipes(entries, path);
 		}
 
 		List<HeatRegistryEntry> loaded = HeatRegistryLoader.load(path);

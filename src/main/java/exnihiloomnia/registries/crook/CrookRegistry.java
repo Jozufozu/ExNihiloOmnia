@@ -36,7 +36,8 @@ public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 		
 		if (ENORegistries.loadCrookDefaults) {
 			registerVanillaRecipes();
-			CrookRecipeLoader.dumpRecipes(entries, path);
+			if (ENORegistries.dumpRegistries)
+				CrookRecipeLoader.dumpRecipes(entries, path);
 		}
 		
 		List<CrookRegistryEntry> loaded = CrookRecipeLoader.load(path);

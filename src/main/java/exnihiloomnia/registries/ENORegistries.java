@@ -12,6 +12,8 @@ public class ENORegistries {
 	public static final String CATEGORY_DEFAULT_RECIPES = "default recipes";
 	public static final String CATEGORY_ORE_RECIPES = "ex nihilo ore recipes";
 
+	public static boolean dumpRegistries = true;
+
 	public static boolean loadCompostDefaults = true;
 	public static boolean loadHammerDefaults = true;
 	public static boolean loadCrookDefaults = true;
@@ -24,6 +26,8 @@ public class ENORegistries {
 	public static boolean loadHammerOres = true;
 
 	public static void configure(Configuration config) {
+		dumpRegistries = config.get(CATEGORY_DEFAULT_RECIPES, "transfer all registries to json files", false).getBoolean(false);
+
 		loadCompostDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default compost recipes", true).getBoolean(true);
 		loadHammerDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default hammer recipes", true).getBoolean(true);
 		loadCrookDefaults = config.get(CATEGORY_DEFAULT_RECIPES, "load default crook recipes", true).getBoolean(true);
