@@ -4,11 +4,13 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.enums.EnumOre;
+import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -102,6 +104,11 @@ public class ENOOres {
             ores.add(EnumOre.OSMIUM);
 
         return ores;
+    }
+
+
+    public static ResourceLocation getOreName(EnumOre ore, EnumOreBlockType type) {
+        return new ResourceLocation(ENO.MODID + ":ore_" + type.getName() + "_" + ore.getName());
     }
 
     public static void addOreDict() {
