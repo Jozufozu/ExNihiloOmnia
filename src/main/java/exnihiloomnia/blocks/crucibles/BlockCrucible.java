@@ -45,7 +45,7 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
 
 		if (item != null && crucible != null) {
-			if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+			if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 				FluidUtil.interactWithFluidHandler(item, crucible.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 			}
 			else if (FluidContainerRegistry.isEmptyContainer(item) ) {

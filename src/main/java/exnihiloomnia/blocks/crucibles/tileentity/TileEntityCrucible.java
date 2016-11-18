@@ -219,11 +219,15 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	}
 
     public boolean canInsertItem(ItemStack stack) {
-        if (CrucibleRegistry.isMeltable(Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getMetadata()))) {
-            FluidStack fluid = getFluid();
-            CrucibleRegistryEntry block = CrucibleRegistry.getItem(stack);
-            return item == null ? fluid == null ? hasSpaceFor(block.getSolidVolume()) : fluid.getFluid() == block.fluid && hasSpaceFor(block.getSolidVolume()) : item.getItem().equals(stack.getItem()) && hasSpaceFor(block.getSolidVolume());
-        }
+		Block item = Block.getBlockFromItem(stack.getItem());
+
+		if (item != null) {
+			if (CrucibleRegistry.isMeltable(item.getStateFromMeta(stack.getMetadata()))){
+				FluidStack fluid = getFluid();
+				CrucibleRegistryEntry block = CrucibleRegistry.getItem(stack);
+				return this.item == null ? fluid == null ? hasSpaceFor(block.getSolidVolume()) : fluid.getFluid() == block.fluid && hasSpaceFor(block.getSolidVolume()) : this.item.getItem().equals(stack.getItem()) && hasSpaceFor(block.getSolidVolume());
+			}
+		}
 
         return false;
     }
