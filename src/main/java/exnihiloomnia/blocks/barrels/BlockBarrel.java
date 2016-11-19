@@ -3,12 +3,12 @@ package exnihiloomnia.blocks.barrels;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -63,15 +63,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 		if (barrel != null) {
 			if (barrel.canExtractItem(0)) {
 				if (!world.isRemote) {
-					EntityItem entityitem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.0f, pos.getZ() + 0.5f, barrel.getItemHandler().getStackInSlot(0));
-
-					double f3 = 0.05F;
-					entityitem.motionX = world.rand.nextGaussian() * f3;
-					entityitem.motionY = (0.2d);
-					entityitem.motionZ = world.rand.nextGaussian() * f3;
-					entityitem.setDefaultPickupDelay();
-
-					world.spawnEntityInWorld(entityitem);
+					InventoryHelper.dropItemInWorld(world, pos, 1.2, barrel.getItemHandler().getStackInSlot(0));
 				}
 				
 				barrel.setInventorySlotContents(0, null);
@@ -110,6 +102,14 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
+
+		if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops") && (player == null || !player.isCreative())) {
+			for (ItemStack i : barrel.getOutput()) {
+				InventoryHelper.dropItemInWorld(world, pos, i);
+			}
+			InventoryHelper.dropItemInWorld(world, pos, barrel.getContents());
+		}
+
 		barrel.setLuminosity(0);
 		
 		return super.removedByPlayer(state ,world, pos, player, willHarvest);

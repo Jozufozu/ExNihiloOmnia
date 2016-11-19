@@ -208,7 +208,11 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
         }
     }
 
-    public void setContents(ItemStack item) {
+	public ArrayList<ItemStack> getOutput() {
+		return output;
+	}
+
+	public void setContents(ItemStack item) {
         if (item != null) {
             contents = item;
             requestSync();

@@ -5,11 +5,11 @@ import exnihiloomnia.client.particles.ParticleSieve;
 import exnihiloomnia.items.meshs.ISieveMesh;
 import exnihiloomnia.items.sieveassist.ISieveFaster;
 import exnihiloomnia.registries.sifting.SieveRegistry;
+import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -137,9 +137,7 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 			if (work >= workMax) {
 				if (contentsState != null) {
 					for (ItemStack i : SieveRegistry.generateRewards(contentsState)) {
-						EntityItem drop = new EntityItem(getWorld(), pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, i);
-						drop.setNoPickupDelay();
-						getWorld().spawnEntityInWorld(drop);
+						InventoryHelper.dropItemInWorld(getWorld(), pos, 1, i);
 
 						for (int j = 0; j < getWorld().rand.nextInt(2); j++)
 							getWorld().spawnEntityInWorld(new EntityXPOrb(getWorld(), pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5, 1));

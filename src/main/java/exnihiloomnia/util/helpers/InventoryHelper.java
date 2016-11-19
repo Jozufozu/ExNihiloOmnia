@@ -1,7 +1,10 @@
 package exnihiloomnia.util.helpers;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import javax.annotation.Nonnull;
@@ -21,6 +24,18 @@ public class InventoryHelper {
 		
 		return empty;
 	}
+
+	public static void dropItemInWorld(World world, BlockPos pos, ItemStack itemStack) {
+		EntityItem drop = new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, itemStack);
+		drop.setDefaultPickupDelay();
+		world.spawnEntityInWorld(drop);
+	}
+
+	public static void dropItemInWorld(World world, BlockPos pos, double yOffset, ItemStack itemStack) {
+		EntityItem drop = new EntityItem(world, pos.getX() + .5, pos.getY() + yOffset, pos.getZ() + .5, itemStack);
+		drop.setDefaultPickupDelay();
+		world.spawnEntityInWorld(drop);
+	}
 	
 	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item)
 	{
@@ -32,7 +47,6 @@ public class InventoryHelper {
 		}	
 	}
 
-
 	public static void consumeItem(@Nullable EntityPlayer player, @Nonnull ItemStack item) {
 		if (player == null || !player.capabilities.isCreativeMode) {
 			--item.stackSize;
@@ -40,27 +54,4 @@ public class InventoryHelper {
 				item.stackSize = 0;
 		}
 	}
-
-	/*
-	public static void consumeItem(@Nonnull EntityPlayer player, ItemStack item) {
-
-		if (player.worldObj.isRemote) {
-			if (player != null && !player.capabilities.isCreativeMode) {
-				if (item.stackSize > 1)
-					item.stackSize--;
-				else {
-					if (item.equals(player.getActiveItemStack()))
-						player.setHeldItem(player.getActiveHand(), null);
-					else {
-
-						for (ItemStack stack : player.inventoryContainer.getInventory()) {
-							if (ItemStack.areItemsEqual(stack, item) && stack.stackSize == 1)
-								stack = null;
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
 }

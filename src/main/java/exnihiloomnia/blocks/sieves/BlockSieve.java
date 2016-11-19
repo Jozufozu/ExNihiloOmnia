@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -83,10 +82,8 @@ public class BlockSieve extends Block implements ITileEntityProvider {
 			else {
 				if (sieve.hasMesh()) {
 					if (player.isSneaking() && !ENOConfig.classic_sieve) {
-						if (!world.isRemote) {
-							EntityItem entity = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 1.2f, pos.getZ() + 0.5f, sieve.getMesh());
-							world.spawnEntityInWorld(entity);
-						}
+						if (!world.isRemote)
+							InventoryHelper.dropItemInWorld(world, pos, 1, sieve.getMesh());
 						
 						sieve.setMesh(null);
 					}

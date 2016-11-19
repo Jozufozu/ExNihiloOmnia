@@ -10,11 +10,14 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class FluidTransformWitchwater extends BarrelLogic {
-	
+
+	private BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {
         return item.getItem() == ENOItems.SPORES
@@ -42,15 +45,33 @@ public class FluidTransformWitchwater extends BarrelLogic {
 	public boolean onUpdate(TileEntityBarrel barrel) {
 		World world = barrel.getWorld();
 
-		if (world.rand.nextInt(500) == 0
-				&& barrel.isWooden()
-				&& world.getBlockState(barrel.getPos().down()) == Blocks.MYCELIUM.getDefaultState()
-				&& barrel.getFluid().getFluid() == FluidRegistry.WATER
-				&& barrel.getFluid().amount == barrel.getFluidTank().getCapacity()) {
+		if (!world.isRemote) {
+			if (world.rand.nextInt(1000) == 0
+					&& barrel.isWooden()
+					&& isOnTopOfWitchwater(barrel)
+					&& barrel.getFluid().getFluid() == FluidRegistry.WATER
+					&& barrel.getFluid().amount == barrel.getFluidTank().getCapacity()) {
 
-			barrel.setState(BarrelStates.TRANSFORM_WITCHWATER);
+				barrel.setState(BarrelStates.TRANSFORM_WITCHWATER);
 
-			return true;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isOnTopOfWitchwater(TileEntityBarrel barrel) {
+
+		BlockPos pos = barrel.getPos();
+		probe.setPos(pos);
+
+		for (int x = -1; x <= 1; x++) {
+			for (int z = -1; z <= 1; z++) {
+				probe.setPos(pos.getX() + x, pos.getY() - 1, pos.getZ() + z);
+				if (barrel.getWorld().getBlockState(probe).getBlock() == Blocks.MYCELIUM)
+					return true;
+			}
 		}
 
 		return false;
