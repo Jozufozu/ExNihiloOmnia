@@ -66,6 +66,7 @@ public class BarrelStates {
 	public static BarrelLogic FLUID_STATE_LOGIC_ICE;
 	public static BarrelLogic FLUID_STATE_LOGIC_SPREADING_MOSS;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK;
+	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_CHORUS_FRUIT;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_END_STONE;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_CLAY;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND;
@@ -160,6 +161,7 @@ public class BarrelStates {
 		FLUID_STATE_LOGIC_ICE = new FluidStateLogicFreezingIce();
 		FLUID_STATE_LOGIC_SPREADING_MOSS = new FluidStateLogicSpreadingMoss();
 		FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK = new FluidCraftNetherrackTrigger();
+		FLUID_STATE_TRIGGER_CRAFTING_CHORUS_FRUIT = new FluidCraftChorusTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_END_STONE = new FluidCraftEndstoneTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_CLAY = new FluidCraftClayTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND = new FluidCraftSoulsandTrigger();
@@ -241,6 +243,7 @@ public class BarrelStates {
 			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_SPREADING_MOSS);
 		
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_GAS);
+		BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_CHORUS_FRUIT);
 		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ITEMS);
 		
 		if (ALLOW_CRAFTING_NETHERRACK)

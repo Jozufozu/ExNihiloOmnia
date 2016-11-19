@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -36,10 +37,18 @@ public class BarrelStateOutput extends BarrelState {
 			}
 		  
 			GlStateManager.pushMatrix();
-			
-			GlStateManager.disableLighting();
-			GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
-			GlStateManager.scale(0.75d, 0.9d, 0.75d);
+
+			if (contents.getItem() instanceof ItemBlock) {
+				GlStateManager.disableLighting();
+				GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
+				GlStateManager.scale(0.75d, 0.9d, 0.75d);
+			}
+			else {
+				GlStateManager.disableLighting();
+				GlStateManager.translate(x + 0.5d, y + 2d/16d, z + 0.5d);
+				GlStateManager.rotate(-90, 1, 0, 0);
+				GlStateManager.scale(0.75d, 0.75d, 0.75d);
+			}
 			
 			Minecraft.getMinecraft().getItemRenderer().renderItem(entity, contents, TransformType.NONE);
 			
