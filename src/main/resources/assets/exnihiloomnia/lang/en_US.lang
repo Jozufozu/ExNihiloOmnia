@@ -244,6 +244,7 @@ jei.exnihiloomnia:crook=Ex Nihilo Crook
 jei.exnihiloomnia:hammer.luck=luck
 jei.exnihiloomnia:crucible=Crucible Melting
 jei.exnihiloomnia:compost=Composting
+jei.exnihiloomnia:barrel=Barrel Crafting
 
 exnihiloomnia.commands.registry.usage=/exnihiloregistry <reload|clear|load> [heat|crucible|sieve|hammer|compost]
 

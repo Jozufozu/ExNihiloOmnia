@@ -1,6 +1,9 @@
 package exnihiloomnia.compatibility.jei;
 
 import exnihiloomnia.blocks.ENOBlocks;
+import exnihiloomnia.compatibility.jei.categories.barrel.BarrelCraftingRecipeCategory;
+import exnihiloomnia.compatibility.jei.categories.barrel.BarrelCraftingRecipeHandler;
+import exnihiloomnia.compatibility.jei.categories.barrel.JEIBarrelCraftingRecipe;
 import exnihiloomnia.compatibility.jei.categories.compost.CompostRecipeCategory;
 import exnihiloomnia.compatibility.jei.categories.compost.CompostRecipeHandler;
 import exnihiloomnia.compatibility.jei.categories.compost.JEICompostRecipe;
@@ -17,6 +20,8 @@ import exnihiloomnia.compatibility.jei.categories.sieve.JEISieveRecipe;
 import exnihiloomnia.compatibility.jei.categories.sieve.SieveRecipeCategory;
 import exnihiloomnia.compatibility.jei.categories.sieve.SieveRecipeHandler;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.barrel.BarrelCraftingRegistry;
+import exnihiloomnia.registries.barrel.BarrelCraftingTrigger;
 import exnihiloomnia.registries.composting.CompostRegistry;
 import exnihiloomnia.registries.composting.CompostRegistryEntry;
 import exnihiloomnia.registries.crook.CrookRegistry;
@@ -55,7 +60,8 @@ public class Plugin implements IModPlugin{
                 new HammerRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
                 new CrookRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
                 new CrucibleRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
-                new CompostRecipeCategory(registry.getJeiHelpers().getGuiHelper())
+                new CompostRecipeCategory(registry.getJeiHelpers().getGuiHelper()),
+                new BarrelCraftingRecipeCategory(registry.getJeiHelpers().getGuiHelper())
         );
 
         registry.addRecipeHandlers(
@@ -63,7 +69,8 @@ public class Plugin implements IModPlugin{
                 new HammerRecipeHandler(),
                 new CrookRecipeHandler(),
                 new CrucibleRecipeHandler(),
-                new CompostRecipeHandler()
+                new CompostRecipeHandler(),
+                new BarrelCraftingRecipeHandler()
         );
 
         registerSieveRecipes(registry);
@@ -72,6 +79,7 @@ public class Plugin implements IModPlugin{
         registerCrookRecipes(registry);
 
         registerCompostRecipes(registry);
+        registerFluidCraftingRecipes(registry);
 
         registerCraftingItems(registry);
 
@@ -81,11 +89,16 @@ public class Plugin implements IModPlugin{
         for (EnumWood wood : EnumWood.values()) {
             registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.SIEVE_WOOD, 1, wood.getMetadata()), SieveRecipeCategory.UID);
             registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_WOOD, 1, wood.getMetadata()), CompostRecipeCategory.UID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_WOOD, 1, wood.getMetadata()), BarrelCraftingRecipeCategory.UID);
         }
-        for (EnumDyeColor color : EnumDyeColor.values())
+        for (EnumDyeColor color : EnumDyeColor.values()) {
             registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS_COLORED, 1, color.getMetadata()), CompostRecipeCategory.UID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS_COLORED, 1, color.getMetadata()), BarrelCraftingRecipeCategory.UID);
+        }
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS), CompostRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_GLASS), BarrelCraftingRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_STONE), CompostRecipeCategory.UID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ENOBlocks.BARREL_STONE), BarrelCraftingRecipeCategory.UID);
 
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_DIAMOND), HammerRecipeCategory.UID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(ENOItems.HAMMER_GOLD), HammerRecipeCategory.UID);
@@ -151,12 +164,20 @@ public class Plugin implements IModPlugin{
         registry.addRecipes(crookRecipes);
     }
 
+    private void registerFluidCraftingRecipes(IModRegistry registry) {
+        ArrayList<JEIBarrelCraftingRecipe> fluidCraftingRecipes = new ArrayList<JEIBarrelCraftingRecipe>();
+
+        for (BarrelCraftingTrigger entry : BarrelCraftingRegistry.INSTANCE.getEntries().values()) {
+            fluidCraftingRecipes.add(new JEIBarrelCraftingRecipe(entry));
+        }
+        registry.addRecipes(fluidCraftingRecipes);
+    }
+
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
     }
 
     @Override
     public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
-
     }
 }

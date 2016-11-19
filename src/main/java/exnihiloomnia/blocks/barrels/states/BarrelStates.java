@@ -26,6 +26,8 @@ import exnihiloomnia.blocks.barrels.states.slime.BarrelStateSlime;
 import exnihiloomnia.blocks.barrels.states.slime.logic.SlimeStateLogic;
 import exnihiloomnia.blocks.barrels.states.witchwater.BarrelStateTransformationWitchwater;
 import exnihiloomnia.blocks.barrels.states.witchwater.logic.WitchwaterStateLogic;
+import exnihiloomnia.registries.barrel.BarrelCraftingRegistry;
+import exnihiloomnia.registries.barrel.BarrelCraftingTrigger;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.HashMap;
@@ -65,16 +67,14 @@ public class BarrelStates {
 	public static BarrelLogic FLUID_STATE_LOGIC_ITEMS;
 	public static BarrelLogic FLUID_STATE_LOGIC_ICE;
 	public static BarrelLogic FLUID_STATE_LOGIC_SPREADING_MOSS;
-	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK;
-	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_CHORUS_FRUIT;
-	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_END_STONE;
-	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_CLAY;
-	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND;
+
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN;
 	public static BarrelLogic FLUID_STATE_TRIGGER_CRAFTING_STONE;
+
 	public static BarrelLogic FLUID_STATE_TRIGGER_SUMMON_SLIME;
 	public static BarrelLogic FLUID_STATE_TRIGGER_SUMMON_BLAZE;
 	public static BarrelLogic FLUID_STATE_TRIGGER_SUMMON_ENDERMAN;
+
 	public static BarrelLogic FLUID_STATE_TRIGGER_TRANSFORM_WITCHWATER;
 
 	//-COMPOST
@@ -105,6 +105,7 @@ public class BarrelStates {
 	public static boolean ALLOW_PACKED_ICE_FORMING;
 	public static boolean ALLOW_CRAFTING_NETHERRACK;
 	public static boolean ALLOW_CRAFTING_END_STONE;
+	public static boolean ALLOW_CRAFTING_CHORUS_FRUIT;
 	public static boolean ALLOW_CRAFTING_CLAY;
 	public static boolean ALLOW_CRAFTING_SOUL_SAND;
 	public static boolean ALLOW_CRAFTING_OBSIDIAN;
@@ -131,6 +132,7 @@ public class BarrelStates {
 		ALLOW_ICE_FORMING = config.get(CATEGORY_BARREL_OPTIONS, "allow ice to form in barrels", true).getBoolean(true);
 		ALLOW_PACKED_ICE_FORMING = config.get(CATEGORY_BARREL_OPTIONS, "allow packed ice to form in cold biomes", false).getBoolean(false);
 		ALLOW_CRAFTING_NETHERRACK = config.get(CATEGORY_BARREL_OPTIONS, "allow creating netherrack", true).getBoolean(true);
+		ALLOW_CRAFTING_CHORUS_FRUIT = config.get(CATEGORY_BARREL_OPTIONS, "allow creating chorus fruit", true).getBoolean(true);
 		ALLOW_CRAFTING_END_STONE = config.get(CATEGORY_BARREL_OPTIONS, "allow creating end stone", true).getBoolean(true);
 		ALLOW_CRAFTING_CLAY = config.get(CATEGORY_BARREL_OPTIONS, "allow creating clay", true).getBoolean(true);
 		ALLOW_CRAFTING_SOUL_SAND = config.get(CATEGORY_BARREL_OPTIONS, "allow creating soul sand", true).getBoolean(true);
@@ -160,11 +162,9 @@ public class BarrelStates {
 		FLUID_STATE_LOGIC_ITEMS = new FluidStateLogicItems();
 		FLUID_STATE_LOGIC_ICE = new FluidStateLogicFreezingIce();
 		FLUID_STATE_LOGIC_SPREADING_MOSS = new FluidStateLogicSpreadingMoss();
-		FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK = new FluidCraftNetherrackTrigger();
-		FLUID_STATE_TRIGGER_CRAFTING_CHORUS_FRUIT = new FluidCraftChorusTrigger();
-		FLUID_STATE_TRIGGER_CRAFTING_END_STONE = new FluidCraftEndstoneTrigger();
-		FLUID_STATE_TRIGGER_CRAFTING_CLAY = new FluidCraftClayTrigger();
-		FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND = new FluidCraftSoulsandTrigger();
+
+		BarrelCraftingRegistry.INSTANCE.initialize();
+
 		FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN = new FluidCraftObsidianTrigger();
 		FLUID_STATE_TRIGGER_CRAFTING_STONE = new FluidCraftStoneTrigger();
 		FLUID_STATE_TRIGGER_SUMMON_SLIME = new FluidSummonSlimeTrigger();
@@ -203,100 +203,94 @@ public class BarrelStates {
 
 		TRANSFORM_WITCHWATER = new BarrelStateTransformationWitchwater();
 
-		BarrelStates.registerState(EMPTY);
-		BarrelStates.registerState(OUTPUT);
-		BarrelStates.registerState(FLUID);
-		BarrelStates.registerState(COMPOST);
-		BarrelStates.registerState(PODZOL);
-		BarrelStates.registerState(GRASS);
-		BarrelStates.registerState(COARSE_DIRT);
-		BarrelStates.registerState(SLIME_GREEN);
-		BarrelStates.registerState(BLAZE);
-		BarrelStates.registerState(ENDERMAN);
-		BarrelStates.registerState(TRANSFORM_WITCHWATER);
+		registerState(EMPTY);
+		registerState(OUTPUT);
+		registerState(FLUID);
+		registerState(COMPOST);
+		registerState(PODZOL);
+		registerState(GRASS);
+		registerState(COARSE_DIRT);
+		registerState(SLIME_GREEN);
+		registerState(BLAZE);
+		registerState(ENDERMAN);
+		registerState(TRANSFORM_WITCHWATER);
 	}
 
 	private static void buildBehaviorTree() {
-		BarrelStates.EMPTY.addLogic(EMPTY_STATE_LOGIC);
+		EMPTY.addLogic(EMPTY_STATE_LOGIC);
 
 		if (ALLOW_COMPOST)
-			BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_COMPOST_ITEM);
+			EMPTY.addLogic(EMPTY_STATE_TRIGGER_COMPOST_ITEM);
 		
-		BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_ITEM);
+		EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_ITEM);
 		
 		if (ALLOW_RAIN_FILLING)
-			BarrelStates.EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_WEATHER);
+			EMPTY.addLogic(EMPTY_STATE_TRIGGER_FLUID_WEATHER);
 
-		BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_GRASS);
-		BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_MYCELIUM);
+		OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_GRASS);
+		OUTPUT.addLogic(OUTPUT_STATE_LOGIC_GROWING_MYCELIUM);
 
-		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_HOT);
+		FLUID.addLogic(FLUID_STATE_LOGIC_HOT);
 
 		if (ALLOW_RAIN_FILLING)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_WEATHER);
+			FLUID.addLogic(FLUID_STATE_LOGIC_WEATHER);
 		if (ALLOW_ICE_FORMING)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ICE);
+			FLUID.addLogic(FLUID_STATE_LOGIC_ICE);
 		if (ALLOW_PACKED_ICE_FORMING)
-			BarrelStates.OUTPUT.addLogic(OUTPUT_STATE_LOGIC_PACKING_ICE);
+			OUTPUT.addLogic(OUTPUT_STATE_LOGIC_PACKING_ICE);
 
 		if (ALLOW_MOSS_SPREAD)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_SPREADING_MOSS);
+			FLUID.addLogic(FLUID_STATE_LOGIC_SPREADING_MOSS);
 		
-		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_GAS);
-		BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_CHORUS_FRUIT);
-		BarrelStates.FLUID.addLogic(FLUID_STATE_LOGIC_ITEMS);
-		
-		if (ALLOW_CRAFTING_NETHERRACK)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_NETHERRACK);
-		if (ALLOW_CRAFTING_END_STONE)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_END_STONE);
-		if (ALLOW_CRAFTING_CLAY)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_CLAY);
-		if (ALLOW_CRAFTING_SOUL_SAND)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_SOUL_SAND);
+		FLUID.addLogic(FLUID_STATE_LOGIC_GAS);
+		FLUID.addLogic(FLUID_STATE_LOGIC_ITEMS);
+
+		for (BarrelCraftingTrigger recipe : BarrelCraftingRegistry.INSTANCE.getEntries().values())
+			FLUID.addLogic(recipe);
+
 		if (ALLOW_CRAFTING_OBSIDIAN)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN);
+			FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_OBSIDIAN);
 		if (ALLOW_CRAFTING_STONE)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_STONE);
+			FLUID.addLogic(FLUID_STATE_TRIGGER_CRAFTING_STONE);
 		if (ALLOW_SLIME_SUMMONING)
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_SLIME);
+			FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_SLIME);
 		
         if (ALLOW_BLAZE) {
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_BLAZE);
-			BarrelStates.BLAZE.addLogic(BLAZE_STATE_LOGIC);
-			BarrelStates.BLAZE.addLogic(FLUID_STATE_LOGIC_HOT);
+			FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_BLAZE);
+			BLAZE.addLogic(BLAZE_STATE_LOGIC);
+			BLAZE.addLogic(FLUID_STATE_LOGIC_HOT);
         }
         
         if (ALLOW_ENDERMAN) {
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_ENDERMAN);
-			BarrelStates.ENDERMAN.addLogic(ENDERMAN_STATE_LOGIC);
+			FLUID.addLogic(FLUID_STATE_TRIGGER_SUMMON_ENDERMAN);
+			ENDERMAN.addLogic(ENDERMAN_STATE_LOGIC);
 		}
 
 		if (ALLOW_WITCHWATER) {
-			BarrelStates.FLUID.addLogic(FLUID_STATE_TRIGGER_TRANSFORM_WITCHWATER);
-			BarrelStates.TRANSFORM_WITCHWATER.addLogic(WITCHWATER_STATE_LOGIC);
+			FLUID.addLogic(FLUID_STATE_TRIGGER_TRANSFORM_WITCHWATER);
+			TRANSFORM_WITCHWATER.addLogic(WITCHWATER_STATE_LOGIC);
 		}
 
 		if (ALLOW_COMPOST) {
-			BarrelStates.COMPOST.addLogic(COMPOST_STATE_LOGIC_ITEMS);
-			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_COMPLETE);
-			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_PODZOL);
-			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_GRASS);
-			BarrelStates.COMPOST.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
+			COMPOST.addLogic(COMPOST_STATE_LOGIC_ITEMS);
+			COMPOST.addLogic(COMPOST_STATE_TRIGGER_COMPLETE);
+			COMPOST.addLogic(COMPOST_STATE_TRIGGER_PODZOL);
+			COMPOST.addLogic(COMPOST_STATE_TRIGGER_GRASS);
+			COMPOST.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
 
-			BarrelStates.PODZOL.addLogic(COMPOST_STATE_LOGIC_ITEMS);
-			BarrelStates.PODZOL.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
-			BarrelStates.PODZOL.addLogic(PODZOL_STATE_TRIGGER_COMPLETE);
+			PODZOL.addLogic(COMPOST_STATE_LOGIC_ITEMS);
+			PODZOL.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
+			PODZOL.addLogic(PODZOL_STATE_TRIGGER_COMPLETE);
 
-			BarrelStates.GRASS.addLogic(COMPOST_STATE_LOGIC_ITEMS);
-			BarrelStates.GRASS.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
-			BarrelStates.GRASS.addLogic(GRASS_STATE_TRIGGER_COMPLETE);
+			GRASS.addLogic(COMPOST_STATE_LOGIC_ITEMS);
+			GRASS.addLogic(COMPOST_STATE_TRIGGER_COARSE_DIRT);
+			GRASS.addLogic(GRASS_STATE_TRIGGER_COMPLETE);
 
-			BarrelStates.COARSE_DIRT.addLogic(COMPOST_STATE_LOGIC_ITEMS);
-			BarrelStates.COARSE_DIRT.addLogic(COARSE_DIRT_STATE_TRIGGER_COMPLETE);
+			COARSE_DIRT.addLogic(COMPOST_STATE_LOGIC_ITEMS);
+			COARSE_DIRT.addLogic(COARSE_DIRT_STATE_TRIGGER_COMPLETE);
 		}
 
-		BarrelStates.SLIME_GREEN.addLogic(SLIME_STATE_LOGIC);
+		SLIME_GREEN.addLogic(SLIME_STATE_LOGIC);
 	}
 
 	public static void registerState(BarrelState state) {
