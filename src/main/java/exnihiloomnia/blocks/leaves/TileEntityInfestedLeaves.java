@@ -67,7 +67,6 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     	this.progress = progress;
     }
 
-    @SideOnly(Side.CLIENT)
     private HashMap<Integer, Color> colors = new HashMap<Integer, Color>();
 
     @SideOnly(Side.CLIENT)
