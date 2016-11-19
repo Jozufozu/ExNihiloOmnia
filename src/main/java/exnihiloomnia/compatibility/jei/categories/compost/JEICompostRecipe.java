@@ -21,6 +21,9 @@ public class JEICompostRecipe implements IRecipeWrapper{
 
     public JEICompostRecipe(CompostRegistryEntry entry, ItemStack in, ItemStack out) {
         this.entry = entry;
+
+        in.stackSize = 1000 / entry.getVolume();
+
         input.add(in);
         outputs.add(out);
     }
