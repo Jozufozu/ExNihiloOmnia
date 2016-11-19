@@ -42,7 +42,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2")
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2;after:FunOres")
 public class ENO {
 
 	static {

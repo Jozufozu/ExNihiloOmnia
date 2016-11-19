@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.crucibles.tileentity;
 
+import exnihiloomnia.ENO;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.registries.crucible.CrucibleRegistry;
 import exnihiloomnia.registries.crucible.CrucibleRegistryEntry;
@@ -205,7 +206,10 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 		
 		IBlockState state = getWorld().getBlockState(getPos().down());
 
-		return HeatRegistry.getHeatForState(state);
+		int speed = HeatRegistry.getHeatForState(state);
+		ENO.log.info(state + " has heat " + speed);
+
+		return speed;
 	}
 
 	public double getTrueSpeed() {

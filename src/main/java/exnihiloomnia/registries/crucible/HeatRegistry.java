@@ -57,12 +57,10 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 	}
 
 	public static HeatRegistryEntry getEntryForBlockState(IBlockState state, EnumMetadataBehavior behavior) {
-		if (behavior == EnumMetadataBehavior.SPECIFIC) {
+		if (behavior == EnumMetadataBehavior.SPECIFIC)
 			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock()) + ":" + state.getBlock().getMetaFromState(state));
-		}
-		else {
+		else
 			return entries.get(Block.REGISTRY.getNameForObject(state.getBlock())  + ":*");
-		}
 	}
 
 	public static int getHeatForState(IBlockState state) {

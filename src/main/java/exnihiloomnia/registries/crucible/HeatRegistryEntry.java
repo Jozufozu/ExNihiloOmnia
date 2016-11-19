@@ -13,6 +13,7 @@ public class HeatRegistryEntry {
 	
 	public HeatRegistryEntry(IBlockState state, EnumMetadataBehavior behavior, int value) {
 		this.input = state;
+		this.behavior = behavior;
 		this.value = value;
 	}
 
