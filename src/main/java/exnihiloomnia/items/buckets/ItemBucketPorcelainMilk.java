@@ -1,10 +1,8 @@
 package exnihiloomnia.items.buckets;
 
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.PorcelainBucketWrapper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +25,7 @@ public class ItemBucketPorcelainMilk extends ItemBucketMilk {
         }
 
         if (!worldIn.isRemote) {
-            playerIn.curePotionEffects(new ItemStack(Items.MILK_BUCKET, 1));
+            playerIn.curePotionEffects(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK, 1));
         }
 
         ((EntityPlayer) playerIn).addStat(StatList.getObjectUseStats(this));
@@ -38,6 +36,6 @@ public class ItemBucketPorcelainMilk extends ItemBucketMilk {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
     {
-        return new PorcelainBucketWrapper(stack);
+        return new UniversalPorcelainBucketWrapper(stack);
     }
 }

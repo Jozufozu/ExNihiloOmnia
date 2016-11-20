@@ -1,9 +1,7 @@
 package exnihiloomnia.items.buckets;
 
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.PorcelainBucketWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -13,242 +11,144 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.capability.ItemFluidContainer;
 
 import javax.annotation.Nullable;
 
-public class ItemBucketPorcelain extends ItemFluidContainer implements IFluidContainerItem{
-	private final Block isFull;
+public class ItemBucketPorcelain extends Item {
+	private final Block containedBlock;
 
 	public ItemBucketPorcelain(Block block) {
-		super(1000);
 
+		this.setContainerItem(ENOItems.BUCKET_PORCELAIN_EMPTY);
 		this.setMaxStackSize(1);
-		this.isFull = block;
+		this.containedBlock = block;
 		this.setCreativeTab(ENOItems.ENO_TAB);
 	}
 
-	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		boolean empty = this.isFull == Blocks.AIR;
-		boolean doAction = !playerIn.isCreative();
-		RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, empty);
+		boolean flag = this.containedBlock == Blocks.AIR;
+		RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, flag);
 		ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, raytraceresult);
-		
 		if (ret != null) return ret;
 
-		if (raytraceresult == null) {
+		if (raytraceresult == null)
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-		}
-		else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
+
+		else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-		}
+
 		else {
 			BlockPos blockpos = raytraceresult.getBlockPos();
 
-			if (!worldIn.isBlockModifiable(playerIn, blockpos)) {
-				return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-			}
-			else if (empty) {
-				if (!playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn)) {
-					return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-				}
+			if (!worldIn.isBlockModifiable(playerIn, blockpos))
+				return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+			else if (flag) {
+				if (!playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
+					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+
 				else {
 					IBlockState iblockstate = worldIn.getBlockState(blockpos);
-					Material material = iblockstate.getMaterial();
 
+					if (iblockstate.getBlock() == Blocks.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
 
-					if (worldIn.getBlockState(blockpos).getBlock().equals(ENOBlocks.WITCHWATER) && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
-						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
-						playerIn.addStat(StatList.getObjectUseStats(this));
-						fill(itemStackIn, new FluidStack(ENOFluids.WITCHWATER, getCapacity()), doAction);
-
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-					}
-					else if (material == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-						fill(itemStackIn, new FluidStack(FluidRegistry.WATER, getCapacity()), doAction);
-
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_WATER));
 					}
-					else if (material == Material.LAVA && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
+					else if (iblockstate.getBlock() == Blocks.LAVA  && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
+
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
-						fill(itemStackIn, new FluidStack(FluidRegistry.LAVA, getCapacity()), doAction);
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_LAVA));
+					}
+					else if (iblockstate.getBlock() == ENOBlocks.WITCHWATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
 
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
+						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
+						playerIn.addStat(StatList.getObjectUseStats(this));
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_WITCHWATER));
 					}
-					else {
-						return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-					}
+					else
+						return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 				}
 			}
 			else {
 				boolean flag1 = worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos);
 				BlockPos blockpos1 = flag1 && raytraceresult.sideHit == EnumFacing.UP ? blockpos : blockpos.offset(raytraceresult.sideHit);
 
-				if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn)) {
-					return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-				}
-				else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1)) {
-					drain(itemStackIn, getCapacity(), doAction);
+				if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn))
+					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 
+				else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1)) {
 					playerIn.addStat(StatList.getObjectUseStats(this));
-                    
-                    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+					return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 				}
-				else {
-					return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-				}
+				else
+					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 			}
 		}
 	}
-	
-    public boolean tryPlaceContainedLiquid(@Nullable EntityPlayer worldIn, World pos, BlockPos posIn) {
-        if (this.isFull == Blocks.AIR) {
-            return false;
-        }
-        else {
-            IBlockState iblockstate = pos.getBlockState(posIn);
-            Material material = iblockstate.getMaterial();
-            boolean flag = !material.isSolid();
-            boolean flag1 = iblockstate.getBlock().isReplaceable(pos, posIn);
 
-            if (!pos.isAirBlock(posIn) && !flag && !flag1) {
-                return false;
-            }
-            else {
-                if (pos.provider.doesWaterVaporize() && this.isFull == Blocks.FLOWING_WATER) {
-                    int x = posIn.getX();
-                    int y = posIn.getY();
-                    int z = posIn.getZ();
-                    pos.playSound(worldIn, posIn, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (pos.rand.nextFloat() - pos.rand.nextFloat()) * 0.8F);
-
-                    for (int i = 0; i < 8; ++i) {
-                        pos.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) x + Math.random(), (double) y + Math.random(), (double) z + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
-                    }
-                }
-                else {
-                    if (!pos.isRemote && (flag || flag1) && !material.isLiquid()) {
-                        pos.destroyBlock(posIn, true);
-                    }
-
-                    SoundEvent soundevent = this.isFull == Blocks.FLOWING_LAVA ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
-                    pos.playSound(worldIn, posIn, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    pos.setBlockState(posIn, this.isFull.getDefaultState(), 11);
-                }
-
-                return true;
-            }
-        }
-    }
-
-	@Override
-	public FluidStack getFluid(ItemStack container) {
-		Item bucket = container.getItem();
-
-		if (bucket == ENOItems.BUCKET_PORCELAIN_LAVA)
-			return new FluidStack(FluidRegistry.LAVA, getCapacity());
-
-		if (bucket == ENOItems.BUCKET_PORCELAIN_WATER)
-			return new FluidStack(FluidRegistry.WATER, getCapacity());
-
-		if (bucket == ENOItems.BUCKET_PORCELAIN_WITCHWATER)
-			return new FluidStack(ENOFluids.WITCHWATER, getCapacity());
-
-		if (bucket == ENOItems.BUCKET_PORCELAIN_MILK)
-			return new FluidStack(FluidRegistry.getFluid("milk"), getCapacity());
-
-		return null;
-	}
-
-	private static Item getBucketItem(Fluid fluid) {
-		if (fluid == FluidRegistry.WATER) {
-			return ENOItems.BUCKET_PORCELAIN_WATER;
-		}
-		else if (fluid == FluidRegistry.LAVA) {
-			return ENOItems.BUCKET_PORCELAIN_LAVA;
-		}
-		else if (fluid == ENOFluids.WITCHWATER) {
-			return ENOItems.BUCKET_PORCELAIN_WITCHWATER;
-		}
-		else if (fluid == FluidRegistry.getFluid("milk"))
-			return ENOItems.BUCKET_PORCELAIN_MILK;
-
-		return null;
-	}
-
-	@Override
-	public int getCapacity(ItemStack container)
+	private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket)
 	{
-		return getCapacity();
-	}
+		if (player.capabilities.isCreativeMode)
+			return emptyBuckets;
 
-	@Override
-	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-		if (container.stackSize != 1)
-			return 0;
+		else if (--emptyBuckets.stackSize <= 0)
+			return new ItemStack(fullBucket);
 
-		// can only fill exact capacity
-		if (resource == null || resource.amount < getCapacity())
-			return 0;
+		else {
+			if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket)))
+				player.dropItem(new ItemStack(fullBucket), false);
 
-		// already contains fluid?
-		if (getFluid(container) != null)
-			return 0;
-
-		if (doFill) {
-			Item full = getBucketItem(resource.getFluid());
-
-			if (full != null)
-				container.setItem(full);
+			return emptyBuckets;
 		}
-
-		return 0;
 	}
 
-	@Override
-	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain)
-	{
-		// has to be exactly 1, must be handled from the caller
-		if (container.stackSize != 1)
-			return null;
+	public boolean tryPlaceContainedLiquid(@Nullable EntityPlayer player, World worldIn, BlockPos posIn) {
+		if (this.containedBlock == Blocks.AIR)
+			return false;
+		else {
+			IBlockState iblockstate = worldIn.getBlockState(posIn);
+			Material material = iblockstate.getMaterial();
+			boolean flag = !material.isSolid();
+			boolean flag1 = iblockstate.getBlock().isReplaceable(worldIn, posIn);
 
-		// can only drain everything at once
-		if (maxDrain < getCapacity(container))
-			return null;
+			if (!worldIn.isAirBlock(posIn) && !flag && !flag1)
+				return false;
+			else {
+				if (worldIn.provider.doesWaterVaporize() && this.containedBlock == Blocks.FLOWING_WATER) {
+					int l = posIn.getX();
+					int i = posIn.getY();
+					int j = posIn.getZ();
+					worldIn.playSound(player, posIn, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
-		FluidStack fluidStack = getFluid(container);
-		if (doDrain && fluidStack != null) {
-			container.setItem(ENOItems.BUCKET_PORCELAIN_EMPTY);
+					for (int k = 0; k < 8; ++k)
+						worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double)l + Math.random(), (double)i + Math.random(), (double)j + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+				}
+				else {
+					if (!worldIn.isRemote && (flag || flag1) && !material.isLiquid())
+						worldIn.destroyBlock(posIn, true);
+
+					SoundEvent soundevent = this.containedBlock == Blocks.FLOWING_LAVA ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
+					worldIn.playSound(player, posIn, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					worldIn.setBlockState(posIn, this.containedBlock.getDefaultState(), 11);
+				}
+
+				return true;
+			}
 		}
-
-		return fluidStack;
-	}
-
-	public int getCapacity()
-	{
-		return capacity;
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
-	{
-		return new PorcelainBucketWrapper(stack);
+	public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, net.minecraft.nbt.NBTTagCompound nbt) {
+		return new UniversalPorcelainBucketWrapper(stack);
 	}
 }

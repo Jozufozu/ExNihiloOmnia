@@ -164,9 +164,8 @@ item.doll_blaze.name= Angry Doll
 item.doll_ender.name= Spooky Doll
 item.porcelain_doll.name= Porcelain Doll
 item.ash.name=Ash
-item.bucket_azoth.name=Azoth Bucket
-item.bucket_porcelain_azoth.name=Azoth Bucket
 item.bucket_porcelain_raw.name=Unfired Bucket
+item.bucket_porcelain.name=%s Bucket
 item.bucket_porcelain_empty.name=Bucket
 item.bucket_porcelain_water.name=Water Bucket
 item.bucket_porcelain_lava.name=Lava Bucket
@@ -185,16 +184,21 @@ item.hammer_diamond.name=Diamond Hammer
 item.astrolabe_jade.name=Jade Astrolabe
 item.mesh_silk_white.name=Silk Mesh
 item.mesh_wood.name=Wooden Mesh
+
 item.porcelain.name=Porcelain Clay
+
 item.silkworm.name=Silkworm
 item.cooked_silkworm.name=Cooked Silkworm
+
 item.spores.name=Spores
+
 item.seeds_potato.name=Potato Seeds
 item.seeds_grass.name=Grass Seeds
 item.seeds_carrot.name=Carrot Seeds
 item.seeds_cactus.name=Cactus Seeds
 item.seeds_sugarcane.name=Sugarcane Seeds
 item.stone.name=Small Stone
+
 tile.barrel_glass.name=Glass Barrel
 tile.barrel_glass_colored_white.name=White Glass Barrel
 tile.barrel_glass_colored_orange.name=Orange Glass Barrel
