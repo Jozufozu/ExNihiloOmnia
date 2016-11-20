@@ -42,7 +42,6 @@ public abstract class Proxy {
 		ENOBlocks.init();
 		ENOItems.init();
 
-		ENOBucketHandler.registerBuckets();
 		ENOCrafting.configure(ENO.config);
 		BarrelStates.configure(ENO.config);
 		ENOWorld.configure(ENO.config);

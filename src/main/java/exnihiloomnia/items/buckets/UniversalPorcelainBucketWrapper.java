@@ -1,5 +1,6 @@
 package exnihiloomnia.items.buckets;
 
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.item.Item;
@@ -34,7 +35,7 @@ public class UniversalPorcelainBucketWrapper extends FluidBucketWrapper {
         else if (fluid.getName().equals("milk"))
             container.deserializeNBT(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK).serializeNBT());
 
-        else if (FluidRegistry.getBucketFluids().contains(fluid)) {
+        else if (FluidRegistry.getBucketFluids().contains(fluid) && ENOConfig.universal_bucket) {
             ItemStack filledBucket = UniversalPorcelainBucket.getFilledBucket(ENOItems.BUCKET_PORCELAIN, fluid);
             container.deserializeNBT(filledBucket.serializeNBT());
         }
@@ -57,7 +58,7 @@ public class UniversalPorcelainBucketWrapper extends FluidBucketWrapper {
         else if (item == ENOItems.BUCKET_PORCELAIN_MILK)
             return FluidRegistry.getFluidStack("milk", Fluid.BUCKET_VOLUME);
 
-        else if (item == ENOItems.BUCKET_PORCELAIN)
+        else if (item == ENOItems.BUCKET_PORCELAIN && ENOConfig.universal_bucket)
             return ENOItems.BUCKET_PORCELAIN.getFluid(container);
 
         else

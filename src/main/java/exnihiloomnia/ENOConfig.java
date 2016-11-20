@@ -11,6 +11,8 @@ public class ENOConfig {
     public static boolean fancy_crucible;
     public static boolean annoying_sifter;
 
+    public static boolean universal_bucket;
+
     public static boolean end_cake;
     public static boolean end_cake_hunger;
 
@@ -18,6 +20,7 @@ public class ENOConfig {
     public static float sifter_strength;
 
     public static void configure(Configuration config) {
+        universal_bucket = config.get(Configuration.CATEGORY_GENERAL, "universal porcelain bucket", true).getBoolean(true);
         classic_sieve = config.get("legacy options", "enable classic sieve", false).getBoolean(false);
 
         end_cake = config.get("misc", "enable end cake", true).getBoolean(true);

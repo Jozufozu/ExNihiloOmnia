@@ -215,7 +215,9 @@ public class ENOItems {
         for (Item item : getItems())
 		    GameRegistry.register(item);
 
-        BUCKET_PORCELAIN = new UniversalPorcelainBucket();
-        GameRegistry.register(BUCKET_PORCELAIN);
+        if (ENOConfig.universal_bucket) {
+            BUCKET_PORCELAIN = new UniversalPorcelainBucket();
+            GameRegistry.register(BUCKET_PORCELAIN);
+        }
 	}
 }
