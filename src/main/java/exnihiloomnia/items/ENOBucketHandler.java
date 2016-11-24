@@ -13,18 +13,21 @@ public class ENOBucketHandler {
 		if (event.getEntityPlayer() == null || event.getTarget() == null || !(event.getTarget() instanceof EntityCow))
             return;
 
-        ItemStack equipped = event.getEntityPlayer().getActiveItemStack();
+        ItemStack equipped = event.getItemStack();
         if (equipped == null || equipped.getItem() != ENOItems.BUCKET_PORCELAIN_EMPTY)
             return;
 
         EntityPlayer player = event.getEntityPlayer();
 
         if (!player.capabilities.isCreativeMode) {
-        	if (--equipped.stackSize == 1) {
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK));
+        	if (equipped.stackSize == 1) {
+                equipped.deserializeNBT(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK).serializeNBT());
             }
-            else if (!player.inventory.addItemStackToInventory(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK))) {
-                player.dropItem(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK, 1), false);
+            else {
+        	    --equipped.stackSize;
+
+                if (!player.inventory.addItemStackToInventory(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK)))
+                    player.dropItem(new ItemStack(ENOItems.BUCKET_PORCELAIN_MILK), false);
             }
         }
     }

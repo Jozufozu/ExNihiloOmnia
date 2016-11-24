@@ -53,6 +53,7 @@ public abstract class Proxy {
 		if(ENO.config.hasChanged())
 			ENO.config.save();
 
+		MinecraftForge.EVENT_BUS.register(new ENOBucketHandler());
 		ENOCompatibility.preInit();
 	}
 
@@ -66,7 +67,6 @@ public abstract class Proxy {
 		ENOWorld.registerWorldProviders();
 
 		GameRegistry.registerFuelHandler(new ENOFuelHandler());
-		MinecraftForge.EVENT_BUS.register(new ENOBucketHandler());
 		ENOCompatibility.init();
 	}
 

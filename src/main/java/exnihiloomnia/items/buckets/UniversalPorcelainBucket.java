@@ -1,11 +1,13 @@
 package exnihiloomnia.items.buckets;
 
+import exnihiloomnia.ENO;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,8 +73,7 @@ public class UniversalPorcelainBucket extends Item implements IFluidContainerIte
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        if (getEmpty() != null)
-        {
+        if (getEmpty() != null) {
             // Create a copy such that the game can't mess with it
             return getEmpty().copy();
         }
@@ -176,13 +177,11 @@ public class UniversalPorcelainBucket extends Item implements IFluidContainerIte
         return false;
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL) // low priority so other mods can handle their stuff first
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onFillBucket(FillBucketEvent event) {
         if (event.getResult() != Event.Result.DEFAULT)
-            // event was already handled
             return;
 
-        // not for us to handle
         ItemStack emptyBucket = event.getEmptyBucket();
         if (emptyBucket == null ||
                 !emptyBucket.isItemEqual(getEmpty()) ||
@@ -190,7 +189,6 @@ public class UniversalPorcelainBucket extends Item implements IFluidContainerIte
             return;
         }
 
-        // needs to target a block
         RayTraceResult target = event.getTarget();
         if (target == null || target.typeOfHit != RayTraceResult.Type.BLOCK)
             return;
@@ -206,11 +204,9 @@ public class UniversalPorcelainBucket extends Item implements IFluidContainerIte
             event.setResult(Event.Result.ALLOW);
             event.setFilledBucket(filledBucket);
         }
-        else {
-            // cancel event, otherwise the vanilla minecraft ItemBucket would
-            // convert it into a water/lava bucket depending on the blocks material
+        else
             event.setCanceled(true);
-        }
+
     }
 
     public static ItemStack getFilledBucket(UniversalPorcelainBucket item, Fluid fluid) {

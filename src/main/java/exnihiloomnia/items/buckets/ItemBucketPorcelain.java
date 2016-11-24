@@ -6,10 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
@@ -96,8 +98,8 @@ public class ItemBucketPorcelain extends Item {
 		}
 	}
 
-	private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket)
-	{
+	private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket) {
+
 		if (player.capabilities.isCreativeMode)
 			return emptyBuckets;
 
