@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -200,10 +201,25 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	}
 	
 	public int getMeltingSpeed() {
-		if (getWorld().isAirBlock(getPos().down()))
+    	BlockPos pos = getPos().down();
+
+		if (getWorld().isAirBlock(pos))
 			return 0;
 		
-		IBlockState state = getWorld().getBlockState(getPos().down());
+		IBlockState state = getWorld().getBlockState(pos);
+
+		if (state.getBlock() instanceof BlockFluidBase) {
+			int temp = BlockFluidBase.getTemperature(getWorld(), pos);
+
+			temp -= 300;
+
+			temp *= 2;
+
+			temp /= 125;
+
+			return temp > 0 ? temp : 0;
+		}
+
 
 		return HeatRegistry.getHeatForState(state);
 	}
