@@ -197,6 +197,7 @@ item.seeds_grass.name=Grass Seeds
 item.seeds_carrot.name=Carrot Seeds
 item.seeds_cactus.name=Cactus Seeds
 item.seeds_sugarcane.name=Sugarcane Seeds
+item.seeds_chorus.name=Chorus Seeds
 item.stone.name=Small Stone
 
 tile.barrel_glass.name=Glass Barrel
@@ -238,6 +239,7 @@ tile.sieve_wood_dark_oak.name=Dark Oak Sieve
 tile.witchwater.name=Witchwater
 tile.infested_leaves.name=Infested Leaves
 tile.end_cake.name=End Cake
+tile.chorus_sprout.name=Chorus Sprout
 
 exnihiloomnia.sifter.speedModifier=x Speed
 

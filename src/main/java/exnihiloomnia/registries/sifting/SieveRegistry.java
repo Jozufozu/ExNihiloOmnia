@@ -191,14 +191,14 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 		add(nethergravel);
 
 		SieveRegistryEntry endergravel = new SieveRegistryEntry(ENOBlocks.GRAVEL_ENDER.getDefaultState(), EnumMetadataBehavior.IGNORED);
-		
+		endergravel.addReward(new ItemStack(ENOItems.CHORUS_SEEDS), 10);
+
 		for (EnumOre ore : ENO.oreList) {
 			if (ore.hasEnd())
 				endergravel.addReward(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), ore.getRarity());
 		}
 
-		if (endergravel.getRewards().size() > 0)
-			add(endergravel);
+		add(endergravel);
 
         SieveRegistryEntry sand = new SieveRegistryEntry(Blocks.SAND.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		

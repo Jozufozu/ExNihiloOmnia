@@ -13,6 +13,7 @@ import exnihiloomnia.blocks.endcake.BlockEndCake;
 import exnihiloomnia.blocks.fluids.BlockFluidWitchwater;
 import exnihiloomnia.blocks.leaves.BlockInfestedLeaves;
 import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
+import exnihiloomnia.blocks.misc.BlockChorusSapling;
 import exnihiloomnia.blocks.misc.BlockDust;
 import exnihiloomnia.blocks.misc.BlockOtherGravel;
 import exnihiloomnia.blocks.ores.BlockOre;
@@ -46,6 +47,7 @@ public class ENOBlocks {
 	public static Block WITCHWATER;
 
 	public static Block END_CAKE;
+	public static Block CHORUS_SPROUT;
 
     public static Block ORE_GRAVEL;
     public static Block ORE_GRAVEL_NETHER;
@@ -70,6 +72,8 @@ public class ENOBlocks {
         blocks.add(INFESTED_LEAVES);
 
         blocks.add(WITCHWATER);
+
+        blocks.add(CHORUS_SPROUT);
 
         if (ENOConfig.end_cake)
             blocks.add(END_CAKE);
@@ -100,6 +104,7 @@ public class ENOBlocks {
         WITCHWATER = new BlockFluidWitchwater(ENOFluids.WITCHWATER).setUnlocalizedName("witchwater").setRegistryName("witchwater");
 
         END_CAKE = new BlockEndCake().setUnlocalizedName("end_cake").setRegistryName("end_cake");
+        CHORUS_SPROUT = new BlockChorusSapling().setUnlocalizedName("chorus_sprout").setRegistryName("chorus_sprout");
 
         ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
         ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
@@ -120,7 +125,7 @@ public class ENOBlocks {
                 GameRegistry.register(new ItemBlockOre(block).setRegistryName(block.getRegistryName()));
             else if (block == INFESTED_LEAVES)
                 GameRegistry.register(new ItemInfestedLeaves(block).setRegistryName(block.getRegistryName()));
-            else if (block != WITCHWATER)
+            else if (block != WITCHWATER && block != CHORUS_SPROUT)
                 GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
         }
 

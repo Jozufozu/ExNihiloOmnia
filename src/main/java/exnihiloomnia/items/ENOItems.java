@@ -79,6 +79,7 @@ public class ENOItems {
     public static Item POTATO_SEEDS;
     public static Item CARROT_SEEDS;
     public static Item GRASS_SEEDS;
+    public static Item CHORUS_SEEDS;
 
     public static Item SEED_ACACIA;
     public static Item SEED_BIRCH;
@@ -137,6 +138,7 @@ public class ENOItems {
         items.add(SUGARCANE_SEEDS);
         items.add(CACTUS_SEEDS);
         items.add(GRASS_SEEDS);
+        items.add(CHORUS_SEEDS);
         items.add(SEED_ACACIA);
         items.add(SEED_BIRCH);
         items.add(SEED_JUNGLE);
@@ -163,7 +165,9 @@ public class ENOItems {
         SUGARCANE_SEEDS = new ItemBlockSpecial(Blocks.REEDS).setUnlocalizedName("seeds_sugarcane").setRegistryName("seeds_sugarcane").setCreativeTab(ENO_TAB);
         CACTUS_SEEDS = new ItemBlockSpecial(Blocks.CACTUS).setUnlocalizedName("seeds_cactus").setRegistryName("seeds_cactus").setCreativeTab(ENO_TAB);
         GRASS_SEEDS = new ItemGrassSeeds().setUnlocalizedName("seeds_grass").setRegistryName("seeds_grass");
+        CHORUS_SEEDS = new ItemBlockSpecial(ENOBlocks.CHORUS_SPROUT).setUnlocalizedName("seeds_chorus").setRegistryName("seeds_chorus");
         SPORES = new ItemSpores().setUnlocalizedName("spores").setRegistryName("spores");
+
         ASTROLABE_JADE = new ItemAstrolabe().setUnlocalizedName("astrolabe_jade").setRegistryName("astrolabe_jade");
 
         BUCKET_PORCELAIN_RAW = new Item().setUnlocalizedName("bucket_porcelain_raw").setRegistryName("bucket_porcelain_raw").setCreativeTab(ENO_TAB);
