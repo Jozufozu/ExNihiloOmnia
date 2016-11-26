@@ -29,8 +29,10 @@ public class ENOCompatibility {
 	public static void preInit() {
 		if (Loader.isModLoaded("IC2"))
 			IC2.registerItems();
+
 		if (Loader.isModLoaded("theoneprobe"))
 			TOPCompatibility.register();
+
 		if (Loader.isModLoaded("forestry"))
 			ForestryCompatibility.preInit();
 	}
@@ -47,5 +49,8 @@ public class ENOCompatibility {
 
 		if (Loader.isModLoaded("appliedenergistics2"))
 			AE2.initialize();
+
+		if (Loader.isModLoaded("forestry"))
+			ForestryCompatibility.init();
 	}
 }

@@ -57,10 +57,10 @@ public abstract class Proxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
-		BarrelStates.configure(ENO.config);
 
 		ENOCrafting.registerRecipes();
 		ENORegistries.initialize();
+		ENOCompatibility.init();
 
 		ENOOres.addCrafting();
 		ENOOres.addSmelting();
@@ -68,7 +68,7 @@ public abstract class Proxy {
 		ENOWorld.registerWorldProviders();
 
 		GameRegistry.registerFuelHandler(new ENOFuelHandler());
-		ENOCompatibility.init();
+		BarrelStates.configure(ENO.config);
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {

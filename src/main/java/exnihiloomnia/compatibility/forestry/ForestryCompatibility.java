@@ -4,6 +4,10 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.compatibility.forestry.beelure.BlockBeeTrap;
 import exnihiloomnia.compatibility.forestry.beelure.BlockBeeTrapTreated;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.sifting.SieveRegistry;
+import exnihiloomnia.registries.sifting.SieveRegistryEntry;
+import exnihiloomnia.util.enums.EnumMetadataBehavior;
+import forestry.core.PluginCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -26,13 +30,19 @@ public class ForestryCompatibility {
         BEE_TRAP = new BlockBeeTrap();
         BEE_TRAP_TREATED = new BlockBeeTrapTreated();
 
-        GameRegistry.addShapelessRecipe(new ItemStack(BEE_TRAP), Blocks.HAY_BLOCK, ENOItems.MESH_SILK_WHITE);
-
         GameRegistry.register(BEE_TRAP);
         GameRegistry.register(BEE_TRAP_TREATED);
 
         GameRegistry.register(new ItemBlock(BEE_TRAP).setRegistryName("bee_trap"));
         GameRegistry.register(new ItemBlock(BEE_TRAP_TREATED).setRegistryName("bee_trap_treated"));
+    }
+
+    public static void init() {
+        GameRegistry.addShapelessRecipe(new ItemStack(BEE_TRAP), Blocks.HAY_BLOCK, ENOItems.MESH_SILK_WHITE);
+
+        SieveRegistryEntry gravel = new SieveRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED);
+        gravel.addReward(new ItemStack(PluginCore.items.apatite), 6);
+        SieveRegistry.add(gravel);
     }
 
     @SideOnly(Side.CLIENT)
