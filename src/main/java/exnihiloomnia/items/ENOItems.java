@@ -165,7 +165,7 @@ public class ENOItems {
         SUGARCANE_SEEDS = new ItemBlockSpecial(Blocks.REEDS).setUnlocalizedName("seeds_sugarcane").setRegistryName("seeds_sugarcane").setCreativeTab(ENO_TAB);
         CACTUS_SEEDS = new ItemBlockSpecial(Blocks.CACTUS).setUnlocalizedName("seeds_cactus").setRegistryName("seeds_cactus").setCreativeTab(ENO_TAB);
         GRASS_SEEDS = new ItemGrassSeeds().setUnlocalizedName("seeds_grass").setRegistryName("seeds_grass");
-        CHORUS_SEEDS = new ItemBlockSpecial(ENOBlocks.CHORUS_SPROUT).setUnlocalizedName("seeds_chorus").setRegistryName("seeds_chorus");
+        CHORUS_SEEDS = new ItemBlockSpecial(ENOBlocks.CHORUS_SPROUT).setUnlocalizedName("seeds_chorus").setRegistryName("seeds_chorus").setCreativeTab(ENO_TAB);
         SPORES = new ItemSpores().setUnlocalizedName("spores").setRegistryName("spores");
 
         ASTROLABE_JADE = new ItemAstrolabe().setUnlocalizedName("astrolabe_jade").setRegistryName("astrolabe_jade");

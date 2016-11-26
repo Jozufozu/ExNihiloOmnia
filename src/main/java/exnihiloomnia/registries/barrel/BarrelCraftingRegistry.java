@@ -3,10 +3,12 @@ package exnihiloomnia.registries.barrel;
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
+import exnihiloomnia.compatibility.forestry.ForestryCompatibility;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.barrel.files.BarrelCraftingRecipeLoader;
+import forestry.core.fluids.Fluids;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -74,6 +76,9 @@ public class BarrelCraftingRegistry implements IRegistry<BarrelCraftingTrigger> 
 
         if (BarrelStates.ALLOW_CRAFTING_SOUL_SAND)
             add(new BarrelCraftingTrigger(ENOFluids.WITCHWATER, new ItemStack(Blocks.SAND), new ItemStack(Blocks.SOUL_SAND)));
+
+        if (Loader.isModLoaded("forestry"))
+            add(new BarrelCraftingTrigger(Fluids.SEED_OIL.getFluid(), new ItemStack(ForestryCompatibility.BEE_TRAP), new ItemStack(ForestryCompatibility.BEE_TRAP_TREATED)));
 
         if (Loader.isModLoaded("appliedenergistics2"))
             add(new BarrelCraftingTrigger(FluidRegistry.LAVA, new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("appliedenergistics2", "material")), 1, 2), new ItemStack(Block.REGISTRY.getObject(new ResourceLocation("appliedenergistics2", "sky_stone_block")))));

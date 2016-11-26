@@ -66,11 +66,18 @@ public class PositionHelper {
 		return world.getBlockState(getRandomPositionNearBlock(world, pos)).getBlock() == Blocks.WATER;
 	}
 	
-	public static boolean isTopBlock(World world, BlockPos pos) {
-		return world.getChunkFromBlockCoords(pos).canSeeSky(pos);
+	public boolean isTopBlock(World world, BlockPos pos) {
+		probe.setPos(pos);
+		for (int y = pos.getY() + 1; y < world.getHeight(); y++) {
+			probe.setY(y);
+
+			if (world.getBlockState(probe).getBlock() != Blocks.AIR)
+				return false;
+		}
+		return true;
 	}
 	
-	public static boolean isRainingAt(World world, BlockPos pos) {
+	public boolean isRainingAt(World world, BlockPos pos) {
 		return world.isRaining() && world.getBiomeForCoordsBody(pos).getRainfall() > 0f && isTopBlock(world, pos);
 	}
 	

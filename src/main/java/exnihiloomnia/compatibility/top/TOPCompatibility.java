@@ -11,14 +11,23 @@ import exnihiloomnia.blocks.leaves.BlockInfestedLeaves;
 import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
 import exnihiloomnia.blocks.sieves.BlockSieve;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
+import exnihiloomnia.compatibility.forestry.Surroundings;
+import exnihiloomnia.compatibility.forestry.beelure.BlockBeeTrapTreated;
+import exnihiloomnia.compatibility.forestry.beelure.TileEntityBeeTrap;
+import forestry.core.genetics.alleles.EnumAllele;
 import mcjty.theoneprobe.api.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public class TOPCompatibility {
     private static boolean registered;
@@ -45,17 +54,23 @@ public class TOPCompatibility {
 
                 @Override
                 public void addProbeInfo(ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-                    if (blockState.getBlock() instanceof BlockSieve && world.getTileEntity(data.getPos()) instanceof TileEntitySieve)
-                        provideSieveData((TileEntitySieve) world.getTileEntity(data.getPos()), info);
+                    TileEntity tileEntity = world.getTileEntity(data.getPos());
+                    Block block = blockState.getBlock();
 
-                    if (blockState.getBlock() instanceof BlockCrucible && world.getTileEntity(data.getPos()) instanceof TileEntityCrucible)
-                        provideCrucibleData((TileEntityCrucible) world.getTileEntity(data.getPos()), info);
+                    if (block instanceof BlockSieve && tileEntity instanceof TileEntitySieve)
+                        provideSieveData((TileEntitySieve) tileEntity, info);
 
-                    if (blockState.getBlock() instanceof BlockBarrel && world.getTileEntity(data.getPos()) instanceof TileEntityBarrel)
-                        provideBarrelData((TileEntityBarrel) world.getTileEntity(data.getPos()), mode, info, player, world, blockState, data);
+                    if (block instanceof BlockCrucible && tileEntity instanceof TileEntityCrucible)
+                        provideCrucibleData((TileEntityCrucible) tileEntity, info);
 
-                    if (blockState.getBlock() instanceof BlockInfestedLeaves && world.getTileEntity(data.getPos()) instanceof TileEntityInfestedLeaves)
-                        provideLeavesData((TileEntityInfestedLeaves) world.getTileEntity(data.getPos()), info);
+                    if (block instanceof BlockBarrel && tileEntity instanceof TileEntityBarrel)
+                        provideBarrelData((TileEntityBarrel) tileEntity, mode, info, player, world, blockState, data);
+
+                    if (block instanceof BlockInfestedLeaves && tileEntity instanceof TileEntityInfestedLeaves)
+                        provideLeavesData((TileEntityInfestedLeaves) tileEntity, info);
+
+                    if (block instanceof BlockBeeTrapTreated && tileEntity instanceof TileEntityBeeTrap)
+                        provideBeeLureData((TileEntityBeeTrap) tileEntity, mode, info);
                 }
 
                 private void provideSieveData(TileEntitySieve sieve, IProbeInfo info) {
@@ -103,6 +118,31 @@ public class TOPCompatibility {
                     else {
                         info.text("Infesting");
                         info.progress((int) (infestedLeaves.getProgress() * 100), 100, info.defaultProgressStyle().alternateFilledColor(0xffffffff));
+                    }
+                }
+
+                private void provideBeeLureData(TileEntityBeeTrap beeTrap, ProbeMode mode, IProbeInfo info) {
+                    Surroundings blocks = beeTrap.getBlocks();
+
+                    info.progress(TileEntityBeeTrap.TIMER_MAX - beeTrap.getTimer(), TileEntityBeeTrap.TIMER_MAX, info.defaultProgressStyle().showText(false).filledColor(0xfff0f28e).alternateFilledColor(0xfff0f28e));
+
+                    if (mode == ProbeMode.DEBUG) {
+                        info.text("Flowers:");
+                        for (Map.Entry<EnumAllele.Flowers, Integer> flowers : blocks.flowers.entrySet()) {
+                            info.text(flowers.getKey().name() + ": " + flowers.getValue());
+                        }
+                        info.text("Surroundings:");
+                        IProbeInfo h = info.horizontal();
+                        for (Map.Entry<IBlockState, Integer> entry : blocks.blocks.entrySet()) {
+                            IBlockState state = entry.getKey();
+                            int count = entry.getValue();
+
+                            Block block = state.getBlock();
+                            int meta = block.getMetaFromState(state);
+
+                            if (block != Blocks.AIR)
+                                h.item(new ItemStack(block, count, meta));
+                        }
                     }
                 }
             });

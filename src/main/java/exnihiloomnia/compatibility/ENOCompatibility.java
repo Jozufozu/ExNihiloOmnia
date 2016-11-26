@@ -1,6 +1,7 @@
 package exnihiloomnia.compatibility;
 
 import exnihiloomnia.compatibility.appliedenergistics.AE2;
+import exnihiloomnia.compatibility.forestry.ForestryCompatibility;
 import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.compatibility.tconstruct.TinkersCompatibility;
 import exnihiloomnia.compatibility.top.TOPCompatibility;
@@ -30,6 +31,8 @@ public class ENOCompatibility {
 			IC2.registerItems();
 		if (Loader.isModLoaded("theoneprobe"))
 			TOPCompatibility.register();
+		if (Loader.isModLoaded("forestry"))
+			ForestryCompatibility.preInit();
 	}
 	
 	public static void init() {

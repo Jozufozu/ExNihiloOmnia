@@ -12,6 +12,7 @@ import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.client.models.ENOModels;
 import exnihiloomnia.compatibility.ENOOres;
+import exnihiloomnia.compatibility.forestry.ForestryCompatibility;
 import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.entities.thrown.stone.EntityStone;
 import exnihiloomnia.entities.thrown.stone.EntityStoneRenderer;
@@ -47,6 +48,9 @@ public class ClientProxy extends Proxy {
 
         if (IC2.SEED_RUBBER != null)
             IC2.loadTexture();
+
+        if (ForestryCompatibility.BEE_TRAP != null)
+            ForestryCompatibility.loadTexture();
     }
 
     @Override

@@ -45,7 +45,7 @@ public class Mycelium {
 				if (helper.hasNearbyWaterSource(world, pos)) {
 					spawnRandomMushroom(world, pos);
 				}
-				else if (getSpreadsWhileRaining() && PositionHelper.isRainingAt(world, pos)) {
+				else if (getSpreadsWhileRaining() && helper.isRainingAt(world, pos)) {
 					rng.setSeed(pos.getX() * pos.getZ());
 					rng.nextDouble(); //The first value is not very random at all. Skip that.
 

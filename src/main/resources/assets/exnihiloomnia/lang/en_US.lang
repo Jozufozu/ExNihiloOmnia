@@ -247,6 +247,8 @@ tile.witchwater.name=Witchwater
 tile.infested_leaves.name=Infested Leaves
 tile.end_cake.name=End Cake
 tile.chorus_sprout.name=Chorus Sprout
+tile.bee_trap.name=Artificial Hive
+tile.bee_trap_treated.name=Scented Artificial Hive
 
 exnihiloomnia.sifter.speedModifier=x Speed
 

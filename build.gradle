@@ -45,6 +45,10 @@ repositories {
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
+    maven {
+        name 'Forestry'
+        url "http://maven.ic2.player.to/"
+    }
 }
 
 dependencies {
@@ -53,6 +57,7 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.1.194"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.5.6b.jenkins425"
+    deobfCompile "net.sengir.forestry:forestry_1.10.2:5.2.9.247"
 }
 
 processResources
