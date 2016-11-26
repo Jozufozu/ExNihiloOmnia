@@ -118,6 +118,9 @@ public class TinkersCompatibility {
             case ARDITE:
                 return FluidRegistry.getFluid("ardite");
 
+            case DRACONIUM:
+                return FluidRegistry.getFluid("draconium");
+
             default:
                 return null;
         }

@@ -42,6 +42,7 @@ item.ore_broken_ender.aluminum.name= Broken Aluminum Ore
 item.ore_broken_ender.ardite.name= Broken Ardite Ore
 item.ore_broken_ender.cobalt.name= Broken Cobalt Ore
 item.ore_broken_ender.osmium.name= Broken Osmium Ore
+item.ore_broken_ender.draconium.name= Broken Draconium Ore
 
 item.ore_crushed.iron.name= Crushed Iron Ore
 item.ore_crushed.gold.name= Crushed Gold Ore
@@ -55,6 +56,7 @@ item.ore_crushed.aluminum.name= Crushed Aluminum Ore
 item.ore_crushed.ardite.name= Crushed Ardite Ore
 item.ore_crushed.cobalt.name= Crushed Cobalt Ore
 item.ore_crushed.osmium.name= Crushed Osmium Ore
+item.ore_crushed.draconium.name= Crushed Draconium Ore
 
 item.ore_powder.iron.name= Powdered Iron Ore
 item.ore_powder.gold.name= Powdered Gold Ore
@@ -68,6 +70,7 @@ item.ore_powder.aluminum.name= Powdered Aluminum Ore
 item.ore_powder.ardite.name= Powdered Ardite Ore
 item.ore_powder.cobalt.name= Powdered Cobalt Ore
 item.ore_powder.osmium.name= Powdered Osmium Ore
+item.ore_powder.draconium.name= Powdered Draconium Ore
 
 item.ore_ingot.iron.name= Iron Ingot
 item.ore_ingot.gold.name= Gold Ingot
@@ -81,6 +84,7 @@ item.ore_ingot.aluminum.name= Aluminum Ingot
 item.ore_ingot.ardite.name= Ardite Ingot
 item.ore_ingot.cobalt.name= Cobalt Ingot
 item.ore_ingot.osmium.name= Osmium Ingot
+item.ore_ingot.draconium.name= Draconium Ingot
 
 tile.ore_gravel.iron.name= Iron Ore Gravel
 tile.ore_gravel.gold.name= Gold Ore Gravel
@@ -120,6 +124,7 @@ tile.ore_gravel_ender.aluminum.name= Ender Aluminum Ore Gravel
 tile.ore_gravel_ender.ardite.name= Ender Ardite Ore Gravel
 tile.ore_gravel_ender.cobalt.name= Ender Cobalt Ore Gravel
 tile.ore_gravel_ender.osmium.name= Ender Osmium Ore Gravel
+tile.ore_gravel_ender.draconium.name= Ender Draconium Ore Gravel
 
 tile.ore_sand.iron.name= Iron Ore Sand
 tile.ore_sand.gold.name= Gold Ore Sand
@@ -133,6 +138,7 @@ tile.ore_sand.aluminum.name= Aluminum Ore Sand
 tile.ore_sand.ardite.name= Ardite Ore Sand
 tile.ore_sand.cobalt.name= Cobalt Ore Sand
 tile.ore_sand.osmium.name= Osmium Ore Sand
+tile.ore_sand.draconium.name= Draconium Ore Sand
 
 tile.ore_dust.iron.name= Iron Ore Dust
 tile.ore_dust.gold.name= Gold Ore Dust
@@ -146,6 +152,7 @@ tile.ore_dust.aluminum.name= Aluminum Ore Dust
 tile.ore_dust.ardite.name= Ardite Ore Dust
 tile.ore_dust.cobalt.name= Cobalt Ore Dust
 tile.ore_dust.osmium.name= Osmium Ore Dust
+tile.ore_dust.draconium.name= Draconium Ore Dust
 
 
 item.seed_oak.name=Acorn
