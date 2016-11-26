@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.misc;
 
+import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockChorusFlower;
 import net.minecraft.block.IGrowable;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockChorusSapling extends BlockBush implements IGrowable {
@@ -29,6 +32,12 @@ public class BlockChorusSapling extends BlockBush implements IGrowable {
         super(Material.PLANTS, MapColor.MAGENTA);
         setSoundType(SoundType.PLANT);
         setDefaultState(this.blockState.getBaseState().withProperty(STAGE, 3));
+    }
+
+    @Nullable
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return ENOItems.CHORUS_SEEDS;
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
