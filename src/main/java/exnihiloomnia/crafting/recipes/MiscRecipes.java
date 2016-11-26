@@ -6,6 +6,7 @@ import exnihiloomnia.crafting.ENOCrafting;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -34,93 +35,17 @@ public class MiscRecipes {
 						"xxx",
 						'x', new ItemStack(Items.STRING, 1),
 						'y', new ItemStack(Items.SLIME_BALL, 1)));
-		
-		//cobble from stones, why did I do this as a config
-        switch (ENOCrafting.stone_required) {
-            case 0: 
-            	break;
-            
-            case 1:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone);
-                break;
-                
-            case 2:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone);
-                break;
-                
-            case 3:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone);
-                break;
-                
-            case 4:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone,
-                    stone);
-                break;
-                
-            case 5:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone);
-                break;
-                
-            case 6:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone);
-                break;
-                
-            case 7:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone);
-                break;
-                
-            case 8:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone);
-                break;
-                
-            case 9:
-                GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE),
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone,
-                    stone);
-                break;
-        }
+
+		if (ENOCrafting.stone_required > 0) {
+			Item[] stones = new Item[8];
+
+			for (int i = 0; i < ENOCrafting.stone_required; i++) {
+				if (i <= stones.length)
+					stones[i] = ENOItems.STONE;
+			}
+
+			GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE), stones);
+		}
 
 		//porcelain
 		GameRegistry.addShapelessRecipe(new ItemStack(ENOItems.PORCELAIN, 1),
