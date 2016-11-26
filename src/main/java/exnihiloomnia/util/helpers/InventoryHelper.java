@@ -1,6 +1,5 @@
 package exnihiloomnia.util.helpers;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -26,15 +25,13 @@ public class InventoryHelper {
 	}
 
 	public static void dropItemInWorld(World world, BlockPos pos, ItemStack itemStack) {
-		EntityItem drop = new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, itemStack);
-		drop.setDefaultPickupDelay();
-		world.spawnEntityInWorld(drop);
+		if (itemStack != null)
+			net.minecraft.inventory.InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
 	}
 
 	public static void dropItemInWorld(World world, BlockPos pos, double yOffset, ItemStack itemStack) {
-		EntityItem drop = new EntityItem(world, pos.getX() + .5, pos.getY() + yOffset, pos.getZ() + .5, itemStack);
-		drop.setDefaultPickupDelay();
-		world.spawnEntityInWorld(drop);
+		if (itemStack != null)
+			net.minecraft.inventory.InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + yOffset, pos.getZ(), itemStack);
 	}
 	
 	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item)

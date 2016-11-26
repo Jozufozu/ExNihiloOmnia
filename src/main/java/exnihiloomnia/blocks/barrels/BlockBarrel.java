@@ -17,7 +17,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -91,42 +90,29 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		if (this.getBlockState().getBaseState().getMaterial().isOpaque()) {
+		if (this.getBlockState().getBaseState().getMaterial().isOpaque())
 			return BlockRenderLayer.SOLID;
-		}
-		else {
+		else
 			return BlockRenderLayer.TRANSLUCENT;
-		}
 	}
-	
+
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
 
-		if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops") && (player == null || !player.isCreative())) {
-			for (ItemStack i : barrel.getOutput()) {
-				InventoryHelper.dropItemInWorld(world, pos, i);
+		if (barrel != null) {
+
+			if (world.getGameRules().getBoolean("doTileDrops")) {
+				for (ItemStack i : barrel.getOutput()) {
+					InventoryHelper.dropItemInWorld(world, pos, i);
+				}
+
+				InventoryHelper.dropItemInWorld(world, pos, barrel.getContents());
 			}
-			InventoryHelper.dropItemInWorld(world, pos, barrel.getContents());
+			barrel.setLuminosity(0);
 		}
 
-		barrel.setLuminosity(0);
-		
-		return super.removedByPlayer(state ,world, pos, player, willHarvest);
-	}
-	
-	@Override
-	public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
-		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
-		barrel.setLuminosity(0);
-		
-		super.onBlockExploded(world, pos, explosion);
-    }
-	
-	@Override
-	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
-		//Barrels should never break with the wrong tool.
-		return true;
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

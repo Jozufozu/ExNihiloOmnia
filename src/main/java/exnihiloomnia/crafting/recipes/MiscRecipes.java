@@ -37,7 +37,7 @@ public class MiscRecipes {
 						'y', new ItemStack(Items.SLIME_BALL, 1)));
 
 		if (ENOCrafting.stone_required > 0) {
-			Item[] stones = new Item[8];
+			Item[] stones = new Item[9];
 
 			for (int i = 0; i < ENOCrafting.stone_required; i++) {
 				if (i <= stones.length)

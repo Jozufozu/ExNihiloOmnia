@@ -43,7 +43,6 @@ public abstract class Proxy {
 		ENOItems.init();
 
 		ENOCrafting.configure(ENO.config);
-		BarrelStates.configure(ENO.config);
 		ENOWorld.configure(ENO.config);
 		ENORegistries.configure(ENO.config);
 
@@ -58,6 +57,8 @@ public abstract class Proxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
+		BarrelStates.configure(ENO.config);
+
 		ENOCrafting.registerRecipes();
 		ENORegistries.initialize();
 
