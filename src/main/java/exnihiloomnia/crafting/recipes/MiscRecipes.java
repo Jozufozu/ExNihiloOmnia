@@ -37,14 +37,14 @@ public class MiscRecipes {
 						'y', new ItemStack(Items.SLIME_BALL, 1)));
 
 		if (ENOCrafting.stone_required > 0) {
-			Item[] stones = new Item[9];
+			Item[] stones = new Item[ENOCrafting.stone_required];
 
 			for (int i = 0; i < ENOCrafting.stone_required; i++) {
 				if (i <= stones.length)
 					stones[i] = ENOItems.STONE;
 			}
 
-			GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE), stones);
+			GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE), (Object[])stones);
 		}
 
 		//porcelain
