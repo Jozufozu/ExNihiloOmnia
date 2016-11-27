@@ -1,6 +1,7 @@
 package exnihiloomnia.compatibility.forestry;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.compatibility.ENOCompatibility;
 import forestry.core.genetics.alleles.EnumAllele;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -50,7 +51,7 @@ public class Hive {
                 return false;
         }
 
-        if (!biomeTypes.isEmpty()) {
+        if (!biomeTypes.isEmpty() && ENOCompatibility.biome_required) {
             Type[] types = BiomeDictionary.getTypesForBiome(biome);
 
 

@@ -17,6 +17,7 @@ public class ENOCompatibility {
 	public static boolean register_veinminer_recipes_hammer;
 	public static boolean add_smeltery_melting;
 	public static boolean add_tcon_modifiers;
+	public static boolean biome_required;
 
 	public static void configure(Configuration config) {
 		register_veinminer_tools = config.get(CATEGORY_COMPAT_OPTIONS, "VeinMiner: register tools", true).getBoolean(true);
@@ -24,6 +25,7 @@ public class ENOCompatibility {
 		register_veinminer_recipes_hammer = config.get(CATEGORY_COMPAT_OPTIONS, "VeinMiner: whitelist blocks for hammer", true).getBoolean(true);
 		add_smeltery_melting = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add smelting recipes for Ex Nihilo ores", true).getBoolean(true);
 		add_tcon_modifiers = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add Hammered and Crook'd modifiers", true).getBoolean(true);
+		biome_required = config.get(CATEGORY_COMPAT_OPTIONS, "Forestry: scented hive must be in the correct biome to attract bees", true).getBoolean(true);
 	}
 
 	public static void preInit() {

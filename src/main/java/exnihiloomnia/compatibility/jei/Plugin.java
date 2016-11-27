@@ -132,9 +132,10 @@ public class Plugin implements IModPlugin{
 
     private void registerSieveRecipes(IModRegistry registry) {
         ArrayList<JEISieveRecipe> sieveRecipes = new ArrayList<JEISieveRecipe>();
-        for (SieveRegistryEntry entry : SieveRegistry.getEntryMap().values()) {
+
+        for (SieveRegistryEntry entry : SieveRegistry.getEntryMap().values())
             sieveRecipes.add(new JEISieveRecipe(entry));
-        }
+
         registry.addRecipes(sieveRecipes);
     }
 

@@ -21,7 +21,8 @@
             "platinum": { "textures": { "all": "exnihiloomnia:ore_gravel_platinum" } },
             "cobalt": { "textures": { "all": "exnihiloomnia:ore_gravel_cobalt" } },
             "ardite": { "textures": { "all": "exnihiloomnia:ore_gravel_ardite" } },
-            "osmium": { "textures": { "all": "exnihiloomnia:ore_gravel_osmium" } }
+            "osmium": { "textures": { "all": "exnihiloomnia:ore_gravel_osmium" } },
+            "draconium": { "textures": { "all": "exnihiloomnia:ore_gravel_draconium" } }
         }
     }
 }
