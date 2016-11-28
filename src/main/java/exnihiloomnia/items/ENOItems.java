@@ -102,12 +102,15 @@ public class ENOItems {
     public static List<Item> getItems() {
         List<Item> items = new ArrayList<Item>();
 
-        items.add(BUCKET_PORCELAIN_RAW);
-        items.add(BUCKET_PORCELAIN_EMPTY);
-        items.add(BUCKET_PORCELAIN_LAVA);
-        items.add(BUCKET_PORCELAIN_WATER);
-        items.add(BUCKET_PORCELAIN_WITCHWATER);
-        items.add(BUCKET_PORCELAIN_MILK);
+	if (ENOConfig.universal_bucket)
+	{
+		items.add(BUCKET_PORCELAIN_RAW);
+	        items.add(BUCKET_PORCELAIN_EMPTY);
+	        items.add(BUCKET_PORCELAIN_LAVA);
+	        items.add(BUCKET_PORCELAIN_WATER);
+	        items.add(BUCKET_PORCELAIN_WITCHWATER);
+	        items.add(BUCKET_PORCELAIN_MILK);
+	}
 
         items.add(CROOK_BONE);
         items.add(CROOK_WOOD);
@@ -170,12 +173,15 @@ public class ENOItems {
 
         ASTROLABE_JADE = new ItemAstrolabe().setUnlocalizedName("astrolabe_jade").setRegistryName("astrolabe_jade");
 
-        BUCKET_PORCELAIN_RAW = new Item().setUnlocalizedName("bucket_porcelain_raw").setRegistryName("bucket_porcelain_raw").setCreativeTab(ENO_TAB);
-        BUCKET_PORCELAIN_EMPTY = new ItemBucketPorcelain(Blocks.AIR).setUnlocalizedName("bucket_porcelain_empty").setRegistryName("bucket_porcelain_empty").setMaxStackSize(16);
-        BUCKET_PORCELAIN_WATER = new ItemBucketPorcelain(Blocks.FLOWING_WATER).setUnlocalizedName("bucket_porcelain_water").setRegistryName("bucket_porcelain_water");
-        BUCKET_PORCELAIN_LAVA = new ItemBucketPorcelain(Blocks.FLOWING_LAVA).setUnlocalizedName("bucket_porcelain_lava").setRegistryName("bucket_porcelain_lava");
-        BUCKET_PORCELAIN_MILK = new ItemBucketPorcelainMilk().setUnlocalizedName("bucket_porcelain_milk").setRegistryName("bucket_porcelain_milk");
-        BUCKET_PORCELAIN_WITCHWATER = new ItemBucketPorcelain(ENOBlocks.WITCHWATER).setUnlocalizedName("bucket_porcelain_witchwater").setRegistryName("bucket_porcelain_witchwater");
+	if (ENOConfig.universal_bucket)
+        {
+	        BUCKET_PORCELAIN_RAW = new Item().setUnlocalizedName("bucket_porcelain_raw").setRegistryName("bucket_porcelain_raw").setCreativeTab(ENO_TAB);
+	        BUCKET_PORCELAIN_EMPTY = new ItemBucketPorcelain(Blocks.AIR).setUnlocalizedName("bucket_porcelain_empty").setRegistryName("bucket_porcelain_empty").setMaxStackSize(16);
+	        BUCKET_PORCELAIN_WATER = new ItemBucketPorcelain(Blocks.FLOWING_WATER).setUnlocalizedName("bucket_porcelain_water").setRegistryName("bucket_porcelain_water");
+	        BUCKET_PORCELAIN_LAVA = new ItemBucketPorcelain(Blocks.FLOWING_LAVA).setUnlocalizedName("bucket_porcelain_lava").setRegistryName("bucket_porcelain_lava");
+	        BUCKET_PORCELAIN_MILK = new ItemBucketPorcelainMilk().setUnlocalizedName("bucket_porcelain_milk").setRegistryName("bucket_porcelain_milk");
+	        BUCKET_PORCELAIN_WITCHWATER = new ItemBucketPorcelain(ENOBlocks.WITCHWATER).setUnlocalizedName("bucket_porcelain_witchwater").setRegistryName("bucket_porcelain_witchwater");
+	}
 
         CROOK_WOOD = new ItemCrook(ENOToolMaterials.STICK).setUnlocalizedName("crook_wood").setRegistryName("crook_wood");
         CROOK_BONE = new ItemCrook(ENOToolMaterials.BONE).setUnlocalizedName("crook_bone").setRegistryName("crook_bone");

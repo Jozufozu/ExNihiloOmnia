@@ -3,6 +3,7 @@ package exnihiloomnia.client.models;
 import exnihiloomnia.ENO;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.ENOConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -58,16 +59,18 @@ public class ENOModels {
 			}
 		});
 
-
-		ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN);
-		ModelLoader.setCustomMeshDefinition(ENOItems.BUCKET_PORCELAIN, new ItemMeshDefinition()
+		if (ENOConfig.universal_bucket)
 		{
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack)
+			ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN);
+			ModelLoader.setCustomMeshDefinition(ENOItems.BUCKET_PORCELAIN, new ItemMeshDefinition()
 			{
-				return PORCELAIN_BUCKET_LOCATION;
-			}
-		});
-		ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN, PORCELAIN_BUCKET_LOCATION);
+				@Override
+				public ModelResourceLocation getModelLocation(ItemStack stack)
+				{
+					return PORCELAIN_BUCKET_LOCATION;
+				}
+			});
+			ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN, PORCELAIN_BUCKET_LOCATION);
+		}
 	}
 }
