@@ -1,6 +1,7 @@
 package exnihiloomnia.crafting;
 
 import exnihiloomnia.crafting.recipes.*;
+import exnihiloomnia.ENOConfig;
 import net.minecraftforge.common.config.Configuration;
 
 public class ENOCrafting {
@@ -45,7 +46,7 @@ public class ENOCrafting {
 		if (dolls_allowed)
 			DollRecipes.register();
 
-		if (porcelain_buckets_allowed)
+		if (ENOConfig.universal_bucket && porcelain_buckets_allowed)
 			BucketRecipes.register();
 		
 		MiscRecipes.registerSmeltingRecipes();
