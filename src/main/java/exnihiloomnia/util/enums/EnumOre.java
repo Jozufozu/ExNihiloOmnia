@@ -16,7 +16,9 @@ public enum EnumOre implements IStringSerializable {
 	OSMIUM(9, "osmium", new Color("608FC4"), true, false, false, 20),
 	ARDITE(10, "ardite", new Color("FF4D00"), false, true, false, 2),
 	COBALT(11, "cobalt", new Color("0B91FF"), false, true, false, 2),
-	DRACONIUM(12, "draconium", new Color("733DAB"), false, false, true, 2);
+	DRACONIUM(12, "draconium", new Color("733DAB"), false, false, true, 4),
+	YELLORITE(13, "yellorite", new Color("B6E324"), true, false, false, 2),
+	URANIUM(14, "uranium", new Color("47503F"), true, false, false, 2);
 
 	private final int meta;
 	private final String name;

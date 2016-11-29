@@ -121,6 +121,12 @@ public class TinkersCompatibility {
             case DRACONIUM:
                 return FluidRegistry.getFluid("draconium");
 
+            case YELLORITE:
+                return FluidRegistry.getFluid("yellorite");
+
+            case URANIUM:
+                return FluidRegistry.getFluid("uranium");
+
             default:
                 return null;
         }
