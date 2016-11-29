@@ -16,6 +16,8 @@ item.ore_broken.aluminum.name= Zerbrochenes Aluminiumerz
 item.ore_broken.ardite.name= Zerbrochenes Arditerz
 item.ore_broken.cobalt.name= Zerbrochenes Cobalterz
 item.ore_broken.osmium.name= Zerbrochenes Osmiumerz
+item.ore_broken.yellorite.name= Zerbrochenes Yelloriterz
+item.ore_broken.uranium.name= Zerbrochenes Uranerz
 
 item.ore_broken_nether.iron.name= Zerbrochenes Eisenerz
 item.ore_broken_nether.gold.name= Zerbrochenes Golderz
@@ -42,7 +44,7 @@ item.ore_broken_ender.aluminum.name= Zerbrochenes Aluminiumerz
 item.ore_broken_ender.ardite.name= Zerbrochenes Arditerz
 item.ore_broken_ender.cobalt.name= Zerbrochenes Cobalterz
 item.ore_broken_ender.osmium.name= Zerbrochenes Osmiumerz
-item.ore_broken_ender.draconium.name=Zerbrochenes Draconiumerz
+item.ore_broken_ender.draconium.name= Zerbrochenes Draconiumerz
 
 item.ore_crushed.iron.name= Zerstoßenes Eisenerz
 item.ore_crushed.gold.name= Zerstoßenes Golderz
@@ -56,7 +58,9 @@ item.ore_crushed.aluminum.name= Zerstoßenes Aluminiumerz
 item.ore_crushed.ardite.name= Zerstoßenes Arditerz
 item.ore_crushed.cobalt.name= Zerstoßenes Cobalterz
 item.ore_crushed.osmium.name= Zerstoßenes Osmiumerz
-item.ore_crushed.draconium.name=Zerstoßenes Drakoniumerz
+item.ore_crushed.draconium.name= Zerstoßenes Drakoniumerz
+item.ore_crushed.yellorite.name= Zerstoßenes Yelloriterz
+item.ore_crushed.uranium.name= Zerstoßenes Uranerz
 
 item.ore_powder.iron.name= Pulverisiertes Eisenerz
 item.ore_powder.gold.name= Pulverisiertes Golderz
@@ -70,7 +74,9 @@ item.ore_powder.aluminum.name= Pulverisiertes Aluminiumerz
 item.ore_powder.ardite.name= Pulverisiertes Arditerz
 item.ore_powder.cobalt.name= Pulverisiertes Cobalterz
 item.ore_powder.osmium.name= Pulverisiertes Osmiumerz
-item.ore_powder.draconium.name=Drakoniumerzstaub
+item.ore_powder.draconium.name= Drakoniumerzstaub
+item.ore_powder.yellorite.name= Pulverisiertes Yelloriterz
+item.ore_powder.uranium.name= Pulverisiertes Uranerz
 
 item.ore_ingot.iron.name= Eisenbarren
 item.ore_ingot.gold.name= Goldbarren
@@ -84,7 +90,9 @@ item.ore_ingot.aluminum.name= Aluminiumbarren
 item.ore_ingot.ardite.name= Arditbarren
 item.ore_ingot.cobalt.name= Cobaltbarren
 item.ore_ingot.osmium.name= Osmiumbarren
-item.ore_ingot.draconium.name=Drakoniumbarren
+item.ore_ingot.draconium.name= Drakoniumbarren
+item.ore_ingot.yellorite.name= Yelloriumbarren
+item.ore_ingot.uranium.name= Uranbarren
 
 tile.ore_gravel.iron.name= Eisenerzkies
 tile.ore_gravel.gold.name= Golderzkies
@@ -98,6 +106,8 @@ tile.ore_gravel.aluminum.name= Aluminiumerzkies
 tile.ore_gravel.ardite.name= Arditerzkies
 tile.ore_gravel.cobalt.name= Cobalterzkies
 tile.ore_gravel.osmium.name= Osmiumerzkies
+tile.ore_gravel.yellorite.name= Yelloriterzkies
+tile.ore_gravel.uranium.name= Uranerzkies
 
 tile.ore_gravel_nether.iron.name= Nether-Eisenerzkies
 tile.ore_gravel_nether.gold.name= Nether-Golderzkies
@@ -124,7 +134,7 @@ tile.ore_gravel_ender.aluminum.name= Ender-Aluminiumerzkies
 tile.ore_gravel_ender.ardite.name= Ender-Arditerzkies
 tile.ore_gravel_ender.cobalt.name= Ender-Cobalterzkies
 tile.ore_gravel_ender.osmium.name= Ender-Osmiumerzkies
-tile.ore_gravel_ender.draconium.name=Ender-Drakoniumerzkies
+tile.ore_gravel_ender.draconium.name= Ender-Drakoniumerzkies
 
 tile.ore_sand.iron.name= Eisenerzsand
 tile.ore_sand.gold.name= Golderzsand
@@ -138,7 +148,9 @@ tile.ore_sand.aluminum.name= Aluminiumerzsand
 tile.ore_sand.ardite.name= Arditerzsand
 tile.ore_sand.cobalt.name= Cobalterzsand
 tile.ore_sand.osmium.name= Osmiumerzsand
-tile.ore_sand.draconium.name=Drakoniumerzsand
+tile.ore_sand.draconium.name= Drakoniumerzsand
+tile.ore_sand.yellorite.name= Yelloriterzsand
+tile.ore_sand.uranium.name= Uranerzsand
 
 tile.ore_dust.iron.name= Eisenerzstaub
 tile.ore_dust.gold.name= Golderzstaub
@@ -152,7 +164,9 @@ tile.ore_dust.aluminum.name= Aluminiumerzstaub
 tile.ore_dust.ardite.name= Arditerzstaub
 tile.ore_dust.cobalt.name= Cobalterzstaub
 tile.ore_dust.osmium.name= Osmiumerzstaub
-tile.ore_dust.draconium.name=Drakoniumstaub
+tile.ore_dust.draconium.name= Drakoniumstaub
+tile.ore_dust.yellorite.name= Yelloriumstaub
+tile.ore_dust.uranium.name= Uranstaub
 
 item.seed_oak.name=Eichel
 item.seed_dark_oak.name=Große Eichel
