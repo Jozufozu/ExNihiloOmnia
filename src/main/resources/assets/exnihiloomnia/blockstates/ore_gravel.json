@@ -22,7 +22,9 @@
             "cobalt": { "textures": { "all": "exnihiloomnia:ore_gravel_cobalt" } },
             "ardite": { "textures": { "all": "exnihiloomnia:ore_gravel_ardite" } },
             "osmium": { "textures": { "all": "exnihiloomnia:ore_gravel_osmium" } },
-            "draconium": { "textures": { "all": "exnihiloomnia:ore_gravel_draconium" } }
+            "draconium": { "textures": { "all": "exnihiloomnia:ore_gravel_draconium" } },
+            "yellorite": { "textures": { "all": "exnihiloomnia:ore_gravel_yellorite" } },
+            "uranium": { "textures": { "all": "exnihiloomnia:ore_gravel_uranium" } }
         }
     }
 }

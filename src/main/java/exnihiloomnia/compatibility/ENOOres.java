@@ -37,6 +37,8 @@ public class ENOOres {
     public static boolean force_cobalt;
     public static boolean force_aluminum;
     public static boolean force_draconium;
+    public static boolean force_yellorite;
+    public static boolean force_uranium;
 
     public static boolean oredict_gravels;
     public static boolean oredict_sand;
@@ -107,6 +109,12 @@ public class ENOOres {
 
         if (OreDictionary.getOres("oreDraconium").size() > 0 || force_draconium)
             ores.add(EnumOre.DRACONIUM);
+
+        if (OreDictionary.getOres("oreYellorite").size() > 0 || force_yellorite)
+            ores.add(EnumOre.YELLORITE);
+
+        if (OreDictionary.getOres("oreUranium").size() > 0 || force_uranium)
+            ores.add(EnumOre.URANIUM);
 
         return ores;
     }
