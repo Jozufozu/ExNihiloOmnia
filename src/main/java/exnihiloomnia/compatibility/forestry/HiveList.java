@@ -5,6 +5,7 @@ import forestry.core.genetics.alleles.EnumAllele;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class HiveList {
 
@@ -17,6 +18,9 @@ public class HiveList {
     public static Hive END;
     public static Hive SNOW;
     public static Hive MARSH;
+
+    // MoreBees
+    public static Hive ROCK;
 
     public static void generateForestHive() {
         FOREST = new Hive(beehives, 0);
@@ -82,5 +86,18 @@ public class HiveList {
         MARSH.flowers = EnumAllele.Flowers.MUSHROOMS;
 
         MARSH.biomeTypes.add(BiomeDictionary.Type.SWAMP);
+    }
+
+    public static void generateRockHive() {
+        Block moreBeesHives = GameRegistry.findBlock("morebees", "hive");
+
+        if (moreBeesHives != null) {
+            ROCK = new Hive(moreBeesHives, 0);
+
+            ROCK.requiredCanSeeSky = false;
+            ROCK.requiredSubstrate = Blocks.STONE.getDefaultState();
+
+            ROCK.biomeTypes.add(BiomeDictionary.Type.HILLS);
+        }
     }
 }

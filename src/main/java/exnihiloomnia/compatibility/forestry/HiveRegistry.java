@@ -2,6 +2,7 @@ package exnihiloomnia.compatibility.forestry;
 
 import exnihiloomnia.ENO;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.Loader;
 
 import java.util.*;
 
@@ -50,6 +51,11 @@ public class HiveRegistry {
         registerHive(HiveList.END);
         registerHive(HiveList.SNOW);
         registerHive(HiveList.MARSH);
+
+        if (Loader.isModLoaded("morebees")) {
+            HiveList.generateRockHive();
+            registerHive(HiveList.ROCK);
+        }
 
         ENO.log.info("Hive Registry Completed!");
     }
