@@ -42,7 +42,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2;after:FunOres;after:draconicevolution;after:forestry;after:morebees;after:immersiveengineering;after:bigreactors")
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = ENO.DEPENDENCIES)
 public class ENO {
 
 	static {
@@ -54,7 +54,8 @@ public class ENO {
 	
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
-	public static final String VERSION = "1.2.1";
+	public static final String VERSION = "1.2.2";
+	public static final String DEPENDENCIES = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2;after:FunOres;after:draconicevolution;after:forestry;after:morebees;after:immersiveengineering;after:bigreactors";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;

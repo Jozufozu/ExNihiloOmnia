@@ -1,6 +1,6 @@
 package exnihiloomnia.compatibility.forestry.beelure;
 
-import exnihiloomnia.compatibility.forestry.ForestryCompatibility;
+import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.compatibility.forestry.Hive;
 import exnihiloomnia.compatibility.forestry.HiveRegistry;
 import exnihiloomnia.compatibility.forestry.Surroundings;
@@ -88,7 +88,7 @@ public class TileEntityBeeTrap extends TileEntity implements ITickable {
 
             //If the timer expires, then we require re-treatment with seed oil.
             if (timer > TIMER_MAX)
-                getWorld().setBlockState(pos, ForestryCompatibility.BEE_TRAP.getDefaultState(), 3);
+                getWorld().setBlockState(pos, ENOCompatibility.BEE_TRAP.getDefaultState(), 3);
         }
     }
 

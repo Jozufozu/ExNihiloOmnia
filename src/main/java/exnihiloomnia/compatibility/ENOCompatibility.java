@@ -7,10 +7,16 @@ import exnihiloomnia.compatibility.tconstruct.TinkersCompatibility;
 import exnihiloomnia.compatibility.top.TOPCompatibility;
 import exnihiloomnia.compatibility.veinminer.VeinMinerCompatibility;
 import exnihiloomnia.compatibility.waila.WailaCompatibility;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 
 public class ENOCompatibility {
+
+	public static Block BEE_TRAP = null;
+	public static Block BEE_TRAP_TREATED = null;
+
+
 	private static final String CATEGORY_COMPAT_OPTIONS = "compatibility options";
 	public static boolean register_veinminer_tools;
 	public static boolean register_veinminer_recipes_crook;

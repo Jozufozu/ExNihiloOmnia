@@ -379,7 +379,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && state.canManipulateFluids(this)) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return (T) fluidTank;
         }
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

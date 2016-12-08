@@ -49,6 +49,7 @@ public class FluidTransformWitchwater extends BarrelLogic {
 			if (world.rand.nextInt(1000) == 0
 					&& barrel.isWooden()
 					&& isOnTopOfWitchwater(barrel)
+					&& barrel.getFluid() != null
 					&& barrel.getFluid().getFluid() == FluidRegistry.WATER
 					&& barrel.getFluid().amount == barrel.getFluidTank().getCapacity()) {
 

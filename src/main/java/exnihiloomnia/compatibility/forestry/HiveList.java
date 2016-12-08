@@ -4,8 +4,8 @@ import forestry.apiculture.PluginApiculture;
 import forestry.core.genetics.alleles.EnumAllele;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class HiveList {
 
@@ -89,7 +89,7 @@ public class HiveList {
     }
 
     public static void generateRockHive() {
-        Block moreBeesHives = GameRegistry.findBlock("morebees", "hive");
+        Block moreBeesHives = Block.REGISTRY.getObject(new ResourceLocation("morebees", "hive"));
 
         if (moreBeesHives != null) {
             ROCK = new Hive(moreBeesHives, 0);
