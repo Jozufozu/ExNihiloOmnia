@@ -59,6 +59,8 @@ public class ENOOres {
         force_ardite = ENO.config.get(ORE_CATAGORY, "force ardite", false).getBoolean(false);
         force_cobalt = ENO.config.get(ORE_CATAGORY, "force cobalt", false).getBoolean(false);
         force_draconium = ENO.config.get(ORE_CATAGORY, "force draconium", false).getBoolean(false);
+        force_yellorite = ENO.config.get(ORE_CATAGORY, "force yellorite", false).getBoolean(false);
+        force_uranium = ENO.config.get(ORE_CATAGORY, "force uranium", false).getBoolean(false);
 
         oredict_gravels = ENO.config.get(ORE_CATAGORY, "add gravel ores to the ore dictionary", false).getBoolean(false);
         oredict_sand = ENO.config.get(ORE_CATAGORY, "add sand ores to the ore dictionary", false).getBoolean(false);

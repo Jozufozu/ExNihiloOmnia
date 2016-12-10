@@ -25,7 +25,7 @@ group= "jozufozu" // http://maven.apache.org/guides/mini/guide-naming-convention
 archivesBaseName = "exnihiloomnia"
 
 minecraft {
-    version = "1.10.2-12.18.2.2151"
+    version = "1.10.2-12.18.3.2185"
     runDir = "run"
 
     mappings = "snapshot_20161111"
@@ -53,7 +53,7 @@ repositories {
 
 dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe:1.10-1.3.3-41"
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.2.360"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.4.384"
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.1.194"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.5.6b.jenkins425"

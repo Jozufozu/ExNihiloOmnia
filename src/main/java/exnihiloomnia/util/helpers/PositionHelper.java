@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
 public class PositionHelper {
@@ -78,7 +79,8 @@ public class PositionHelper {
 	}
 	
 	public boolean isRainingAt(World world, BlockPos pos) {
-		return world.isRaining() && world.getBiomeForCoordsBody(pos).getRainfall() > 0f && isTopBlock(world, pos);
+		Biome biome = world.getBiomeForCoordsBody(pos);
+		return world.isRaining() && biome.canRain() && biome.getRainfall() > 0f && isTopBlock(world, pos);
 	}
 	
 	public boolean canRainReach(World world, BlockPos pos) {
