@@ -12,6 +12,8 @@ import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.items.misc.*;
 import exnihiloomnia.items.ores.ItemOre;
 import exnihiloomnia.items.sieveassist.ItemSifter;
+import exnihiloomnia.registries.ore.ItemBlockRemap;
+import exnihiloomnia.util.enums.EnumOreBlockType;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -42,6 +44,12 @@ public class ENOItems {
 	public static Item ASTROLABE_JADE;
 
     public static UniversalPorcelainBucket BUCKET_PORCELAIN;
+
+    public static Item REMAP_GRAVEL;
+    public static Item REMAP_GRAVEL_NETHER;
+    public static Item REMAP_GRAVEL_ENDER;
+    public static Item REMAP_SAND;
+    public static Item REMAP_DUST;
 
 	public static Item BUCKET_PORCELAIN_RAW;
 	public static Item BUCKET_PORCELAIN_EMPTY;
@@ -160,6 +168,12 @@ public class ENOItems {
     }
 
 	public static void init() {
+        REMAP_GRAVEL = new ItemBlockRemap(EnumOreBlockType.GRAVEL);
+        REMAP_GRAVEL_ENDER = new ItemBlockRemap(EnumOreBlockType.GRAVEL_ENDER);
+        REMAP_GRAVEL_NETHER = new ItemBlockRemap(EnumOreBlockType.GRAVEL_NETHER);
+        REMAP_SAND = new ItemBlockRemap(EnumOreBlockType.SAND);
+        REMAP_DUST = new ItemBlockRemap(EnumOreBlockType.DUST);
+
         POTATO_SEEDS = new ItemSeeds(Blocks.POTATOES, Blocks.FARMLAND).setUnlocalizedName("seeds_potato").setRegistryName("seeds_potato").setCreativeTab(ENO_TAB);
         CARROT_SEEDS = new ItemSeeds(Blocks.CARROTS, Blocks.FARMLAND).setUnlocalizedName("seeds_carrot").setRegistryName("seeds_carrot").setCreativeTab(ENO_TAB);
         SUGARCANE_SEEDS = new ItemBlockSpecial(Blocks.REEDS).setUnlocalizedName("seeds_sugarcane").setRegistryName("seeds_sugarcane").setCreativeTab(ENO_TAB);

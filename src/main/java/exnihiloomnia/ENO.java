@@ -2,6 +2,7 @@ package exnihiloomnia;
 
 import exnihiloomnia.client.textures.ENOTextures;
 import exnihiloomnia.crafting.recipes.MobDrops;
+import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.proxy.Proxy;
 import exnihiloomnia.registries.CommandRegistry;
@@ -52,7 +53,7 @@ public class ENO {
 	
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
-	public static final String VERSION = "1.2.2";
+	public static final String VERSION = "1.2.3";
 	public static final String DEPENDENCIES = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2;after:FunOres;after:draconicevolution;after:forestry;after:morebees;after:immersiveengineering;after:bigreactors;after:substratum";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
@@ -135,10 +136,24 @@ public class ENO {
 		}
 	}
 
-	//@Mod.EventBusSubscriber
+	@Mod.EventHandler
 	public void onMissingMapping(FMLMissingMappingsEvent event) {
 		for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
-			if (mapping.type == GameRegistry.Type.BLOCK);
+			if (mapping.type == GameRegistry.Type.ITEM && ENO.MODID.equals(mapping.resourceLocation.getResourceDomain())) {
+				String name = mapping.resourceLocation.getResourcePath();
+
+				if ("ore_gravel".equals(name))
+					mapping.remap(ENOItems.REMAP_GRAVEL);
+				if ("ore_gravel_ender".equals(name))
+					mapping.remap(ENOItems.REMAP_GRAVEL_ENDER);
+				if ("ore_gravel_nether".equals(name))
+					mapping.remap(ENOItems.REMAP_GRAVEL_NETHER);
+				if ("ore_sand".equals(name))
+					mapping.remap(ENOItems.REMAP_SAND);
+				if ("ore_dust".equals(name))
+					mapping.remap(ENOItems.REMAP_DUST);
+
+			}
 		}
 	}
 }
