@@ -4,6 +4,10 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.ore.BlockOre;
+import exnihiloomnia.registries.ore.OreRegistry;
+import exnihiloomnia.util.enums.EnumOreBlockType;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -18,7 +22,6 @@ import net.minecraftforge.client.model.*;
 public class ENOModels {
 	public static final ModelResourceLocation WITCHWATER_MODEL_LOCATION = new ModelResourceLocation("exnihiloomnia:witchwater", "fluid");
 	public static final ModelResourceLocation PORCELAIN_BUCKET_LOCATION = new ModelResourceLocation(new ResourceLocation(ENO.MODID, "porcelain_bucket"), "inventory");
-	public static final ModelResourceLocation ORE_BLOCK_LOCATION = new ModelResourceLocation(ENO.MODID + ":ore_block");
 
 	public enum LoaderPorcelainBucket implements ICustomModelLoader {
 		INSTANCE;
@@ -41,7 +44,6 @@ public class ENOModels {
 
 	public static void register() {
 		ModelLoaderRegistry.registerLoader(LoaderPorcelainBucket.INSTANCE);
-		//ModelLoaderRegistry.registerLoader(LoaderOreBlock.INSTANCE);
 
 		ModelBakery.registerItemVariants(new ItemBlock(ENOBlocks.WITCHWATER));
 		
@@ -71,14 +73,14 @@ public class ENOModels {
 			ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN, PORCELAIN_BUCKET_LOCATION);
 		}
 
-		/*
 		for (Block ore : OreRegistry.blocks.values()) {
 			ModelLoader.setCustomStateMapper(ore, new StateMapperBase() {
 				protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-					return ORE_BLOCK_LOCATION;
+					EnumOreBlockType type = (EnumOreBlockType) state.getValue(BlockOre.TYPE);
+					return type.getLocation();
 				}
 			});
 		}
-		*/
+
 	}
 }

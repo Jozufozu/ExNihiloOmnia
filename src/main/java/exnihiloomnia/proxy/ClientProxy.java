@@ -74,7 +74,7 @@ public class ClientProxy extends Proxy {
         }
 
         for (EnumOreBlockType type : EnumOreBlockType.values()) {
-            ModelResourceLocation loc = new ModelResourceLocation(ENO.MODID + ":ore_" + type.getName());
+            ModelResourceLocation loc = type.getLocation();
 
             for (Block ore : OreRegistry.blocks.values()) {
                 Item item = Item.getItemFromBlock(ore);

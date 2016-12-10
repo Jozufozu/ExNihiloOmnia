@@ -1,6 +1,8 @@
 package exnihiloomnia.util.enums;
 
+import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 
@@ -28,6 +30,10 @@ public enum EnumOreBlockType implements IStringSerializable {
 
 	public Item getCrafting() {
 		return crafting;
+	}
+
+	public ModelResourceLocation getLocation() {
+		return new ModelResourceLocation(ENO.MODID + ":ore_" + this.name);
 	}
 
 	public static EnumOreBlockType fromMetadata(int meta) {
