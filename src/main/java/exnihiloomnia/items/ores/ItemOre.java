@@ -1,8 +1,8 @@
 package exnihiloomnia.items.ores;
 
-import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.util.enums.EnumOre;
+import exnihiloomnia.registries.ore.Ore;
+import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -26,21 +26,26 @@ public class ItemOre extends Item {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        int i = stack.getMetadata();
-        return super.getUnlocalizedName() + "." + EnumOre.fromMetadata(i).getName();
+        Ore ore = OreRegistry.getOre(stack.getMetadata());
+
+        String suff  = "";
+
+        if (ore != null)
+            suff = "." + ore.getName();
+
+        return super.getUnlocalizedName() + suff;
     }
 
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for (EnumOre ore : ENO.oreList) {
-            if (!(this.getType().equals(EnumOreItemType.INGOT) && (ore.equals(EnumOre.GOLD) || ore.equals(EnumOre.IRON))))
-                if (       (ore.hasGravel() && getType() == EnumOreItemType.BROKEN)
-                        || (ore.hasEnd() && getType() == EnumOreItemType.BROKEN_ENDER)
-                        || (ore.hasNether() && getType() == EnumOreItemType.BROKEN_NETHER)
-                        || getType() == EnumOreItemType.CRUSHED
-                        || getType() == EnumOreItemType.POWDERED
-                        || getType() == EnumOreItemType.INGOT)
-                    subItems.add(new ItemStack(itemIn, 1, ore.getMetadata()));
+        for (Ore ore : OreRegistry.registry.values()) {
+            if (    (ore.hasGravel() && getType() == EnumOreItemType.BROKEN) ||
+                    (ore.hasEnd() && getType() == EnumOreItemType.BROKEN_ENDER) ||
+                    (ore.hasNether() && getType() == EnumOreItemType.BROKEN_NETHER) ||
+                    (ore.getIngot() == null && getType() == EnumOreItemType.INGOT) ||
+                    getType() == EnumOreItemType.CRUSHED ||
+                    getType() == EnumOreItemType.POWDERED)
+                subItems.add(new ItemStack(itemIn, 1, ore.getMetadata()));
         }
     }
 }

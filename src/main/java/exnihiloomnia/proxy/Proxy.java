@@ -5,7 +5,6 @@ import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.blocks.barrels.states.BarrelStates;
 import exnihiloomnia.compatibility.ENOCompatibility;
-import exnihiloomnia.compatibility.ENOOres;
 import exnihiloomnia.crafting.ENOCrafting;
 import exnihiloomnia.entities.ENOEntities;
 import exnihiloomnia.fluids.ENOFluids;
@@ -14,6 +13,7 @@ import exnihiloomnia.items.ENOFuelHandler;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.materials.ENOToolMaterials;
 import exnihiloomnia.registries.ENORegistries;
+import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.world.ENOWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -35,7 +35,7 @@ public abstract class Proxy {
 
 		ENO.config.load();
 		ENOConfig.configure(ENO.config);
-		ENO.oreList = ENOOres.getActiveOres();
+		OreRegistry.init();
 
 		ENOFluids.register();
 		ENOToolMaterials.configure();
@@ -62,9 +62,6 @@ public abstract class Proxy {
 		ENORegistries.initialize();
 		ENOCompatibility.init();
 
-		ENOOres.addCrafting();
-		ENOOres.addSmelting();
-
 		ENOWorld.registerWorldProviders();
 
 		GameRegistry.registerFuelHandler(new ENOFuelHandler());
@@ -72,6 +69,6 @@ public abstract class Proxy {
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
-		ENOOres.addOreDict();
+		//ENOOres.addOreDict();
 	}
 }

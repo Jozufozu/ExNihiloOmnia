@@ -12,13 +12,14 @@ import exnihiloomnia.blocks.sieves.renderer.SieveRenderer;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.client.models.ENOModels;
 import exnihiloomnia.compatibility.ENOCompatibility;
-import exnihiloomnia.compatibility.ENOOres;
 import exnihiloomnia.compatibility.forestry.ForestryCompatibility;
 import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.entities.thrown.stone.EntityStone;
 import exnihiloomnia.entities.thrown.stone.EntityStoneRenderer;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.ores.ItemOre;
+import exnihiloomnia.registries.ore.OreRegistry;
+import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -58,7 +59,7 @@ public class ClientProxy extends Proxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        ENOOres.regColors();
+        OreRegistry.regColors();
     }
 
     public static void registerItemModels() {
@@ -71,6 +72,18 @@ public class ClientProxy extends Proxy {
         for (Block block : ENOBlocks.getBlocks()) {
             registerRenderer(block);
         }
+
+        for (EnumOreBlockType type : EnumOreBlockType.values()) {
+            ModelResourceLocation loc = new ModelResourceLocation(ENO.MODID + ":ore_" + type.getName());
+
+            for (Block ore : OreRegistry.blocks.values()) {
+                Item item = Item.getItemFromBlock(ore);
+
+                if (item != null) {
+                    ModelLoader.setCustomModelResourceLocation(item, type.ordinal(), loc);
+                }
+            }
+        }
     }
 
     private void registerBlockRenderers() {
@@ -82,7 +95,6 @@ public class ClientProxy extends Proxy {
 
     private void registerEntityRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityStone.class, EntityStoneRenderer.INSTANCE);
-
     }
 
     private static void registerRenderer(Block block) {

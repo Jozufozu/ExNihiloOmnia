@@ -78,11 +78,13 @@ public class ENOBlocks {
         if (ENOConfig.end_cake)
             blocks.add(END_CAKE);
 
+        /*
         blocks.add(ORE_GRAVEL);
         blocks.add(ORE_GRAVEL_ENDER);
         blocks.add(ORE_GRAVEL_NETHER);
         blocks.add(ORE_SAND);
         blocks.add(ORE_DUST);
+        */
 
         return blocks;
     }

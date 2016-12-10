@@ -1,7 +1,8 @@
 package exnihiloomnia.blocks.ores;
 
-import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
+import exnihiloomnia.registries.ore.Ore;
+import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.BlockFalling;
@@ -52,12 +53,12 @@ public class BlockOre extends BlockFalling {
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> items) {
-        for (EnumOre ore : ENO.oreList) {
-            if ((ore.hasGravel() && getType() == EnumOreBlockType.GRAVEL)
-                || (ore.hasEnd() && getType() == EnumOreBlockType.GRAVEL_ENDER)
-                || (ore.hasNether() && getType() == EnumOreBlockType.GRAVEL_NETHER)
-                || getType() == EnumOreBlockType.SAND
-                || getType() == EnumOreBlockType.DUST)
+        for (Ore ore : OreRegistry.registry.values()) {
+            if (    (ore.hasGravel() && getType() == EnumOreBlockType.GRAVEL) ||
+                    (ore.hasEnd() && getType() == EnumOreBlockType.GRAVEL_ENDER) ||
+                    (ore.hasNether() && getType() == EnumOreBlockType.GRAVEL_NETHER) ||
+                    getType() == EnumOreBlockType.SAND ||
+                    getType() == EnumOreBlockType.DUST)
                 
             	items.add(new ItemStack(item, 1, ore.getMetadata()));
         }

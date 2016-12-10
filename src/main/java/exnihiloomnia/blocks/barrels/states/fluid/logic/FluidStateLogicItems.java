@@ -5,7 +5,6 @@ import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
 import exnihiloomnia.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -44,7 +43,7 @@ public class FluidStateLogicItems extends BarrelLogic {
 				}
 			}
 
-			if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+			if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 				FluidUtil.interactWithFluidHandler(item, barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player);
 			}
 			else if (FluidContainerRegistry.isEmptyContainer(item) && fluid.amount >= barrel.getFluidTank().getCapacity()) {

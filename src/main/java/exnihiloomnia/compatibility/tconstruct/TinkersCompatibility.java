@@ -1,12 +1,14 @@
 package exnihiloomnia.compatibility.tconstruct;
 
 import exnihiloomnia.ENO;
-import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.compatibility.ENOCompatibility;
 import exnihiloomnia.compatibility.tconstruct.modifiers.ModCrooked;
 import exnihiloomnia.compatibility.tconstruct.modifiers.ModHammered;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.util.enums.EnumOre;
+import exnihiloomnia.registries.ore.Ore;
+import exnihiloomnia.registries.ore.OreRegistry;
+import exnihiloomnia.util.enums.EnumOreBlockType;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -14,6 +16,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.modifiers.IModifier;
 import slimeknights.tconstruct.library.modifiers.Modifier;
+
+import javax.annotation.Nullable;
 
 public class TinkersCompatibility {
 
@@ -29,7 +33,7 @@ public class TinkersCompatibility {
         }
 
         if (ENOCompatibility.add_smeltery_melting) {
-            for (EnumOre ore : ENO.oreList)
+            for (Ore ore : OreRegistry.registry.values())
                 tryRegisterOre(ore);
         }
     }
@@ -47,88 +51,35 @@ public class TinkersCompatibility {
         return modifier;
     }
 
-    private static void tryRegisterOre(EnumOre ore) {
+    private static void tryRegisterOre(Ore ore) {
         try {
+            Fluid metal = findMoltenMetal(ore);
+
             //items
             if (ore.hasGravel())
-                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
             
             if (ore.hasEnd())
-                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
             
             if (ore.hasNether())
-                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
             
-            TinkerRegistry.registerMelting(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
-            TinkerRegistry.registerMelting(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT/4);
+            TinkerRegistry.registerMelting(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
+            TinkerRegistry.registerMelting(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
 
             //blocks
-            if (ore.hasGravel())
-                TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_GRAVEL, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
-            
-            if (ore.hasEnd())
-                TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
-            
-            if (ore.hasNether())
-                TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_GRAVEL_NETHER, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
-            
-            TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_SAND, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
-            TinkerRegistry.registerMelting(new ItemStack(ENOBlocks.ORE_DUST, 1, ore.getMetadata()), findMoltenMetal(ore), INGOT_AMOUNT);
+            Block oreBlock = ore.getBlock();
+            for (EnumOreBlockType type : EnumOreBlockType.values())
+                if (ore.hasType(type)) TinkerRegistry.registerMelting(new ItemStack(oreBlock, 1, type.ordinal()), metal, INGOT_AMOUNT);
         }
         catch (Exception e) {
             ENO.log.error("Could not add smeltery melting for: " + ore.getName().toUpperCase());
         }
     }
 
-    private static Fluid findMoltenMetal(EnumOre ore) {
-        switch (ore) {
-            case IRON:
-                return FluidRegistry.getFluid("iron");
-
-            case GOLD:
-                return FluidRegistry.getFluid("gold");
-
-            case TIN:
-                return FluidRegistry.getFluid("tin");
-
-            case COPPER:
-                return FluidRegistry.getFluid("copper");
-
-            case SILVER:
-                return FluidRegistry.getFluid("silver");
-
-            case LEAD:
-                return FluidRegistry.getFluid("lead");
-
-            case NICKEL:
-                return FluidRegistry.getFluid("nickel");
-
-            case PLATINUM:
-                return FluidRegistry.getFluid("platinum");
-
-            case ALUMINUM:
-                return FluidRegistry.getFluid("aluminum");
-                
-            case OSMIUM:
-                return FluidRegistry.getFluid("osmium");
-                
-            case COBALT:
-                return FluidRegistry.getFluid("cobalt");
-                
-            case ARDITE:
-                return FluidRegistry.getFluid("ardite");
-
-            case DRACONIUM:
-                return FluidRegistry.getFluid("draconium");
-
-            case YELLORITE:
-                return FluidRegistry.getFluid("yellorite");
-
-            case URANIUM:
-                return FluidRegistry.getFluid("uranium");
-
-            default:
-                return null;
-        }
+    @Nullable
+    private static Fluid findMoltenMetal(Ore ore) {
+        return FluidRegistry.getFluid(ore.getName());
     }
 }

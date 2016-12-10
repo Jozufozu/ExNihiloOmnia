@@ -6,8 +6,10 @@ import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
 import exnihiloomnia.registries.hammering.files.HammerRecipeLoader;
+import exnihiloomnia.registries.ore.Ore;
+import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
-import exnihiloomnia.util.enums.EnumOre;
+import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -81,11 +83,13 @@ public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 	}
 	
 	public static void registerVanillaRecipes() {
-		for (EnumOre ore : ENO.oreList) {
+		for (Ore ore : OreRegistry.registry.values()) {
 			ItemStack oreCrushed = new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata());
 			ItemStack orePowdered = new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata());
+
+			Block block = ore.getBlock();
 			if (ore.hasGravel()) {
-				HammerRegistryEntry gravel = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
+				HammerRegistryEntry gravel = new HammerRegistryEntry(block.getStateFromMeta(EnumOreBlockType.GRAVEL.ordinal()), EnumMetadataBehavior.SPECIFIC);
 				gravel.addReward(oreCrushed, 100, 0);
 				gravel.addReward(oreCrushed, 100, 0);
 				gravel.addReward(oreCrushed, 100, 0);
@@ -94,20 +98,9 @@ public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 				gravel.addReward(oreCrushed, 5, 1);
 				add(gravel);
 			}
-			
+
 			if (ore.hasNether()) {
-				HammerRegistryEntry nether = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL_NETHER.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
-				nether.addReward(oreCrushed, 100, 0);
-				nether.addReward(oreCrushed, 100, 0);
-				nether.addReward(oreCrushed, 100, 0);
-				nether.addReward(oreCrushed, 100, 0);
-				nether.addReward(oreCrushed, 50, 2);
-				nether.addReward(oreCrushed, 5, 1);
-				add(nether);
-			}
-			
-			if (ore.hasEnd()) {
-				HammerRegistryEntry nether = new HammerRegistryEntry(ENOBlocks.ORE_GRAVEL_ENDER.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
+				HammerRegistryEntry nether = new HammerRegistryEntry(block.getStateFromMeta(EnumOreBlockType.GRAVEL_NETHER.ordinal()), EnumMetadataBehavior.SPECIFIC);
 				nether.addReward(oreCrushed, 100, 0);
 				nether.addReward(oreCrushed, 100, 0);
 				nether.addReward(oreCrushed, 100, 0);
@@ -117,7 +110,18 @@ public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 				add(nether);
 			}
 
-			HammerRegistryEntry sand = new HammerRegistryEntry(ENOBlocks.ORE_SAND.getStateFromMeta(ore.getMetadata()), EnumMetadataBehavior.SPECIFIC);
+			if (ore.hasEnd()) {
+				HammerRegistryEntry nether = new HammerRegistryEntry(block.getStateFromMeta(EnumOreBlockType.GRAVEL_ENDER.ordinal()), EnumMetadataBehavior.SPECIFIC);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 100, 0);
+				nether.addReward(oreCrushed, 50, 2);
+				nether.addReward(oreCrushed, 5, 1);
+				add(nether);
+			}
+
+			HammerRegistryEntry sand = new HammerRegistryEntry(block.getStateFromMeta(EnumOreBlockType.SAND.ordinal()), EnumMetadataBehavior.SPECIFIC);
 			sand.addReward(orePowdered, 100, 0);
 			sand.addReward(orePowdered, 100, 0);
 			sand.addReward(orePowdered, 100, 0);

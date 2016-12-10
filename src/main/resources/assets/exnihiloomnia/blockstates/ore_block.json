@@ -1,0 +1,17 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:ore_gravel"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}],
+        "type": {
+            "gravel": { "model": "exnihiloomnia:ore_gravel" },
+            "gravel_nether": { "model": "exnihiloomnia:ore_gravel_nether" },
+            "gravel_ender": { "model": "exnihiloomnia:ore_gravel_ender" },
+            "sand": { "model": "exnihiloomnia:ore_sand" },
+            "dust": { "model": "exnihiloomnia:ore_dust" }
+        }
+    }
+}

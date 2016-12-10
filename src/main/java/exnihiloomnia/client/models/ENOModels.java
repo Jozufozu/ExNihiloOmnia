@@ -1,9 +1,9 @@
 package exnihiloomnia.client.models;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.ENOConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -18,14 +18,13 @@ import net.minecraftforge.client.model.*;
 public class ENOModels {
 	public static final ModelResourceLocation WITCHWATER_MODEL_LOCATION = new ModelResourceLocation("exnihiloomnia:witchwater", "fluid");
 	public static final ModelResourceLocation PORCELAIN_BUCKET_LOCATION = new ModelResourceLocation(new ResourceLocation(ENO.MODID, "porcelain_bucket"), "inventory");
+	public static final ModelResourceLocation ORE_BLOCK_LOCATION = new ModelResourceLocation(ENO.MODID + ":ore_block");
 
-	public enum LoaderDynBucket implements ICustomModelLoader
-	{
+	public enum LoaderPorcelainBucket implements ICustomModelLoader {
 		INSTANCE;
 
 		@Override
-		public boolean accepts(ResourceLocation modelLocation)
-		{
+		public boolean accepts(ResourceLocation modelLocation) {
 			return modelLocation.getResourceDomain().equals(ENO.MODID) && modelLocation.getResourcePath().contains("porcelainbucket");
 		}
 
@@ -36,14 +35,13 @@ public class ENOModels {
 		}
 
 		@Override
-		public void onResourceManagerReload(IResourceManager resourceManager)
-		{
-			// no need to clear cache since we create a new model instance
+		public void onResourceManagerReload(IResourceManager resourceManager) {
 		}
 	}
 
 	public static void register() {
-		ModelLoaderRegistry.registerLoader(LoaderDynBucket.INSTANCE);
+		ModelLoaderRegistry.registerLoader(LoaderPorcelainBucket.INSTANCE);
+		//ModelLoaderRegistry.registerLoader(LoaderOreBlock.INSTANCE);
 
 		ModelBakery.registerItemVariants(new ItemBlock(ENOBlocks.WITCHWATER));
 		
@@ -72,5 +70,15 @@ public class ENOModels {
 			});
 			ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN, PORCELAIN_BUCKET_LOCATION);
 		}
+
+		/*
+		for (Block ore : OreRegistry.blocks.values()) {
+			ModelLoader.setCustomStateMapper(ore, new StateMapperBase() {
+				protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+					return ORE_BLOCK_LOCATION;
+				}
+			});
+		}
+		*/
 	}
 }

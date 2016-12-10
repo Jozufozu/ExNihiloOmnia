@@ -55,7 +55,7 @@ public class ENO {
 	public static final String NAME = "Ex Nihilo Omnia";
 	public static final String MODID = "exnihiloomnia";
 	public static final String VERSION = "1.2.2";
-	public static final String DEPENDENCIES = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2;after:FunOres;after:draconicevolution;after:forestry;after:morebees;after:immersiveengineering;after:bigreactors";
+	public static final String DEPENDENCIES = "after:tconstruct;after:mekanism;after:IC2;after:appliedenergistics2;after:FunOres;after:draconicevolution;after:forestry;after:morebees;after:immersiveengineering;after:bigreactors;after:substratum";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;
@@ -85,7 +85,6 @@ public class ENO {
 	@SideOnly(Side.CLIENT)
 	public void onTextureStitchEvent(TextureStitchEvent.Pre event) {
 		ENOTextures.registerCustomTextures(event.getMap());
-		ENOTextures.registerOreTextures(event.getMap());
 		ENOTextures.setMeshTextures();
 	}
 

@@ -6,11 +6,11 @@ import exnihiloomnia.client.textures.files.DynamicTextureSprite;
 import exnihiloomnia.client.textures.files.TextureLoader;
 import exnihiloomnia.client.textures.files.TextureLocations;
 import exnihiloomnia.client.textures.manipulation.TextureManipulation;
-import exnihiloomnia.compatibility.ENOOres;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.meshs.ItemMesh;
+import exnihiloomnia.registries.ore.Ore;
+import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.Color;
-import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -46,16 +46,18 @@ public class ENOTextures {
             BufferedImage fore = TextureLoader.load(TextureLocations.getBlockLocation(ENO.MODID, templateName + "_template"));
             BufferedImage back = TextureLoader.load(TextureLocations.getBlockLocation(ENO.MODID, type.getName() + "_base"));
 
-            for (EnumOre ore : EnumOre.values()) {
-                BufferedImage recolor = TextureManipulation.recolor(fore, new Color(ore.getColor()));
-                BufferedImage comp;
-                if (ENOConfig.glitch_art)
-                    comp = TextureManipulation.composite(TextureManipulation.aberrate(back, random), recolor);
-                else
-                    comp = TextureManipulation.composite(back, recolor);
+            for (Ore ore : OreRegistry.registry.values()) {
+                if (ore.hasType(type)) {
+                    BufferedImage recolor = TextureManipulation.recolor(fore, new Color(ore.getColor()));
+                    BufferedImage comp;
+                    if (ENOConfig.glitch_art)
+                        comp = TextureManipulation.composite(TextureManipulation.aberrate(back, random), recolor);
+                    else
+                        comp = TextureManipulation.composite(back, recolor);
 
-                DynamicTextureSprite sprite = DynamicTextureSprite.fromImage(ENOOres.getOreName(ore, type), comp);
-                forceTextureRegistration(map, sprite);
+                    DynamicTextureSprite sprite = DynamicTextureSprite.fromImage(ore.getOreName(type), comp);
+                    forceTextureRegistration(map, sprite);
+                }
             }
 		}
 	}

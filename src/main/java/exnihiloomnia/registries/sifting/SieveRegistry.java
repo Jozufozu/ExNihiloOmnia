@@ -6,9 +6,10 @@ import exnihiloomnia.compatibility.industrialcraft.IC2;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.IRegistry;
+import exnihiloomnia.registries.ore.Ore;
+import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.registries.sifting.files.SieveRecipeLoader;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
-import exnihiloomnia.util.enums.EnumOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -158,7 +159,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 		
 		SieveRegistryEntry gravel = new SieveRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED);
         
-		for (EnumOre ore : ENO.oreList) {
+		for (Ore ore : OreRegistry.registry.values()) {
         	if (ore.hasGravel())
             	gravel.addReward(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), ore.getRarity());
         }
@@ -181,7 +182,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 
 		SieveRegistryEntry nethergravel = new SieveRegistryEntry(ENOBlocks.GRAVEL_NETHER.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		
-		for (EnumOre ore : ENO.oreList) {
+		for (Ore ore : OreRegistry.registry.values()) {
 			if (ore.hasNether())
 				nethergravel.addReward(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), ore.getRarity());
 		}
@@ -193,7 +194,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 		SieveRegistryEntry endergravel = new SieveRegistryEntry(ENOBlocks.GRAVEL_ENDER.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		endergravel.addReward(new ItemStack(ENOItems.CHORUS_SEEDS), 10);
 
-		for (EnumOre ore : ENO.oreList) {
+		for (Ore ore : OreRegistry.registry.values()) {
 			if (ore.hasEnd())
 				endergravel.addReward(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), ore.getRarity());
 		}
@@ -202,7 +203,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 
         SieveRegistryEntry sand = new SieveRegistryEntry(Blocks.SAND.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		
-        for (EnumOre ore : ENO.oreList) {
+        for (Ore ore : OreRegistry.registry.values()) {
 			if (ore.hasGravel())
 				sand.addReward(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), ore.getRarity());
 		}
@@ -214,7 +215,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 
         SieveRegistryEntry dust = new SieveRegistryEntry(ENOBlocks.DUST.getDefaultState(), EnumMetadataBehavior.IGNORED);
         
-        for (EnumOre ore : ENO.oreList) {
+        for (Ore ore : OreRegistry.registry.values()) {
 			if (ore.hasGravel())
             	dust.addReward(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), ore.getRarity());
         }

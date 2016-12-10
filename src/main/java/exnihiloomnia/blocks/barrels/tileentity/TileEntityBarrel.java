@@ -50,27 +50,21 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 		@Override
 		public int fill(FluidStack resource, boolean doFill)  {
 			if (resource == null || state == null || !state.canManipulateFluids(getBarrel()))
-			{
 				return 0;
-			}
 
-			if (!doFill)
-			{
+			if (!doFill) {
+
 				if (fluid == null)
-				{
 					return Math.min(capacity, resource.amount);
-				}
 
 				if (!fluid.isFluidEqual(resource))
-				{
 					return 0;
-				}
 
 				return Math.min(capacity - fluid.amount, resource.amount);
 			}
 
-			if (fluid == null)
-			{
+			if (fluid == null) {
+
 				fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
 				setState(BarrelStates.FLUID);
 				setColor(fluid.getFluid().getColor());
@@ -79,25 +73,21 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 			}
 
 			if (!fluid.isFluidEqual(resource))
-			{
 				return 0;
-			}
 
-			int avaliable = capacity - fluid.amount;
+			int available = capacity - fluid.amount;
 
-			if (resource.amount < avaliable)
-			{
+			if (resource.amount < available) {
 				fluid.amount += resource.amount;
-				avaliable = resource.amount;
+				available = resource.amount;
 				requestSync();
 			}
-			else
-			{
+			else {
 				fluid.amount = capacity;
 				requestSync();
 			}
 
-			return avaliable;
+			return available;
 		}
 
 		@Override
@@ -109,7 +99,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
             else {
 				FluidStack drain = drainInternal(maxDrain, doDrain);
 
-				if (fluid == null) {
+				if (fluid == null || fluid.amount <= 0) {
 					setState(BarrelStates.EMPTY);
 					setColor(Color.WHITE);
 				}
@@ -373,7 +363,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && state.canManipulateFluids(this)) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override

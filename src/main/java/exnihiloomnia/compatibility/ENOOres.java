@@ -5,15 +5,10 @@ import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.util.enums.EnumOreBlockType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -209,14 +204,5 @@ public class ENOOres {
                     GameRegistry.addSmelting(new ItemStack(ENOBlocks.ORE_GRAVEL_ENDER, 1, ore.getMetadata()), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()), 0);
             }
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void regColors() {
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                return tintIndex == 1 ? EnumOre.fromMetadata(stack.getMetadata()).getColor() : -1;
-            }
-        }, new Item[]{ENOItems.BROKEN_ORE, ENOItems.BROKEN_ORE_ENDER, ENOItems.BROKEN_ORE_NETHER, ENOItems.CRUSHED_ORE, ENOItems.POWDERED_ORE, ENOItems.INGOT_ORE});
     }
 }
