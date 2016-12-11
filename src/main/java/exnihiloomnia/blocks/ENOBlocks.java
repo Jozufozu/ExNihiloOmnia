@@ -16,13 +16,14 @@ import exnihiloomnia.blocks.leaves.TileEntityInfestedLeaves;
 import exnihiloomnia.blocks.misc.BlockChorusSapling;
 import exnihiloomnia.blocks.misc.BlockDust;
 import exnihiloomnia.blocks.misc.BlockOtherGravel;
-import exnihiloomnia.blocks.ores.BlockOre;
 import exnihiloomnia.blocks.sieves.BlockSieveWood;
 import exnihiloomnia.blocks.sieves.tileentity.TileEntitySieve;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.items.ENOItems;
-import exnihiloomnia.items.itemblocks.*;
-import exnihiloomnia.util.enums.EnumOreBlockType;
+import exnihiloomnia.items.itemblocks.ItemBarrelGlassColored;
+import exnihiloomnia.items.itemblocks.ItemBarrelWood;
+import exnihiloomnia.items.itemblocks.ItemInfestedLeaves;
+import exnihiloomnia.items.itemblocks.ItemSieveWood;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -49,12 +50,6 @@ public class ENOBlocks {
 	public static Block END_CAKE;
 	public static Block CHORUS_SPROUT;
 
-    public static Block ORE_GRAVEL;
-    public static Block ORE_GRAVEL_NETHER;
-    public static Block ORE_GRAVEL_ENDER;
-    public static Block ORE_SAND;
-    public static Block ORE_DUST;
-
     public static List<Block> getBlocks() {
         List<Block> blocks = new ArrayList<Block>();
 
@@ -78,14 +73,6 @@ public class ENOBlocks {
         if (ENOConfig.end_cake)
             blocks.add(END_CAKE);
 
-        /*
-        blocks.add(ORE_GRAVEL);
-        blocks.add(ORE_GRAVEL_ENDER);
-        blocks.add(ORE_GRAVEL_NETHER);
-        blocks.add(ORE_SAND);
-        blocks.add(ORE_DUST);
-        */
-
         return blocks;
     }
 
@@ -108,12 +95,6 @@ public class ENOBlocks {
         END_CAKE = new BlockEndCake().setUnlocalizedName("end_cake").setRegistryName("end_cake");
         CHORUS_SPROUT = new BlockChorusSapling().setUnlocalizedName("chorus_sprout").setRegistryName("chorus_sprout");
 
-        ORE_GRAVEL = new BlockOre(EnumOreBlockType.GRAVEL).setUnlocalizedName("ore_gravel").setRegistryName("ore_gravel");
-        ORE_GRAVEL_ENDER = new BlockOre(EnumOreBlockType.GRAVEL_ENDER).setUnlocalizedName("ore_gravel_ender").setRegistryName("ore_gravel_ender");
-        ORE_GRAVEL_NETHER = new BlockOre(EnumOreBlockType.GRAVEL_NETHER).setUnlocalizedName("ore_gravel_nether").setRegistryName("ore_gravel_nether");
-        ORE_SAND = new BlockOre(EnumOreBlockType.SAND).setHardness(0.5F).setUnlocalizedName("ore_sand").setRegistryName("ore_sand");
-        ORE_DUST = new BlockOre(EnumOreBlockType.DUST).setHardness(0.4F).setUnlocalizedName("ore_dust").setRegistryName("ore_dust");
-
         for (Block block : getBlocks()) {
             GameRegistry.register(block);
             
@@ -123,8 +104,6 @@ public class ENOBlocks {
                 GameRegistry.register(new ItemBarrelGlassColored(block).setRegistryName(block.getRegistryName()));
             else if (block == SIEVE_WOOD)
                 GameRegistry.register(new ItemSieveWood(block).setRegistryName(block.getRegistryName()));
-            else if (block instanceof BlockOre)
-                GameRegistry.register(new ItemBlockOre(block).setRegistryName(block.getRegistryName()));
             else if (block == INFESTED_LEAVES)
                 GameRegistry.register(new ItemInfestedLeaves(block).setRegistryName(block.getRegistryName()));
             else if (block != WITCHWATER && block != CHORUS_SPROUT)

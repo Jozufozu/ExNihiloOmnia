@@ -7,7 +7,6 @@ import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.proxy.Proxy;
 import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
-import exnihiloomnia.util.enums.EnumOre;
 import exnihiloomnia.world.ENOWorld;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -39,8 +38,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-
 @Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = ENO.DEPENDENCIES)
 public class ENO {
 
@@ -62,8 +59,6 @@ public class ENO {
 	public static Logger log = LogManager.getLogger(ENO.NAME);
 	public static String path;
 	public static Configuration config;
-
-	public static List<EnumOre> oreList;
 
 	@EventHandler
 	public void preInitialize(FMLPreInitializationEvent event) {

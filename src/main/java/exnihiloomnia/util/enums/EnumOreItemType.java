@@ -11,7 +11,6 @@ public enum EnumOreItemType implements IStringSerializable{
 	INGOT("ingot");
 
 	private final String name;
-    //which block this coresponds to
 
 	EnumOreItemType(String name) {
 		this.name = name;
