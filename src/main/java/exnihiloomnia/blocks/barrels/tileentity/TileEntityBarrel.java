@@ -32,14 +32,14 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 
 	protected int luminosity = 0;
 	protected int volume = 0;
-	protected int MAX_VOLUME = 1000;
+	protected final int MAX_VOLUME = 1000;
 	protected Color color = Color.WHITE;
 	
 	protected int generalTimer = 0;
 	protected int generalTimerMax = 0;
 	
 	protected int updateTimer = 0;
-	protected int updateTimerMax = 8; //Sync if an update is required.
+	protected final int updateTimerMax = 8; //Sync if an update is required.
 	protected boolean updateQueued = false;
 	protected boolean updateTimerRunning = false;
 
@@ -96,20 +96,17 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 
 			if (fluid == null || state == null || !state.canManipulateFluids(getBarrel()) || !canDrainFluidType(fluid))
 				return null;
-            else {
-				FluidStack drain = drainInternal(maxDrain, doDrain);
-
-				if (fluid == null || fluid.amount <= 0) {
-					setState(BarrelStates.EMPTY);
-					setColor(Color.WHITE);
-				}
-
-				return drain;
-			}
+            else
+				return drainInternal(maxDrain, doDrain);
 		}
 
         @Override
         protected void onContentsChanged() {
+			if (fluid == null || fluid.amount <= 0) {
+				setState(BarrelStates.EMPTY);
+				setColor(Color.WHITE);
+			}
+
             markDirty();
             requestSync();
         }
