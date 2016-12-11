@@ -18,7 +18,7 @@ public class Ore {
 
     private static int META;
 
-    private final int meta;
+    private int meta;
     private final String name;
     private final int color;
     private final int rarity;
@@ -43,17 +43,6 @@ public class Ore {
         this.meta = META++;
     }
 
-    public Ore(int meta, String name, Color color, int rarity, boolean hasGravel, boolean hasNether, boolean hasEnd) {
-        this.name = name;
-        this.color = color.toInt();
-        this.rarity = rarity;
-        this.hasGravel = hasGravel;
-        this.hasNether = hasNether;
-        this.hasEnd = hasEnd;
-
-        this.meta = meta + META++;
-    }
-
     public ResourceLocation getOreName(EnumOreBlockType type) {
         return new ResourceLocation(ENO.MODID + ":ore_" + type.getName() + "_" + this.getName());
     }
@@ -64,6 +53,11 @@ public class Ore {
                 (this.hasEnd && type == EnumOreBlockType.GRAVEL_ENDER) ||
                 type == EnumOreBlockType.SAND ||
                 type == EnumOreBlockType.DUST;
+    }
+
+    public Ore setMeta(int meta) {
+        this.meta = meta;
+        return this;
     }
 
     public Block getBlock() {
@@ -172,7 +166,7 @@ public class Ore {
 
         Item ingot = Item.REGISTRY.getObject(new ResourceLocation(ore.getIngot()));
 
-        Ore ret = new Ore(Integer.decode(name), name, color, rarity, hasGravel, hasNether, hasEnd);
+        Ore ret = new Ore(name, color, rarity, hasGravel, hasNether, hasEnd);
 
         if (ingot != null) ret.setIngot(ingot);
 
@@ -184,13 +178,13 @@ public class Ore {
     public POJOre toPOJOre() {
         POJOre ret = new POJOre();
 
-        ret.setOreDictNames(this.oreDictNames);
-        ret.setColor(new Color(this.color).toString());
-        ret.setName(this.name);
-        ret.setHasGravel(this.hasGravel);
-        ret.setHasNether(this.hasNether);
-        ret.setHasEnd(this.hasEnd);
-        ret.setRarity(this.rarity);
+        ret.setOreDictNames(this.oreDictNames)
+        .setColor(new Color(this.color).toString())
+        .setName(this.name)
+        .setHasGravel(this.hasGravel)
+        .setHasNether(this.hasNether)
+        .setHasEnd(this.hasEnd)
+        .setRarity(this.rarity);
 
         if (this.ingot != null)
             ret.setIngot(Item.REGISTRY.getNameForObject(this.ingot).toString());

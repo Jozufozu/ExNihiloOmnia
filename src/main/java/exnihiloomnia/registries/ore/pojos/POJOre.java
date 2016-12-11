@@ -18,67 +18,75 @@ public class POJOre {
     public POJOre() {
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public POJOre setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public POJOre setColor(String color) {
+        this.color = color;
+        return this;
     }
 
     public int getRarity() {
         return rarity;
     }
 
-    public void setRarity(int rarity) {
+    public POJOre setRarity(int rarity) {
         this.rarity = rarity;
+        return this;
     }
 
     public boolean isHasGravel() {
         return hasGravel;
     }
 
-    public void setHasGravel(boolean hasGravel) {
+    public POJOre setHasGravel(boolean hasGravel) {
         this.hasGravel = hasGravel;
+        return this;
     }
 
     public boolean isHasNether() {
         return hasNether;
     }
 
-    public void setHasNether(boolean hasNether) {
+    public POJOre setHasNether(boolean hasNether) {
         this.hasNether = hasNether;
+        return this;
     }
 
     public boolean isHasEnd() {
         return hasEnd;
     }
 
-    public void setHasEnd(boolean hasEnd) {
+    public POJOre setHasEnd(boolean hasEnd) {
         this.hasEnd = hasEnd;
-    }
-
-    public List<String> getOreDictNames() {
-        return oreDictNames;
-    }
-
-    public void setOreDictNames(List<String> oreDictNames) {
-        this.oreDictNames = oreDictNames;
+        return this;
     }
 
     public String getIngot() {
         return ingot;
     }
 
-    public void setIngot(String ingot) {
+    public POJOre setIngot(String ingot) {
         this.ingot = ingot;
+        return this;
+    }
+
+    public List<String> getOreDictNames() {
+        return oreDictNames;
+    }
+
+    public POJOre setOreDictNames(List<String> oreDictNames) {
+        this.oreDictNames = oreDictNames;
+        return this;
     }
 }

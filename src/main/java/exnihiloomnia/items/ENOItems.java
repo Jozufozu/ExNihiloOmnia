@@ -223,12 +223,12 @@ public class ENOItems {
         SEED_ACACIA = new ItemBlockMeta(Blocks.SAPLING, 4).setUnlocalizedName("seed_acacia").setRegistryName("seed_acacia").setCreativeTab(ENO_TAB);
         SEED_DARK_OAK = new ItemBlockMeta(Blocks.SAPLING, 5).setUnlocalizedName("seed_dark_oak").setRegistryName("seed_dark_oak").setCreativeTab(ENO_TAB);
 
-        BROKEN_ORE = new ItemOre(EnumOreItemType.BROKEN).setUnlocalizedName("ore_broken").setRegistryName("ore_broken");
-        BROKEN_ORE_NETHER = new ItemOre(EnumOreItemType.BROKEN_NETHER).setUnlocalizedName("ore_broken_nether").setRegistryName("ore_broken_nether");
-        BROKEN_ORE_ENDER = new ItemOre(EnumOreItemType.BROKEN_ENDER).setUnlocalizedName("ore_broken_ender").setRegistryName("ore_broken_ender");
-        CRUSHED_ORE = new ItemOre(EnumOreItemType.CRUSHED).setUnlocalizedName("ore_crushed").setRegistryName("ore_crushed");
-        POWDERED_ORE = new ItemOre(EnumOreItemType.POWDERED).setUnlocalizedName("ore_powder").setRegistryName("ore_powder");
-        INGOT_ORE = new ItemOre(EnumOreItemType.INGOT).setUnlocalizedName("ore_ingot").setRegistryName("ore_ingot");
+        BROKEN_ORE = new ItemOre(EnumOreItemType.BROKEN).setRegistryName("ore_broken");
+        BROKEN_ORE_NETHER = new ItemOre(EnumOreItemType.BROKEN_NETHER).setRegistryName("ore_broken_nether");
+        BROKEN_ORE_ENDER = new ItemOre(EnumOreItemType.BROKEN_ENDER).setRegistryName("ore_broken_ender");
+        CRUSHED_ORE = new ItemOre(EnumOreItemType.CRUSHED).setRegistryName("ore_crushed");
+        POWDERED_ORE = new ItemOre(EnumOreItemType.POWDERED).setRegistryName("ore_powder");
+        INGOT_ORE = new ItemOre(EnumOreItemType.INGOT).setRegistryName("ore_ingot");
 
         for (Item item : getItems())
 		    GameRegistry.register(item);

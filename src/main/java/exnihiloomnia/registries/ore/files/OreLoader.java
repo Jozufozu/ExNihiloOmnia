@@ -26,16 +26,14 @@ public class OreLoader {
 		File[] files = new File(path).listFiles();
 		
 		for (File file : files) {
-			if (!file.getName().equals("example.json") && !file.getName().equals("defaults.json")) {//Ignore the example file
+			if (!file.getName().equals("example.json") && !file.getName().equals("defaults.json") && !file.getName().equals("metadatas.json")) {//Ignore the example file
 				POJOreList list = loadRecipes(file);
 				
 				if (list != null && !list.getEntries().isEmpty()) {
 					for (POJOre ore : list.getEntries()) {
 						Ore entry = Ore.fromPOJOre(ore);
 						
-						if (entry != null) {
-							entries.add(entry);
-						}
+						entries.add(entry);
 					}
 				}
 			}

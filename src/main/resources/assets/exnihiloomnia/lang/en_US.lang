@@ -4,6 +4,18 @@ itemGroup.tabElse=Ex Nihilo Omnia
 fluid.azoth=Azoth
 fluid.witchwater=Witchwater
 
+item.ore_template.broken.name=Broken %s Ore
+item.ore_template.broken_nether.name=Broken %s Ore
+item.ore_template.broken_ender.name=Broken %s Ore
+item.ore_template.crushed.name=Crushed %s Ore
+item.ore_template.powder.name=Powdered %s Ore
+
+tile.ore_template.gravel.name=%s Ore Gravel
+tile.ore_template.gravel_nether.name=Nether %s Ore Gravel
+tile.ore_template.gravel_ender.name=Ender %s Ore Gravel
+tile.ore_template.sand.name=%s Ore Sand
+tile.ore_template.dust.name=%s Ore Dust
+
 item.ore_broken.iron.name= Broken Iron Ore
 item.ore_broken.gold.name= Broken Gold Ore
 item.ore_broken.tin.name= Broken Tin Ore

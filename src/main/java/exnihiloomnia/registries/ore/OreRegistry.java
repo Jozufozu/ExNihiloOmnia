@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -19,7 +20,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,10 +36,14 @@ public class OreRegistry {
 
     private static final String path = ENO.path + File.separator + "registries" + File.separator + "ore" + File.separator;
 
+    public static HashMap<String, String> metadatas = new HashMap<String, String>();
     public static HashMap<String, Block> blocks = new HashMap<String, Block>();
     public static HashMap<String, Ore> registry = new HashMap<String, Ore>();
 
     public static void init() {
+
+        loadNameMetaLookup();
+
         setupDefaults();
 
         if (!force_ores)
@@ -49,7 +57,49 @@ public class OreRegistry {
             }
         }
 
+        saveNameMetaLookup();
         getBlocks();
+    }
+
+    public static void loadNameMetaLookup() {
+        File[] files = new File(path).listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals("metadatas.json")) {
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+
+                    if (reader.ready()) {
+                        metadatas = OreLoader.gson.fromJson(reader, HashMap.class);
+                    }
+
+                    reader.close();
+                }
+                catch (Exception e) {
+                    ENO.log.error("Failed to read sieve recipe file: '" + file + "'.");
+                    ENO.log.error(e);
+                }
+            }
+        }
+    }
+
+    public static void saveNameMetaLookup() {
+        File file = new File(path + "metadatas.json");
+
+        ENO.log.info("Attempting to dump ore list: '" + file + "'.");
+
+        FileWriter writer;
+
+        try {
+            file.getParentFile().mkdirs();
+
+            writer = new FileWriter(file);
+            writer.write(OreLoader.gson.toJson(metadatas));
+            writer.close();
+        } catch (Exception e) {
+            ENO.log.error("Failed to write file: '" + file + "'.");
+            ENO.log.error(e);
+        }
     }
 
     public static void filterOreDict() {
@@ -115,10 +165,17 @@ public class OreRegistry {
     }
 
     public static void register(Ore ore) {
-        if (registry.containsKey(ore.getName()))
-            registry.remove(ore.getName());
+        String name = ore.getName();
 
-        registry.put(ore.getName(), ore);
+        if (registry.containsKey(name))
+            registry.remove(name);
+
+        if (metadatas.containsKey(name))
+            ore.setMeta(Integer.valueOf(metadatas.get(name)));
+        else
+            metadatas.put(ore.getName(), String.valueOf(ore.getMetadata()));
+
+        registry.put(name, ore);
     }
 
     @Nullable
@@ -129,6 +186,10 @@ public class OreRegistry {
             ENO.log.error("Ore " + ore.getName() + " is not registered!");
             return null;
         }
+    }
+
+    public static Ore getOre(Item item) {
+        return getOre(Block.getBlockFromItem(item));
     }
 
     @Nullable
