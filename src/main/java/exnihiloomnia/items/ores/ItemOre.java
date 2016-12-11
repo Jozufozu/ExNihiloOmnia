@@ -45,6 +45,7 @@ public class ItemOre extends Item {
                     (ore.getIngot() == null && getType() == EnumOreItemType.INGOT) ||
                     getType() == EnumOreItemType.CRUSHED ||
                     getType() == EnumOreItemType.POWDERED)
+
                 subItems.add(new ItemStack(itemIn, 1, ore.getMetadata()));
         }
     }

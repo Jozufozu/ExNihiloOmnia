@@ -42,6 +42,8 @@ public abstract class Proxy {
 		ENOBlocks.init();
 		ENOItems.init();
 
+		OreRegistry.setupOreDict();
+
 		ENOCrafting.configure(ENO.config);
 		ENOWorld.configure(ENO.config);
 		ENORegistries.configure(ENO.config);
@@ -57,6 +59,9 @@ public abstract class Proxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
+
+		OreRegistry.setupCrafting();
+		OreRegistry.setupSmelting();
 
 		ENOCrafting.registerRecipes();
 		ENORegistries.initialize();
