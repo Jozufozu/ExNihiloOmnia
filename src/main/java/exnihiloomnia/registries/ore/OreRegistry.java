@@ -154,11 +154,13 @@ public class OreRegistry {
     public static void setupOreDict() {
         if (oredict_ingots) {
             for (Ore ore : registry.values()) {
-                OreDictionary.registerOre(ore.getOreDictName("ingot"), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+                if (ore.getIngot() == null) {
+                    OreDictionary.registerOre(ore.getOreDictName("ingot"), new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
 
-                if (ore.getOreDictNames().size() > 0) {
-                    for (String name : ore.getOreDictNames())
-                        OreDictionary.registerOre("ingot" + name, new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+                    if (ore.getOreDictNames().size() > 0) {
+                        for (String name : ore.getOreDictNames())
+                            OreDictionary.registerOre("ingot" + name, new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+                    }
                 }
             }
         }
