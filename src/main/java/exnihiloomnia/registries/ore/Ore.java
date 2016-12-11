@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,11 +74,15 @@ public class Ore {
         Block oreBlock = getBlock();
 
         for (EnumOreBlockType type : EnumOreBlockType.values()) {
-            if (hasType(type))
-                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(oreBlock, 1, type.ordinal()),
-                        "xx",
-                        "xx",
-                        'x', new ItemStack(type.getCrafting(), 1, this.meta)));
+            if (hasType(type)) {
+                ItemStack in = new ItemStack(type.getCrafting(), 1, this.meta);
+
+                GameRegistry.addShapelessRecipe(new ItemStack(oreBlock, 1, type.ordinal()),
+                         in,
+                         in,
+                         in,
+                         in);
+            }
         }
     }
 

@@ -7,20 +7,18 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 
 public enum EnumOreBlockType implements IStringSerializable {
-	GRAVEL("gravel", ENOItems.BROKEN_ORE),
-	GRAVEL_NETHER("gravel_nether", ENOItems.BROKEN_ORE_NETHER),
-	GRAVEL_ENDER("gravel_ender", ENOItems.BROKEN_ORE_ENDER),
-	SAND("sand", ENOItems.CRUSHED_ORE),
-	DUST("dust", ENOItems.POWDERED_ORE);
+	GRAVEL("gravel"),
+	GRAVEL_NETHER("gravel_nether"),
+	GRAVEL_ENDER("gravel_ender"),
+	SAND("sand"),
+	DUST("dust");
 
 	private static final EnumOreBlockType[] META_LOOKUP = new EnumOreBlockType[values().length];
 
 	private final String name;
-	private final Item crafting;
 
-	EnumOreBlockType(String name, Item crafting) {
+	EnumOreBlockType(String name) {
 		this.name = name;
-		this.crafting = crafting;
 	}
 
 	@Override
@@ -29,7 +27,20 @@ public enum EnumOreBlockType implements IStringSerializable {
 	}
 
 	public Item getCrafting() {
-		return crafting;
+		switch (this) {
+			case GRAVEL:
+				return ENOItems.BROKEN_ORE;
+			case GRAVEL_NETHER:
+				return ENOItems.BROKEN_ORE_NETHER;
+			case GRAVEL_ENDER:
+				return ENOItems.BROKEN_ORE_ENDER;
+			case SAND:
+				return ENOItems.CRUSHED_ORE;
+			case DUST:
+				return ENOItems.POWDERED_ORE;
+		}
+
+		return ENOItems.ASH;
 	}
 
 	public ModelResourceLocation getLocation() {
