@@ -9,11 +9,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ItemBlockRemap extends Item {
+public class ItemRemap extends Item {
 
     private EnumOreBlockType type;
 
-    public ItemBlockRemap(EnumOreBlockType type) {
+    public ItemRemap(EnumOreBlockType type) {
         this.type = type;
 
         GameRegistry.register(this, new ResourceLocation(ENO.MODID, "remap_" + type.getName()));

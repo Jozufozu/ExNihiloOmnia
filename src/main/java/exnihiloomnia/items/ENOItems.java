@@ -12,7 +12,7 @@ import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.items.misc.*;
 import exnihiloomnia.items.ores.ItemOre;
 import exnihiloomnia.items.sieveassist.ItemSifter;
-import exnihiloomnia.registries.ore.ItemBlockRemap;
+import exnihiloomnia.registries.ore.ItemRemap;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
@@ -168,11 +168,11 @@ public class ENOItems {
     }
 
 	public static void init() {
-        REMAP_GRAVEL = new ItemBlockRemap(EnumOreBlockType.GRAVEL);
-        REMAP_GRAVEL_ENDER = new ItemBlockRemap(EnumOreBlockType.GRAVEL_ENDER);
-        REMAP_GRAVEL_NETHER = new ItemBlockRemap(EnumOreBlockType.GRAVEL_NETHER);
-        REMAP_SAND = new ItemBlockRemap(EnumOreBlockType.SAND);
-        REMAP_DUST = new ItemBlockRemap(EnumOreBlockType.DUST);
+        REMAP_GRAVEL = new ItemRemap(EnumOreBlockType.GRAVEL);
+        REMAP_GRAVEL_ENDER = new ItemRemap(EnumOreBlockType.GRAVEL_ENDER);
+        REMAP_GRAVEL_NETHER = new ItemRemap(EnumOreBlockType.GRAVEL_NETHER);
+        REMAP_SAND = new ItemRemap(EnumOreBlockType.SAND);
+        REMAP_DUST = new ItemRemap(EnumOreBlockType.DUST);
 
         POTATO_SEEDS = new ItemSeeds(Blocks.POTATOES, Blocks.FARMLAND).setUnlocalizedName("seeds_potato").setRegistryName("seeds_potato").setCreativeTab(ENO_TAB);
         CARROT_SEEDS = new ItemSeeds(Blocks.CARROTS, Blocks.FARMLAND).setUnlocalizedName("seeds_carrot").setRegistryName("seeds_carrot").setCreativeTab(ENO_TAB);

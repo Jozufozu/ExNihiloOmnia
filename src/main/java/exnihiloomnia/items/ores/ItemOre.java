@@ -44,7 +44,8 @@ public class ItemOre extends Item {
 
         if (display.equals(getUnlocalizedName(stack) + ".name")) {
             Ore ore = OreRegistry.getOre(stack.getMetadata());
-            display = I18n.format("item.ore_template." + type.getName() + ".name", ore.getOreDictName(""));
+            if (ore != null)
+                display = I18n.format("item.ore_template." + type.getName() + ".name", ore.getOreDictName(""));
         }
 
         return display;

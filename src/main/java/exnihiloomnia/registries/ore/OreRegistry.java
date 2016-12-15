@@ -20,10 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +52,12 @@ public class OreRegistry {
             for (Ore entry : loaded) {
                 register(entry);
             }
+        }
+
+        List<String> banList = getBanList(path + File.separator + "blacklist.txt");
+
+        for (String ban : banList) {
+            registry.remove(ban);
         }
 
         saveNameMetaLookup();
@@ -101,6 +104,36 @@ public class OreRegistry {
             ENO.log.error("Failed to write file: '" + file + "'.");
             ENO.log.error(e);
         }
+    }
+
+    public static List<String> getBanList(String file) {
+        List<String> list = new ArrayList<String>();
+
+        try {
+            File f = new File(file);
+
+            if (f.createNewFile()) {
+                FileWriter writer = new FileWriter(f);
+                writer.write("# each ore should be lower case and be on a new line");
+                writer.close();
+            }
+
+            FileInputStream stream = new FileInputStream(f);
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+
+            String strLine;
+
+            while ((strLine = br.readLine()) != null) {
+                if (!strLine.startsWith("#"))
+                    list.add(strLine);
+            }
+
+            br.close();
+        } catch (Exception e) {
+            ENO.log.error(e);
+        }
+
+        return list;
     }
 
     public static void filterOreDict() {
