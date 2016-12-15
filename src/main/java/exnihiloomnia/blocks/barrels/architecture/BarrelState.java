@@ -44,8 +44,8 @@ public abstract class BarrelState {
 	}
 	
 	public void useItem(EntityPlayer player, EnumHand hand, TileEntityBarrel barrel, ItemStack item) {
-		for (BarrelLogic entry : triggers) {
-			if (item != null) {
+		if (item != null) {
+			for (BarrelLogic entry : triggers) {
 				if (entry.canUseItem(barrel, item) && entry.onUseItem(player, hand, barrel, item)) {
 					barrel.getWorld().notifyBlockOfStateChange(barrel.getPos(), barrel.getBlockType());
 

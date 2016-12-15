@@ -130,17 +130,14 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 
-            if (stack == null || stack.getItem() == null) {
-
-                if (contents != null) {
+            if (stack == null) {
+                if (contents != null)
                     setContents(null);
-                }
-                else if (slot == 0 && output.size() > 0) {
-                    output.remove(0);
-                }
+                else if (slot == 0 && output.size() > 0)
+					output.remove(0);
             }
-            else if (slot == 1 && getState().canUseItem(getBarrel(), stack))
-                getState().useItem(null, null, getBarrel(), stack);
+            else if (slot == 1)
+				getState().useItem(null, null, getBarrel(), stack);
 
             return stack;
         }

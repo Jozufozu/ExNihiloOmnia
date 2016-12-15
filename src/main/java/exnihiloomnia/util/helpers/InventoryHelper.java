@@ -34,10 +34,8 @@ public class InventoryHelper {
 			net.minecraft.inventory.InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + yOffset, pos.getZ(), itemStack);
 	}
 	
-	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item)
-	{
+	public static void giveItemStackToPlayer(EntityPlayer player, ItemStack item) {
 		if(!player.worldObj.isRemote) {
-
 			if (!player.inventory.addItemStackToInventory(item)) {
                 player.dropItem(item, false);
 			}

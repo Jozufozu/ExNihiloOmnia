@@ -64,20 +64,21 @@ public class OreRegistry {
     public static void loadNameMetaLookup() {
         File[] files = new File(path).listFiles();
 
-        for (File file : files) {
-            if (file.getName().equals("metadatas.json")) {
-                try {
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().equals("metadatas.json")) {
+                    try {
+                        BufferedReader reader = new BufferedReader(new FileReader(file));
 
-                    if (reader.ready()) {
-                        metadatas = OreLoader.gson.fromJson(reader, HashMap.class);
+                        if (reader.ready()) {
+                            metadatas = OreLoader.gson.fromJson(reader, HashMap.class);
+                        }
+
+                        reader.close();
+                    } catch (Exception e) {
+                        ENO.log.error("Failed to read sieve recipe file: '" + file + "'.");
+                        ENO.log.error(e);
                     }
-
-                    reader.close();
-                }
-                catch (Exception e) {
-                    ENO.log.error("Failed to read sieve recipe file: '" + file + "'.");
-                    ENO.log.error(e);
                 }
             }
         }
