@@ -193,7 +193,7 @@ public class OreRegistry {
 
                     if (ore.getOreDictNames().size() > 0) {
                         for (String name : ore.getOreDictNames())
-                            OreDictionary.registerOre("ingot" + name, new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
+                            OreDictionary.registerOre(name, new ItemStack(ENOItems.INGOT_ORE, 1, ore.getMetadata()));
                     }
                 }
             }
