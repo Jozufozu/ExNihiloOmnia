@@ -24,9 +24,9 @@ public class TinkersCompatibility {
     public static Modifier modCrooked;
     public static Modifier modHammered;
 
-    private static int INGOT_AMOUNT = 144;
+    private static final int INGOT_AMOUNT = 144;
 
-    public static void initilize() {
+    public static void initialize() {
         if (ENOCompatibility.add_tcon_modifiers) {
             registerModifiers();
             MinecraftForge.EVENT_BUS.register(new CrookedToolEventHandler());
@@ -55,23 +55,26 @@ public class TinkersCompatibility {
         try {
             Fluid metal = findMoltenMetal(ore);
 
-            //items
-            if (ore.hasGravel())
-                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
-            
-            if (ore.hasEnd())
-                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
-            
-            if (ore.hasNether())
-                TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
-            
-            TinkerRegistry.registerMelting(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
-            TinkerRegistry.registerMelting(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT/4);
+            if (metal != null) {
+                //items
+                if (ore.hasGravel())
+                    TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT / 4);
 
-            //blocks
-            Block oreBlock = ore.getBlock();
-            for (EnumOreBlockType type : EnumOreBlockType.values())
-                if (ore.hasType(type)) TinkerRegistry.registerMelting(new ItemStack(oreBlock, 1, type.ordinal()), metal, INGOT_AMOUNT);
+                if (ore.hasEnd())
+                    TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_ENDER, 1, ore.getMetadata()), metal, INGOT_AMOUNT / 4);
+
+                if (ore.hasNether())
+                    TinkerRegistry.registerMelting(new ItemStack(ENOItems.BROKEN_ORE_NETHER, 1, ore.getMetadata()), metal, INGOT_AMOUNT / 4);
+
+                TinkerRegistry.registerMelting(new ItemStack(ENOItems.CRUSHED_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT / 4);
+                TinkerRegistry.registerMelting(new ItemStack(ENOItems.POWDERED_ORE, 1, ore.getMetadata()), metal, INGOT_AMOUNT / 4);
+
+                //blocks
+                Block oreBlock = ore.getBlock();
+                for (EnumOreBlockType type : EnumOreBlockType.values())
+                    if (ore.hasType(type))
+                        TinkerRegistry.registerMelting(new ItemStack(oreBlock, 1, type.ordinal()), metal, INGOT_AMOUNT);
+            }
         }
         catch (Exception e) {
             ENO.log.error("Could not add smeltery melting for: " + ore.getName().toUpperCase());

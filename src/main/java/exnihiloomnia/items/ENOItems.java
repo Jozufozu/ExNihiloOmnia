@@ -164,6 +164,12 @@ public class ENOItems {
         items.add(INGOT_ORE);
         items.add(ASTROLABE_JADE);
 
+        items.add(REMAP_GRAVEL);
+        items.add(REMAP_GRAVEL_NETHER);
+        items.add(REMAP_GRAVEL_ENDER);
+        items.add(REMAP_SAND);
+        items.add(REMAP_DUST);
+
         return items;
     }
 
@@ -231,7 +237,7 @@ public class ENOItems {
         INGOT_ORE = new ItemOre(EnumOreItemType.INGOT).setRegistryName("ore_ingot");
 
         for (Item item : getItems())
-		    GameRegistry.register(item);
+            if (!(item instanceof ItemRemap)) GameRegistry.register(item);
 
         if (ENOConfig.universal_bucket) {
             BUCKET_PORCELAIN = new UniversalPorcelainBucket();

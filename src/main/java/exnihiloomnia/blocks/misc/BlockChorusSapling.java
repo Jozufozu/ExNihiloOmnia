@@ -1,5 +1,6 @@
 package exnihiloomnia.blocks.misc;
 
+import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockChorusFlower;
@@ -46,12 +47,13 @@ public class BlockChorusSapling extends BlockBush implements IGrowable {
 
     @Override
     protected boolean canSustainBush(IBlockState state) {
-        return state.getBlock() == Blocks.END_STONE;
+        return state.getBlock() == Blocks.END_STONE || state.getBlock() == ENOBlocks.GRAVEL_ENDER;
     }
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos.down()) == Blocks.END_STONE.getDefaultState();
+        IBlockState state = worldIn.getBlockState(pos.down());
+        return state == Blocks.END_STONE.getDefaultState() || state == ENOBlocks.GRAVEL_ENDER.getDefaultState();
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {

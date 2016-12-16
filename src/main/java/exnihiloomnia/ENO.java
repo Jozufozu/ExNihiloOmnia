@@ -9,6 +9,7 @@ import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.world.ENOWorld;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
@@ -134,20 +135,24 @@ public class ENO {
 	@Mod.EventHandler
 	public void onMissingMapping(FMLMissingMappingsEvent event) {
 		for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
-			if (mapping.type == GameRegistry.Type.ITEM && ENO.MODID.equals(mapping.resourceLocation.getResourceDomain())) {
+			if (ENO.MODID.equals(mapping.resourceLocation.getResourceDomain())) {
 				String name = mapping.resourceLocation.getResourcePath();
-
-				if ("ore_gravel".equals(name))
-					mapping.remap(ENOItems.REMAP_GRAVEL);
-				if ("ore_gravel_ender".equals(name))
-					mapping.remap(ENOItems.REMAP_GRAVEL_ENDER);
-				if ("ore_gravel_nether".equals(name))
-					mapping.remap(ENOItems.REMAP_GRAVEL_NETHER);
-				if ("ore_sand".equals(name))
-					mapping.remap(ENOItems.REMAP_SAND);
-				if ("ore_dust".equals(name))
-					mapping.remap(ENOItems.REMAP_DUST);
-
+				if (mapping.type == GameRegistry.Type.ITEM) {
+					if ("ore_gravel".equals(name))
+						mapping.remap(ENOItems.REMAP_GRAVEL);
+					if ("ore_gravel_ender".equals(name))
+						mapping.remap(ENOItems.REMAP_GRAVEL_ENDER);
+					if ("ore_gravel_nether".equals(name))
+						mapping.remap(ENOItems.REMAP_GRAVEL_NETHER);
+					if ("ore_sand".equals(name))
+						mapping.remap(ENOItems.REMAP_SAND);
+					if ("ore_dust".equals(name))
+						mapping.remap(ENOItems.REMAP_DUST);
+				}
+				else if (mapping.type == GameRegistry.Type.BLOCK) {
+					if ("ore_gravel".equals(name) || "ore_gravel_ender".equals(name) || "ore_gravel_nether".equals(name) || "ore_sand".equals(name) || "ore_dust".equals(name))
+						mapping.remap(Blocks.AIR);
+				}
 			}
 		}
 	}

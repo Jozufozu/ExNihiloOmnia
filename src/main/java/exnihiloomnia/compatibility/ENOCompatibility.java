@@ -53,7 +53,7 @@ public class ENOCompatibility {
 			VeinMinerCompatibility.initialize();
 
 		if (Loader.isModLoaded("tconstruct"))
-			TinkersCompatibility.initilize();
+			TinkersCompatibility.initialize();
 
 		if (Loader.isModLoaded("appliedenergistics2"))
 			AE2.initialize();

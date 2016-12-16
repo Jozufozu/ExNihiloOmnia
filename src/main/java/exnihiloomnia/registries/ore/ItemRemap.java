@@ -16,6 +16,7 @@ public class ItemRemap extends Item {
     public ItemRemap(EnumOreBlockType type) {
         this.type = type;
 
+        setUnlocalizedName("remap_" + type.getName());
         GameRegistry.register(this, new ResourceLocation(ENO.MODID, "remap_" + type.getName()));
     }
 
