@@ -33,7 +33,7 @@ public class Ore {
     private Item ingot = null;
 
     public Ore(String name, Color color, int rarity, boolean hasGravel, boolean hasNether, boolean hasEnd) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.color = color.toInt();
         this.rarity = rarity;
         this.hasGravel = hasGravel;
