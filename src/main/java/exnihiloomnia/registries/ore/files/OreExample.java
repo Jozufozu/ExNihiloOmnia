@@ -12,8 +12,9 @@ public abstract class OreExample {
 	public static POJOreList getExampleRecipeList() {
 		POJOreList example = new POJOreList();
 		
-		example.addEntry(new Ore("steel", new Color("F2AB7C"), 30, true, false, false).setOreDictNames(Collections.singletonList("HardIron")).toPOJOre());
-		example.addEntry(new Ore("thingy", new Color("F2AFCC"), 100, true, true, true).setOreDictNames(Collections.singletonList("Wow")).setIngot(Items.ACACIA_BOAT).toPOJOre());
+		example.addEntry(new Ore("steel", new Color("F2AB7C"), 30, true, false, false).setOreDictNames(Collections.singletonList("ingotHardIron")).toPOJOre());
+		example.addEntry(new Ore("thingy", new Color("F2AFCC"), 100, true, true, true).setOreDictNames(Collections.singletonList("nuggetWow")).setIngot(Items.ACACIA_BOAT).toPOJOre());
+		example.addEntry(new Ore("meatal", new Color("E47ABC"), 2, true, false, false).toPOJOre());
 
 		return example;
 	}
