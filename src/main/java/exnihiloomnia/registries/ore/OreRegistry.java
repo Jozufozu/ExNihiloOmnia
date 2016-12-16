@@ -54,7 +54,7 @@ public class OreRegistry {
             }
         }
 
-        List<String> banList = getBanList(path + File.separator + "blacklist.txt");
+        List<String> banList = getOreList(path + File.separator + "blacklist.txt");
 
         for (String ban : banList) {
             registry.remove(ban);
@@ -106,7 +106,7 @@ public class OreRegistry {
         }
     }
 
-    public static List<String> getBanList(String file) {
+    public static List<String> getOreList(String file) {
         List<String> list = new ArrayList<String>();
 
         try {
@@ -114,7 +114,7 @@ public class OreRegistry {
 
             if (f.createNewFile()) {
                 FileWriter writer = new FileWriter(f);
-                writer.write("# each ore should be lower case and be on a new line");
+                writer.write("#each ore should be lower case and be on a new line");
                 writer.close();
             }
 
@@ -166,8 +166,10 @@ public class OreRegistry {
             if (!present) toBeRemoved.add(ore.getName());
         }
 
+        List<String> whiteList = getOreList(path + File.separator + "whitelist.txt");
+
         for (String ore : toBeRemoved)
-            registry.remove(ore);
+            if (!whiteList.contains(ore)) registry.remove(ore);
     }
 
     public static void getBlocks() {
@@ -284,14 +286,14 @@ public class OreRegistry {
         register(new Ore("copper", new Color("F46E00"), 20, true, true, false));
         register(new Ore("lead", new Color("2D2563"), 10, true, false, true));
         register(new Ore("silver", new Color("8CC9FF"), 5, true, false, true));
-        register(new Ore("nickel", new Color("BAB877"), 10, true, true, false).addOreDictName("Ferrous"));
-        register(new Ore("platinum", new Color("38CDFF"), 2, true, false, true).addOreDictName("Shiny"));
-        register(new Ore("aluminum", new Color("FFC7C7"), 20, true, false, true).addOreDictName("Aluminium"));
+        register(new Ore("nickel", new Color("BAB877"), 10, true, true, false).addOreDictName("ingotFerrous"));
+        register(new Ore("platinum", new Color("38CDFF"), 2, true, false, true).addOreDictName("ingotShiny"));
+        register(new Ore("aluminum", new Color("FFC7C7"), 20, true, false, true).addOreDictName("ingotAluminium"));
         register(new Ore("osmium", new Color("608FC4"), 20, true, false, false));
         register(new Ore("ardite", new Color("FF4D00"), 2, false, true, false).setParentMod("tconstruct"));
         register(new Ore("cobalt", new Color("0B91FF"), 2, false, true, false).setParentMod("tconstruct"));
         register(new Ore("draconium", new Color("733DAB"), 4, false, false, true).setParentMod("draconicevolution"));
-        register(new Ore("yellorite", new Color("B6E324"), 2, true, false, false).addOreDictName("Yellorium").addOreDictName("Uranium").setParentMod("bigreactors"));
+        register(new Ore("yellorite", new Color("B6E324"), 2, true, false, false).addOreDictName("ingotYellorium").addOreDictName("ingotUranium").setParentMod("bigreactors"));
         register(new Ore("uranium", new Color("47503F"), 2, true, false, false));
     }
 }
