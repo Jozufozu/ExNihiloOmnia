@@ -12,8 +12,6 @@ import exnihiloomnia.items.meshs.ItemMesh;
 import exnihiloomnia.items.misc.*;
 import exnihiloomnia.items.ores.ItemOre;
 import exnihiloomnia.items.sieveassist.ItemSifter;
-import exnihiloomnia.registries.ore.ItemRemap;
-import exnihiloomnia.util.enums.EnumOreBlockType;
 import exnihiloomnia.util.enums.EnumOreItemType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -44,12 +42,6 @@ public class ENOItems {
 	public static Item ASTROLABE_JADE;
 
     public static UniversalPorcelainBucket BUCKET_PORCELAIN;
-
-    public static Item REMAP_GRAVEL;
-    public static Item REMAP_GRAVEL_NETHER;
-    public static Item REMAP_GRAVEL_ENDER;
-    public static Item REMAP_SAND;
-    public static Item REMAP_DUST;
 
 	public static Item BUCKET_PORCELAIN_RAW;
 	public static Item BUCKET_PORCELAIN_EMPTY;
@@ -164,21 +156,10 @@ public class ENOItems {
         items.add(INGOT_ORE);
         items.add(ASTROLABE_JADE);
 
-        items.add(REMAP_GRAVEL);
-        items.add(REMAP_GRAVEL_NETHER);
-        items.add(REMAP_GRAVEL_ENDER);
-        items.add(REMAP_SAND);
-        items.add(REMAP_DUST);
-
         return items;
     }
 
 	public static void init() {
-        REMAP_GRAVEL = new ItemRemap(EnumOreBlockType.GRAVEL);
-        REMAP_GRAVEL_ENDER = new ItemRemap(EnumOreBlockType.GRAVEL_ENDER);
-        REMAP_GRAVEL_NETHER = new ItemRemap(EnumOreBlockType.GRAVEL_NETHER);
-        REMAP_SAND = new ItemRemap(EnumOreBlockType.SAND);
-        REMAP_DUST = new ItemRemap(EnumOreBlockType.DUST);
 
         POTATO_SEEDS = new ItemSeeds(Blocks.POTATOES, Blocks.FARMLAND).setUnlocalizedName("seeds_potato").setRegistryName("seeds_potato").setCreativeTab(ENO_TAB);
         CARROT_SEEDS = new ItemSeeds(Blocks.CARROTS, Blocks.FARMLAND).setUnlocalizedName("seeds_carrot").setRegistryName("seeds_carrot").setCreativeTab(ENO_TAB);
@@ -237,7 +218,7 @@ public class ENOItems {
         INGOT_ORE = new ItemOre(EnumOreItemType.INGOT).setRegistryName("ore_ingot");
 
         for (Item item : getItems())
-            if (!(item instanceof ItemRemap)) GameRegistry.register(item);
+            GameRegistry.register(item);
 
         if (ENOConfig.universal_bucket) {
             BUCKET_PORCELAIN = new UniversalPorcelainBucket();

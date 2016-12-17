@@ -4,6 +4,7 @@ import exnihiloomnia.ENO;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ore.files.OreLoader;
 import exnihiloomnia.util.Color;
+import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -38,6 +39,9 @@ public class OreRegistry {
     public static HashMap<String, Ore> registry = new HashMap<String, Ore>();
 
     public static void init() {
+
+        for (EnumOreBlockType type : EnumOreBlockType.values())
+            new BlockRemap(type);
 
         loadNameMetaLookup();
 

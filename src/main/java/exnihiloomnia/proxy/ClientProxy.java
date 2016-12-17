@@ -62,6 +62,11 @@ public class ClientProxy extends Proxy {
         OreRegistry.regColors();
     }
 
+    @Override
+    public boolean isClient() {
+        return true;
+    }
+
     public static void registerItemModels() {
         for (Item item : ENOItems.getItems()) {
             registerRenderer(item);

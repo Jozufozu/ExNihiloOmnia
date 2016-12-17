@@ -2,14 +2,12 @@ package exnihiloomnia;
 
 import exnihiloomnia.client.textures.ENOTextures;
 import exnihiloomnia.crafting.recipes.MobDrops;
-import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.proxy.Proxy;
 import exnihiloomnia.registries.CommandRegistry;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.world.ENOWorld;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
@@ -29,11 +27,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
@@ -127,31 +127,6 @@ public class ENO {
 					event.getDrops().clear();
 
 					event.getDrops().addAll(HammerRegistry.getEntryForBlockState(block).rollRewards(event.getHarvester()));
-				}
-			}
-		}
-	}
-
-	@Mod.EventHandler
-	public void onMissingMapping(FMLMissingMappingsEvent event) {
-		for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
-			if (ENO.MODID.equals(mapping.resourceLocation.getResourceDomain())) {
-				String name = mapping.resourceLocation.getResourcePath();
-				if (mapping.type == GameRegistry.Type.ITEM) {
-					if ("ore_gravel".equals(name))
-						mapping.remap(ENOItems.REMAP_GRAVEL);
-					if ("ore_gravel_ender".equals(name))
-						mapping.remap(ENOItems.REMAP_GRAVEL_ENDER);
-					if ("ore_gravel_nether".equals(name))
-						mapping.remap(ENOItems.REMAP_GRAVEL_NETHER);
-					if ("ore_sand".equals(name))
-						mapping.remap(ENOItems.REMAP_SAND);
-					if ("ore_dust".equals(name))
-						mapping.remap(ENOItems.REMAP_DUST);
-				}
-				else if (mapping.type == GameRegistry.Type.BLOCK) {
-					if ("ore_gravel".equals(name) || "ore_gravel_ender".equals(name) || "ore_gravel_nether".equals(name) || "ore_sand".equals(name) || "ore_dust".equals(name))
-						mapping.remap(Blocks.AIR);
 				}
 			}
 		}

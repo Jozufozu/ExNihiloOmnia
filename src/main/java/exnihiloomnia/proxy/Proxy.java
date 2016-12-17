@@ -76,4 +76,6 @@ public abstract class Proxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		//ENOOres.addOreDict();
 	}
+
+	public abstract boolean isClient();
 }
