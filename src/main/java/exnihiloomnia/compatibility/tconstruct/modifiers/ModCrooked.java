@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +18,8 @@ import slimeknights.tconstruct.tools.melee.item.Cleaver;
 import slimeknights.tconstruct.tools.melee.item.LongSword;
 import slimeknights.tconstruct.tools.melee.item.Rapier;
 import slimeknights.tconstruct.tools.tools.*;
+
+import java.util.List;
 
 public class ModCrooked extends ModifierTrait {
 
@@ -46,22 +47,23 @@ public class ModCrooked extends ModifierTrait {
 
     @Override
     public void blockHarvestDrops(ItemStack tool, BlockEvent.HarvestDropsEvent event) {
-        IBlockState block = event.getState();
+        IBlockState blockState = event.getState();
 
-        if (CrookRegistry.isCrookable(block)) {
+        if (CrookRegistry.isCrookable(blockState)) {
             World world = event.getWorld();
             BlockPos pos = event.getPos();
-            EntityPlayer player = event.getHarvester();
+            int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
 
-            if (player != null) {
-                ItemStack item = player.getActiveItemStack();
-                //Simulate a block break to cause the first round of items to drop.
-                block.getBlock().dropBlockAsItem(world, pos, world.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
-                if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock())) {
-                    for (ItemStack itemStack : CrookRegistry.getEntryForBlockState(block).rollRewards(player))
-                        Block.spawnAsEntity(world, pos, itemStack);
-                }
+            //Simulate a block break to cause the first round of items to drop.
+            List<ItemStack> items = blockState.getBlock().getDrops(world, pos, blockState, fortune);
+
+            for (ItemStack item : items) {
+                if (world.rand.nextFloat() <= 1)
+                    Block.spawnAsEntity(world, pos, item);
             }
+
+            if (!ENOBlocks.INFESTED_LEAVES.equals(blockState.getBlock()))
+                CrookRegistry.getEntryForBlockState(blockState).dropRewards(world, tool, pos);
         }
     }
 }

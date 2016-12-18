@@ -8,12 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Random;
@@ -36,13 +33,7 @@ public class BlockRemap extends Block {
 
         setDefaultState(blockState.getBaseState().withProperty(ORE, EnumOreLegacy.IRON));
 
-        if (ENO.proxy.isClient()) {
-            ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                    return new ModelResourceLocation(ENO.MODID + ":remap_" + type.getName());
-                }
-            });
-        }
+        ENO.proxy.setCustomStateMapper(this, ENO.MODID + ":remap_" + type.getName());
     }
 
     @Override

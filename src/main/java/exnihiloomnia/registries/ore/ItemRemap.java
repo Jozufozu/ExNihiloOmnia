@@ -2,13 +2,11 @@ package exnihiloomnia.registries.ore;
 
 import exnihiloomnia.ENO;
 import exnihiloomnia.util.enums.EnumOreBlockType;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemRemap extends ItemBlock {
@@ -21,9 +19,6 @@ public class ItemRemap extends ItemBlock {
         this.type = block.type;
         setUnlocalizedName("remap_" + type.getName());
         GameRegistry.register(this, new ResourceLocation(ENO.MODID, "ore_" + type.getName()));
-
-        if (ENO.proxy.isClient())
-            ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(ENO.MODID + ":remap_" + type.getName()));
     }
 
     @Override

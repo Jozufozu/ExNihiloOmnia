@@ -19,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.Set;
 
 public class ItemCrook extends ItemTool {
@@ -105,11 +106,16 @@ public class ItemCrook extends ItemTool {
 		if (!world.isRemote) {
 			if (CrookRegistry.isCrookable(block)) {
 				//Simulate a block break to cause the first round of items to drop.
-				block.getBlock().dropBlockAsItem(world, pos, world.getBlockState(pos), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
-				if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock())) {
-					for (ItemStack itemStack : CrookRegistry.getEntryForBlockState(block).rollRewards(player))
-						Block.spawnAsEntity(world, pos, itemStack);
+				int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item);
+				List<ItemStack> items = block.getBlock().getDrops(world, pos, block, fortune);
+
+				for (ItemStack i : items) {
+					if (world.rand.nextFloat() <= 1)
+						Block.spawnAsEntity(world, pos, i);
 				}
+
+				if (!ENOBlocks.INFESTED_LEAVES.equals(block.getBlock()))
+					CrookRegistry.getEntryForBlockState(block).dropRewards(world, item, pos);
 			}
 		}
 

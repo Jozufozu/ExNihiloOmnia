@@ -2,13 +2,10 @@ package exnihiloomnia.registries.crook;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 
 public class CrookReward {
 	private int base_chance;
@@ -21,19 +18,18 @@ public class CrookReward {
 		this.fortune_modifier = fortune_modifier;
 	}
 
-	public void dropReward(EntityPlayer player, BlockPos pos) {
-		ItemStack reward = getReward(player);
+	public void dropReward(World world, ItemStack item, BlockPos pos) {
+		ItemStack reward = getReward(world, item);
 		if (reward != null)
-			Block.spawnAsEntity(player.worldObj, pos, reward);
+			Block.spawnAsEntity(world, pos, reward);
 	}
 
-	public ItemStack getReward(@Nonnull EntityPlayer player) {
-		World world = player.worldObj;
-		int luck_level = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getActiveItemStack());
+	public ItemStack getReward(World world, ItemStack item) {
+		int luck_level = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item);
 		int chance = base_chance + (fortune_modifier * luck_level);
 
 		if (world.rand.nextInt(100) <= chance) {
-			return item.copy();
+			return this.item.copy();
 		}
 		return null;
 	}

@@ -21,8 +21,10 @@ import exnihiloomnia.items.ores.ItemOre;
 import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
@@ -65,6 +67,15 @@ public class ClientProxy extends Proxy {
     @Override
     public boolean isClient() {
         return true;
+    }
+
+    @Override
+    public void setCustomStateMapper(Block block, final String location) {
+        ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation(location);
+            }
+        });
     }
 
     public static void registerItemModels() {

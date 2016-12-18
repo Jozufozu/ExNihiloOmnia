@@ -5,11 +5,11 @@ import exnihiloomnia.registries.crook.pojos.CrookRecipeReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,17 +40,17 @@ public class CrookRegistryEntry {
 		return this.behavior;
 	}
 
-	public void dropRewards(EntityPlayer player, BlockPos pos) {
+	public void dropRewards(World world, ItemStack item, BlockPos pos) {
 		for (CrookReward reward : rewards) {
-			reward.dropReward(player, pos);
+			reward.dropReward(world, item, pos);
 		}
 	}
 
-	public List<ItemStack> rollRewards(EntityPlayer player) {
+	public List<ItemStack> rollRewards(World world, ItemStack item) {
 		ArrayList<ItemStack> rewards = new ArrayList<ItemStack>();
 
 		for (CrookReward reward : this.rewards) {
-			ItemStack itemReward = reward.getReward(player);
+			ItemStack itemReward = reward.getReward(world, item);
 			if (itemReward != null) {
 				rewards.add(itemReward);
 			}

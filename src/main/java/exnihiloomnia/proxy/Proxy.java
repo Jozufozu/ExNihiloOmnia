@@ -15,6 +15,7 @@ import exnihiloomnia.items.materials.ENOToolMaterials;
 import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.world.ENOWorld;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -78,4 +79,8 @@ public abstract class Proxy {
 	}
 
 	public abstract boolean isClient();
+
+	public void setCustomStateMapper(Block block, String location) {
+
+	}
 }
