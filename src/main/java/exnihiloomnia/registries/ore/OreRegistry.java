@@ -295,7 +295,7 @@ public class OreRegistry {
         register(new Ore("platinum", new Color("38CDFF"), 2, true, false, true).addOreDictName("ingotShiny"));
         register(new Ore("aluminum", new Color("FFC7C7"), 20, true, false, true).addOreDictName("ingotAluminium"));
 
-        register(new Ore("osmium", new Color("608FC4"), 20, true, false, false));
+        register(new Ore("osmium", new Color("608FC4"), 20, true, false, false).setParentMod("Mekanism"));
 
         register(new Ore("ardite", new Color("FF4D00"), 2, false, true, false).setParentMod("tconstruct"));
         register(new Ore("cobalt", new Color("0B91FF"), 2, false, true, false).setParentMod("tconstruct"));
