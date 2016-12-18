@@ -12,6 +12,7 @@ public class POJOre {
     private boolean hasNether;
     private boolean hasEnd;
     private String ingot;
+    private int ingotMeta;
 
     private List<String> oreDictNames = new ArrayList<String>();
 
@@ -78,6 +79,15 @@ public class POJOre {
 
     public POJOre setIngot(String ingot) {
         this.ingot = ingot;
+        return this;
+    }
+
+    public int getIngotMeta() {
+        return ingotMeta;
+    }
+
+    public POJOre setIngotMeta(int ingotMeta) {
+        this.ingotMeta = ingotMeta;
         return this;
     }
 

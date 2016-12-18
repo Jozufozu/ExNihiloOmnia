@@ -30,7 +30,7 @@ public class Ore {
 
     private List<String> oreDictNames = new ArrayList<String>();
 
-    private Item ingot = null;
+    private ItemStack ingot = null;
 
     public Ore(String name, Color color, int rarity, boolean hasGravel, boolean hasNether, boolean hasEnd) {
         this.name = name.toLowerCase();
@@ -83,18 +83,25 @@ public class Ore {
     public void addSmelting() {
         Block oreBlock = getBlock();
 
-        ItemStack output = ingot == null ? new ItemStack(ENOItems.INGOT_ORE, 1, this.meta) : new ItemStack(ingot);
+        ItemStack output = ingot == null ? new ItemStack(ENOItems.INGOT_ORE, 1, this.meta) : ingot.copy();
 
         for (EnumOreBlockType type : EnumOreBlockType.values())
             if (hasType(type)) GameRegistry.addSmelting(new ItemStack(oreBlock, 1, type.ordinal()), output, 0);
     }
 
-    public Item getIngot() {
+    public ItemStack getIngot() {
         return ingot;
     }
 
     public Ore setIngot(Item ingot) {
-        this.ingot = ingot;
+        if (ingot != null)
+            this.ingot = new ItemStack(ingot);
+        return this;
+    }
+
+    public Ore setIngot(Item ingot, int meta) {
+        if (ingot != null)
+            this.ingot = new ItemStack(ingot, 1, meta);
         return this;
     }
 
@@ -168,9 +175,10 @@ public class Ore {
 
         Ore ret = new Ore(name, color, rarity, hasGravel, hasNether, hasEnd);
 
-        if (ingot != null) ret.setIngot(ingot);
+        ret.setIngot(ingot, ore.getIngotMeta());
 
-        if (oreDictNames.size() > 0) ret.setOreDictNames(oreDictNames);
+        if (oreDictNames.size() > 0)
+            ret.setOreDictNames(oreDictNames);
 
         return ret;
     }
@@ -179,15 +187,17 @@ public class Ore {
         POJOre ret = new POJOre();
 
         ret.setOreDictNames(this.oreDictNames)
-        .setColor(new Color(this.color).toString())
+        .setColor(new Color(this.color).toString().toUpperCase())
         .setName(this.name)
         .setHasGravel(this.hasGravel)
         .setHasNether(this.hasNether)
         .setHasEnd(this.hasEnd)
         .setRarity(this.rarity);
 
-        if (this.ingot != null)
-            ret.setIngot(Item.REGISTRY.getNameForObject(this.ingot).toString());
+        if (this.ingot != null) {
+            ret.setIngot(Item.REGISTRY.getNameForObject(this.ingot.getItem()).toString());
+            ret.setIngotMeta(this.ingot.getItemDamage());
+        }
 
         return ret;
     }

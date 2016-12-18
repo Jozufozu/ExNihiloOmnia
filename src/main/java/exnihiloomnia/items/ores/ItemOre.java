@@ -54,12 +54,12 @@ public class ItemOre extends Item {
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         for (Ore ore : OreRegistry.registry.values()) {
-            if (    (ore.hasGravel() && getType() == EnumOreItemType.BROKEN) ||
-                    (ore.hasEnd() && getType() == EnumOreItemType.BROKEN_ENDER) ||
-                    (ore.hasNether() && getType() == EnumOreItemType.BROKEN_NETHER) ||
-                    (ore.getIngot() == null && getType() == EnumOreItemType.INGOT) ||
-                    getType() == EnumOreItemType.CRUSHED ||
-                    getType() == EnumOreItemType.POWDERED)
+            if (    (ore.hasGravel() && getType() == EnumOreItemType.BROKEN)
+                    || (ore.hasEnd() && getType() == EnumOreItemType.BROKEN_ENDER)
+                    || (ore.hasNether() && getType() == EnumOreItemType.BROKEN_NETHER)
+                    || (ore.getIngot() == null && getType() == EnumOreItemType.INGOT)
+                    || getType() == EnumOreItemType.CRUSHED
+                    || getType() == EnumOreItemType.POWDERED)
 
                 subItems.add(new ItemStack(itemIn, 1, ore.getMetadata()));
         }

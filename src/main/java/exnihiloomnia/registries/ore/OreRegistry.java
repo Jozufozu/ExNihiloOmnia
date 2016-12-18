@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.Loader;
@@ -293,11 +294,14 @@ public class OreRegistry {
         register(new Ore("nickel", new Color("BAB877"), 10, true, true, false).addOreDictName("ingotFerrous"));
         register(new Ore("platinum", new Color("38CDFF"), 2, true, false, true).addOreDictName("ingotShiny"));
         register(new Ore("aluminum", new Color("FFC7C7"), 20, true, false, true).addOreDictName("ingotAluminium"));
+
         register(new Ore("osmium", new Color("608FC4"), 20, true, false, false));
+
         register(new Ore("ardite", new Color("FF4D00"), 2, false, true, false).setParentMod("tconstruct"));
         register(new Ore("cobalt", new Color("0B91FF"), 2, false, true, false).setParentMod("tconstruct"));
+
         register(new Ore("draconium", new Color("733DAB"), 4, false, false, true).setParentMod("draconicevolution"));
-        register(new Ore("yellorite", new Color("B6E324"), 2, true, false, false).addOreDictName("ingotYellorium").addOreDictName("ingotUranium").setParentMod("bigreactors"));
+        register(new Ore("yellorite", new Color("B6E324"), 2, true, false, false).setIngot(Item.REGISTRY.getObject(new ResourceLocation("bigreactors", "ingotMetals"))).addOreDictName("ingotYellorium").addOreDictName("ingotUranium").setParentMod("bigreactors"));
         register(new Ore("uranium", new Color("47503F"), 2, true, false, false));
     }
 }
