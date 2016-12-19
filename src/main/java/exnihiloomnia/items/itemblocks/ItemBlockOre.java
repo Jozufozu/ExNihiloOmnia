@@ -4,9 +4,9 @@ import exnihiloomnia.registries.ore.Ore;
 import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 
 public class ItemBlockOre extends ItemBlock {
 	
@@ -29,7 +29,7 @@ public class ItemBlockOre extends ItemBlock {
 
 		if (display.equals(getUnlocalizedName(stack) + ".name")) {
 			Ore ore = OreRegistry.getOre(stack.getItem());
-			display = I18n.format("tile.ore_template." + type.getName() + ".name", ore.getOreDictName(""));
+			display = I18n.translateToLocal(String.format("tile.ore_template." + type.getName() + ".name", ore.getOreDictName(""))).trim();
 		}
 
 		return display;
