@@ -76,7 +76,7 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 	}
 	
 	public static void registerVanillaHeatSources() {
-		add(new HeatRegistryEntry(Blocks.TORCH.getDefaultState(), EnumMetadataBehavior.IGNORED, 5));
+		add(new HeatRegistryEntry(Blocks.TORCH.getDefaultState(), EnumMetadataBehavior.IGNORED, 8));
 		add(new HeatRegistryEntry(Blocks.LAVA.getDefaultState(), EnumMetadataBehavior.IGNORED, 16));
 		add(new HeatRegistryEntry(Blocks.FLOWING_LAVA.getDefaultState(), EnumMetadataBehavior.IGNORED, 12));
 		add(new HeatRegistryEntry(Blocks.LIT_FURNACE.getDefaultState(), EnumMetadataBehavior.IGNORED, 12));

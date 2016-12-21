@@ -61,7 +61,7 @@ public class VeinMinerCompatibility {
 			
 			Class[] args = new Class[] {Class.class, Object.class, Method.class, ModContainer.class};
 			Method register = bus.getClass().getDeclaredMethod("register", args);
-			Method callback = VeinMinerCompatibility.class.getMethod("handleEvent", new Class[]{Event.class});
+			Method callback = VeinMinerCompatibility.class.getMethod("handleEvent", Event.class);
 			register.setAccessible(true);
 			register.invoke(bus, harvestFailureCheck, new VeinMinerCompatibility(), callback, Loader.instance().getIndexedModList().get("exnihiloomnia"));
 			

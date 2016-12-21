@@ -34,7 +34,7 @@ public class ForestryCompatibility {
         GameRegistry.register(new ItemBlock(ENOCompatibility.BEE_TRAP_TREATED).setRegistryName("bee_trap_treated"));
     }
 
-    public static void init() {
+    public static void initialize() {
         GameRegistry.addShapelessRecipe(new ItemStack(ENOCompatibility.BEE_TRAP), Blocks.HAY_BLOCK, ENOItems.MESH_SILK_WHITE);
 
         SieveRegistryEntry gravel = new SieveRegistryEntry(Blocks.GRAVEL.getDefaultState(), EnumMetadataBehavior.IGNORED);

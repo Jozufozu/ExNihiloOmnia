@@ -38,9 +38,24 @@ public enum EnumOreBlockType implements IStringSerializable {
 				return ENOItems.CRUSHED_ORE;
 			case DUST:
 				return ENOItems.POWDERED_ORE;
+			default:
+				return ENOItems.BROKEN_ORE;
 		}
+	}
 
-		return ENOItems.ASH;
+	public Item getSmashing() {
+		switch (this) {
+			case GRAVEL:
+				return ENOItems.CRUSHED_ORE;
+			case GRAVEL_NETHER:
+				return ENOItems.CRUSHED_ORE;
+			case GRAVEL_ENDER:
+				return ENOItems.CRUSHED_ORE;
+			case SAND:
+				return ENOItems.POWDERED_ORE;
+			default:
+				return null;
+		}
 	}
 
 	public ModelResourceLocation getLocation() {

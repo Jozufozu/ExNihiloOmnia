@@ -59,6 +59,8 @@ public class ENOCompatibility {
 			AE2.initialize();
 
 		if (Loader.isModLoaded("forestry"))
-			ForestryCompatibility.init();
+			ForestryCompatibility.initialize();
+
+		OreCompatibility.initialize();
 	}
 }

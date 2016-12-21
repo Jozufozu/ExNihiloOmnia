@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.2.4"
+version = "1.2.5"
 group= "jozufozu" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloomnia"
 
@@ -41,13 +41,34 @@ repositories {
         name 'DVS1 Maven FS'
         url 'http://dvs1.progwml6.com/files/maven'
     }
-    maven { // TOP
+    maven {
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
     maven {
         name 'Forestry'
         url "http://maven.ic2.player.to/"
+    }
+    maven {
+        url "http://maven.cil.li/"
+    }
+    maven {
+        url "http://maven.ic2.player.to"
+    }
+    maven {
+        url "http://maven.epoxide.xyz"
+    }
+    maven {
+        url "http://dl.tsr.me/artifactory/libs-release-local"
+    }
+    maven {
+        url "http://maven.chaosfield.at/"
+    }
+    ivy {
+        url "http://ae-mod.info/builds"
+        layout "pattern", {
+            artifact "[module]-[revision](-[classifier])(.[ext])"
+        }
     }
 }
 
@@ -58,6 +79,8 @@ dependencies {
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.3.199"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.6.1.464"
     deobfCompile "net.sengir.forestry:forestry_1.10.2:5.2.9.247"
+    deobfCompile "com.enderio:EnderIO:1.10.2-3.0.1.144_beta"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75:api"
 }
 
 processResources
