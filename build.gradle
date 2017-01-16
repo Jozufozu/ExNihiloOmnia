@@ -1,5 +1,3 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
@@ -14,18 +12,17 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
-*/
 version = "1.2.5"
 group= "jozufozu" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "exnihiloomnia"
 
+sourceCompatibility = targetCompatibility = "1.8"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
 minecraft {
-    version = "1.10.2-12.18.3.2185"
+    version = "${mc_version}-${forge_version}"
     runDir = "run"
 
     mappings = "snapshot_20161111"
@@ -33,7 +30,7 @@ minecraft {
 }
 
 repositories {
-    maven { // The repo from which to get waila
+    maven {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
@@ -73,14 +70,15 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.10-1.3.3-41"
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.6.389"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
+    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
-    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.3.199"
-    deobfCompile "slimeknights:TConstruct:1.10.2-2.6.1.464"
-    deobfCompile "net.sengir.forestry:forestry_1.10.2:5.2.9.247"
-    deobfCompile "com.enderio:EnderIO:1.10.2-3.0.1.144_beta"
-    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75:api"
+    deobfCompile "slimeknights.mantle:Mantle:${mc_version}-${mantle_version}"
+    deobfCompile "slimeknights:TConstruct:${mc_version}-${tcon_version}"
+    deobfCompile "net.sengir.forestry:forestry_${mc_version}:${forestry_version}"
+    deobfCompile"com.enderio.core:EnderCore:${mc_version}-${endercore_version}"
+    deobfCompile "com.enderio:EnderIO:${mc_version}-${enderio_version}"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:${mc_version}-${aa_version}"
 }
 
 processResources
