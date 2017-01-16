@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class FluidStateLogicItems extends BarrelLogic {
-	private static final ResourceLocation wateringCan = new ResourceLocation("enderio", "WateringCan");
+	private static final ResourceLocation wateringCan = new ResourceLocation("extrautils2", "WateringCan");
 
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {

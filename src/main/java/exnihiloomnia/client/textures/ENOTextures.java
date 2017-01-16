@@ -1,7 +1,6 @@
 package exnihiloomnia.client.textures;
 
 import exnihiloomnia.ENO;
-import exnihiloomnia.ENOConfig;
 import exnihiloomnia.client.textures.files.DynamicTextureSprite;
 import exnihiloomnia.client.textures.files.TextureLoader;
 import exnihiloomnia.client.textures.files.TextureLocations;
@@ -50,10 +49,8 @@ public class ENOTextures {
                 if (ore.hasType(type)) {
                     BufferedImage recolor = TextureManipulation.recolor(fore, new Color(ore.getColor()));
                     BufferedImage comp;
-                    if (ENOConfig.glitch_art)
-                        comp = TextureManipulation.composite(TextureManipulation.aberrate(back, random), recolor);
-                    else
-                        comp = TextureManipulation.composite(back, recolor);
+
+                    comp = TextureManipulation.composite(back, recolor);
 
                     DynamicTextureSprite sprite = DynamicTextureSprite.fromImage(ore.getOreName(type), comp);
                     forceTextureRegistration(map, sprite);

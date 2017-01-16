@@ -98,7 +98,7 @@ public class BarrelStates {
 	public static BarrelLogic WITCHWATER_STATE_LOGIC;
 
 	//configuration options
-	private static final String CATEGORY_BARREL_OPTIONS = "barrel options";
+	public static final String CATEGORY_BARREL_OPTIONS = "barrel options";
 	public static boolean ALLOW_COMPOST;
 	public static boolean ALLOW_RAIN_FILLING;
 	public static boolean ALLOW_ICE_FORMING;

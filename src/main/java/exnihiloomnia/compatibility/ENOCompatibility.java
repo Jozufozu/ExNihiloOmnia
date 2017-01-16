@@ -17,13 +17,17 @@ public class ENOCompatibility {
 	public static Block BEE_TRAP_TREATED = null;
 
 
-	private static final String CATEGORY_COMPAT_OPTIONS = "compatibility options";
+	public static final String CATEGORY_COMPAT_OPTIONS = "compatibility options";
 	public static boolean register_veinminer_tools;
 	public static boolean register_veinminer_recipes_crook;
 	public static boolean register_veinminer_recipes_hammer;
 	public static boolean add_smeltery_melting;
 	public static boolean add_tcon_modifiers;
 	public static boolean biome_required;
+
+	public static boolean sag_mill;
+	public static boolean mekanism_crusher;
+	public static boolean aa_crusher;
 
 	public static void configure(Configuration config) {
 		register_veinminer_tools = config.get(CATEGORY_COMPAT_OPTIONS, "VeinMiner: register tools", true).getBoolean(true);
@@ -32,6 +36,10 @@ public class ENOCompatibility {
 		add_smeltery_melting = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add smelting recipes for Ex Nihilo ores", true).getBoolean(true);
 		add_tcon_modifiers = config.get(CATEGORY_COMPAT_OPTIONS, "TConstruct: add Hammered and Crook'd modifiers", true).getBoolean(true);
 		biome_required = config.get(CATEGORY_COMPAT_OPTIONS, "Forestry: scented hive must be in the correct biome to attract bees", true).getBoolean(true);
+
+		sag_mill = config.getBoolean("sag mill recipes", CATEGORY_COMPAT_OPTIONS, true, "Add sag mill recipes for ores");
+		mekanism_crusher = config.getBoolean("mekanism crusher recipes", CATEGORY_COMPAT_OPTIONS, true, "Add Mekanism crusher  recipes for ores");
+		aa_crusher = config.getBoolean("aa crusher recipes", CATEGORY_COMPAT_OPTIONS, true, "Add Actually Additions crusher recipes for ores");
 	}
 
 	public static void preInit() {

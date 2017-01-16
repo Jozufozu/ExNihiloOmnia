@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 public class EnderIOCompatibility {
     public static void addCompatibility(ItemStack input, ItemStack output, ItemStack output2) {
         output.stackSize = 5;
-        output2.stackSize = 1;
+        output2.stackSize = 2;
 
-        SagMillRecipeManager.getInstance().addRecipe(input, 2000, new RecipeOutput(output), new RecipeOutput(output2, .3f), new RecipeOutput(output2, .3f), new RecipeOutput(output2, .3f));
+        SagMillRecipeManager.getInstance().addRecipe(input, 2000, new RecipeOutput(output), new RecipeOutput(output2, .3f));
     }
 }

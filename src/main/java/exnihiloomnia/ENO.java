@@ -1,10 +1,13 @@
 package exnihiloomnia;
 
 import exnihiloomnia.client.textures.ENOTextures;
+import exnihiloomnia.compatibility.ENOCompatibility;
+import exnihiloomnia.crafting.ENOCrafting;
 import exnihiloomnia.crafting.recipes.MobDrops;
 import exnihiloomnia.items.hammers.ItemHammer;
 import exnihiloomnia.proxy.Proxy;
 import exnihiloomnia.registries.CommandRegistry;
+import exnihiloomnia.registries.ENORegistries;
 import exnihiloomnia.registries.hammering.HammerRegistry;
 import exnihiloomnia.world.ENOWorld;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -39,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = ENO.DEPENDENCIES)
+@Mod(name = ENO.NAME, modid = ENO.MODID, version = ENO.VERSION, dependencies = ENO.DEPENDENCIES, guiFactory = ENO.GUI_FACTORY)
 public class ENO {
 
 	static {
@@ -53,6 +57,7 @@ public class ENO {
 	public static final String MODID = "exnihiloomnia";
 	public static final String VERSION = "1.2.5";
 	public static final String DEPENDENCIES = "after:tconstruct;after:Mekanism;after:IC2;after:appliedenergistics2;after:FunOres;after:forestry;after:morebees;after:immersiveengineering;after:bigreactors;after:substratum";
+	public static final String GUI_FACTORY = "exnihiloomnia.config.ENOGuiFactory";
 
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;
@@ -130,5 +135,27 @@ public class ENO {
 				}
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+		if(MODID.equals(eventArgs.getModID()))
+			syncConfig();
+	}
+
+	public static void syncConfig() {
+		config.load();
+
+		ENOConfig.configure(config);
+
+		ENOCompatibility.configure(config);
+		ENOCrafting.configure(config);
+		ENOWorld.configure(config);
+
+		ENORegistries.configure(config);
+		ENORegistries.initialize();
+
+		if(ENO.config.hasChanged())
+			ENO.config.save();
 	}
 }

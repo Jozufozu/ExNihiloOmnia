@@ -1,11 +1,11 @@
 package exnihiloomnia.crafting;
 
-import exnihiloomnia.crafting.recipes.*;
 import exnihiloomnia.ENOConfig;
+import exnihiloomnia.crafting.recipes.*;
 import net.minecraftforge.common.config.Configuration;
 
 public class ENOCrafting {
-	private static final String CATEGORY_CRAFTING_OPTIONS = "crafting options";
+	public static final String CATEGORY_CRAFTING_OPTIONS = "crafting options";
 
 	public static int stone_required;
 	public static boolean barrels_allowed;

@@ -15,9 +15,9 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 public class OreCompatibility {
 
     public static void initialize() {
-        boolean mekanism = Loader.isModLoaded("Mekanism");
-        boolean aa = Loader.isModLoaded("actuallyadditions");
-        boolean enderIO = Loader.isModLoaded("EnderIO");
+        boolean mekanism = Loader.isModLoaded("Mekanism") && ENOCompatibility.mekanism_crusher;
+        boolean aa = Loader.isModLoaded("actuallyadditions") && ENOCompatibility.aa_crusher;
+        boolean enderIO = Loader.isModLoaded("EnderIO") && ENOCompatibility.sag_mill;
 
         if (mekanism || aa || enderIO) {
             for (Ore ore : OreRegistry.registry.values()) {

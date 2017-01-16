@@ -22,8 +22,8 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 
 public class ENOWorld {
-	private static String CATEGORY_WORLD_GEN = "world generation";
-	private static String CATEGORY_WORLD_MOD = "world manipulation";
+	public static String CATEGORY_WORLD_GEN = "world generation";
+	public static String CATEGORY_WORLD_MOD = "world manipulation";
 	
 	private static Template template_overworld;
 	private static Template template_nether;
