@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 public class Moss {
 	public static final int DEFAULT_GROWTH_SPEED = 8;
@@ -35,10 +34,10 @@ public class Moss {
 		Moss.rain_reactive = spreads;
 	}
 
-	public static void grow(World world, Chunk chunk) {
+	public static void grow(World world, int chunkX, int chunkZ) {
 
-		for (int i = 0; i < growth; i++) {
-			PositionHelper.getRandomPositionInChunk(world, chunk, pos);
+		for (int i = 0; i < getGrowth(); i++) {
+			PositionHelper.getRandomPositionInChunk(world, chunkX, chunkZ, pos);
 			state = world.getBlockState(pos);
 
 			if (state.getBlock() == Blocks.AIR)

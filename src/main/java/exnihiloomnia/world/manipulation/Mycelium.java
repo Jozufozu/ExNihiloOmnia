@@ -5,7 +5,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 import java.util.Random;
 
@@ -35,9 +34,9 @@ public class Mycelium {
 		Mycelium.rain_reactive = spreads;
 	}
 	
-	public static void grow(World world, Chunk chunk) {		
+	public static void grow(World world, int chunkX, int chunkZ) {
 		for (int i = 0; i < growth; i++) {
-			PositionHelper.getRandomPositionInChunk(world, chunk, pos);
+			PositionHelper.getRandomPositionInChunk(world, chunkX, chunkZ, pos);
 
 			state = world.getBlockState(pos);
 			

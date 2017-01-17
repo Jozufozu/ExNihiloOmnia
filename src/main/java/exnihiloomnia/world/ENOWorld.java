@@ -12,14 +12,18 @@ import exnihiloomnia.world.generation.templates.defaults.TemplateSkyblock21;
 import exnihiloomnia.world.generation.templates.pojos.Template;
 import exnihiloomnia.world.manipulation.Moss;
 import exnihiloomnia.world.manipulation.Mycelium;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ENOWorld {
 	public static String CATEGORY_WORLD_GEN = "world generation";
@@ -43,7 +47,7 @@ public class ENOWorld {
 	private static int moss_spread_speed;
 	private static boolean mycelium_sprout_with_rain;
 	private static int mycelium_sprout_speed;
-	
+
 	public static void configure(Configuration config) {
 		gen_surface = config.get(CATEGORY_WORLD_GEN, "void overworld", false).getBoolean(false);
 		surface_biome = config.get(CATEGORY_WORLD_GEN, "overworld biome", "all").getString();
@@ -186,14 +190,37 @@ public class ENOWorld {
 	}
 	
 	public static void tick(World world) {
-		if (!world.isRemote && world.playerEntities.size() > 0 && world.provider.getDimension() != -11325) {
-			ChunkProviderServer provider = (ChunkProviderServer)world.getChunkProvider();
-	        
-			for (Object chunk : provider.getLoadedChunks().toArray()) {
-				if (moss_spreads)
-	        		Moss.grow(world, (Chunk) chunk);
-	        	Mycelium.grow(world, (Chunk) chunk);
-	        }
+		//if (true) return;
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+		if (server.isServerRunning() && !world.isRemote && world.playerEntities.size() > 0 && world.provider.getDimension() != -11325) {
+
+			int distance = server.getPlayerList().getViewDistance();
+
+			List<ChunkPos> processed = new ArrayList<>();
+
+			for (EntityPlayer player : world.playerEntities) {
+				final int maxX = player.chunkCoordX + distance / 2;
+				final int maxZ = player.chunkCoordZ + distance / 2;
+
+				int x = player.chunkCoordX - distance / 2;
+				int z = player.chunkCoordZ - distance / 2;
+				for (; x < maxX; x++) {
+					for (; z < maxZ; z++) {
+						if (world.getChunkProvider().getLoadedChunk(x, z) != null) {
+							ChunkPos pos = new ChunkPos(x, z);
+
+							if (!processed.contains(pos)) {
+								if (moss_spreads)
+									Moss.grow(world, x, z);
+								Mycelium.grow(world, x, z);
+
+								processed.add(pos);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
