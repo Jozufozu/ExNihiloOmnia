@@ -142,14 +142,12 @@ public class ENO {
 	}
 
 	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-		if(MODID.equals(eventArgs.getModID()))
+	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if(MODID.equals(event.getModID()))
 			syncConfig();
 	}
 
 	public static void syncConfig() {
-		config.load();
-
 		ENOConfig.configure(config);
 
 		ENOCompatibility.configure(config);
@@ -159,7 +157,7 @@ public class ENO {
 		ENORegistries.configure(config);
 		ENORegistries.initialize();
 
-		if(ENO.config.hasChanged())
-			ENO.config.save();
+		if(config.hasChanged())
+			config.save();
 	}
 }
