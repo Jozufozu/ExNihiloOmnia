@@ -8,8 +8,6 @@ import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -261,25 +259,22 @@ public class OreRegistry {
 
     @SideOnly(Side.CLIENT)
     public static void regColors() {
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                Ore ore = getOre(stack.getMetadata());
-                return tintIndex == 1 && ore != null ? ore.getColor() : -1;
-            }
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler((ItemStack stack, int tintIndex) -> {
+            Ore ore = getOre(stack.getMetadata());
+
+            return tintIndex == 1 && ore != null ? ore.getColor() : -1;
         }, ENOItems.BROKEN_ORE, ENOItems.BROKEN_ORE_ENDER, ENOItems.BROKEN_ORE_NETHER, ENOItems.CRUSHED_ORE, ENOItems.POWDERED_ORE, ENOItems.INGOT_ORE);
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
-            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-                Ore ore = getOre(state.getBlock());
-                return tintIndex == 0 && ore != null ? ore.getColor() : -1;
-            }
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) -> {
+            Ore ore = getOre(state.getBlock());
+
+            return tintIndex == 0 && ore != null ? ore.getColor() : -1;
         }, blocks.values().toArray(new Block[]{}));
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-                Ore ore = getOre(Block.getBlockFromItem(stack.getItem()));
-                return tintIndex == 0 && ore != null ? ore.getColor() : -1;
-            }
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler((ItemStack stack, int tintIndex) -> {
+            Ore ore = getOre(Block.getBlockFromItem(stack.getItem()));
+
+            return tintIndex == 0 && ore != null ? ore.getColor() : -1;
         }, blocks.values().toArray(new Block[]{}));
     }
 

@@ -26,7 +26,7 @@ public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 	public static String path = ENO.path + File.separator + "registries" + File.separator + "hammer" + File.separator;
 
 	public void initialize() {
-		entries = new HashMap<String, HammerRegistryEntry>();
+		entries = new HashMap<>();
 		
 		if (ENORegistries.loadHammerDefaults) {
 			registerVanillaRecipes();

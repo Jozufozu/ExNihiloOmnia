@@ -27,7 +27,7 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
     }
 
     public void initialize() {
-        entries = new HashMap<String, CrucibleRegistryEntry>();
+        entries = new HashMap<>();
 
         if (ENORegistries.loadCrucibleDefaults) {
             registerMeltables();

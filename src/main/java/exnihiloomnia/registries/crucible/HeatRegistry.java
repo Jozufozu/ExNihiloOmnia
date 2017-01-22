@@ -20,7 +20,7 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
     public static HeatRegistry INSTANCE = new HeatRegistry();
 	
 	public void initialize() {
-		entries = new HashMap<String, HeatRegistryEntry>();
+		entries = new HashMap<>();
 
 		if (ENORegistries.loadHeatDefaults) {
 			registerVanillaHeatSources();

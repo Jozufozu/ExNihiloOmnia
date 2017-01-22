@@ -1,7 +1,6 @@
 package exnihiloomnia.registries.crook;
 
 import exnihiloomnia.ENO;
-import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.items.ENOItems;
 import exnihiloomnia.registries.ENORegistries;
@@ -32,7 +31,7 @@ public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 		SILKWORM = new CrookRegistryEntry(Blocks.LEAVES.getDefaultState(), EnumMetadataBehavior.IGNORED);
 		SILKWORM.addReward(new ItemStack(ENOItems.SILKWORM), 1, 1);
 
-		entries = new HashMap<String, CrookRegistryEntry>();
+		entries = new HashMap<>();
 		
 		if (ENORegistries.loadCrookDefaults) {
 			registerVanillaRecipes();

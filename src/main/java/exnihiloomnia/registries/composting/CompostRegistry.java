@@ -23,7 +23,7 @@ public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 	public static CompostRegistry INSTANCE = new CompostRegistry();
 	
 	public void initialize() {
-		entries = new HashMap<String, CompostRegistryEntry>();
+		entries = new HashMap<>();
 		
 		if (ENORegistries.loadCompostDefaults) {
 			registerVanillaRecipes();

@@ -54,7 +54,7 @@ public class BarrelCraftingRegistry implements IRegistry<BarrelCraftingTrigger> 
 
     @Override
     public void clear() {
-        entries = new HashMap<String, BarrelCraftingTrigger>();
+        entries = new HashMap<>();
     }
 
     public static void add(BarrelCraftingTrigger recipe) {

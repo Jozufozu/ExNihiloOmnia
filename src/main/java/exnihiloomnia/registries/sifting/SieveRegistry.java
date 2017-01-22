@@ -30,7 +30,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 	private static List<ItemStack> EMPTY_REWARDS_ARRAY = new ArrayList<ItemStack>(){};
 
 	public void initialize() {
-		entries = new HashMap<String, SieveRegistryEntry>();
+		entries = new HashMap<>();
 		
 		if (ENORegistries.loadSieveDefaults) {
 			registerVanillaRecipes();
