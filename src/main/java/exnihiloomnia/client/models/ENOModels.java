@@ -9,13 +9,11 @@ import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.*;
 
@@ -53,23 +51,12 @@ public class ENOModels {
 			}
 		});
 		
-		ModelLoader.setCustomMeshDefinition(new ItemBlock(ENOBlocks.WITCHWATER), new ItemMeshDefinition() {
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-				return WITCHWATER_MODEL_LOCATION;
-			}
-		});
+		ModelLoader.setCustomMeshDefinition(new ItemBlock(ENOBlocks.WITCHWATER), stack -> WITCHWATER_MODEL_LOCATION);
 
 		if (ENOConfig.universal_bucket)
 		{
 			ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN);
-			ModelLoader.setCustomMeshDefinition(ENOItems.BUCKET_PORCELAIN, new ItemMeshDefinition()
-			{
-				@Override
-				public ModelResourceLocation getModelLocation(ItemStack stack)
-				{
-					return PORCELAIN_BUCKET_LOCATION;
-				}
-			});
+			ModelLoader.setCustomMeshDefinition(ENOItems.BUCKET_PORCELAIN, stack -> PORCELAIN_BUCKET_LOCATION);
 			ModelBakery.registerItemVariants(ENOItems.BUCKET_PORCELAIN, PORCELAIN_BUCKET_LOCATION);
 		}
 

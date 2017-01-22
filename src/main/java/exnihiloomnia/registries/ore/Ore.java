@@ -28,7 +28,7 @@ public class Ore {
 
     private String parentMod = null;
 
-    private List<String> oreDictNames = new ArrayList<String>();
+    private List<String> oreDictNames = new ArrayList<>();
 
     private ItemStack ingot = null;
 

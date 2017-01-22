@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CompostRecipeLoader {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<CompostRegistryEntry> entries; 
 	
 	public static List<CompostRegistryEntry> load(String path) {	
 		generateExampleJsonFile(path);
-		entries = new ArrayList<CompostRegistryEntry>();
+		entries = new ArrayList<>();
 		
 		File[] files = new File(path).listFiles();
 		

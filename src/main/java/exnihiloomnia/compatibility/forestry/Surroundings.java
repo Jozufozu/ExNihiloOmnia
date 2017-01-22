@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Surroundings {
-    public Map<IBlockState, Integer> blocks = new HashMap<IBlockState, Integer>();
-    public Map<Flowers, Integer> flowers = new HashMap<Flowers, Integer>();
+    public final Map<IBlockState, Integer> blocks = new HashMap<>();
+    public final Map<Flowers, Integer> flowers = new HashMap<>();
     public int leafCount;
 
     public String blockAbove;

@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class BarrelStateCompost extends BarrelState {
-	protected static Color white = new Color("FFFFFF");
-	private static String[] description = new String[]{""};
+	protected static final Color white = new Color("FFFFFF");
+	private static final String[] description = new String[]{""};
 	
 	@Override
 	public String getUniqueIdentifier() {

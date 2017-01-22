@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 
 public class TemplateLoader {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	public static Template load(String path) {
 		File file = new File(path);

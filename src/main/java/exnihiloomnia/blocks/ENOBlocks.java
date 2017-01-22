@@ -51,7 +51,7 @@ public class ENOBlocks {
 	public static Block CHORUS_SPROUT;
 
     public static List<Block> getBlocks() {
-        List<Block> blocks = new ArrayList<Block>();
+        List<Block> blocks = new ArrayList<>();
 
         blocks.add(SIEVE_WOOD);
         blocks.add(DUST);

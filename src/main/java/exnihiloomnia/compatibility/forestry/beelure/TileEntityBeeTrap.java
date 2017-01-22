@@ -14,7 +14,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 
 public class TileEntityBeeTrap extends TileEntity implements ITickable {
-    public static PositionHelper helper = new PositionHelper();
+    public static final PositionHelper helper = new PositionHelper();
 
     private Surroundings blocks = new Surroundings();
     public static final int TIMER_MAX = 6000;

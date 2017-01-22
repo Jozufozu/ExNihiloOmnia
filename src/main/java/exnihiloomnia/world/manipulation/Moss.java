@@ -14,8 +14,8 @@ public class Moss {
 	private static int growth = 0;
 	private static boolean rain_reactive;
 
-	private static PositionHelper helper = new PositionHelper();
-	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	private static final PositionHelper helper = new PositionHelper();
+	private static final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 	private static IBlockState state;
 
 	public static int getGrowth() {

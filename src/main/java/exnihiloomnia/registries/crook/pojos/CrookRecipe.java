@@ -8,7 +8,7 @@ public class CrookRecipe {
 	private String id;
 	private int meta;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.IGNORED;
-	private ArrayList<CrookRecipeReward> rewards = new ArrayList<CrookRecipeReward>();
+	private ArrayList<CrookRecipeReward> rewards = new ArrayList<>();
 	
 	public CrookRecipe(){}
 	public CrookRecipe(String id, int meta, EnumMetadataBehavior behavior) {

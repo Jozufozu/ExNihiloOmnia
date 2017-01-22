@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class BarrelStateBlaze extends BarrelState {
-	private static String[] description = new String[]{""};
+	private static final String[] description = new String[]{""};
 	
 	@Override
 	public String getUniqueIdentifier() {

@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SieveRecipeLoader {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<SieveRegistryEntry> entries; 
 	
 	public static List<SieveRegistryEntry> load(String path) {	
 		generateExampleJsonFile(path);
-		entries = new ArrayList<SieveRegistryEntry>();
+		entries = new ArrayList<>();
 		
 		File[] files = new File(path).listFiles();
 		

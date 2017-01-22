@@ -8,7 +8,7 @@ public class HammerRecipe {
 	private String id;
 	private int meta;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.IGNORED;
-	private ArrayList<HammerRecipeReward> rewards = new ArrayList<HammerRecipeReward>();
+	private ArrayList<HammerRecipeReward> rewards = new ArrayList<>();
 	
 	public HammerRecipe(){}
 	public HammerRecipe(String id, int meta, EnumMetadataBehavior behavior) {

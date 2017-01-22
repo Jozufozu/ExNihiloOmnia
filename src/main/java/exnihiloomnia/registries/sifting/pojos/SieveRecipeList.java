@@ -3,7 +3,7 @@ package exnihiloomnia.registries.sifting.pojos;
 import java.util.ArrayList;
 
 public class SieveRecipeList {
-	private ArrayList<SieveRecipe> recipes = new ArrayList<SieveRecipe>();
+	private ArrayList<SieveRecipe> recipes = new ArrayList<>();
 
 	public ArrayList<SieveRecipe> getRecipes() {
 		return recipes;

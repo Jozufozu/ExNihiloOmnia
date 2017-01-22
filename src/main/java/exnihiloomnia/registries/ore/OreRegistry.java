@@ -27,15 +27,15 @@ import java.util.List;
 import java.util.Map;
 
 public class OreRegistry {
-    public static boolean oredict_ingots = true;
+    public static final boolean oredict_ingots = true;
 
-    public static boolean force_ores = false;
+    public static final boolean force_ores = false;
 
     private static final String path = ENO.path + File.separator + "registries" + File.separator + "ore" + File.separator;
 
-    public static HashMap<String, String> metadatas = new HashMap<String, String>();
-    public static HashMap<String, Block> blocks = new HashMap<String, Block>();
-    public static HashMap<String, Ore> registry = new HashMap<String, Ore>();
+    public static HashMap<String, String> metadatas = new HashMap<>();
+    public static final HashMap<String, Block> blocks = new HashMap<>();
+    public static final HashMap<String, Ore> registry = new HashMap<>();
 
     public static void init() {
 
@@ -110,7 +110,7 @@ public class OreRegistry {
     }
 
     public static List<String> getOreList(String file) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         try {
             File f = new File(file);
@@ -140,10 +140,10 @@ public class OreRegistry {
     }
 
     public static void filterOreDict() {
-        List<String> toBeRemoved = new ArrayList<String>();
+        List<String> toBeRemoved = new ArrayList<>();
 
         for (Ore ore : registry.values()) {
-            List<String> names = new ArrayList<String>();
+            List<String> names = new ArrayList<>();
 
             names.add(ore.getOreDictName("ingot"));
 

@@ -10,8 +10,8 @@ public class ParticleSieve extends Particle {
 	protected float maxU = 0.0f;
 	protected float maxV = 0.0f;
 	
-	public ParticleSieve(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, TextureAtlasSprite texture) {
-        super(par1World, par2, par4, par6, par8, par10, par12);
+	public ParticleSieve(World par1World, double posX, double posY, double posZ, double speedX, double speedY, double speedZ, TextureAtlasSprite texture) {
+        super(par1World, posX, posY, posZ, speedX, speedY, speedZ);
         this.particleTexture = texture;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
         this.setSize(0.04F, 0.04F);

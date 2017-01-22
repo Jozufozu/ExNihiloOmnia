@@ -21,9 +21,9 @@ public class Hive {
 
     public Boolean requiredCanSeeSky = null;
     public Boolean requiresTree = null;
-    public String requiresBlockAbove = null;
+    public final String requiresBlockAbove = null;
 
-    public List<Type> biomeTypes = new ArrayList<Type>();
+    public final List<Type> biomeTypes = new ArrayList<>();
 
     public final IBlockState state;
 

@@ -8,7 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class BarrelStateGrass extends BarrelStateCompostSpecial {
-	private static ItemStack grass = new ItemStack(Blocks.GRASS, 1);
+	private static final ItemStack grass = new ItemStack(Blocks.GRASS, 1);
 	
 	public BarrelStateGrass() {
 		super();

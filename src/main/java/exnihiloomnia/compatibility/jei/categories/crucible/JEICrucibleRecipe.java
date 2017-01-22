@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JEICrucibleRecipe implements IRecipeWrapper {
-    private final List<ItemStack> input = new ArrayList<ItemStack>();
-    private final List<FluidStack> output = new ArrayList<FluidStack>();
+    private final List<ItemStack> input = new ArrayList<>();
+    private final List<FluidStack> output = new ArrayList<>();
     private final CrucibleRegistryEntry entry;
 
     public JEICrucibleRecipe(CrucibleRegistryEntry entry) {

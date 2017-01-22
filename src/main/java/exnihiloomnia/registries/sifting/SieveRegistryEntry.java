@@ -11,10 +11,11 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("deprecation")
 public class SieveRegistryEntry {
-	private IBlockState input;
+	private final IBlockState input;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
-	private ArrayList<SieveReward> rewards = new ArrayList<SieveReward>();
+	private final ArrayList<SieveReward> rewards = new ArrayList<>();
 	
 	public SieveRegistryEntry(IBlockState input, EnumMetadataBehavior behavior) {
 		this.input = input;
@@ -77,7 +78,7 @@ public class SieveRegistryEntry {
 
 		SieveRecipe recipe = new SieveRecipe(block, this.getInput().getBlock().getMetaFromState(this.getInput()), this.getMetadataBehavior());
 
-		ArrayList<SieveRecipeReward> rewards = new ArrayList<SieveRecipeReward>();
+		ArrayList<SieveRecipeReward> rewards = new ArrayList<>();
 
 		for (SieveReward reward : this.getRewards())
 			rewards.add(new SieveRecipeReward(Item.REGISTRY.getNameForObject(reward.getItem().getItem()).toString(), reward.getItem().getMetadata(), reward.getItem().stackSize, reward.getBaseChance()));

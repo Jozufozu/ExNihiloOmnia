@@ -61,7 +61,7 @@ public class TemplateExNihiloEasy extends TemplateGenerator {
 
 		//CHEST
 		TemplateBlock chest = new TemplateBlock("minecraft:chest", 2, 1, 1, 0);
-		chest.setContents(new ArrayList<TemplateItem>());
+		chest.setContents(new ArrayList<>());
 		chest.getContents().add(new TemplateItem("minecraft:dye", 64, 15)); //BONE Meal
 		chest.getContents().add(new TemplateItem("minecraft:dye", 64, 15));
 		chest.getContents().add(new TemplateItem("minecraft:dye", 64, 15));

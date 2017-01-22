@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class ItemOre extends Item {
-    public EnumOreItemType type;
+    public final EnumOreItemType type;
 
     public ItemOre(EnumOreItemType type) {
         this.type = type;

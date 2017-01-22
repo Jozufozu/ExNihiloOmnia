@@ -12,6 +12,6 @@ public class EntityStoneRenderer implements IRenderFactory<EntityStone> {
 
     @Override
     public Render<EntityStone> createRenderFor(RenderManager manager) {
-        return new RenderSnowball<EntityStone>(manager, ENOItems.STONE, Minecraft.getMinecraft().getRenderItem());
+        return new RenderSnowball<>(manager, ENOItems.STONE, Minecraft.getMinecraft().getRenderItem());
     }
 }

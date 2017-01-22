@@ -100,7 +100,7 @@ public class ENOItems {
     public static Item INGOT_ORE;
 
     public static List<Item> getItems() {
-        List<Item> items = new ArrayList<Item>();
+        List<Item> items = new ArrayList<>();
 
         items.add(BUCKET_PORCELAIN_RAW);
         items.add(BUCKET_PORCELAIN_EMPTY);

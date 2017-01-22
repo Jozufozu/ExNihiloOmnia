@@ -52,7 +52,7 @@ public class TemplateWorldExporter extends TemplateGenerator {
 						if (te != null && te instanceof IInventory) {
 							IInventory inv = (IInventory) te;
 							
-							ArrayList<TemplateItem> contents = new ArrayList<TemplateItem>();
+							ArrayList<TemplateItem> contents = new ArrayList<>();
 
 							for (int i = 0; i < inv.getSizeInventory(); i++) {
 								ItemStack stack = inv.getStackInSlot(i);

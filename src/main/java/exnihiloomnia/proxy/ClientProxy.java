@@ -141,7 +141,7 @@ public class ClientProxy extends Proxy {
 
         if (item != null) {
             if (item.getHasSubtypes()) {
-                ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+                ArrayList<ItemStack> list = new ArrayList<>();
 
                 block.getSubBlocks(item, null, list);
 
@@ -158,7 +158,7 @@ public class ClientProxy extends Proxy {
 
     private static void registerRenderer(Item item) {
         if (item.getHasSubtypes()) {
-            ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> list = new ArrayList<>();
 
             item.getSubItems(item, null, list);
 

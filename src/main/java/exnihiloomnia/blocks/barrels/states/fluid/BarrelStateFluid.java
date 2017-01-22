@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 public class BarrelStateFluid extends BarrelState {
-	private static String[] description = new String[]{""};
+	private static final String[] description = new String[]{""};
 
 	@Override
 	public String getUniqueIdentifier() {

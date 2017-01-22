@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ItemSifter extends Item implements ISieveFaster {
 
-    private ToolMaterial material;
+    private final ToolMaterial material;
 
     public ItemSifter(ToolMaterial mat) {
         material = mat;

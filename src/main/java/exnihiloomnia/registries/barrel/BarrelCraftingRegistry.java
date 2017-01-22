@@ -26,8 +26,8 @@ public class BarrelCraftingRegistry implements IRegistry<BarrelCraftingTrigger> 
     public static final BarrelCraftingRegistry INSTANCE = new BarrelCraftingRegistry();
 
 
-    public static HashMap<String, BarrelCraftingTrigger> entries = new HashMap<String, BarrelCraftingTrigger>();
-    public static String path = ENO.path + File.separator + "registries" + File.separator + "barrel" + File.separator;
+    public static HashMap<String, BarrelCraftingTrigger> entries = new HashMap<>();
+    public static final String path = ENO.path + File.separator + "registries" + File.separator + "barrel" + File.separator;
 
     @Override
     public void initialize() {

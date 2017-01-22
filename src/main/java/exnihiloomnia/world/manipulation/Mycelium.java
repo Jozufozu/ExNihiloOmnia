@@ -13,10 +13,9 @@ public class Mycelium {
 	private static int growth = 0;
 	private static boolean rain_reactive;
 
-	private static PositionHelper helper = new PositionHelper();
-	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-	private static IBlockState state;
-	private static Random rng = new Random();
+	private static final PositionHelper helper = new PositionHelper();
+	private static final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	private static final Random rng = new Random();
 	
 	public static int getGrowth() {
 		return growth;
@@ -38,7 +37,7 @@ public class Mycelium {
 		for (int i = 0; i < growth; i++) {
 			PositionHelper.getRandomPositionInChunk(world, chunkX, chunkZ, pos);
 
-			state = world.getBlockState(pos);
+			IBlockState state = world.getBlockState(pos);
 			
 			if (state.getBlock() == Blocks.MYCELIUM && world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
 				if (helper.hasNearbyWaterSource(world, pos)) {

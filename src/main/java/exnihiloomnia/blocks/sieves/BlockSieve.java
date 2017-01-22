@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class BlockSieve extends Block implements ITileEntityProvider {
 
 	public BlockSieve(Material material)  {

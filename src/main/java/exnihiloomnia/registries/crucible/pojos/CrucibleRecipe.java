@@ -1,11 +1,11 @@
 package exnihiloomnia.registries.crucible.pojos;
 
 public class CrucibleRecipe {
-	public String block;
-	public int meta;
-	public int solidVolume;
-	public String fluid;
-	public int fluidVolume;
+	public final String block;
+	public final int meta;
+	public final int solidVolume;
+	public final String fluid;
+	public final int fluidVolume;
 
 	public CrucibleRecipe(String block, int meta, int solidAmount, String fluid, int fluidAmount) {
 		this.block = block;

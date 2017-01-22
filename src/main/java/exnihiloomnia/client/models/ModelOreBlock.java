@@ -58,7 +58,7 @@ public class ModelOreBlock implements IModel, IModelCustomData {
 
     @Override
     public Collection<ResourceLocation> getDependencies() {
-        return ImmutableList.<ResourceLocation>of(CUBE);
+        return ImmutableList.of(CUBE);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ModelOreBlock implements IModel, IModelCustomData {
             for (EnumFacing facing : EnumFacing.values())
                 builder.add(new BakedQuadRetextured(model.getQuads(null, facing, 0).get(0), sprite));
         }
-        return new ModelOreBlock.BakedModelOreBlock(this, builder.build(), sprite, format, Maps.immutableEnumMap(transformMap), Maps.<String, IBakedModel>newHashMap());
+        return new BakedModelOreBlock(this, builder.build(), sprite, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap());
     }
 
     @Override
@@ -133,7 +133,7 @@ public class ModelOreBlock implements IModel, IModelCustomData {
         @Override
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType)
         {
-            return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, transforms, cameraTransformType);
+            return MapWrapper.handlePerspective(this, transforms, cameraTransformType);
         }
 
         @Override
@@ -154,13 +154,13 @@ public class ModelOreBlock implements IModel, IModelCustomData {
     {
         public static final BakedOreBlockOverrideHandler INSTANCE = new BakedOreBlockOverrideHandler();
         private BakedOreBlockOverrideHandler() {
-            super(ImmutableList.<ItemOverride>of());
+            super(ImmutableList.of());
         }
 
         @Override
         public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity)
         {
-            ModelOreBlock.BakedModelOreBlock model = (ModelOreBlock.BakedModelOreBlock)originalModel;
+            BakedModelOreBlock model = (BakedModelOreBlock)originalModel;
 
             Ore ore = OreRegistry.getOre(Block.getBlockFromItem(stack.getItem()));
 
@@ -168,14 +168,10 @@ public class ModelOreBlock implements IModel, IModelCustomData {
 
             if (!model.cache.containsKey(name)) {
                 IModel parent = model.parent.process(ImmutableMap.of("ore", name));
-                Function<ResourceLocation, TextureAtlasSprite> textureGetter;
-                textureGetter = new Function<ResourceLocation, TextureAtlasSprite>() {
-                    public TextureAtlasSprite apply(ResourceLocation location) {
-                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    }
-                };
+                java.util.function.Function<ResourceLocation, TextureAtlasSprite> textureGetter;
+                textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
 
-                IBakedModel bakedModel = parent.bake(new SimpleModelState(model.transforms), model.format, textureGetter);
+                IBakedModel bakedModel = parent.bake(new SimpleModelState(model.transforms), model.format, textureGetter::apply);
                 model.cache.put(name, bakedModel);
                 return bakedModel;
             }

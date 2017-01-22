@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class BlockSieveWood extends BlockSieve {
 	public static final PropertyEnum WOOD = PropertyEnum.create("wood", EnumWood.class);
 	

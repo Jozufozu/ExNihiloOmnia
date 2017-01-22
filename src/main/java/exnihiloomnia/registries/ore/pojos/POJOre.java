@@ -14,7 +14,7 @@ public class POJOre {
     private String ingot;
     private int ingotMeta;
 
-    private List<String> oreDictNames = new ArrayList<String>();
+    private List<String> oreDictNames = new ArrayList<>();
 
     public POJOre() {
     }

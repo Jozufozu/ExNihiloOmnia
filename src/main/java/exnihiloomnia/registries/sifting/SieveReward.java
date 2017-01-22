@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Random;
 
 public class SieveReward {
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	
 	private int base_chance;
 	private ItemStack item;

@@ -3,7 +3,7 @@ package exnihiloomnia.registries.crook.pojos;
 import java.util.ArrayList;
 
 public class CrookRecipeList {
-	private ArrayList<CrookRecipe> recipes = new ArrayList<CrookRecipe>();
+	private ArrayList<CrookRecipe> recipes = new ArrayList<>();
 
 	public ArrayList<CrookRecipe> getRecipes() {
 		return recipes;

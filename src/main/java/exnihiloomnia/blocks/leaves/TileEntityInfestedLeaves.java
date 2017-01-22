@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
+@SuppressWarnings("deprecation")
 public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     public IBlockState state = Blocks.LEAVES.getDefaultState();
     public boolean dying = false;
@@ -67,7 +68,7 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
     	this.progress = progress;
     }
 
-    private HashMap<Integer, Color> colors = new HashMap<Integer, Color>();
+    private final HashMap<Integer, Color> colors = new HashMap<>();
 
     @SideOnly(Side.CLIENT)
     public Color getColorForTint(int tintIndex) {

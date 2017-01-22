@@ -3,7 +3,7 @@ package exnihiloomnia.registries.ore.pojos;
 import java.util.ArrayList;
 
 public class POJOreList {
-	private ArrayList<POJOre> entries = new ArrayList<POJOre>();
+	private ArrayList<POJOre> entries = new ArrayList<>();
 
 	public ArrayList<POJOre> getEntries() {
 		return entries;

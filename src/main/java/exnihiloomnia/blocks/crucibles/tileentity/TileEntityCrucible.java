@@ -27,10 +27,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class TileEntityCrucible extends TileEntity implements ITickable{
 
 	protected int updateTimer = 0;
-	protected int updateTimerMax = 8; //Sync if an update is required.
+	protected final int updateTimerMax = 8; //Sync if an update is required.
 	protected boolean updateQueued = false;
 	protected boolean updateTimerRunning = false;
 
@@ -38,10 +39,10 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 	protected int adjustedSpeed = 0;
 	protected int solidContent = 0;
 	protected int solidContentProcessed = 0;
-	protected int solidContentMax = 200000;
-	protected int solidFluidExchangeRate = 100;
+	protected final int solidContentMax = 200000;
+	protected final int solidFluidExchangeRate = 100;
 
-    private ItemStackHandler itemHandler = new ItemStackHandler(1) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             //ItemStack copy = stack.copy();
@@ -63,7 +64,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
         }
     };
 
-    private FluidTank fluidTank = new FluidTank(8000) {
+    private final FluidTank fluidTank = new FluidTank(8000) {
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
@@ -234,6 +235,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable{
 		return !oldState.getBlock().equals(newState.getBlock());
 	}
 
+    @SuppressWarnings("deprecation")
     public boolean canInsertItem(ItemStack stack) {
 		Block item = Block.getBlockFromItem(stack.getItem());
 

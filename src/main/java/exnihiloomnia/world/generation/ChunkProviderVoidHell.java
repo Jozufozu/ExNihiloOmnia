@@ -20,7 +20,7 @@ import java.util.List;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.NETHER_BRIDGE;
 
 public class ChunkProviderVoidHell extends ChunkProviderHell {
-	private World world;
+	private final World world;
 	private MapGenNetherBridge fortresses = new MapGenNetherBridge();
 	
 	public ChunkProviderVoidHell(World world, boolean shouldGenNetherFortress, long seed) {

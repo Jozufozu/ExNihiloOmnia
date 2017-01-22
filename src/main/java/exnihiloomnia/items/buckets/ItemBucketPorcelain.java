@@ -6,12 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
@@ -39,19 +37,19 @@ public class ItemBucketPorcelain extends Item {
 		if (ret != null) return ret;
 
 		if (raytraceresult == null)
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+			return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
 
 		else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+			return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
 
 		else {
 			BlockPos blockpos = raytraceresult.getBlockPos();
 
 			if (!worldIn.isBlockModifiable(playerIn, blockpos))
-				return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+				return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 			else if (flag) {
 				if (!playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+					return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 
 				else {
 					IBlockState iblockstate = worldIn.getBlockState(blockpos);
@@ -61,24 +59,24 @@ public class ItemBucketPorcelain extends Item {
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_WATER));
+						return new ActionResult<>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_WATER));
 					}
 					else if (iblockstate.getBlock() == Blocks.LAVA  && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
 
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_LAVA));
+						return new ActionResult<>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_LAVA));
 					}
 					else if (iblockstate.getBlock() == ENOBlocks.WITCHWATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0) {
 
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_WITCHWATER));
+						return new ActionResult<>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, ENOItems.BUCKET_PORCELAIN_WITCHWATER));
 					}
 					else
-						return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+						return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 				}
 			}
 			else {
@@ -86,14 +84,14 @@ public class ItemBucketPorcelain extends Item {
 				BlockPos blockpos1 = flag1 && raytraceresult.sideHit == EnumFacing.UP ? blockpos : blockpos.offset(raytraceresult.sideHit);
 
 				if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn))
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+					return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 
 				else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1)) {
 					playerIn.addStat(StatList.getObjectUseStats(this));
-					return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+					return !playerIn.capabilities.isCreativeMode ? new ActionResult<>(EnumActionResult.SUCCESS, new ItemStack(ENOItems.BUCKET_PORCELAIN_EMPTY)) : new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 				}
 				else
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+					return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 			}
 		}
 	}
@@ -133,7 +131,7 @@ public class ItemBucketPorcelain extends Item {
 					worldIn.playSound(player, posIn, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
 					for (int k = 0; k < 8; ++k)
-						worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double)l + Math.random(), (double)i + Math.random(), (double)j + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+						worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double)l + Math.random(), (double)i + Math.random(), (double)j + Math.random(), 0.0D, 0.0D, 0.0D);
 				}
 				else {
 					if (!worldIn.isRemote && (flag || flag1) && !material.isLiquid())

@@ -75,7 +75,7 @@ public class BarrelCraftingRecipeCategory implements IRecipeCategory<JEIBarrelCr
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, JEIBarrelCraftingRecipe recipeWrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull JEIBarrelCraftingRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
 
         recipeLayout.getItemStacks().init(0, true, 23, 23);
         recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));

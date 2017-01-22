@@ -16,9 +16,10 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("deprecation")
 public class Template {
 	private int spawnYLevel = 64;
-	private ArrayList<TemplateBlock>blocks = new ArrayList<TemplateBlock>();
+	private ArrayList<TemplateBlock>blocks = new ArrayList<>();
 
 	public ArrayList<TemplateBlock> getBlocks() {
 		return blocks;

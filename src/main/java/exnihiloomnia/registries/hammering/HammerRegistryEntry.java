@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HammerRegistryEntry {
-	private IBlockState input;
+	private final IBlockState input;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
-	private ArrayList<HammerReward> rewards = new ArrayList<HammerReward>();
+	private final ArrayList<HammerReward> rewards = new ArrayList<>();
 
 	public HammerRegistryEntry(IBlockState input, EnumMetadataBehavior behavior) {
 		this.input = input;
@@ -47,7 +47,7 @@ public class HammerRegistryEntry {
 	}
 
 	public List<ItemStack> rollRewards(EntityPlayer player) {
-		ArrayList<ItemStack> rewards = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> rewards = new ArrayList<>();
 
 		for (HammerReward reward : this.rewards) {
 			ItemStack itemReward = reward.getReward(player);
@@ -99,7 +99,7 @@ public class HammerRegistryEntry {
 
 		HammerRecipe recipe = new HammerRecipe(block, this.getInput().getBlock().getMetaFromState(this.getInput()), this.getMetadataBehavior());
 
-		ArrayList<HammerRecipeReward> rewards = new ArrayList<HammerRecipeReward>();
+		ArrayList<HammerRecipeReward> rewards = new ArrayList<>();
 
 		for (HammerReward reward : this.getRewards())
 			rewards.add(new HammerRecipeReward(Item.REGISTRY.getNameForObject(reward.getItem().getItem()).toString(), reward.getItem().getMetadata(), reward.getItem().stackSize, reward.getBaseChance(), reward.getFortuneModifier()));

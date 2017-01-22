@@ -138,7 +138,7 @@ public class TemplateSkyblock21 extends TemplateGenerator {
 
 		//chest
 		TemplateBlock chest = new TemplateBlock("minecraft:chest", 5, -4, 1, 0);
-		chest.setContents(new ArrayList<TemplateItem>());
+		chest.setContents(new ArrayList<>());
 		chest.getContents().add(new TemplateItem("minecraft:lava_bucket", 1, 0));
 		chest.getContents().add(new TemplateItem("minecraft:ice", 1, 0));
 		blocks.add(chest);
@@ -261,7 +261,7 @@ public class TemplateSkyblock21 extends TemplateGenerator {
 		
 		//sand island chest
 		TemplateBlock chest2 = new TemplateBlock("minecraft:chest", 4, 65, 1, 0);
-		chest2.setContents(new ArrayList<TemplateItem>());
+		chest2.setContents(new ArrayList<>());
 		chest2.getContents().add(new TemplateItem("minecraft:obsidian", 10, 0));
 		chest2.getContents().add(new TemplateItem("minecraft:melon", 1, 0));
 		chest2.getContents().add(new TemplateItem("minecraft:pumpkin_seeds", 1, 0));
@@ -320,7 +320,7 @@ public class TemplateSkyblock21 extends TemplateGenerator {
 
 		//chest
 		TemplateBlock chest = new TemplateBlock("minecraft:chest", 0, 0, 1, 0);
-		chest.setContents(new ArrayList<TemplateItem>());
+		chest.setContents(new ArrayList<>());
 		chest.getContents().add(new TemplateItem("minecraft:sapling", 1, 2));
 		chest.getContents().add(new TemplateItem("minecraft:reeds", 1, 0));
 		chest.getContents().add(new TemplateItem("minecraft:ice", 1, 0));

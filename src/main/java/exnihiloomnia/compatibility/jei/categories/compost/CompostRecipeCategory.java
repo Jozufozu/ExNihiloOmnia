@@ -26,7 +26,7 @@ public class CompostRecipeCategory implements IRecipeCategory<JEICompostRecipe> 
 
     public static final String UID = "exnihiloomnia:compost";
     private static final ResourceLocation texture = new ResourceLocation(ENO.MODID, "textures/gui/jei_compost.png");
-    private static ResourceLocation compost = new ResourceLocation("exnihiloomnia:textures/blocks/compost.png");
+    private static final ResourceLocation compost = new ResourceLocation("exnihiloomnia:textures/blocks/compost.png");
 
     private CompostRegistryEntry entry;
 

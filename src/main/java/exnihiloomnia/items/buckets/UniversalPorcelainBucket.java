@@ -1,13 +1,11 @@
 package exnihiloomnia.items.buckets;
 
-import exnihiloomnia.ENO;
 import exnihiloomnia.fluids.ENOFluids;
 import exnihiloomnia.items.ENOItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +31,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class UniversalPorcelainBucket extends Item implements IFluidContainerItem {
 
     private final int capacity; // how much the bucket holds

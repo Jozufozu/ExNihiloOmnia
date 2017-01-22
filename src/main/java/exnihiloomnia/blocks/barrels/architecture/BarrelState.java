@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 
 public abstract class BarrelState {
-	private static String[] EMPTY_STRING_ARRAY = new String[] {};
-	private ArrayList<BarrelLogic> triggers = new ArrayList<BarrelLogic>();
+	private static final String[] EMPTY_STRING_ARRAY = new String[] {};
+	private final ArrayList<BarrelLogic> triggers = new ArrayList<>();
 	
 	public abstract String getUniqueIdentifier();
 

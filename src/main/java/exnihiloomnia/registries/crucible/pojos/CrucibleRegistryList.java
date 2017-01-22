@@ -3,7 +3,7 @@ package exnihiloomnia.registries.crucible.pojos;
 import java.util.ArrayList;
 
 public class CrucibleRegistryList {
-	private ArrayList<CrucibleRecipe> recipes = new ArrayList<CrucibleRecipe>();
+	private ArrayList<CrucibleRecipe> recipes = new ArrayList<>();
 
 	public ArrayList<CrucibleRecipe> getRecipes() {
 		return recipes;

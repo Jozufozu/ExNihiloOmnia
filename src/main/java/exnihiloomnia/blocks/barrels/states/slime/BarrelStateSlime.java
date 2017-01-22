@@ -20,9 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class BarrelStateSlime extends BarrelState {
-	private Color white = new Color("FFFFFF");
-	private Color slime = new Color("33ff22");
-	private static String[] description = new String[]{""};
+	private final Color white = new Color("FFFFFF");
+	private final Color slime = new Color("33ff22");
+	private static final String[] description = new String[]{""};
 	
 	@Override
 	public String getUniqueIdentifier() {

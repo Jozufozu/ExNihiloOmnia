@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HammerRecipeLoader {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<HammerRegistryEntry> entries; 
 	
 	public static List<HammerRegistryEntry> load(String path) {	
 		generateExampleJsonFile(path);
-		entries = new ArrayList<HammerRegistryEntry>();
+		entries = new ArrayList<>();
 		
 		File[] files = new File(path).listFiles();
 		

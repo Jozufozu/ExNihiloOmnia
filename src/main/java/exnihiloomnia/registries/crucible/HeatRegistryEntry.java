@@ -7,9 +7,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 
 public class HeatRegistryEntry {
-	private IBlockState input;
-	private EnumMetadataBehavior behavior;
-	private int value;
+	private final IBlockState input;
+	private final EnumMetadataBehavior behavior;
+	private final int value;
 	
 	public HeatRegistryEntry(IBlockState state, EnumMetadataBehavior behavior, int value) {
 		this.input = state;

@@ -6,7 +6,6 @@ import exnihiloomnia.items.itemblocks.ItemBlockOre;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,6 +23,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import javax.annotation.Nullable;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class BlockOre extends BlockFalling {
 
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumOreBlockType.class);
@@ -64,7 +64,7 @@ public class BlockOre extends BlockFalling {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{TYPE}) {};
+        return new BlockStateContainer(this, TYPE) {};
     }
 
     @Override

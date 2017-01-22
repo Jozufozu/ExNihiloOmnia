@@ -20,9 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class BarrelStateEnd extends BarrelState {
-	private Color white = new Color("FFFFFF");
-	private Color black = new Color("000000");
-	private static String[] description = new String[]{""};
+	private final Color white = new Color("FFFFFF");
+	private final Color black = new Color("000000");
+	private static final String[] description = new String[]{""};
 	
 	@Override
 	public String getUniqueIdentifier() {

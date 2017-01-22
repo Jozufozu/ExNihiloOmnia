@@ -20,6 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class BlockBarrel extends Block implements ITileEntityProvider {
     protected static final AxisAlignedBB AABB_BARREL = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 
@@ -32,17 +34,18 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+	public boolean canCreatureSpawn(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
 		return false;
 	}
 
 	@Override
+	@Nonnull
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
 		return AABB_BARREL;
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightValue(@Nonnull IBlockState state, IBlockAccess world, @Nonnull BlockPos pos) {
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile != null && tile instanceof TileEntityBarrel) {
@@ -76,7 +79,8 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	@Nonnull
+	public TileEntity createNewTileEntity(@Nonnull World world, int meta) {
 		TileEntityBarrel barrel = new TileEntityBarrel();
 		barrel.setState(BarrelStates.EMPTY);
 		
@@ -89,6 +93,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	}
 	
 	@Override
+	@Nonnull
 	public BlockRenderLayer getBlockLayer() {
 		if (this.getBlockState().getBaseState().getMaterial().isOpaque())
 			return BlockRenderLayer.SOLID;
@@ -97,7 +102,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		TileEntityBarrel barrel = (TileEntityBarrel) world.getTileEntity(pos);
 
 		if (barrel != null) {
@@ -116,7 +121,7 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+	public boolean isReplaceable(IBlockAccess worldIn, @Nonnull BlockPos pos) {
 		return false;
 	}
 
@@ -141,12 +146,12 @@ public class BlockBarrel extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+	public boolean isBlockSolid(IBlockAccess worldIn, @Nonnull BlockPos pos, EnumFacing side) {
 		return false;
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(IBlockState base_state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
 		return false;
 	}
 

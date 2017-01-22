@@ -3,7 +3,7 @@ package exnihiloomnia.registries.hammering.pojos;
 import java.util.ArrayList;
 
 public class HammerRecipeList {
-	private ArrayList<HammerRecipe> recipes = new ArrayList<HammerRecipe>();
+	private ArrayList<HammerRecipe> recipes = new ArrayList<>();
 
 	public ArrayList<HammerRecipe> getRecipes() {
 		return recipes;

@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.ChunkProviderOverworld;
 
 public class ChunkProviderVoidSurface extends ChunkProviderOverworld {
-	private World world;
+	private final World world;
 
     public ChunkProviderVoidSurface(World world) {
         super(world, world.getSeed(), false, "");

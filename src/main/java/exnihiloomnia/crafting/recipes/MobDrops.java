@@ -11,7 +11,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import java.util.Random;
 
 public class MobDrops {
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	
 	public static void onMobDeath(LivingDropsEvent event) {
 		if(event.getSource().getSourceOfDamage() instanceof EntityPlayer) {

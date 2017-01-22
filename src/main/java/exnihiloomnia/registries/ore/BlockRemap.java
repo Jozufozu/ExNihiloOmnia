@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class BlockRemap extends Block {
 
     public static final PropertyEnum ORE = PropertyEnum.create("ore", EnumOreLegacy.class);

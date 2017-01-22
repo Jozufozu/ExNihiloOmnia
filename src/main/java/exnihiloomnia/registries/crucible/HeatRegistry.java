@@ -15,9 +15,9 @@ import java.util.List;
 
 public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
 	public static HashMap<String, HeatRegistryEntry> entries;
-	public static String path = ENO.path + File.separator + "registries" + File.separator + "heat" + File.separator;
+	public static final String path = ENO.path + File.separator + "registries" + File.separator + "heat" + File.separator;
 
-    public static HeatRegistry INSTANCE = new HeatRegistry();
+    public static final HeatRegistry INSTANCE = new HeatRegistry();
 	
 	public void initialize() {
 		entries = new HashMap<>();
@@ -43,7 +43,7 @@ public class HeatRegistry implements IRegistry<HeatRegistryEntry> {
     }
 
     public void clear() {
-        entries = new HashMap<String, HeatRegistryEntry>();
+        entries = new HashMap<>();
     }
 
 	public static void add(HeatRegistryEntry entry) {

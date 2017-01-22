@@ -5,7 +5,6 @@ import exnihiloomnia.ENO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.data.AnimationMetadataSection;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
@@ -24,7 +23,7 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
 
         try
         {
-            this.loadSprite(images, null);
+            this.loadSprite(images);
         }
         catch (IOException e){
             ENO.log.error("Could not load BufferedImage: " + e);
@@ -32,7 +31,7 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
     }
 
     //old vanilla method
-    public void loadSprite(BufferedImage[] images, AnimationMetadataSection meta) throws IOException
+    public void loadSprite(BufferedImage[] images) throws IOException
     {
         this.resetSprite();
         int i = images[0].getWidth();
@@ -41,14 +40,11 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
         this.height = j;
         int[][] aint = new int[images.length][];
 
-        for (int k = 0; k < images.length; ++k)
-        {
+        for (int k = 0; k < images.length; ++k) {
             BufferedImage bufferedimage = images[k];
 
-            if (bufferedimage != null)
-            {
-                if (k > 0 && (bufferedimage.getWidth() != i >> k || bufferedimage.getHeight() != j >> k))
-                {
+            if (bufferedimage != null) {
+                if (k > 0 && (bufferedimage.getWidth() != i >> k || bufferedimage.getHeight() != j >> k)) {
                     throw new IOException(String.format("Unable to load miplevel: %d, image is size: %dx%d, expected %dx%d", new Object[] {Integer.valueOf(k), Integer.valueOf(bufferedimage.getWidth()), Integer.valueOf(bufferedimage.getHeight()), Integer.valueOf(i >> k), Integer.valueOf(j >> k)}));
                 }
 
@@ -57,20 +53,16 @@ public class DynamicTextureSprite extends TextureAtlasSprite {
             }
         }
 
-        if (meta == null)
-        {
-            if (j != i)
-            {
-                throw new RuntimeException("broken aspect ratio and not an animation");
-            }
-
-            this.framesTextureData.add(aint);
+        if (j != i) {
+            throw new RuntimeException("broken aspect ratio and not an animation");
         }
+
+        this.framesTextureData.add(aint);
     }
 
     private void resetSprite()
     {
-        this.setFramesTextureData(Lists.<int[][]>newArrayList());
+        this.setFramesTextureData(Lists.newArrayList());
         this.frameCounter = 0;
         this.tickCounter = 0;
     }

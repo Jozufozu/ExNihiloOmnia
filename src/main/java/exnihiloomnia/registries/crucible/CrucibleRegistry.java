@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
-    public static CrucibleRegistry INSTANCE = new CrucibleRegistry();
-    public static String path = ENO.path + File.separator + "registries" + File.separator + "crucible" + File.separator;
+    public static final CrucibleRegistry INSTANCE = new CrucibleRegistry();
+    public static final String path = ENO.path + File.separator + "registries" + File.separator + "crucible" + File.separator;
 
     public static HashMap<String, CrucibleRegistryEntry> entries;
 
@@ -46,7 +46,7 @@ public class CrucibleRegistry implements IRegistry<CrucibleRegistryEntry> {
 
     @Override
     public void clear() {
-        entries = new HashMap<String, CrucibleRegistryEntry>();
+        entries = new HashMap<>();
     }
 
     public static void add(CrucibleRegistryEntry entry) {

@@ -110,6 +110,7 @@ public class BlockCrucible extends Block implements ITileEntityProvider {
 						ItemStack item = crucible.getLastItemAdded();
 						Block block = Block.getBlockFromItem(item.getItem());
 
+						//noinspection deprecation,deprecation
 						return block.getLightValue(block.getStateFromMeta(item.getMetadata()));
 					}
 				}

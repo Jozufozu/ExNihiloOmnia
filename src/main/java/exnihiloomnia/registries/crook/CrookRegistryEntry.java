@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CrookRegistryEntry {
-	private IBlockState input;
+	private final IBlockState input;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
-	private ArrayList<CrookReward> rewards = new ArrayList<CrookReward>();
+	private final ArrayList<CrookReward> rewards = new ArrayList<>();
 
 	public CrookRegistryEntry(IBlockState input, EnumMetadataBehavior behavior) {
 		this.input = input;
@@ -47,7 +47,7 @@ public class CrookRegistryEntry {
 	}
 
 	public List<ItemStack> rollRewards(World world, ItemStack item) {
-		ArrayList<ItemStack> rewards = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> rewards = new ArrayList<>();
 
 		for (CrookReward reward : this.rewards) {
 			ItemStack itemReward = reward.getReward(world, item);
@@ -99,7 +99,7 @@ public class CrookRegistryEntry {
 
 		CrookRecipe recipe = new CrookRecipe(block, this.getInput().getBlock().getMetaFromState(this.getInput()), this.getMetadataBehavior());
 
-		ArrayList<CrookRecipeReward> rewards = new ArrayList<CrookRecipeReward>();
+		ArrayList<CrookRecipeReward> rewards = new ArrayList<>();
 
 		for (CrookReward reward : this.getRewards())
 			rewards.add(new CrookRecipeReward(Item.REGISTRY.getNameForObject(reward.getItem().getItem()).toString(), reward.getItem().getMetadata(), reward.getItem().stackSize, reward.getBaseChance(), reward.getFortuneModifier()));

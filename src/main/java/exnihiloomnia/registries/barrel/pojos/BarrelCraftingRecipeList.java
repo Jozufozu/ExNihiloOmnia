@@ -3,7 +3,7 @@ package exnihiloomnia.registries.barrel.pojos;
 import java.util.ArrayList;
 
 public class BarrelCraftingRecipeList {
-	private ArrayList<BarrelCraftingRecipe> recipes = new ArrayList<BarrelCraftingRecipe>();
+	private ArrayList<BarrelCraftingRecipe> recipes = new ArrayList<>();
 
 	public ArrayList<BarrelCraftingRecipe> getRecipes() {
 		return recipes;

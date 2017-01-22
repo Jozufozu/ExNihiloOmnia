@@ -33,7 +33,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.HashMap;
 
 public class BarrelStates {
-	public static HashMap<String, BarrelState> states = new HashMap<String, BarrelState>();
+	public static final HashMap<String, BarrelState> states = new HashMap<>();
 
 	//States
 	public static BarrelState EMPTY;

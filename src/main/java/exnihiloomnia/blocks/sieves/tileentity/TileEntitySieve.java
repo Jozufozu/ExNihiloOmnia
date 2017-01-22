@@ -34,8 +34,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
+@SuppressWarnings("deprecation")
 public class TileEntitySieve extends TileEntity implements ITickable {
-	protected HashMap<ItemStack, EntityPlayer> sifters = new HashMap<ItemStack, EntityPlayer>();
+	protected final HashMap<ItemStack, EntityPlayer> sifters = new HashMap<>();
     protected ItemStack currentSifter;
 
 	protected ItemStack mesh;
@@ -44,24 +45,24 @@ public class TileEntitySieve extends TileEntity implements ITickable {
 
 	protected boolean workQueued = false;
 	protected int work = 0;
-	protected int workMax = 1000;
-	protected static int workPerSecondBase = 200;
+	protected final int workMax = 1000;
+	protected static final int workPerSecondBase = 200;
 
 	protected int workPerSecond = 200;
 
-	protected int ticksPerCycle = 4;
+	protected final int ticksPerCycle = 4;
 	protected int ticksThisCycle = 0;
 	
 	protected boolean spawningParticles = false;
 	protected int spawnParticlesTimer = 0;
-	protected int spawnParticlesTimerMax = 5;
+	protected final int spawnParticlesTimerMax = 5;
 
 	protected int updateTimer = 0;
-	protected int updateTimerMax = 4; //Sync if an update is required.
+	protected final int updateTimerMax = 4; //Sync if an update is required.
 	protected boolean updateQueued = false;
 	protected boolean updateTimerRunning = false;
 
-	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+	private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             ItemStack copy = stack.copy();

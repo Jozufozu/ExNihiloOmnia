@@ -14,10 +14,10 @@ import java.util.List;
 
 public class JEICompostRecipe implements IRecipeWrapper{
 
-    private ArrayList<ItemStack> input = new ArrayList<ItemStack>();
-    private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+    private final ArrayList<ItemStack> input = new ArrayList<>();
+    private final ArrayList<ItemStack> outputs = new ArrayList<>();
 
-    private CompostRegistryEntry entry;
+    private final CompostRegistryEntry entry;
 
     public JEICompostRecipe(CompostRegistryEntry entry, ItemStack in, ItemStack out) {
         this.entry = entry;

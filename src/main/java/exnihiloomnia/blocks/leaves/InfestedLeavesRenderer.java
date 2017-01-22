@@ -22,7 +22,7 @@ import java.util.List;
 
 public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntityInfestedLeaves> {
 
-    public static HashMap<IBlockState, List<BakedQuad>> models = new HashMap<>();
+    public static final HashMap<IBlockState, List<BakedQuad>> models = new HashMap<>();
 
     @Override
     public void renderTileEntityAt(TileEntityInfestedLeaves te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -36,7 +36,7 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
 
             if (!models.containsKey(state)) {
                 IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
-                List<BakedQuad> temp = new ArrayList<BakedQuad>();
+                List<BakedQuad> temp = new ArrayList<>();
 
                 for (EnumFacing face : EnumFacing.VALUES)
                     temp.addAll(model.getQuads(state, face, 0));

@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ItemAstrolabe extends Item {
-	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	
 	public ItemAstrolabe() {
 		this.setMaxStackSize(1);
@@ -36,6 +36,6 @@ public class ItemAstrolabe extends Item {
 			player.setHeldItem(hand, null);
 		}
 		
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, item);
+		return new ActionResult<>(EnumActionResult.PASS, item);
 	}
 }

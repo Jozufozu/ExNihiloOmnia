@@ -62,7 +62,7 @@ public class ENO {
 	@SidedProxy(serverSide = "exnihiloomnia.proxy.ServerProxy", clientSide = "exnihiloomnia.proxy.ClientProxy")
 	public static Proxy proxy;
 
-	public static Logger log = LogManager.getLogger(ENO.NAME);
+	public static final Logger log = LogManager.getLogger(ENO.NAME);
 	public static String path;
 	public static Configuration config;
 

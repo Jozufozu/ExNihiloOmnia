@@ -10,7 +10,6 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategory;
@@ -76,7 +75,7 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, final JEISieveRecipe recipeWrapper, IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull final JEISieveRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(0, true, 74, 9);
         recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
 
@@ -104,34 +103,31 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
             }
             slotNumber++;
         }
-        recipeLayout.getItemStacks().addTooltipCallback(new ITooltipCallback<ItemStack>() {
-            @Override
-            public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-                if(!input) {
-                    Multiset<String> condensedTooltips = HashMultiset.create();
+        recipeLayout.getItemStacks().addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+            if(!input) {
+                Multiset<String> condensedTooltips = HashMultiset.create();
 
-                    for(SieveReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
-                        String s;
-                        int iChance = reward.getBaseChance();
+                for(SieveReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
+                    String s;
+                    int iChance = reward.getBaseChance();
 
-                        if(iChance > 0)
-                            s = String.format("%3d%%", (int) (reward.getBaseChance()));
-                        else
-                            s = String.format("%1.1f%%", (float) (reward.getBaseChance()));
+                    if(iChance > 0)
+                        s = String.format("%3d%%", (int) (reward.getBaseChance()));
+                    else
+                        s = String.format("%1.1f%%", (float) (reward.getBaseChance()));
 
-                        condensedTooltips.add(s);
-                    }
-                    tooltip.add(I18n.format("jei.exnihiloomnia:sieve.dropChance"));
-
-                    for(String line : condensedTooltips.elementSet()) {
-                        tooltip.add(" * " + condensedTooltips.count(line) + "x " + line);
-                    }
+                    condensedTooltips.add(s);
                 }
-                else {
-                    String format = "exnihiloomnia.info.meta.";
-                    format += recipeWrapper.getEntry().getMetadataBehavior() == EnumMetadataBehavior.IGNORED ? "ignored" : "specific";
-                    tooltip.add(I18n.format(format));
+                tooltip.add(I18n.format("jei.exnihiloomnia:sieve.dropChance"));
+
+                for(String line : condensedTooltips.elementSet()) {
+                    tooltip.add(" * " + condensedTooltips.count(line) + "x " + line);
                 }
+            }
+            else {
+                String format = "exnihiloomnia.info.meta.";
+                format += recipeWrapper.getEntry().getMetadataBehavior() == EnumMetadataBehavior.IGNORED ? "ignored" : "specific";
+                tooltip.add(I18n.format(format));
             }
         });
     }
@@ -169,34 +165,31 @@ public class SieveRecipeCategory implements IRecipeCategory<JEISieveRecipe> {
             }
             slotNumber++;
         }
-        recipeLayout.getItemStacks().addTooltipCallback(new ITooltipCallback<ItemStack>() {
-            @Override
-            public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-                if(!input) {
-                    Multiset<String> condensedTooltips = HashMultiset.create();
+        recipeLayout.getItemStacks().addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+            if(!input) {
+                Multiset<String> condensedTooltips = HashMultiset.create();
 
-                    for(SieveReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
-                        String s;
-                        int iChance = reward.getBaseChance();
+                for(SieveReward reward : recipeWrapper.getRewardFromItemStack(ingredient)) {
+                    String s;
+                    int iChance = reward.getBaseChance();
 
-                        if(iChance > 0)
-                            s = String.format("%3d%%", (int) (reward.getBaseChance()));
-                        else
-                            s = String.format("%1.1f%%", (float) (reward.getBaseChance()));
+                    if(iChance > 0)
+                        s = String.format("%3d%%", (int) (reward.getBaseChance()));
+                    else
+                        s = String.format("%1.1f%%", (float) (reward.getBaseChance()));
 
-                        condensedTooltips.add(s);
-                    }
-                    tooltip.add(I18n.format("jei.exnihiloomnia:sieve.dropChance"));
-
-                    for(String line : condensedTooltips.elementSet()) {
-                        tooltip.add(" * " + condensedTooltips.count(line) + "x " + line);
-                    }
+                    condensedTooltips.add(s);
                 }
-                else {
-                    String format = "exnihiloomnia.info.meta.";
-                    format += recipeWrapper.getEntry().getMetadataBehavior() == EnumMetadataBehavior.IGNORED ? "ignored" : "specific";
-                    tooltip.add(I18n.format(format));
+                tooltip.add(I18n.format("jei.exnihiloomnia:sieve.dropChance"));
+
+                for(String line : condensedTooltips.elementSet()) {
+                    tooltip.add(" * " + condensedTooltips.count(line) + "x " + line);
                 }
+            }
+            else {
+                String format = "exnihiloomnia.info.meta.";
+                format += recipeWrapper.getEntry().getMetadataBehavior() == EnumMetadataBehavior.IGNORED ? "ignored" : "specific";
+                tooltip.add(I18n.format(format));
             }
         });
     }

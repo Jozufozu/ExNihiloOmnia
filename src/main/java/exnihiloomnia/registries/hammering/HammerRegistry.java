@@ -22,8 +22,8 @@ import java.util.List;
 public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 	private static HashMap<String, HammerRegistryEntry> entries;
 
-	public static HammerRegistry INSTANCE = new HammerRegistry();
-	public static String path = ENO.path + File.separator + "registries" + File.separator + "hammer" + File.separator;
+	public static final HammerRegistry INSTANCE = new HammerRegistry();
+	public static final String path = ENO.path + File.separator + "registries" + File.separator + "hammer" + File.separator;
 
 	public void initialize() {
 		entries = new HashMap<>();
@@ -50,7 +50,7 @@ public class HammerRegistry implements IRegistry<HammerRegistryEntry> {
 
 	@Override
 	public void clear() {
-		entries = new HashMap<String, HammerRegistryEntry>();
+		entries = new HashMap<>();
 	}
 
 	public HashMap<String, HammerRegistryEntry> getEntries() {

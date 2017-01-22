@@ -43,10 +43,10 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
 	protected boolean updateQueued = false;
 	protected boolean updateTimerRunning = false;
 
-    protected ArrayList<ItemStack> output = new ArrayList<ItemStack>();
+    protected final ArrayList<ItemStack> output = new ArrayList<>();
     protected ItemStack contents = null;
 
-	private FluidTank fluidTank = new FluidTank(Fluid.BUCKET_VOLUME) {
+	private final FluidTank fluidTank = new FluidTank(Fluid.BUCKET_VOLUME) {
 		@Override
 		public int fill(FluidStack resource, boolean doFill)  {
 			if (resource == null || state == null || !state.canManipulateFluids(getBarrel()))
@@ -112,7 +112,7 @@ public class TileEntityBarrel extends BarrelStateLayer implements ITickable {
         }
 	};
 
-	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+	private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         public ItemStack getStackInSlot(int index) {
             if (index == 0) {

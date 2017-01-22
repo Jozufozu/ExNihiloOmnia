@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class BarrelStateOutput extends BarrelState {
-	private static String[] description = new String[]{""};
+	private static final String[] description = new String[]{""};
 	private static EntityLivingBase entity;
 	
 	@Override

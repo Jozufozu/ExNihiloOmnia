@@ -18,9 +18,9 @@ import java.util.List;
 
 public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 	private static HashMap<String, CompostRegistryEntry> entries;
-	public static String path = ENO.path + File.separator + "registries" + File.separator + "compost" + File.separator;
+	public static final String path = ENO.path + File.separator + "registries" + File.separator + "compost" + File.separator;
 
-	public static CompostRegistry INSTANCE = new CompostRegistry();
+	public static final CompostRegistry INSTANCE = new CompostRegistry();
 	
 	public void initialize() {
 		entries = new HashMap<>();
@@ -50,7 +50,7 @@ public class CompostRegistry implements IRegistry<CompostRegistryEntry> {
 	}
 
 	public void clear() {
-		entries = new HashMap<String, CompostRegistryEntry>();
+		entries = new HashMap<>();
 	}
 	
 	public static void add(CompostRegistryEntry entry) {

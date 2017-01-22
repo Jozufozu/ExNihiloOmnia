@@ -3,7 +3,7 @@ package exnihiloomnia.registries.crucible.pojos;
 import java.util.ArrayList;
 
 public class HeatValueList {
-	private ArrayList<HeatValue> recipes = new ArrayList<HeatValue>();
+	private ArrayList<HeatValue> recipes = new ArrayList<>();
 
 	public ArrayList<HeatValue> getRecipes() {
 		return recipes;

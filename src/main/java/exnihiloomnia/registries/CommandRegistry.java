@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandRegistry extends CommandBase {
-    private static List<String> aliases = new ArrayList<String>();
+    private static final List<String> aliases = new ArrayList<>();
 
     public CommandRegistry() {
         aliases.add("enoreg");
@@ -69,16 +69,20 @@ public class CommandRegistry extends CommandBase {
                 ENO.config.save();
 
             if (reg == null) {
-                if (command.equals("clear")) {
-                    ENORegistries.clear();
-                } else if (command.equals("load")) {
-                    ENORegistries.initialize();
-                } else if (command.equals("reload")) {
-                    ENORegistries.clear();
-                    ENORegistries.initialize();
+                switch (command) {
+                    case "clear":
+                        ENORegistries.clear();
+                        break;
+                    case "load":
+                        ENORegistries.initialize();
+                        break;
+                    case "reload":
+                        ENORegistries.clear();
+                        ENORegistries.initialize();
+                        break;
+                    default:
+                        throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
                 }
-                else
-                    throw new WrongUsageException(ENO.MODID + ".commands.registry.usage", 0);
             }
             else if (command.equals("clear")) {
                 reg.clear();
@@ -97,19 +101,21 @@ public class CommandRegistry extends CommandBase {
     }
 
     private IRegistry getRegistryFromString(String s) {
-        if (s.equals("heat"))
-            return HeatRegistry.INSTANCE;
-        else if (s.equals("crucible"))
-            return CrucibleRegistry.INSTANCE;
-        else if (s.equals("sieve"))
-            return SieveRegistry.INSTANCE;
-        else if (s.equals("hammer"))
-            return HammerRegistry.INSTANCE;
-        else if (s.equals("compost"))
-            return CompostRegistry.INSTANCE;
-        else if (s.equals("crook"))
-            return CrookRegistry.INSTANCE;
-        else
-            return null;
+        switch (s) {
+            case "heat":
+                return HeatRegistry.INSTANCE;
+            case "crucible":
+                return CrucibleRegistry.INSTANCE;
+            case "sieve":
+                return SieveRegistry.INSTANCE;
+            case "hammer":
+                return HammerRegistry.INSTANCE;
+            case "compost":
+                return CompostRegistry.INSTANCE;
+            case "crook":
+                return CrookRegistry.INSTANCE;
+            default:
+                return null;
+        }
     }
 }

@@ -21,10 +21,10 @@ import java.util.List;
 public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 	private static HashMap<String, CrookRegistryEntry> entries;
 
-	public static CrookRegistry INSTANCE = new CrookRegistry();
-	public static String path = ENO.path + File.separator + "registries" + File.separator + "crook" + File.separator;
+	public static final CrookRegistry INSTANCE = new CrookRegistry();
+	public static final String path = ENO.path + File.separator + "registries" + File.separator + "crook" + File.separator;
 
-	public static ItemStack SILK = new ItemStack(ENOItems.SILKWORM);
+	public static final ItemStack SILK = new ItemStack(ENOItems.SILKWORM);
 	public static CrookRegistryEntry SILKWORM;
 
 	public void initialize() {
@@ -55,7 +55,7 @@ public class CrookRegistry implements IRegistry<CrookRegistryEntry> {
 
 	@Override
 	public void clear() {
-		entries = new HashMap<String, CrookRegistryEntry>();
+		entries = new HashMap<>();
 	}
 
 	public HashMap<String, CrookRegistryEntry> getEntries() {

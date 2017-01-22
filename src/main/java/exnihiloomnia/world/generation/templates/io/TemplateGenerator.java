@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class TemplateGenerator {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	protected static void generateTemplateFile(String path, Template template) {
 		generateTemplateFile(path, template, false);

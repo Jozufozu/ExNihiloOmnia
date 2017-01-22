@@ -3,12 +3,12 @@ package exnihiloomnia.util;
 import exnihiloomnia.ENO;
 
 public class Color {
-	public float r;
-	public float g;
-	public float b;
+	public final float r;
+	public final float g;
+	public final float b;
 	public float a;
 	
-	public static Color WHITE = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+	public static final Color WHITE = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
 	public Color(int red, int green, int blue) {
 		this.r = red / 255f;

@@ -20,11 +20,11 @@ import java.util.List;
 
 public class JEISieveRecipe implements IRecipeWrapper{
 
-    private ArrayList<ItemStack> inputs = new ArrayList<ItemStack>();
-    private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+    private final ArrayList<ItemStack> inputs = new ArrayList<>();
+    private ArrayList<ItemStack> outputs = new ArrayList<>();
 
-    private HashMap<ItemStack, ArrayList<SieveReward>> rewards = new HashMap<ItemStack, ArrayList<SieveReward>>();
-    private SieveRegistryEntry entry;
+    private final HashMap<ItemStack, ArrayList<SieveReward>> rewards = new HashMap<>();
+    private final SieveRegistryEntry entry;
 
     public JEISieveRecipe(SieveRegistryEntry entry) {
 
@@ -33,7 +33,7 @@ public class JEISieveRecipe implements IRecipeWrapper{
         for(SieveReward reward : entry.getRewards()) {
 
             if (!rewards.containsKey(reward.getItem()))
-                rewards.put(reward.getItem(), new ArrayList<SieveReward>());
+                rewards.put(reward.getItem(), new ArrayList<>());
             rewards.get(reward.getItem()).add(reward);
         }
 

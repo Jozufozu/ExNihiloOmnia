@@ -9,7 +9,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public class HiveList {
 
-    public static Block beehives = PluginApiculture.blocks.beehives;
+    public static final Block beehives = PluginApiculture.blocks.beehives;
 
     public static Hive FOREST;
     public static Hive MEADOW;

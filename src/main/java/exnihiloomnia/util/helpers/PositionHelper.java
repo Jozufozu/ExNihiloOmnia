@@ -9,8 +9,8 @@ import net.minecraft.world.chunk.Chunk;
 
 public class PositionHelper {
 
-	private BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
-	private BlockPos.MutableBlockPos random = new BlockPos.MutableBlockPos();
+	private final BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+	private final BlockPos.MutableBlockPos random = new BlockPos.MutableBlockPos();
 
 	public PositionHelper() {
 
@@ -22,7 +22,6 @@ public class PositionHelper {
 	 * @param chunkX the x pos of the chunk which you want to get a position from
 	 * @param chunkZ the z pos of the chunk which you want to get a position from
 	 * @param pos a {@link net.minecraft.util.math.BlockPos.MutableBlockPos} that will be changed to a random position in {@see chunk}
-	 * @return the random position
 	 */
 	public static void getRandomPositionInChunk(World world, int chunkX, int chunkZ, BlockPos.MutableBlockPos pos) {
 		pos.setPos((chunkX * 16) + world.rand.nextInt(16), world.rand.nextInt(256), (chunkZ * 16) + world.rand.nextInt(16));

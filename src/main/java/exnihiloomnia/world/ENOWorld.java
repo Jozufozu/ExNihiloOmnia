@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ENOWorld {
-	public static String CATEGORY_WORLD_GEN = "world generation";
-	public static String CATEGORY_WORLD_MOD = "world manipulation";
+	public static final String CATEGORY_WORLD_GEN = "world generation";
+	public static final String CATEGORY_WORLD_MOD = "world manipulation";
 	
 	private static Template template_overworld;
 	private static Template template_nether;

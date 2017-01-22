@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 
 public class BarrelStateCompostSpecial extends BarrelStateCompost {
-	private ArrayList<String> ingredients = new ArrayList<String>();
+	private final ArrayList<String> ingredients = new ArrayList<>();
 	
 	public void addIngredient(ItemStack item, EnumMetadataBehavior behavior) {
 		if (item != null && behavior != null) {

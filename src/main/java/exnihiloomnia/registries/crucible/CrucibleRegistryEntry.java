@@ -9,9 +9,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class CrucibleRegistryEntry {
-	public IBlockState input;
+	public final IBlockState input;
 	public EnumMetadataBehavior behavior;
-	public int solidVolume;
+	public final int solidVolume;
 	public Fluid fluid;
 	public int fluidVolume;
 

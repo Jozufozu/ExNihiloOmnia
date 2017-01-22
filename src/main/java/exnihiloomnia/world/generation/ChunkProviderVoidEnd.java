@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.ChunkProviderEnd;
 
 public class ChunkProviderVoidEnd extends ChunkProviderEnd {
-	private World world;
+	private final World world;
 
 	public ChunkProviderVoidEnd(World world, long par2) {
 		super(world, false, par2);

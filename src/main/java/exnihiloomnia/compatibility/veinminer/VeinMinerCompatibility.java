@@ -80,7 +80,7 @@ public class VeinMinerCompatibility {
 					EntityPlayer player = (EntityPlayer)playerField.get(e);
 					ItemStack item = player.getHeldItem(player.getActiveHand());
 					
-                    if (item.getItem() instanceof ItemHammer) {
+                    if (item != null && item.getItem() instanceof ItemHammer) {
                         permissionField.set(e, permissionGranted);
                     }
 				}

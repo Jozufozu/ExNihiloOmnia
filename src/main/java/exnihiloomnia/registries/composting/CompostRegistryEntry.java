@@ -11,9 +11,9 @@ import net.minecraft.util.ResourceLocation;
 public class CompostRegistryEntry {
 	private static final Color DEFAULT_COLOR = new Color(1f, 1f, 1f, 1f);
 	
-	private Color color;
-	private ItemStack input; 
-	private int volume;
+	private final Color color;
+	private final ItemStack input;
+	private final int volume;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.SPECIFIC;
 	
 	public CompostRegistryEntry(ItemStack input, int value, Color color) {

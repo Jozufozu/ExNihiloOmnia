@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public abstract class BarrelLogic {
 
-	protected static PositionHelper helper = new PositionHelper();
+	protected static final PositionHelper helper = new PositionHelper();
 
 	/**
 	 * Called when a barrel state is set

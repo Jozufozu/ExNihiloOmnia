@@ -8,7 +8,7 @@ public class SieveRecipe {
 	private String id;
 	private int meta;
 	private EnumMetadataBehavior behavior = EnumMetadataBehavior.IGNORED;
-	private ArrayList<SieveRecipeReward> rewards = new ArrayList<SieveRecipeReward>();
+	private ArrayList<SieveRecipeReward> rewards = new ArrayList<>();
 	
 	public SieveRecipe(){}
 	public SieveRecipe(String id, int meta, EnumMetadataBehavior behavior) {

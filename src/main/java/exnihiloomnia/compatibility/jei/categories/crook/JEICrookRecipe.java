@@ -16,10 +16,10 @@ import java.util.*;
 
 public class JEICrookRecipe implements IRecipeWrapper{
 
-    private ItemStack input;
-    private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
-    private HashMap<ItemStack, ArrayList<CrookReward>> rewards = new HashMap<ItemStack, ArrayList<CrookReward>>();
-    private CrookRegistryEntry entry;
+    private final ItemStack input;
+    private ArrayList<ItemStack> outputs = new ArrayList<>();
+    private final HashMap<ItemStack, ArrayList<CrookReward>> rewards = new HashMap<>();
+    private final CrookRegistryEntry entry;
 
     public JEICrookRecipe(CrookRegistryEntry entry) {
         this.entry = entry;
@@ -27,7 +27,7 @@ public class JEICrookRecipe implements IRecipeWrapper{
         for(CrookReward reward : entry.getRewards()) {
 
             if (!rewards.containsKey(reward.getItem()))
-                rewards.put(reward.getItem(), new ArrayList<CrookReward>());
+                rewards.put(reward.getItem(), new ArrayList<>());
             rewards.get(reward.getItem()).add(reward);
         }
 

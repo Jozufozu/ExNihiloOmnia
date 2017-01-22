@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class FluidTransformWitchwater extends BarrelLogic {
 
-	private BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+	private final BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
 
 	@Override
 	public boolean canUseItem(TileEntityBarrel barrel, ItemStack item) {

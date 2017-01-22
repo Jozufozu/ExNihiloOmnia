@@ -3,7 +3,7 @@ package exnihiloomnia.registries.composting.pojos;
 import java.util.ArrayList;
 
 public class CompostRecipeList {
-	private ArrayList<CompostRecipe> recipes = new ArrayList<CompostRecipe>();
+	private ArrayList<CompostRecipe> recipes = new ArrayList<>();
 
 	public ArrayList<CompostRecipe> getRecipes() {
 		return recipes;

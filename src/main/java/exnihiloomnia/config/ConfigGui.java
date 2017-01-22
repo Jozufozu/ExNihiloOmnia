@@ -28,7 +28,7 @@ public class ConfigGui extends GuiConfig {
     }
 
     public static List<IConfigElement> getElements() {
-        ArrayList<IConfigElement> configElements = new ArrayList<IConfigElement>();
+        ArrayList<IConfigElement> configElements = new ArrayList<>();
 
         configElements.add(new ConfigElement(ENO.config.getCategory(ENOConfig.MISC)));
         configElements.add(new ConfigElement(ENO.config.getCategory(ENOCompatibility.CATEGORY_COMPAT_OPTIONS).setRequiresMcRestart(true)));

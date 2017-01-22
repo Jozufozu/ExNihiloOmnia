@@ -19,10 +19,10 @@ import java.util.List;
 
 public class JEIHammerRecipe implements IRecipeWrapper{
 
-    private ArrayList<ItemStack> input = new ArrayList<ItemStack>();
-    private ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
-    private HashMap<ItemStack, ArrayList<HammerReward>> rewards = new HashMap<ItemStack, ArrayList<HammerReward>>();
-    private HammerRegistryEntry entry;
+    private final ArrayList<ItemStack> input = new ArrayList<>();
+    private ArrayList<ItemStack> outputs = new ArrayList<>();
+    private final HashMap<ItemStack, ArrayList<HammerReward>> rewards = new HashMap<>();
+    private final HammerRegistryEntry entry;
 
     public JEIHammerRecipe(HammerRegistryEntry entry) {
         this.entry = entry;
@@ -30,7 +30,7 @@ public class JEIHammerRecipe implements IRecipeWrapper{
         for(HammerReward reward : entry.getRewards()) {
 
             if (!rewards.containsKey(reward.getItem()))
-                rewards.put(reward.getItem(), new ArrayList<HammerReward>());
+                rewards.put(reward.getItem(), new ArrayList<>());
             rewards.get(reward.getItem()).add(reward);
         }
 

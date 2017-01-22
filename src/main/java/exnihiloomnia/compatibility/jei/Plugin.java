@@ -47,7 +47,7 @@ import java.util.ArrayList;
 
 @JEIPlugin
 public class Plugin implements IModPlugin{
-    private static ItemStack dirt = new ItemStack(Blocks.DIRT);
+    private static final ItemStack dirt = new ItemStack(Blocks.DIRT);
 
     @Override
     public void registerIngredients(IModIngredientRegistration registry) {
@@ -113,7 +113,7 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerCompostRecipes(IModRegistry registry) {
-        ArrayList<JEICompostRecipe> compostRecipes = new ArrayList<JEICompostRecipe>();
+        ArrayList<JEICompostRecipe> compostRecipes = new ArrayList<>();
 
         for (CompostRegistryEntry entry : CompostRegistry.INSTANCE.getEntries().values()) {
             Block block = Block.getBlockFromItem(entry.getInput().getItem());
@@ -131,7 +131,7 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerSieveRecipes(IModRegistry registry) {
-        ArrayList<JEISieveRecipe> sieveRecipes = new ArrayList<JEISieveRecipe>();
+        ArrayList<JEISieveRecipe> sieveRecipes = new ArrayList<>();
 
         for (SieveRegistryEntry entry : SieveRegistry.getEntryMap().values())
             sieveRecipes.add(new JEISieveRecipe(entry));
@@ -140,7 +140,7 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerCrucibleRecipes(IModRegistry registry) {
-        ArrayList<JEICrucibleRecipe> crucibleRecipes = new ArrayList<JEICrucibleRecipe>();
+        ArrayList<JEICrucibleRecipe> crucibleRecipes = new ArrayList<>();
         for (CrucibleRegistryEntry entry : CrucibleRegistry.INSTANCE.getEntries().values()) {
             crucibleRecipes.add(new JEICrucibleRecipe(entry));
         }
@@ -148,7 +148,7 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerHammerRecipes(IModRegistry registry) {
-        ArrayList<JEIHammerRecipe> hammerRecipes = new ArrayList<JEIHammerRecipe>();
+        ArrayList<JEIHammerRecipe> hammerRecipes = new ArrayList<>();
 
         for (HammerRegistryEntry entry : HammerRegistry.INSTANCE.getEntries().values()) {
             hammerRecipes.add(new JEIHammerRecipe(entry));
@@ -157,7 +157,7 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerCrookRecipes(IModRegistry registry) {
-        ArrayList<JEICrookRecipe> crookRecipes = new ArrayList<JEICrookRecipe>();
+        ArrayList<JEICrookRecipe> crookRecipes = new ArrayList<>();
 
         for (CrookRegistryEntry entry : CrookRegistry.INSTANCE.getEntries().values()) {
             crookRecipes.add(new JEICrookRecipe(entry));
@@ -166,7 +166,7 @@ public class Plugin implements IModPlugin{
     }
 
     private void registerFluidCraftingRecipes(IModRegistry registry) {
-        ArrayList<JEIBarrelCraftingRecipe> fluidCraftingRecipes = new ArrayList<JEIBarrelCraftingRecipe>();
+        ArrayList<JEIBarrelCraftingRecipe> fluidCraftingRecipes = new ArrayList<>();
 
         for (BarrelCraftingTrigger entry : BarrelCraftingRegistry.INSTANCE.getEntries().values()) {
             fluidCraftingRecipes.add(new JEIBarrelCraftingRecipe(entry));

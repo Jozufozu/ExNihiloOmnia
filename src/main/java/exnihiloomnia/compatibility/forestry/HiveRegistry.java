@@ -7,15 +7,15 @@ import net.minecraftforge.fml.common.Loader;
 import java.util.*;
 
 public class HiveRegistry {
-    public static Map<String, Hive> hives = new HashMap<String, Hive>();
-    public static Random rand = new Random();
+    public static final Map<String, Hive> hives = new HashMap<>();
+    public static final Random rand = new Random();
 
     public static void registerHive(Hive hive) {
         hives.put(hive.state.toString(), hive);
     }
 
     public static Hive getHive(Biome biome, Surroundings local, boolean canSeeSky) {
-        List<Hive> found = new ArrayList<Hive>();
+        List<Hive> found = new ArrayList<>();
 
         for (Hive hive : hives.values()) {
             if (hive != null) {

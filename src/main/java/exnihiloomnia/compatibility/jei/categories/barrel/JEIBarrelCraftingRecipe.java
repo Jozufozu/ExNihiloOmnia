@@ -14,11 +14,11 @@ import java.util.List;
 
 public class JEIBarrelCraftingRecipe implements IRecipeWrapper{
 
-    public FluidStack fluid;
-    public ItemStack input;
-    public ItemStack output;
+    public final FluidStack fluid;
+    public final ItemStack input;
+    public final ItemStack output;
 
-    private BarrelCraftingTrigger entry;
+    private final BarrelCraftingTrigger entry;
 
     public JEIBarrelCraftingRecipe(BarrelCraftingTrigger entry) {
         this.entry = entry;

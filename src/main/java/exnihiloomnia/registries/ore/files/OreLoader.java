@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class OreLoader {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<Ore> entries;
 	
 	public static List<Ore> load(String path) {
 		generateExampleJsonFile(path);
-		entries = new ArrayList<Ore>();
+		entries = new ArrayList<>();
 		
 		File[] files = new File(path).listFiles();
 		

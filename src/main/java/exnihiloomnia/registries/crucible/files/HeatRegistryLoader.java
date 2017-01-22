@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HeatRegistryLoader {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	public static ArrayList<HeatRegistryEntry> entries;
 	
 	public static List<HeatRegistryEntry> load(String path) {	
 		generateExampleJsonFile(path);
-		entries = new ArrayList<HeatRegistryEntry>();
+		entries = new ArrayList<>();
 		
 		File[] files = new File(path).listFiles();
 		

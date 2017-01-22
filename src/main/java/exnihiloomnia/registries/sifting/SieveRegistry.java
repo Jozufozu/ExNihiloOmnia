@@ -23,11 +23,11 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
-	public static SieveRegistry INSTANCE = new SieveRegistry();
-	private static String path = ENO.path + File.separator + "registries" + File.separator + "sieve" + File.separator;
+	public static final SieveRegistry INSTANCE = new SieveRegistry();
+	private static final String path = ENO.path + File.separator + "registries" + File.separator + "sieve" + File.separator;
 
 	private static HashMap<String, SieveRegistryEntry> entries;
-	private static List<ItemStack> EMPTY_REWARDS_ARRAY = new ArrayList<ItemStack>(){};
+	private static final List<ItemStack> EMPTY_REWARDS_ARRAY = new ArrayList<ItemStack>(){};
 
 	public void initialize() {
 		entries = new HashMap<>();
@@ -59,7 +59,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 
 	@Override
 	public void clear() {
-		entries = new HashMap<String, SieveRegistryEntry>();
+		entries = new HashMap<>();
 	}
 
 	public static HashMap<String, SieveRegistryEntry> getEntryMap() {
@@ -93,7 +93,7 @@ public class SieveRegistry implements IRegistry<SieveRegistryEntry> {
 			return EMPTY_REWARDS_ARRAY;
 		}
 		else {
-			List<ItemStack> rewards = new ArrayList<ItemStack>();
+			List<ItemStack> rewards = new ArrayList<>();
 			
 			SieveRegistryEntry specific = getEntryForBlockState(state, EnumMetadataBehavior.SPECIFIC);
 			SieveRegistryEntry generic = getEntryForBlockState(state, EnumMetadataBehavior.IGNORED);
