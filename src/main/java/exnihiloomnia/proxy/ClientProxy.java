@@ -1,6 +1,7 @@
 package exnihiloomnia.proxy;
 
 import exnihiloomnia.ENO;
+import exnihiloomnia.ENOConfig;
 import exnihiloomnia.blocks.ENOBlocks;
 import exnihiloomnia.blocks.barrels.renderer.BarrelRenderer;
 import exnihiloomnia.blocks.barrels.tileentity.TileEntityBarrel;
@@ -22,17 +23,22 @@ import exnihiloomnia.registries.ore.OreRegistry;
 import exnihiloomnia.util.enums.EnumOreBlockType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 //Commands that only execute on the client.
@@ -47,9 +53,6 @@ public class ClientProxy extends Proxy {
         registerItemModels();
         registerBlockModels();
 
-        registerBlockRenderers();
-        registerEntityRenderers();
-
         if (IC2.SEED_RUBBER != null)
             IC2.loadTexture();
 
@@ -60,8 +63,26 @@ public class ClientProxy extends Proxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
+        registerBlockRenderers();
+        registerEntityRenderers();
 
         OreRegistry.regColors();
+
+        if (!ENOConfig.pretty_leaves) {
+            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) -> {
+
+                if (worldIn != null && pos != null) {
+                    TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+                    if (tileEntity != null && tileEntity instanceof TileEntityInfestedLeaves) {
+                        TileEntityInfestedLeaves leaves = ((TileEntityInfestedLeaves) tileEntity);
+
+                        return leaves.getColorForTint(0).toInt();
+                    }
+                }
+                return 0;
+            }, ENOBlocks.INFESTED_LEAVES);
+        }
     }
 
     @Override
@@ -106,7 +127,9 @@ public class ClientProxy extends Proxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBarrel.class, new BarrelRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySieve.class, new SieveRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new CrucibleRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfestedLeaves.class, new InfestedLeavesRenderer());
+
+        if (ENOConfig.pretty_leaves)
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInfestedLeaves.class, new InfestedLeavesRenderer());
     }
 
     private void registerEntityRenderers() {

@@ -78,11 +78,9 @@ public class TileEntityInfestedLeaves extends TileEntity implements ITickable {
 
             int color = Minecraft.getMinecraft().getBlockColors().colorMultiplier(this.state, getWorld(), this.pos, tintIndex);
 
-            int r = color >> 16 & 255;
-            int g = color >> 8 & 255;
-            int b = color & 255;
+            ret = new Color(color, false);
 
-            ret = new Color((r + (255 - r) * percentage) / 255f, (g + (255 - g) * percentage) / 255f, (b + (255 - b) * percentage) / 255f, 1f);
+            ret = Color.average(ret, Color.WHITE, percentage);
 
             colors.remove(tintIndex);
             colors.put(tintIndex, ret);

@@ -22,7 +22,7 @@ import java.util.List;
 
 public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntityInfestedLeaves> {
 
-    public static HashMap<IBlockState, List<BakedQuad>> models = new HashMap<IBlockState, List<BakedQuad>>();
+    public static HashMap<IBlockState, List<BakedQuad>> models = new HashMap<>();
 
     @Override
     public void renderTileEntityAt(TileEntityInfestedLeaves te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -39,7 +39,7 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
                 List<BakedQuad> temp = new ArrayList<BakedQuad>();
 
                 for (EnumFacing face : EnumFacing.VALUES)
-                    temp.addAll(model.getQuads(state, face, world.rand.nextLong()));
+                    temp.addAll(model.getQuads(state, face, 0));
 
                 models.put(state, temp);
             }
@@ -56,15 +56,14 @@ public class InfestedLeavesRenderer extends TileEntitySpecialRenderer<TileEntity
             vertexbuffer.begin(7, DefaultVertexFormats.ITEM);
 
             for (BakedQuad quad : models.get(state)) {
-                if (state.shouldSideBeRendered(getWorld(), pos, quad.getFace())) {
-                    vertexbuffer.addVertexData(quad.getVertexData());
+                if (state.shouldSideBeRendered(world, pos, quad.getFace())) {
                     vertexbuffer.addVertexData(quad.getVertexData());
 
                     mc.mcProfiler.startSection("colorMath");
 
                     Color color = te.getColorForTint(quad.getTintIndex());
 
-                    vertexbuffer.putColorMultiplier(color.r, color.r, color.r, 1);
+                    vertexbuffer.putColorMultiplier(color.r, color.g, color.b, 1);
 
                     mc.mcProfiler.endSection();
                 }

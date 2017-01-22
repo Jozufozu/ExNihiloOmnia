@@ -9,17 +9,21 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collections;
 import java.util.List;
@@ -85,66 +89,61 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
             TileEntityInfestedLeaves te = (TileEntityInfestedLeaves) worldIn.getTileEntity(pos);
 
             if (te != null && te.dying && !te.permanent) {
-                int i = 4;
-                int j = 5;
-                int k = pos.getX();
-                int l = pos.getY();
-                int i1 = pos.getZ();
-                int j1 = 32;
-                int k1 = 1024;
-                int l1 = 16;
+                int posX = pos.getX();
+                int posY = pos.getY();
+                int posZ = pos.getZ();
 
                 if (this.surroundings == null)
                     this.surroundings = new int[32768];
 
-                if (worldIn.isAreaLoaded(new BlockPos(k - 5, l - 5, i1 - 5), new BlockPos(k + 5, l + 5, i1 + 5))) {
-                    BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+                if (worldIn.isAreaLoaded(new BlockPos(posX - 5, posY - 5, posZ - 5), new BlockPos(posX + 5, posY + 5, posZ + 5))) {
+                    BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
-                    for (int i2 = -4; i2 <= 4; ++i2) {
+                    for (int x = -4; x <= 4; ++x) {
 
-                        for (int j2 = -4; j2 <= 4; ++j2) {
+                        for (int y = -4; y <= 4; ++y) {
 
-                            for (int k2 = -4; k2 <= 4; ++k2) {
-                                IBlockState iblockstate = worldIn.getBlockState(blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2));
+                            for (int z = -4; z <= 4; ++z) {
+                                IBlockState iblockstate = worldIn.getBlockState(mutableBlockPos.setPos(posX + x, posY + y, posZ + z));
                                 Block block = iblockstate.getBlock();
 
-                                if (!block.canSustainLeaves(iblockstate, worldIn, blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2))) {
+                                if (!block.canSustainLeaves(iblockstate, worldIn, mutableBlockPos.setPos(posX + x, posY + y, posZ + z))) {
 
-                                    if (block.isLeaves(iblockstate, worldIn, blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2)))
-                                        this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -2;
+                                    if (block.isLeaves(iblockstate, worldIn, mutableBlockPos.setPos(posX + x, posY + y, posZ + z)))
+                                        this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + z + 16] = -2;
                                     else
-                                        this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -1;
+                                        this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + z + 16] = -1;
                                 }
                                 else
-                                    this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = 0;
+                                    this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + z + 16] = 0;
                             }
                         }
                     }
 
-                    for (int i3 = 1; i3 <= 4; ++i3) {
-                        for (int j3 = -4; j3 <= 4; ++j3) {
-                            for (int k3 = -4; k3 <= 4; ++k3) {
-                                for (int l3 = -4; l3 <= 4; ++l3) {
+                    for (int w = 1; w <= 4; ++w) {
+                        for (int x = -4; x <= 4; ++x) {
+                            for (int y = -4; y <= 4; ++y) {
+                                for (int z = -4; z <= 4; ++z) {
 
-                                    if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16] == i3 - 1) {
+                                    if (this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + z + 16] == w - 1) {
 
-                                        if (this.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
-                                            this.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
+                                        if (this.surroundings[(x + 16 - 1) * 1024 + (y + 16) * 32 + z + 16] == -2)
+                                            this.surroundings[(x + 16 - 1) * 1024 + (y + 16) * 32 + z + 16] = w;
 
-                                        if (this.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
-                                            this.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
+                                        if (this.surroundings[(x + 16 + 1) * 1024 + (y + 16) * 32 + z + 16] == -2)
+                                            this.surroundings[(x + 16 + 1) * 1024 + (y + 16) * 32 + z + 16] = w;
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] == -2)
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] = i3;
+                                        if (this.surroundings[(x + 16) * 1024 + (y + 16 - 1) * 32 + z + 16] == -2)
+                                            this.surroundings[(x + 16) * 1024 + (y + 16 - 1) * 32 + z + 16] = w;
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] == -2)
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] = i3;
+                                        if (this.surroundings[(x + 16) * 1024 + (y + 16 + 1) * 32 + z + 16] == -2)
+                                            this.surroundings[(x + 16) * 1024 + (y + 16 + 1) * 32 + z + 16] = w;
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] == -2)
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] = i3;
+                                        if (this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + (z + 16 - 1)] == -2)
+                                            this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + (z + 16 - 1)] = w;
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] == -2)
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] = i3;
+                                        if (this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + z + 16 + 1] == -2)
+                                            this.surroundings[(x + 16) * 1024 + (y + 16) * 32 + z + 16 + 1] = w;
                                     }
                                 }
                             }
@@ -152,9 +151,9 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
                     }
                 }
 
-                int l2 = this.surroundings[16912];
+                int magicNumber = this.surroundings[16912];
 
-                if (l2 >= 0)
+                if (magicNumber >= 0)
                     te.dying = false;
                 else {
 
@@ -240,6 +239,12 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return !(!Minecraft.getMinecraft().gameSettings.fancyGraphics && blockAccess.getBlockState(pos.offset(side)).getBlock() == this);
+    }
+
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
@@ -252,7 +257,13 @@ public class BlockInfestedLeaves extends BlockLeaves implements ITileEntityProvi
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.INVISIBLE;
+        return ENOConfig.pretty_leaves ? EnumBlockRenderType.INVISIBLE : EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return Minecraft.getMinecraft().gameSettings.fancyGraphics ? BlockRenderLayer.CUTOUT_MIPPED : BlockRenderLayer.SOLID;
     }
 
     @Override
