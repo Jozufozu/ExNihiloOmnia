@@ -68,7 +68,7 @@ public class Ore {
         Block oreBlock = getBlock();
 
         for (EnumOreBlockType type : EnumOreBlockType.values()) {
-            if (hasType(type)) {
+            if (hasType(type) && type.getCrafting() != null) {
                 ItemStack in = new ItemStack(type.getCrafting(), 1, this.meta);
 
                 GameRegistry.addShapelessRecipe(new ItemStack(oreBlock, 1, type.ordinal()),

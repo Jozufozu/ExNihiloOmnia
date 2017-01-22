@@ -39,7 +39,7 @@ public enum EnumOreBlockType implements IStringSerializable {
 			case DUST:
 				return ENOItems.POWDERED_ORE;
 			default:
-				return ENOItems.BROKEN_ORE;
+				return null;
 		}
 	}
 
@@ -53,6 +53,8 @@ public enum EnumOreBlockType implements IStringSerializable {
 				return ENOItems.CRUSHED_ORE;
 			case SAND:
 				return ENOItems.POWDERED_ORE;
+			case DUST:
+				return null;
 			default:
 				return null;
 		}
