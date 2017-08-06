@@ -1,5 +1,6 @@
 package exnihiloomnia.registries.sifting;
 
+import exnihiloomnia.ENO;
 import exnihiloomnia.registries.sifting.pojos.SieveRecipe;
 import exnihiloomnia.registries.sifting.pojos.SieveRecipeReward;
 import exnihiloomnia.util.enums.EnumMetadataBehavior;
@@ -8,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.ResourceLocation;
 
@@ -64,23 +66,20 @@ public class SieveRegistryEntry {
 					Item item = Item.REGISTRY.getObject(new ResourceLocation(reward.getId()));
 
 					if (item != null) {
-						ItemStack rewardStack = new ItemStack(item, reward.getAmount(), reward.getMeta()), reward.getBaseChance();
-						
-						if (reward.getNBT() != '') {
-							NBTTagCompound rewardNBT;
+						ItemStack rewardStack = new ItemStack(item, reward.getAmount(), reward.getMeta());
+
+						if (reward.getNBT() != "") {
 
 							try {
-									rewardNBT = JsonToNBT.getTagFromJson(reward.getNBT());
+									NBTTagCompound rewardNBT = JsonToNBT.getTagFromJson(reward.getNBT());
+									rewardStack.setTagCompound(rewardNBT);
 							} catch (NBTException e) {
 									ENO.log.error("Error parsing NBT when loading sieve recipe for: " + recipe.getId());
 							}
 
-							if (rewardNBT != null) {
-									rewardStack.setTagCompound(rewardNBT);
-							}
 						}
 
-						entry.addReward(rewardStack);
+						entry.addReward(rewardStack, reward.getBaseChance());
 					}
 				}
 

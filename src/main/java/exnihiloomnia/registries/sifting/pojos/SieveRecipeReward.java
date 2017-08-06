@@ -5,7 +5,7 @@ public class SieveRecipeReward {
 	private int meta;
 	private int amount;
 	private int baseChance = 0;
-	private String nbt = '';
+	private String nbt = "";
 
 	public SieveRecipeReward(){}
 
@@ -15,6 +15,14 @@ public class SieveRecipeReward {
 		this.amount = amount;
 		this.baseChance = baseChance;
 		this.nbt = nbt;
+	}
+
+	public SieveRecipeReward(String id, int meta, int amount, int baseChance) {
+		this.id = id;
+		this.meta = meta;
+		this.amount = amount;
+		this.baseChance = baseChance;
+		this.nbt = "";
 	}
 
 	public String getId() {
