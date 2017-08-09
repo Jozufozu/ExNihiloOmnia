@@ -1,7 +1,0 @@
-{
-    "parent": "exnihiloomnia:block/sieve",
-    "ambientocclusion": false,
-    "textures": {
-        "material": "blocks/planks_acacia"
-    }
-}

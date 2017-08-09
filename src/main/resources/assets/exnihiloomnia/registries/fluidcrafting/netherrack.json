@@ -1,0 +1,9 @@
+{
+  "input": {
+    "oredict": "dustRedstone"
+  },
+  "fluidInput": "lava",
+  "output": {
+    "id": "minecraft:netherrack"
+  }
+}

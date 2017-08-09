@@ -1,0 +1,12 @@
+{
+  "blockInput": {
+    "id": "minecraft:bone_block"
+  },
+  "rewards": [
+    {
+      "id": "minecraft:dye",
+      "data": 15,
+      "count": 9
+    }
+  ]
+}

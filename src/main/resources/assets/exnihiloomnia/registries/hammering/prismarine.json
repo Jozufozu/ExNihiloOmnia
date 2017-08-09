@@ -1,0 +1,15 @@
+{
+  "blockInput": {
+    "oredict": "blockPrismarine"
+  },
+  "rewards": [
+    {
+      "id": "minecraft:prismarine_shard",
+      "count": 3
+    },
+    {
+      "id": "minecraft:prismarine_shard",
+      "chance": 0.5
+    }
+  ]
+}

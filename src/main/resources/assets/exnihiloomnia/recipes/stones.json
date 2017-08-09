@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "exnihiloomnia:stone"
+    },
+    {
+      "item": "exnihiloomnia:stone"
+    },
+    {
+      "item": "exnihiloomnia:stone"
+    },
+    {
+      "item": "exnihiloomnia:stone"
+    }
+  ],
+  "result": {
+    "item": "minecraft:cobblestone"
+  }
+}

@@ -1,3 +1,6 @@
 {
-    "parent": "exnihiloomnia:block/barrel_stone"
+  "parent": "exnihiloomnia:block/barrel",
+  "textures": {
+    "material": "blocks/stone_slab_top"
+  }
 }

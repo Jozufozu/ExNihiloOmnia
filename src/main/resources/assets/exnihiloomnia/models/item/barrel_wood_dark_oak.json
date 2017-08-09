@@ -1,6 +1,0 @@
-{
-    "parent": "exnihiloomnia:block/barrel_wood",
-    "textures": {
-        "barrel": "blocks/planks_big_oak"
-    }
-}

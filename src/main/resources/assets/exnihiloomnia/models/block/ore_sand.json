@@ -1,7 +1,0 @@
-{
-    "parent": "exnihiloomnia:block/ore_model",
-    "textures": {
-        "base": "exnihiloomnia:blocks/sand_base",
-        "overlay": "exnihiloomnia:blocks/sand_template"
-    }
-}

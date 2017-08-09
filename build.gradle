@@ -1,101 +1,70 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.2.6"
-group= "jozufozu" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+
+version = "1.0"
+group = "com.jozufozu.exnihiloomnia"
 archivesBaseName = "exnihiloomnia"
 
-sourceCompatibility = targetCompatibility = "1.8"
+sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
+    sourceCompatibility = targetCompatibility = '1.8'
 }
 
 minecraft {
-    version = "${mc_version}-${forge_version}"
+    version = project.mc_version + "-" + project.forge_version
     runDir = "run"
 
-    mappings = "snapshot_20161111"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings = "snapshot_20170624"
 }
 
 repositories {
     maven {
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
     }
     maven {
-        name 'DVS1 Maven FS'
-        url 'http://dvs1.progwml6.com/files/maven'
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
     }
-    maven {
+
+    maven { // TOP
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
+
     maven {
-        name 'Forestry'
-        url "http://maven.ic2.player.to/"
-    }
-    maven {
-        url "http://maven.cil.li/"
-    }
-    maven {
-        url "http://maven.ic2.player.to"
-    }
-    maven {
-        url "http://maven.epoxide.xyz"
-    }
-    maven {
-        url "http://dl.tsr.me/artifactory/libs-release-local"
-    }
-    maven {
-        url "http://maven.chaosfield.at/"
-    }
-    ivy {
-        url "http://ae-mod.info/builds"
-        layout "pattern", {
-            artifact "[module]-[revision](-[classifier])(.[ext])"
-        }
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
     }
 }
 
 dependencies {
-    deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-    deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
-    deobfCompile "slimeknights.mantle:Mantle:${mc_version}-${mantle_version}"
-    deobfCompile "slimeknights:TConstruct:${mc_version}-${tcon_version}"
-    deobfCompile "net.sengir.forestry:forestry_${mc_version}:${forestry_version}"
-    deobfCompile"com.enderio.core:EnderCore:${mc_version}-${endercore_version}"
-    deobfCompile "com.enderio:EnderIO:${mc_version}-${enderio_version}"
-    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:${mc_version}-${aa_version}"
+
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-${top_version}"
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
-        // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
-    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }

@@ -1,0 +1,6 @@
+{
+  "parent": "exnihiloomnia:block/barrel",
+  "textures": {
+    "material": "blocks/concrete_red"
+  }
+}

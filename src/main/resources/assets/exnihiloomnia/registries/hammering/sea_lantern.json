@@ -1,0 +1,31 @@
+{
+  "blockInput": {
+    "id": "minecraft:sea_lantern"
+  },
+  "rewards": [
+    {
+      "id": "minecraft:prismarine_shard",
+      "count": 2
+    },
+    {
+      "id": "minecraft:prismarine_shard",
+      "chance": 0.25
+    },
+    {
+      "id": "minecraft:prismarine_shard",
+      "chance": 0.25
+    },
+    {
+      "id": "minecraft:prismarine_crystals",
+      "count": 3
+    },
+    {
+      "id": "minecraft:prismarine_crystals",
+      "chance": 0.2
+    },
+    {
+      "id": "minecraft:prismarine_crystals",
+      "chance": 0.2
+    }
+  ]
+}

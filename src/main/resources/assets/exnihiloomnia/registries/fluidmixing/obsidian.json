@@ -1,0 +1,7 @@
+{
+  "lower": "lava",
+  "upper": "water",
+  "blockOutput": {
+    "id": "minecraft:obsidian"
+  }
+}

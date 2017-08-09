@@ -1,3 +1,6 @@
 {
-    "parent": "exnihiloomnia:block/barrel_glass"
+  "parent": "exnihiloomnia:block/barrel",
+  "textures": {
+    "material": "blocks/glass"
+  }
 }

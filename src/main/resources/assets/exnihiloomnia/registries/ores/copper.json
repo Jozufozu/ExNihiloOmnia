@@ -1,0 +1,15 @@
+{
+  "color": "ffffff",
+  "oredictNames": [
+    "copper",
+    "gayCopper"
+  ], //optional, not assigned
+  "ingotItem": {
+    "id": "othermod:copper_ingot",
+    "data": 0 //optional, assumed 0
+  }, //optional
+  "chance": 0.2, //optional, will not be generated from sifting if others are missing as well
+  "gravelChance": 0.2, //optional
+  "sandChance": 0.2, //optional
+  "dustChance": 0.2 //optional
+}

@@ -1,0 +1,19 @@
+{
+  "blockInput": {
+    "oredict": "plankWood"
+  },
+  "rewards": [
+    {
+      "id": "minecraft:stick",
+      "count": 4
+    },
+    {
+      "id": "minecraft:stick",
+      "chance": 0.1
+    },
+    {
+      "id": "minecraft:stick",
+      "chance": 0.1
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "blockInput": {
+    "id": "minecraft:dirt",
+    "data": 0
+  },
+  "rewards": [
+    {
+      "id": "exnihiloomnia:small_stone",
+      "chance": 0.2,
+      "type": "junk"
+    },
+    {
+      "id": "exnihiloomnia:small_stone",
+      "chance": 0.1,
+      "type": "junk"
+    },
+    {
+      "id": "exnihiloomnia:small_stone",
+      "chance": 0.05,
+      "type": "junk"
+    },
+    {
+      "id": "minecraft:wheat_seeds",
+      "chance": 0.07,
+      "type": "plant"
+    },
+    {
+      "id": "minecraft:pumpkin_seeds",
+      "chance": 0.03,
+      "type": "plant"
+    },
+    {
+      "id": "minecraft:melon_seeds",
+      "chance": 0.04,
+      "type": "plant"
+    },
+    {
+      "id": "minecraft:beetroot_seeds",
+      "chance": 0.03,
+      "type": "plant"
+    },
+    {
+      "id": "exnihiloomnia:tree_seed",
+      "data": 0,
+      "chance": 0.06,
+      "type": "plant"
+    },
+    {
+      "id": "exnihiloomnia:tree_seed",
+      "data": 1,
+      "chance": 0.04,
+      "type": "plant"
+    },
+    {
+      "id": "exnihiloomnia:tree_seed",
+      "data": 2,
+      "chance": 0.02,
+      "type": "plant"
+    },
+    {
+      "id": "exnihiloomnia:tree_seed",
+      "data": 3,
+      "chance": 0.01,
+      "type": "plant"
+    },
+    {
+      "id": "exnihiloomnia:tree_seed",
+      "data": 4,
+      "chance": 0.02,
+      "type": "plant"
+    },
+    {
+      "id": "exnihiloomnia:tree_seed",
+      "data": 5,
+      "chance": 0.02,
+      "type": "plant"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "exnihiloomnia:block/sieve",
+  "textures": {
+    "material": "blocks/planks_spruce"
+  }
+}

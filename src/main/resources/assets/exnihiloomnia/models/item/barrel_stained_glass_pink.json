@@ -1,0 +1,6 @@
+{
+  "parent": "exnihiloomnia:block/barrel",
+  "textures": {
+    "material": "blocks/glass_pink"
+  }
+}

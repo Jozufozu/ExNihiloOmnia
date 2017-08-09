@@ -1,0 +1,6 @@
+{
+  "heat": 5,
+  "source": {
+    "id": "minecraft:lava"
+  }
+}

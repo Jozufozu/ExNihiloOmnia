@@ -1,0 +1,15 @@
+{
+  "blockInput": {
+    "id": "minecraft:quartz_block"
+  },
+  "rewards": [
+    {
+      "id": "minecraft:quartz",
+      "count": 3
+    },
+    {
+      "id": "minecraft:quartz",
+      "chance": 0.5
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "blockInput": {
+    "id": "minecraft:sandstone"
+  },
+  "rewards": [
+    "minecraft:sand"
+  ]
+}

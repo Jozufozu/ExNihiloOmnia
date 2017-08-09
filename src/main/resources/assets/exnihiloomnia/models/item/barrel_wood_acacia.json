@@ -1,6 +1,6 @@
 {
-    "parent": "exnihiloomnia:block/barrel_wood",
-    "textures": {
-        "barrel": "blocks/planks_acacia"
-    }
+  "parent": "exnihiloomnia:block/barrel",
+  "textures": {
+    "material": "blocks/planks_acacia"
+  }
 }

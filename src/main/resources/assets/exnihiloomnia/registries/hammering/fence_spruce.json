@@ -1,0 +1,19 @@
+{
+  "blockInput": {
+    "id": "minecraft:spruce_fence"
+  },
+  "rewards": [
+    {
+      "id": "minecraft:stick",
+      "chance": 0.5
+    },
+    {
+      "id": "minecraft:stick",
+      "chance": 0.5
+    },
+    {
+      "id": "minecraft:stick",
+      "chance": 0.5
+    }
+  ]
+}

@@ -1,8 +1,0 @@
-{
-    "parent": "exnihiloomnia:block/barrel",
-    "ambientocclusion": false,
-    "textures": {
-        "particle": "blocks/glass",
-        "barrel": "blocks/glass"
-    }
-}
