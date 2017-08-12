@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "exnihiloomnia",
+  "name": "Ex Nihilo Omnia",
+  "description": "From nothing, everything. A reboot of the original skyblock companion mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Jozufozu"],
+  "credits": "ErasmusCrowley, for designing and developing the original",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

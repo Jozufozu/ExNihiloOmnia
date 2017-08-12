@@ -11,7 +11,7 @@
     },
     "announce_to_chat": false
   },
-  "parent": "exnihiloomnia:ex_nihilo/get_sifty",
+  "parent": "exnihiloomnia:ex_nihilo/place_sieve",
   "criteria": {
     "sift_stone": {
       "trigger": "minecraft:inventory_changed",

@@ -30,6 +30,8 @@ public class ExNihiloBlocks
     public static Block CRUCIBLE;
     public static Block RAW_CRUCIBLE;
     
+    public static Block CAMP_FIRE;
+    
     public static Block DUST;
     public static Block NETHER_GRAVEL;
     public static Block END_GRAVEL;
@@ -56,6 +58,8 @@ public class ExNihiloBlocks
         
         CRUCIBLE = new BlockFiredCrucible();
         RAW_CRUCIBLE = new BlockCrucible();
+        
+        CAMP_FIRE = new BlockKindling();
         
         for (Block block : modBlocks)
             event.getRegistry().register(block);

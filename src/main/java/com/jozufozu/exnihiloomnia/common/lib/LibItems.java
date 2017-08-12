@@ -44,6 +44,9 @@ public class LibItems
     public static final ResourceLocation TREE_SEED = get("tree_seed");
     public static final ResourceLocation SMALL_STONE = get("small_stone");
     
+    public static final ResourceLocation ASTROLABE = get("astrolabe");
+    public static final ResourceLocation ASH = get("ash");
+    
     private static ResourceLocation get(String... name)
     {
         StringBuilder builder = new StringBuilder();

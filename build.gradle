@@ -47,12 +47,18 @@ repositories {
         name = "CoFH Maven"
         url = "http://maven.covers1624.net"
     }
+
+    maven { //Albedo
+        url 'https://repo.elytradev.com/'
+    }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
 
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-${top_version}"
+
+    deobfCompile 'elucent:albedo:2.0-SNAPSHOT'
 }
 
 processResources {

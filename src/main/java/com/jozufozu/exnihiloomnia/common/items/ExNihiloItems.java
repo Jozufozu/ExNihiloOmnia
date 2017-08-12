@@ -1,11 +1,9 @@
 package com.jozufozu.exnihiloomnia.common.items;
 
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks;
-import com.jozufozu.exnihiloomnia.common.items.itemblocks.ItemTreeSeed;
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemHammer;
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemMesh;
 import com.jozufozu.exnihiloomnia.common.lib.LibItems;
-import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader;
 import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -33,6 +31,8 @@ public class ExNihiloItems
     
     public static Item TREE_SEED;
     public static Item STONE;
+    public static Item ASTROLABE;
+    public static Item ASH;
     
     public static boolean hasRegisteredItems()
     {
@@ -42,7 +42,6 @@ public class ExNihiloItems
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        RegistryLoader.loadMesh();
         WOOD_MESH = new ItemMesh(LibItems.WOODEN_MESH, Item.ToolMaterial.WOOD);
         SILK_MESH = new ItemMesh(LibItems.SILK_MESH, ExNihiloMaterials.SILK);
         DIAMOND_MESH = new ItemMesh(LibItems.DIAMOND_MESH, Item.ToolMaterial.DIAMOND);
@@ -57,6 +56,9 @@ public class ExNihiloItems
         TREE_SEED = new ItemTreeSeed();
         
         STONE = new ItemStone();
+        
+        ASTROLABE = new ItemJadeAstrolabe();
+        ASH = new ItemAsh();
         
         for (Item item : modItems)
             event.getRegistry().register(item);

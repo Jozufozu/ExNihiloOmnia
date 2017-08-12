@@ -39,9 +39,16 @@ public class BlockFiredCrucible extends BlockCrucible implements ITileEntityProv
         if (crucible != null)
         {
             ItemStack held = playerIn.getHeldItem(hand);
+            
+            ItemStack in = ItemHandlerHelper.copyStackWithSize(held, 1);
     
             if (!FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
-                ItemHandlerHelper.insertItem(crucible.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), held, false);
+                ItemHandlerHelper.insertItem(crucible.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), in, false);
+            
+            if (in.isEmpty())
+            {
+                held.shrink(1);
+            }
         }
         
         return true;

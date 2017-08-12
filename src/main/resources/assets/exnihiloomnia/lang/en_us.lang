@@ -1,10 +1,15 @@
-//ADVANCEMENTS
+config.exnihiloomnia.title=Ex Nihilo Omnia
+
+generator.exnihiloomnia=SkyBlock
+
+info.exnihiloomnia.save_island.saved=Successfully saved spawn island as %s
+info.exnihiloomnia.save_island.error=Error in saving spawn island %s
 
 advancements.exnihiloomnia.ex_nihilo.root.title=Ex Nihilo
 advancements.exnihiloomnia.ex_nihilo.root.description=Well, nothing but a tree
 
 advancements.exnihiloomnia.ex_nihilo.place_sieve.title=Get Sifty
-advancements.exnihiloomnia.ex_nihilo.place_sieve.description=Ahhhhh, yeaaaah
+advancements.exnihiloomnia.ex_nihilo.place_sieve.description=Place your new sieve in the world
 
 advancements.exnihiloomnia.ex_nihilo.craft_cobble.title=Stepping Stones
 advancements.exnihiloomnia.ex_nihilo.craft_cobble.description=Use pebbles to craft cobblestone
@@ -12,13 +17,11 @@ advancements.exnihiloomnia.ex_nihilo.craft_cobble.description=Use pebbles to cra
 advancements.exnihiloomnia.ex_nihilo.craft_hammer.title=Hammer Time
 advancements.exnihiloomnia.ex_nihilo.craft_hammer.description=Craft a hammer to smash stuff
 
-advancements.exnihiloomnia.ex_nihilo.place_crucible.title=Melting Pot //MADE of clay graphite
+advancements.exnihiloomnia.ex_nihilo.place_crucible.title=Melting Pot
 advancements.exnihiloomnia.ex_nihilo.place_crucible.description=Create a crucible
 
 advancements.exnihiloomnia.ex_nihilo.lava_bucket.title=Hammer Time
 advancements.exnihiloomnia.ex_nihilo.lava_bucket.description=Craft a hammer to smash stuff
-
-//BLOCKS
 
 tile.exnihiloomnia.sieve.oak.name=Oak Sieve
 tile.exnihiloomnia.sieve.spruce.name=Spruce Sieve
@@ -31,6 +34,7 @@ tile.exnihiloomnia.end_gravel.name=End Gravel
 tile.exnihiloomnia.nether_gravel.name=Nether Gravel
 
 tile.exnihiloomnia.dust.name=Dust
+tile.exnihiloomnia.kindling.name=Kindling
 
 tile.exnihiloomnia.crucible.name=Crucible
 tile.exnihiloomnia.raw_crucible.name=Unfired Crucible
@@ -96,9 +100,8 @@ tile.exnihiloomnia.barrel_terracotta.green.name=Green Terracotta Barrel
 tile.exnihiloomnia.barrel_terracotta.red.name=Red Terracotta Barrel
 tile.exnihiloomnia.barrel_terracotta.black.name=Black Terracotta Barrel
 
-//ITEMS
-
 item.exnihiloomnia.small_stone.name=Small Stone
+item.exnihiloomnia.ash.name=Pile of Ash
 
 item.exnihiloomnia.mesh_wood.name=Wooden Mesh
 item.exnihiloomnia.mesh_silk.name=Silk Mesh

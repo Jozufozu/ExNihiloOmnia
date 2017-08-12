@@ -14,6 +14,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityThrownStone extends EntityThrowable
@@ -53,7 +54,10 @@ public class EntityThrownStone extends EntityThrowable
                 IBlockState blockState = this.world.getBlockState(blockPos);
     
                 //We want it to break glass, but some stuff (barrels) shouldn't
-                if (blockState.getMaterial() == Material.GLASS && !(blockState.getBlock() instanceof ITileEntityProvider))
+    
+                Vec3d motion = new Vec3d(this.motionX, this.motionY, this.motionZ);
+                
+                if (motion.lengthSquared() >= 1.2 && blockState.getMaterial() == Material.GLASS && blockState.getBlockHardness(world, blockPos) <= 0.6f && !(blockState.getBlock() instanceof ITileEntityProvider))
                 {
                     this.world.destroyBlock(blockPos, false);
                     this.motionX *= 0.8f;

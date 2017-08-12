@@ -22,10 +22,12 @@ public class ClientProxy extends CommonProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
+        
         RenderingRegistry.registerEntityRenderingHandler(EntityThrownStone.class, manager ->
                 new RenderSnowball<>(manager, ExNihiloItems.STONE, Minecraft.getMinecraft().getRenderItem()));
-    
     }
+    
+    
     
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event)

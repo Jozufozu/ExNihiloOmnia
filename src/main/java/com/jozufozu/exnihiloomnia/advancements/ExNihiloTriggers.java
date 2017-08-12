@@ -12,8 +12,12 @@ import java.util.Map;
 
 public class ExNihiloTriggers
 {
-    public static UseSieveTrigger USE_SIEVE_TRIGGER = register(new UseSieveTrigger());
+    public static UseSieveTrigger USE_SIEVE_TRIGGER;
     
+    public static void preInit()
+    {
+        USE_SIEVE_TRIGGER = register(new UseSieveTrigger());
+    }
     
     public static <T extends ICriterionTrigger> T register(T criterion)
     {

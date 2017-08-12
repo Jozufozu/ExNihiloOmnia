@@ -4,7 +4,6 @@ import com.google.common.collect.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -13,7 +12,6 @@ import javax.annotation.Nullable;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-@Mod.EventBusSubscriber
 public class ReloadableRegistry<T extends IForgeRegistryEntry<T>> implements IForgeRegistry<T>
 {
     private static final BiMap<ResourceLocation, ReloadableRegistry> registries = HashBiMap.create();

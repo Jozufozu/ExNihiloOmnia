@@ -1,5 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.items.tools;
 
+import com.jozufozu.exnihiloomnia.ExNihilo;
 import com.jozufozu.exnihiloomnia.common.items.ItemBaseTool;
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = ExNihilo.MODID)
 public class ItemHammer extends ItemBaseTool
 {
     public ItemHammer(ResourceLocation registryName, ToolMaterial toolMaterial)

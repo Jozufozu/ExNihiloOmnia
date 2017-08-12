@@ -1,6 +1,9 @@
 package com.jozufozu.exnihiloomnia.common.registries;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.jozufozu.exnihiloomnia.ExNihilo;
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*;
 import net.minecraft.util.JsonUtils;
@@ -16,76 +19,70 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.*;
-import java.util.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.MissingResourceException;
+import java.util.Stack;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = ExNihilo.MODID)
 public class RegistryLoader
 {
-    public static final boolean DEV_MODE = true; //Reloads all registries from assets every time
+    public static final boolean DEV_MODE = false; //Reloads all registries from assets every time
     
     public static Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static final Logger LOGGER = LogManager.getLogger("Ex Nihilo");
     
-    private static File ROOT;
-    
     private static final Stack<String> CONTEXT = new Stack<>();
-    
-    public static void preInit()
-    {
-        ROOT = new File(ExNihilo.PATH, "registries/");
-    }
     
     @SubscribeEvent
     public static void loadCompost(RegistryEvent.Register<CompostRecipe> event)
     {
-        genericLoad(event, "/composting", CompostRecipe::deserialize);
+        genericLoad(event, "/registries/composting", CompostRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadFluidCrafting(RegistryEvent.Register<FluidCraftingRecipe> event)
     {
-        genericLoad(event, "/fluidcrafting", FluidCraftingRecipe::deserialize);
+        genericLoad(event, "/registries/fluidcrafting", FluidCraftingRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadFluidMixing(RegistryEvent.Register<FluidMixingRecipe> event)
     {
-        genericLoad(event, "/fluidmixing", FluidMixingRecipe::deserialize);
+        genericLoad(event, "/registries/fluidmixing", FluidMixingRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadFermenting(RegistryEvent.Register<FermentingRecipe> event)
     {
-        genericLoad(event, "/fermenting", FermentingRecipe::deserialize);
+        genericLoad(event, "/registries/fermenting", FermentingRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadSieve(RegistryEvent.Register<SieveRecipe> event)
     {
-        genericLoad(event, "/sieve", SieveRecipe::deserialize);
+        genericLoad(event, "/registries/sieve", SieveRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadHammer(RegistryEvent.Register<HammerRecipe> event)
     {
-        genericLoad(event, "/hammering", HammerRecipe::deserialize);
+        genericLoad(event, "/registries/hammering", HammerRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadMelting(RegistryEvent.Register<MeltingRecipe> event)
     {
-        genericLoad(event, "/melting", MeltingRecipe::deserialize);
+        genericLoad(event, "/registries/melting", MeltingRecipe::deserialize);
     }
     
     @SubscribeEvent
     public static void loadHeat(RegistryEvent.Register<HeatSource> event)
     {
-        genericLoad(event, "/heat", HeatSource::deserialize);
+        genericLoad(event, "/registries/heat", HeatSource::deserialize);
     }
     
     private static <T extends IForgeRegistryEntry<T>> void genericLoad(RegistryEvent.Register<T> event, String resourcePath, Function<JsonObject, T> deserializer)
@@ -98,53 +95,52 @@ public class RegistryLoader
         
         try
         {
-            Path registryRoot = new File(ROOT, resourcePath).toPath();
-        
-            Iterator<Path> iterator = Files.walk(registryRoot).iterator();
-        
-            while (iterator.hasNext())
-            {
-                Path filePath = iterator.next();
+            File root = new File(ExNihilo.PATH, resourcePath);
+    
+            File[] files = root.listFiles((dir, name) -> "json".equals(FilenameUtils.getExtension(name)));
             
-                if ("json".equals(FilenameUtils.getExtension(filePath.toString())))
+            if (files == null)
+            {
+                return;
+            }
+            
+            for (File file : files)
+            {
+                String fileName = FilenameUtils.getName(FilenameUtils.removeExtension(file.getName())).replaceAll("\\\\", "/");
+                ResourceLocation resourceLocation = new ResourceLocation(ExNihilo.MODID, fileName);
+                BufferedReader reader = null;
+    
+                try
                 {
-                    Path path2 = registryRoot.relativize(filePath);
-                    String fileName = FilenameUtils.removeExtension(path2.toString()).replaceAll("\\\\", "/");
-                    ResourceLocation resourceLocation = new ResourceLocation(ExNihilo.MODID, fileName);
-                    BufferedReader reader = null;
-                
                     try
                     {
-                        try
-                        {
-                            reader = Files.newBufferedReader(filePath);
-                            
-                            pushCtx("Entry: " + resourceLocation.toString());
-                            
-                            T registryEntry = deserializer.apply(JsonUtils.fromJson(GSON, reader, JsonObject.class));
-                            
-                            registryEntry.setRegistryName(resourceLocation);
-                        
-                            registry.register(registryEntry);
-                        }
-                        catch (JsonParseException jsonparseexception)
-                        {
-                            error("Parsing error, " + jsonparseexception.getMessage());
-                        }
-                        catch (IOException ioexception)
-                        {
-                            error("Couldn't read " + event.getName() + " entries " + resourceLocation + " from " + filePath, ioexception);
-                        }
+                        reader = new BufferedReader(new FileReader(file));
+            
+                        pushCtx("Entry: " + resourceLocation.toString());
+            
+                        T registryEntry = deserializer.apply(JsonUtils.fromJson(GSON, reader, JsonObject.class));
+            
+                        registryEntry.setRegistryName(resourceLocation);
+            
+                        registry.register(registryEntry);
                     }
-                    finally
+                    catch (JsonParseException jsonparseexception)
                     {
-                        IOUtils.closeQuietly(reader);
-                        popCtx();
+                        error("Parsing error, " + jsonparseexception.getMessage());
                     }
+                    catch (IOException ioexception)
+                    {
+                        error("Couldn't read " + event.getName() + " entries " + resourceLocation + " from " + file.getPath(), ioexception);
+                    }
+                }
+                finally
+                {
+                    IOUtils.closeQuietly(reader);
+                    popCtx();
                 }
             }
         }
-        catch (IOException ioException)
+        catch (Exception ioException)
         {
             error("Couldn't get a list of all " + event.getName() + " registry files", ioException);
         }
@@ -154,9 +150,65 @@ public class RegistryLoader
         }
     }
     
+    public static void loadSingleJson(String resourcePath, Consumer<JsonObject> toDo)
+    {
+        File toLoad = new File(ExNihilo.PATH, resourcePath);
+    
+        try
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(toLoad));
+    
+            toDo.accept(JsonUtils.fromJson(GSON, reader, JsonObject.class));
+        }
+        catch (FileNotFoundException e)
+        {
+            LOGGER.error("Could not find resource: '" + resourcePath + "'");
+        }
+    }
+    
+    public static void copySingle(String resourcePath)
+    {
+        File to = new File(ExNihilo.PATH, resourcePath);
+    
+        if (DEV_MODE)
+        {
+            recursiveDelete(to);
+        }
+        
+        if (to.exists())
+        {
+            return;
+        }
+        
+        InputStream in = null;
+        
+        try
+        {
+            URL resource = RegistryLoader.class.getResource("/assets/exnihiloomnia" + resourcePath);
+            
+            if (resource == null)
+            {
+                return;
+            }
+            
+            File file = new File(resource.toURI());
+            
+            in = new FileInputStream(file);
+            Files.copy(in, to.toPath());
+        }
+        catch (IOException | URISyntaxException e)
+        {
+        
+        }
+        finally
+        {
+            IOUtils.closeQuietly(in);
+        }
+    }
+    
     public static void copyIfUnconfigured(String resourcePath)
     {
-        File config = new File(ROOT, resourcePath);
+        File config = new File(ExNihilo.PATH, resourcePath);
         
         if (DEV_MODE)
         {
@@ -167,58 +219,37 @@ public class RegistryLoader
             return;
         
         config.mkdirs();
-    
-        FileSystem fileSystem = null;
         
         try
         {
-            URI uri= RegistryLoader.class.getResource("/assets/exnihiloomnia").toURI();
-            Path path;
-        
-            if ("file".equals(uri.getScheme()))
-            {
-                path = Paths.get(RegistryLoader.class.getResource("/assets/exnihiloomnia/registries" + resourcePath).toURI());
-            }
-            else
-            {
-                if (!"jar".equals(uri.getScheme()))
-                {
-                    error("Unsupported scheme " + uri);
-                }
-                fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                path = fileSystem.getPath(resourcePath);
-            }
-        
-            Iterator<Path> iterator = Files.walk(path).iterator();
-        
-            while (iterator.hasNext())
-            {
-                Path filePath = iterator.next();
+            File registryPath = new File(RegistryLoader.class.getResource("/assets/exnihiloomnia" + resourcePath).toURI());
+    
+            File[] files = registryPath.listFiles((dir, name) -> "json".equals(FilenameUtils.getExtension(name)));
             
-                if ("json".equals(FilenameUtils.getExtension(filePath.toString())))
+            if (files == null)
+            {
+                throw new MissingResourceException("No files to load!", "RegistryLoader", "/assets/exnihiloomnia" + resourcePath);
+            }
+    
+            for (File file : files)
+            {
+                File to = new File(config, FilenameUtils.getName(file.getName()));
+                InputStream in = null;
+    
+                try
                 {
-                    File to = new File(config, filePath.getFileName().toString());
-                    InputStream in = null;
-                
-                    try
-                    {
-                        in = new FileInputStream(filePath.toFile());
-                        Files.copy(in, to.toPath());
-                    }
-                    finally
-                    {
-                        IOUtils.closeQuietly(in);
-                    }
+                    in = new FileInputStream(file);
+                    Files.copy(in, to.toPath());
+                }
+                finally
+                {
+                    IOUtils.closeQuietly(in);
                 }
             }
         }
         catch (IOException | URISyntaxException uriSyntaxException)
         {
-        
-        }
-        finally
-        {
-            IOUtils.closeQuietly(fileSystem);
+            error("Error copying assets to config: " + uriSyntaxException.getMessage());
         }
     }
     
@@ -244,105 +275,6 @@ public class RegistryLoader
         else
         {
             file.delete();
-        }
-    }
-    
-    public static void loadMesh()
-    {
-        FileSystem fileSystem = null;
-        Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-        
-        try
-        {
-            URI uri= RegistryLoader.class.getResource("").toURI();
-            Path path;
-            
-            if ("file".equals(uri.getScheme()))
-            {
-                path = Paths.get(RegistryLoader.class.getResource("/assets/exnihiloomnia/registries/mesh.json").toURI());
-            }
-            else
-            {
-                if (!"jar".equals(uri.getScheme()))
-                {
-                    error("Unsupported scheme " + uri + " trying to get mesh effectiveness table");
-                }
-                
-                fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                path = fileSystem.getPath("/assets/exnihiloomnia/registries/mesh.json");
-            }
-            
-            if ("json".equals(FilenameUtils.getExtension(path.toString())))
-            {
-                BufferedReader reader = null;
-                
-                try
-                {
-                    try
-                    {
-                        reader = Files.newBufferedReader(path);
-                        
-                        JsonObject mesh = JsonUtils.fromJson(gson, reader, JsonObject.class);
-                        
-                        HashMap<String, HashMap<String, Float>> table = new HashMap<>();
-                        
-                        if (mesh != null)
-                        {
-                            Set<Map.Entry<String, JsonElement>> entries = mesh.entrySet();
-                            
-                            for (Map.Entry<String, JsonElement> tools : entries)
-                            {
-                                JsonElement toolsValue = tools.getValue();
-                                if (!toolsValue.isJsonObject())
-                                    continue;
-                                
-                                String toolName = tools.getKey();
-                                
-                                HashMap<String, Float> effectives = new HashMap<>();
-                                
-                                for (Map.Entry<String, JsonElement> effectiveness : toolsValue.getAsJsonObject().entrySet())
-                                {
-                                    String type = effectiveness.getKey();
-                                    
-                                    try
-                                    {
-                                        float aFloat = effectiveness.getValue().getAsJsonPrimitive().getAsFloat();
-                                        effectives.put(type, aFloat);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        LOGGER.error("Could not read effectiveness for '" + toolName + "', '" + type + "'");
-                                    }
-                                }
-                                table.put(toolName, effectives);
-                            }
-                        }
-                        
-                        JsonHelper.mesh = table;
-                    }
-                    catch (JsonParseException jsonparseexception)
-                    {
-                        error("Parsing error loading mesh.json", jsonparseexception);
-                    }
-                    catch (IOException ioexception)
-                    {
-                        error("Couldn't read mesh.json!", ioexception);
-                    }
-                }
-                finally
-                {
-                    IOUtils.closeQuietly(reader);
-                }
-            }
-        }
-        catch (IOException | URISyntaxException uriSyntaxException)
-        {
-            error("Couldn't load mesh effectiveness table!", uriSyntaxException);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(fileSystem);
-            clearCtx();
         }
     }
     

@@ -31,6 +31,8 @@ public class LibBlocks
     public static final ResourceLocation NETHER_GRAVEL = get("nether_gravel");
     public static final ResourceLocation END_GRAVEL = get("end_gravel");
     
+    public static final ResourceLocation KINDLING = get("kindling");
+    
     private static ResourceLocation get(String... name)
     {
         StringBuilder builder = new StringBuilder();

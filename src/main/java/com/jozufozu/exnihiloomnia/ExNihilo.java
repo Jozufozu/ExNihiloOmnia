@@ -12,7 +12,6 @@ import com.jozufozu.exnihiloomnia.common.registries.command.CommandRegistry;
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*;
 import com.jozufozu.exnihiloomnia.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -42,7 +41,6 @@ public class ExNihilo
     @SidedProxy(serverSide = "com.jozufozu.exnihiloomnia.proxy.CommonProxy", clientSide = "com.jozufozu.exnihiloomnia.proxy.ClientProxy")
     public static CommonProxy proxy;
     
-    public static Configuration CONFIG;
     public static File PATH;
     
     public ExNihilo()

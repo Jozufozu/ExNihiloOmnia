@@ -1,7 +1,6 @@
-package com.jozufozu.exnihiloomnia.common.items.itemblocks;
+package com.jozufozu.exnihiloomnia.common.items;
 
 import com.jozufozu.exnihiloomnia.ExNihilo;
-import com.jozufozu.exnihiloomnia.common.items.ItemBase;
 import com.jozufozu.exnihiloomnia.common.lib.LibItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;

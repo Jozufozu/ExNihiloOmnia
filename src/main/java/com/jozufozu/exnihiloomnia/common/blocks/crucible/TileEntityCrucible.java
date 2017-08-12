@@ -2,6 +2,8 @@ package com.jozufozu.exnihiloomnia.common.blocks.crucible;
 
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager;
 import com.jozufozu.exnihiloomnia.common.registries.recipes.MeltingRecipe;
+import elucent.albedo.lighting.ILightProvider;
+import elucent.albedo.lighting.Light;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -13,6 +15,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -20,7 +23,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityCrucible extends TileEntity implements ITickable
+@Optional.Interface(iface = "elucent.albedo.lighting.ILightProvider", modid = "albedo")
+public class TileEntityCrucible extends TileEntity implements ITickable, ILightProvider
 {
     public CrucibleItemHandler itemHandler = new CrucibleItemHandler();
     public CrucibleFluidTank fluidHandler;
@@ -205,6 +209,25 @@ public class TileEntityCrucible extends TileEntity implements ITickable
             return (T) fluidHandler;
         
         return super.getCapability(capability, facing);
+    }
+    
+    @Optional.Method(modid="albedo")
+    @Nullable
+    @Override
+    public Light provideLight()
+    {
+        FluidStack fluidContents = this.getFluidContents();
+        
+        if (fluidContents != null)
+        {
+            return Light.builder()
+                        .pos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5)
+                        .color(1.0f, 0.0f, 0.0f)
+                        .radius(2.0f)
+                        .build();
+        }
+        
+        return null;
     }
     
     public class CrucibleItemHandler extends ItemStackHandler

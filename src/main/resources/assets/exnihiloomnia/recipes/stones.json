@@ -1,17 +1,17 @@
 {
-  "type": "crafting_shapeless",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "exnihiloomnia:stone"
+      "item": "exnihiloomnia:small_stone"
     },
     {
-      "item": "exnihiloomnia:stone"
+      "item": "exnihiloomnia:small_stone"
     },
     {
-      "item": "exnihiloomnia:stone"
+      "item": "exnihiloomnia:small_stone"
     },
     {
-      "item": "exnihiloomnia:stone"
+      "item": "exnihiloomnia:small_stone"
     }
   ],
   "result": {
