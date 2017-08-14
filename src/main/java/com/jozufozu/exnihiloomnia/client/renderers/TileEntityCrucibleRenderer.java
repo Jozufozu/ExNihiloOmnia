@@ -1,18 +1,16 @@
 package com.jozufozu.exnihiloomnia.client.renderers;
 
+import com.jozufozu.exnihiloomnia.client.RenderUtil;
 import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible;
 import com.jozufozu.exnihiloomnia.common.util.Color;
 import com.jozufozu.exnihiloomnia.common.util.MathStuff;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.item.ItemStack;
@@ -43,7 +41,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         
         renderSolid(crucible, x, y, z, partialTicks);
         
-        if (crucible.solidAmount != crucible.fluidAmount || crucible.solidAmount < TileEntityCrucible.crucibleCapacity)
+        if (crucible.solidAmount != crucible.fluidAmount || crucible.solidAmount < crucible.solidCapacity)
             renderFluid(crucible, x, y, z, partialTicks);
     }
     
@@ -60,8 +58,8 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         GlStateManager.translate(x + 0.5, y + height, z + 0.5);
         GlStateManager.scale(width, 1, width);
         
-        float solid = (float) crucible.solidAmount / (float) TileEntityCrucible.crucibleCapacity;
-        float solidLastTick = (float) crucible.solidAmountLastTick / (float) TileEntityCrucible.crucibleCapacity;
+        float solid = (float) crucible.solidAmount / (float) crucible.solidCapacity;
+        float solidLastTick = (float) crucible.solidAmountLastTick / (float) crucible.solidCapacity;
     
         float fullness = MathStuff.lerp(solidLastTick, solid, partialTicks);
         double contentsSize = 12.5 / 16.0 * fullness;
@@ -99,46 +97,22 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite fluidTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluidStack.getFluid().getStill().toString());
     
-        float fluid = (float) crucible.fluidAmount / (float) TileEntityCrucible.crucibleCapacity;
-        float fluidLastTick = (float) crucible.fluidAmountLastTick / (float) TileEntityCrucible.crucibleCapacity;
+        float fluid = (crucible.fluidAmount + crucible.partialFluid) / (float) crucible.fluidCapacity;
+        float fluidLastTick = (crucible.fluidAmountLastTick + crucible.partialFluidLastTick) / (float) crucible.fluidCapacity;
         float fullness = MathStuff.lerp(fluid, fluidLastTick, partialTicks);
         double contentsSize = 12.5 / 16.0 * fullness;
     
         GlStateManager.translate(x + 1.0 / 16.0, y + height, z + 1.0 / 16.0);
         GlStateManager.scale(width, 1, width);
-    
-        GlStateManager.translate(0, contentsSize, 0);
         
-        renderContents(fluidTexture, 0, Color.WHITE);
+        RenderHelper.disableStandardItemLighting();
+        RenderUtil.renderContents(fluidTexture, contentsSize, Color.WHITE);
+        RenderHelper.enableStandardItemLighting();
     
         GlStateManager.cullFace(GlStateManager.CullFace.BACK);
         GlStateManager.disableRescaleNormal();
         GlStateManager.disableBlend();
         
-        GlStateManager.popMatrix();
-    }
-    
-    public static void renderContents(TextureAtlasSprite texture, double height, Color color)
-    {
-        GlStateManager.pushMatrix();
-        RenderHelper.disableStandardItemLighting();
-    
-        double minU = (double) texture.getMinU();
-        double maxU = (double) texture.getMaxU();
-        double minV = (double) texture.getMinV();
-        double maxV = (double) texture.getMaxV();
-        
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder renderer = tessellator.getBuffer();
-        
-        renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        renderer.pos(1.0d, height, 1.0d).tex(maxU, maxV).color(color.r, color.g, color.b, color.a).endVertex();
-        renderer.pos(1.0d, height, 0).tex(maxU, minV).color(color.r, color.g, color.b, color.a).endVertex();
-        renderer.pos(0, height, 0).tex(minU, minV).color(color.r, color.g, color.b, color.a).endVertex();
-        renderer.pos(0, height, 1.0d).tex(minU, maxV).color(color.r, color.g, color.b, color.a).endVertex();
-        tessellator.draw();
-    
-        RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
     }
 }

@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks;
 
+import com.jozufozu.exnihiloomnia.ExNihilo;
 import com.jozufozu.exnihiloomnia.common.ModConfig;
-import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems;
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -21,12 +21,19 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.LootTableManager;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockKindling extends BlockBase
 {
+    public static final ResourceLocation DROPS = LootTableList.register(new ResourceLocation(ExNihilo.MODID, "gameplay/kindling_drops"));
+    
     public static final AxisAlignedBB KINDLING_BB = new AxisAlignedBB(4.0 / 16.0, 0.0, 4.0 / 16.0, 12.0 / 16.0, 1.0 / 16.0, 12.0 / 16.0);
     
     public static final PropertyBool LIT = PropertyBool.create("lit");
@@ -91,11 +98,24 @@ public class BlockKindling extends BlockBase
         if (!worldIn.isRemote && state.getValue(LIT))
         {
             worldIn.setBlockToAir(pos);
-            worldIn.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.3f, 1.3f);
-
-            for (int i = 0; i < 2 + rand.nextInt(3); i++)
+            worldIn.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.4f, rand.nextFloat() * 0.3F + 1.1F);
+    
+            EntityPlayer nearest = worldIn.getClosestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, false);
+            
+            float luck = 1.0f;
+            
+            if (nearest != null)
             {
-                spawnAsEntity(worldIn, pos, new ItemStack(ExNihiloItems.ASH));
+                luck = nearest.getLuck();
+            }
+    
+            LootTableManager lootTableManager = worldIn.getLootTableManager();
+            List<ItemStack> itemStacks = lootTableManager.getLootTableFromLocation(DROPS)
+                                                         .generateLootForPools(rand, new LootContext(luck, (WorldServer) worldIn, lootTableManager, null, nearest, null));
+    
+            for (ItemStack itemStack : itemStacks)
+            {
+                spawnAsEntity(worldIn, pos, itemStack);
             }
         }
     }
@@ -110,7 +130,7 @@ public class BlockKindling extends BlockBase
         
         if (rand.nextInt(24) == 0)
         {
-            worldIn.playSound((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+            worldIn.playSound((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.4f, rand.nextFloat() * 0.7F + 0.3F, false);
         }
         
         for (int i = 0; i < 2; ++i)

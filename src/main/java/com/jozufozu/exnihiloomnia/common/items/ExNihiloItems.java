@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.items;
 
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks;
+import com.jozufozu.exnihiloomnia.common.items.tools.ItemCrook;
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemHammer;
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemMesh;
 import com.jozufozu.exnihiloomnia.common.lib.LibItems;
@@ -22,6 +23,9 @@ public class ExNihiloItems
     public static Item SILK_MESH;
     public static Item DIAMOND_MESH;
     public static Item GOLD_MESH;
+    
+    public static Item CROOK;
+    public static Item BONE_CROOK;
     
     public static Item WOOD_HAMMER;
     public static Item STONE_HAMMER;
@@ -46,6 +50,9 @@ public class ExNihiloItems
         SILK_MESH = new ItemMesh(LibItems.SILK_MESH, ExNihiloMaterials.SILK);
         DIAMOND_MESH = new ItemMesh(LibItems.DIAMOND_MESH, Item.ToolMaterial.DIAMOND);
         GOLD_MESH = new ItemMesh(LibItems.GOLD_MESH, Item.ToolMaterial.GOLD);
+        
+        CROOK = new ItemCrook(LibItems.CROOK, Item.ToolMaterial.WOOD);
+        BONE_CROOK = new ItemCrook(LibItems.BONE_CROOK, ExNihiloMaterials.SKELETAL);
         
         WOOD_HAMMER = new ItemHammer(LibItems.WOODEN_HAMMER, Item.ToolMaterial.WOOD);
         STONE_HAMMER = new ItemHammer(LibItems.STONE_HAMMER, Item.ToolMaterial.STONE);

@@ -100,7 +100,7 @@ public class SieveRecipeCategory implements IRecipeCategory<SieveRecipeWrapper>
                 if (translate.equals(translationKey))
                     translate = type;
                 
-                String drop = String.format("%.1f%% x%s Type: %s", percentChance, count, translate);
+                String drop = I18n.format("jei.exnihiloomnia.info.reward_chance_category", percentChance, count, translate);
                 
                 toolTip.add(drop);
             }

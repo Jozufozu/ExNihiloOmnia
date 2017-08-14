@@ -42,6 +42,35 @@ public class ModConfig
         @Config.Comment("How likely kindling is to light when using a stick")
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double kindlingLightChance = 0.05;
+        
+        @Config.Comment("Options for barrels")
+        @Config.RequiresWorldRestart
+        public Barrel barrel = new Barrel();
+        
+        public static class Barrel
+        {
+            @Config.Comment("How much fluid content barrels can hold, in mB")
+            public int fluidCapacity = 1000;
+    
+            @Config.Comment("How much compost material barrels can hold, in mB")
+            public int compostCapacity = 1000;
+    
+            @Config.Comment("How much time in ticks it takes for compost to turn into its output")
+            public int compostTime = 400;
+        }
+    
+        @Config.Comment("Options for crucibles")
+        @Config.RequiresWorldRestart
+        public Crucible crucible = new Crucible();
+    
+        public static class Crucible
+        {
+            @Config.Comment("How much fluid content crucibles can hold, in mB")
+            public int fluidCapacity = 4000;
+        
+            @Config.Comment("How much solid material crucibles can hold, in mB")
+            public int solidCapacity = 4000;
+        }
     }
     
     @Mod.EventBusSubscriber(modid = ExNihilo.MODID)

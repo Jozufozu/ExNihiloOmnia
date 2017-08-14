@@ -2,6 +2,6 @@
   "input": {
     "oredict": "cobblestone"
   },
-  "heat": 1,
+  "heat": 3,
   "fluidOutput": "lava"
 }

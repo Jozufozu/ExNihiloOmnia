@@ -1,16 +1,24 @@
 package com.jozufozu.exnihiloomnia.integration.jei;
 
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks;
+import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems;
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager;
+import com.jozufozu.exnihiloomnia.common.registries.recipes.CompostRecipe;
+import com.jozufozu.exnihiloomnia.common.registries.recipes.HammerRecipe;
+import com.jozufozu.exnihiloomnia.common.registries.recipes.MeltingRecipe;
 import com.jozufozu.exnihiloomnia.common.registries.recipes.SieveRecipe;
+import com.jozufozu.exnihiloomnia.integration.jei.composting.CompostRecipeCategory;
+import com.jozufozu.exnihiloomnia.integration.jei.composting.CompostRecipeWrapper;
+import com.jozufozu.exnihiloomnia.integration.jei.hammer.HammerRecipeCategory;
+import com.jozufozu.exnihiloomnia.integration.jei.hammer.HammerRecipeWrapper;
+import com.jozufozu.exnihiloomnia.integration.jei.melting.MeltingRecipeCategory;
+import com.jozufozu.exnihiloomnia.integration.jei.melting.MeltingRecipeWrapper;
 import com.jozufozu.exnihiloomnia.integration.jei.sieve.SieveRecipeCategory;
 import com.jozufozu.exnihiloomnia.integration.jei.sieve.SieveRecipeWrapper;
-import mezz.jei.api.IJeiHelpers;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -25,29 +33,54 @@ public class JeiPlugin implements IModPlugin
     public void registerCategories(@Nonnull IRecipeCategoryRegistration registry)
     {
         IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-        //registry.addRecipeCategories(new HammerRecipeCategory(jeiHelpers.getGuiHelper()));
-        registry.addRecipeCategories(new SieveRecipeCategory(jeiHelpers.getGuiHelper()));
+        IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+        
+        registry.addRecipeCategories(new HammerRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new SieveRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new CompostRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new MeltingRecipeCategory(guiHelper));
     }
     
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
-        //registry.handleRecipes(HammerRecipe.class, HammerRecipeWrapper::new, HammerRecipeCategory.UID);
-        registry.handleRecipes(SieveRecipe.class, SieveRecipeWrapper::new, SieveRecipeCategory.UID);
+        registry.handleRecipes(HammerRecipe.class, HammerRecipeWrapper::new, HammerRecipeCategory.UID);
         
-        //registry.addRecipes(RegistryManager.HAMMERING.getValues(), HammerRecipeCategory.UID);
+        registry.handleRecipes(SieveRecipe.class, SieveRecipeWrapper::new, SieveRecipeCategory.UID);
+        registry.handleRecipes(CompostRecipe.class, CompostRecipeWrapper::new, CompostRecipeCategory.UID);
+        registry.handleRecipes(MeltingRecipe.class, MeltingRecipeWrapper::new, MeltingRecipeCategory.UID);
+        
         registry.addRecipes(RegistryManager.SIFTING.getValues(), SieveRecipeCategory.UID);
-        /*
+        registry.addRecipes(RegistryManager.COMPOST.getValues(), CompostRecipeCategory.UID);
+        registry.addRecipes(RegistryManager.MELTING.getValues(), MeltingRecipeCategory.UID);
+        registry.addRecipes(RegistryManager.HAMMERING.getValues(), HammerRecipeCategory.UID);
+    
         registry.addRecipeCatalyst(new ItemStack(ExNihiloItems.DIAMOND_HAMMER), HammerRecipeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ExNihiloItems.GOLD_HAMMER), HammerRecipeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ExNihiloItems.IRON_HAMMER), HammerRecipeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ExNihiloItems.STONE_HAMMER), HammerRecipeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ExNihiloItems.WOOD_HAMMER), HammerRecipeCategory.UID);
-        */
+        
         for (int i = 0; i < BlockPlanks.EnumType.values().length; i++)
         {
             registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.SIEVE, 1, i), SieveRecipeCategory.UID);
         }
+    
+        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.GLASS_BARREL), CompostRecipeCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.STONE_BARREL), CompostRecipeCategory.UID);
+        for (int i = 0; i < BlockPlanks.EnumType.values().length; i++)
+        {
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.WOOD_BARREL, 1, i), CompostRecipeCategory.UID);
+        }
+    
+        for (int i = 0; i < EnumDyeColor.values().length; i++)
+        {
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.CONCRETE_BARREL, 1, i), CompostRecipeCategory.UID);
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.TERRACOTTA_BARREL, 1, i), CompostRecipeCategory.UID);
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.STAINED_GLASS_BARREL, 1, i), CompostRecipeCategory.UID);
+        }
+    
+        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.CRUCIBLE), MeltingRecipeCategory.UID);
     }
     
     public static List<List<ItemStack>> getRewardsOutput(Collection<ItemStack> rewards, int slots)

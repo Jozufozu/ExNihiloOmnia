@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemMultiTexture;
@@ -85,6 +86,8 @@ public class BlockSieve extends BlockBase implements ITileEntityProvider, IModel
                     if (playerIn.isSneaking() && held == ItemStack.EMPTY)
                     {
                         sieve.removeMesh(playerIn);
+                        worldIn.playSound(null, pos,
+                                SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                         return true;
                     }
                     

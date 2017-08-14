@@ -1,6 +1,20 @@
 config.exnihiloomnia.title=Ex Nihilo Omnia
-
 generator.exnihiloomnia=SkyBlock
+
+jei.exnihiloomnia.sieve=Sifting
+jei.exnihiloomnia.compost=Composting
+jei.exnihiloomnia.hammer=Hammering
+jei.exnihiloomnia.melting=Melting
+
+jei.exnihiloomnia.info.compost_amount=%s / %s
+jei.exnihiloomnia.info.reward_chance=%.1f%% x%s
+jei.exnihiloomnia.info.reward_chance_category=%.1f%% x%s Type: %s
+jei.exnihiloomnia.info.required_heat=Required Heat: %s
+
+exnihiloomnia.drops.type.junk=Junk
+exnihiloomnia.drops.type.ore=Ores
+exnihiloomnia.drops.type.resource=Resources
+exnihiloomnia.drops.type.plant=Organic
 
 info.exnihiloomnia.save_island.saved=Successfully saved spawn island as %s
 info.exnihiloomnia.save_island.error=Error in saving spawn island %s

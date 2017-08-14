@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.integration.jei.hammer;
 
+import com.google.common.collect.Lists;
 import com.jozufozu.exnihiloomnia.common.registries.WeightedDrop;
-import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient;
 import com.jozufozu.exnihiloomnia.common.registries.recipes.HammerRecipe;
 import com.jozufozu.exnihiloomnia.integration.jei.JeiPlugin;
 import mezz.jei.api.ingredients.IIngredients;
@@ -14,12 +14,12 @@ import java.util.Map;
 
 public class HammerRecipeWrapper implements IRecipeWrapper
 {
-    public final WorldIngredient input;
+    public final HammerRecipe recipe;
     public final Map<ItemStack, List<WeightedDrop>> rewards;
     
     public HammerRecipeWrapper(HammerRecipe recipe)
     {
-        this.input = recipe.getBlock();
+        this.recipe = recipe;
         this.rewards = recipe.getRewards().getEquivalencies();
     }
     
@@ -27,7 +27,8 @@ public class HammerRecipeWrapper implements IRecipeWrapper
     public void getIngredients(IIngredients iIngredients)
     {
         List<List<ItemStack>> inputs = new ArrayList<>();
-        //inputs.add(Lists.newArrayList(input.getMatchingStacks()));
+    
+        inputs.add(Lists.newArrayList(recipe.getIngredient().getMatchingStacks()));
         iIngredients.setInputLists(ItemStack.class, inputs);
         
         iIngredients.setOutputLists(ItemStack.class, JeiPlugin.getRewardsOutput(rewards.keySet(), 9));

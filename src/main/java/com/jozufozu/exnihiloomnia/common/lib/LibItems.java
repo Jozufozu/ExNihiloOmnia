@@ -24,7 +24,6 @@ public class LibItems
      * Tools
      */
     public static final String MESH = "mesh";
-    public static final String CROOK = "crook";
     public static final String HAMMER = "hammer";
     
     /**
@@ -34,6 +33,9 @@ public class LibItems
     public static final ResourceLocation SILK_MESH = get(MESH, SILK);
     public static final ResourceLocation GOLD_MESH = get(MESH, GOLD);
     public static final ResourceLocation DIAMOND_MESH = get(MESH, DIAMOND);
+    
+    public static final ResourceLocation CROOK = get("crook");
+    public static final ResourceLocation BONE_CROOK = get("crook_bone");
     
     public static final ResourceLocation WOODEN_HAMMER = get(HAMMER, WOOD);
     public static final ResourceLocation STONE_HAMMER = get(HAMMER, STONE);

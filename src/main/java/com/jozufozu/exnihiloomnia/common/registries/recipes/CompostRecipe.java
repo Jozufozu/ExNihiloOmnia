@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries;
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper;
+import com.jozufozu.exnihiloomnia.common.util.Color;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -27,48 +28,31 @@ public class CompostRecipe extends IForgeRegistryEntry.Impl<CompostRecipe>
     /**
      * The color that the compost will appear as in the
      */
-    private int color;
-    
-    /**
-     * The time in ticks this recipe takes to compost
-     * Default is 200 ticks or 10 seconds
-     */
-    private int compostTime = 200;
+    private Color color;
     
     /**
      * The item that will be given once composting is complete
      */
     private ItemStack output = new ItemStack(Blocks.DIRT);
     
-    private CompostRecipe() {}
-    
-    public CompostRecipe(Ingredient input, int volume, int color, int compostTime, ItemStack output)
+    public Ingredient getInput()
     {
-        this.input = input;
-        this.volume = volume;
-        this.color = color;
-        this.compostTime = compostTime;
-        this.output = output;
+        return input;
     }
     
-    public int getVolume()
+    public int getAmount()
     {
         return volume;
     }
     
-    public int getColor()
+    public Color getColor()
     {
         return color;
     }
     
-    public int getCompostTime()
-    {
-        return compostTime;
-    }
-    
     public ItemStack getOutput()
     {
-        return output;
+        return output.copy();
     }
     
     public boolean matches(ItemStack stack)
@@ -91,11 +75,10 @@ public class CompostRecipe extends IForgeRegistryEntry.Impl<CompostRecipe>
         out.color = JsonHelper.deserializeColor(JsonUtils.getString(recipeObject, LibRegistries.COLOR, "ffffff"));
 
         out.volume = JsonUtils.getInt(input, LibRegistries.VOLUME, 125);
-        out.compostTime = JsonUtils.getInt(recipeObject, LibRegistries.TIME, 200);
 
-        if (recipeObject.has(LibRegistries.OUTPUT_BLOCK))
+        if (recipeObject.has(LibRegistries.OUTPUT_GENERIC))
         {
-            out.output = JsonHelper.deserializeItem(recipeObject.getAsJsonObject(LibRegistries.OUTPUT_BLOCK), true);
+            out.output = JsonHelper.deserializeItem(recipeObject.getAsJsonObject(LibRegistries.OUTPUT_GENERIC), true);
         }
 
         return out;

@@ -86,7 +86,7 @@ public class HammerRecipeCategory implements IRecipeCategory<HammerRecipeWrapper
                 float percentChance = weightedDrop.getChance() * 100;
                 int count = weightedDrop.getDrop().getCount();
                 
-                String drop = String.format("%.1f%% x%s", percentChance, count);
+                String drop = I18n.format("jei.exnihiloomnia.info.reward_chance", percentChance, count);
                 
                 toolTip.add(drop);
             }

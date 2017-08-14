@@ -30,7 +30,7 @@ import java.util.function.Function;
 @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
 public class RegistryLoader
 {
-    public static final boolean DEV_MODE = false; //Reloads all registries from assets every time
+    public static final boolean DEV_MODE = true; //Reloads all registries from assets every time
     
     public static Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private static final Logger LOGGER = LogManager.getLogger("Ex Nihilo");

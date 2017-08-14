@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RegistryManager
 {
@@ -67,6 +68,28 @@ public class RegistryManager
         }
         
         return false;
+    }
+    
+    public static CompostRecipe getCompost(ItemStack input)
+    {
+        for (CompostRecipe recipe : COMPOST)
+        {
+            if (recipe.matches(input))
+                return recipe;
+        }
+        
+        return null;
+    }
+    
+    public static FluidMixingRecipe getMixing(FluidStack in, FluidStack on)
+    {
+        for (FluidMixingRecipe recipe : FLUID_MIXING)
+        {
+            if (recipe.matches(in, on))
+                return recipe;
+        }
+    
+        return null;
     }
     
     public static MeltingRecipe getMelting(ItemStack input)

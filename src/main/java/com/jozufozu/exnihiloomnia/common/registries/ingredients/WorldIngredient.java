@@ -35,6 +35,11 @@ public class WorldIngredient implements Predicate<IBlockState>
         return iBlockState.getBlock() == block && block.getMetaFromState(iBlockState) == data;
     }
     
+    public ItemStack getStack()
+    {
+        return new ItemStack(block, 1, data);
+    }
+    
     public static WorldIngredient deserialize(JsonObject object)
     {
         boolean isAbsolute = object.has(LibRegistries.ITEM_ID);

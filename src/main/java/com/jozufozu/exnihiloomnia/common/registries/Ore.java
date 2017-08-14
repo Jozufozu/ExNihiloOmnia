@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries;
+import com.jozufozu.exnihiloomnia.common.util.Color;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class Ore extends IForgeRegistryEntry.Impl<Ore>
 {
-    private int color;
+    private Color color;
     
     /**
      * The chance that each type of item will drop
@@ -45,31 +46,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
      * What all the blocks smelt into
      */
     private ItemStack ingot;
-    
-    private Ore() {}
-    
-    public Ore(ResourceLocation baseItemName, int color, float chance, ArrayList<String> oreDictNames, ItemStack ingot)
-    {
-        this.setRegistryName(baseItemName);
-        this.color = color;
-        this.gravel_chance = chance;
-        this.sand_chance = chance;
-        this.dust_chance = chance;
-        this.oreDictNames = oreDictNames;
-        this.ingot = ingot;
-    }
-    
-    public Ore(ResourceLocation baseItemName, int color, float gravel_chance, float sand_chance, float dust_chance, ArrayList<String> oreDictNames, ItemStack ingot)
-    {
-        this.setRegistryName(baseItemName);
-        this.color = color;
-        this.gravel_chance = gravel_chance;
-        this.sand_chance = sand_chance;
-        this.dust_chance = dust_chance;
-        this.oreDictNames = oreDictNames;
-        this.ingot = ingot;
-    }
-    
+
     public static Ore deserialize(JsonObject object) throws JsonParseException
     {
         Ore out = new Ore();

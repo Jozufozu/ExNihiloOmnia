@@ -2,11 +2,12 @@ package com.jozufozu.exnihiloomnia.proxy;
 
 import com.jozufozu.exnihiloomnia.ExNihilo;
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers;
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates;
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel;
 import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible;
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve;
 import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone;
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloMaterials;
-import com.jozufozu.exnihiloomnia.common.items.tools.ItemMesh;
 import com.jozufozu.exnihiloomnia.common.lib.LibMisc;
 import com.jozufozu.exnihiloomnia.common.registries.ReloadableRegistry;
 import com.jozufozu.exnihiloomnia.common.world.WorldProviderSkyblock;
@@ -36,17 +37,18 @@ public class CommonProxy
         
         TileEntity.register("exnihiloomnia:sieve", TileEntitySieve.class);
         TileEntity.register("exnihiloomnia:crucible", TileEntityCrucible.class);
+        TileEntity.register("exnihiloomnia:barrel", TileEntityBarrel.class);
     
         EntityRegistry.registerModEntity(LibMisc.ENTITY_STONE, EntityThrownStone.class, "thrown_stone", 0, ExNihilo.INSTANCE, 64, 3, true);
     
         WorldTypeSkyblock.SKY_BLOCK = new WorldTypeSkyblock();
-        ItemMesh.loadMeshTable();
         WorldProviderSkyblock.preInit();
     }
     
     public void init(FMLInitializationEvent event)
     {
         ExNihiloMaterials.init();
+        BarrelStates.initializeBarrelStates();
     
         for (ReloadableRegistry registry : ReloadableRegistry.getRegistries())
         {

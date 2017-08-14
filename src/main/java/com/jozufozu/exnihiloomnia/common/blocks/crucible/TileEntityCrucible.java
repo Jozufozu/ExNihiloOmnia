@@ -1,9 +1,9 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible;
 
+import com.jozufozu.exnihiloomnia.common.ModConfig;
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager;
 import com.jozufozu.exnihiloomnia.common.registries.recipes.MeltingRecipe;
-import elucent.albedo.lighting.ILightProvider;
-import elucent.albedo.lighting.Light;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,11 +11,11 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -23,14 +23,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-@Optional.Interface(iface = "elucent.albedo.lighting.ILightProvider", modid = "albedo")
-public class TileEntityCrucible extends TileEntity implements ITickable, ILightProvider
+public class TileEntityCrucible extends TileEntity implements ITickable
 {
     public CrucibleItemHandler itemHandler = new CrucibleItemHandler();
     public CrucibleFluidTank fluidHandler;
     
-    /** How many mB of solid crucibles can have */
-    public static int crucibleCapacity = 4000;
+    public final int solidCapacity = ModConfig.blocks.crucible.solidCapacity;
+    public final int fluidCapacity = ModConfig.blocks.crucible.fluidCapacity;
     
     /** How many mB of solid this crucible has */
     public int solidAmount;
@@ -56,9 +55,11 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
     
     private int ticksExisted;
     
+    private boolean needsUpdate;
+    
     public TileEntityCrucible()
     {
-        fluidHandler = new CrucibleFluidTank(crucibleCapacity);
+        fluidHandler = new CrucibleFluidTank(fluidCapacity);
         fluidHandler.setCanFill(false);
         fluidHandler.setTileEntity(this);
     }
@@ -70,13 +71,18 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         fluidAmountLastTick = fluidAmount;
         partialFluidLastTick = partialFluid;
 
-        if (ticksExisted % 100 == 0)
+        if (!world.isRemote && ticksExisted % 100 == 0)
         {
+            int lastSource = sourceHeatLevel;
+            int lastCurrent = currentHeatLevel;
             sourceHeatLevel = RegistryManager.getHeat(world.getBlockState(pos.down()));
             //Every 5 seconds, increase the heat by one if the heat source is hotter, decrease it by 1 if it is cooler, or leave it alone
             currentHeatLevel += Integer.signum(sourceHeatLevel - currentHeatLevel);
     
-            markDirty();
+            if (lastCurrent != currentHeatLevel || lastSource != sourceHeatLevel)
+            {
+                markDirty();
+            }
         }
         
         if (solidAmount > 0 && currentHeatLevel >= requiredHeatLevel)
@@ -89,7 +95,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
             int melted = Math.min(solid.getCount(), meltingSpeed);
             
             //We can't melt more than we have space for
-            melted = Math.min(melted, (int) Math.floor(fluidHandler.getCapacity() - fluidHandler.getFluidAmount() / meltingRatio));
+            melted = Math.min(melted, (int) Math.floor((fluidHandler.getCapacity() - fluidHandler.getFluidAmount()) / meltingRatio));
             
             solid.shrink(melted);
             itemHandler.onContentsChanged(0);
@@ -114,7 +120,17 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
             }
             markDirty();
             
-            fluidHandler.fillInternal(new FluidStack(fluid, (int)Math.floor(melted * meltingRatio)), true);
+            float actual = melted * meltingRatio + partialFluid;
+            int in = (int) Math.floor(actual);
+            partialFluid = actual - in;
+            
+            fluidHandler.fillInternal(new FluidStack(fluid, in), true);
+        }
+        
+        if (!world.isRemote && ticksExisted % 10 == 0 && needsUpdate)
+        {
+            sync();
+            needsUpdate = false;
         }
         
         ticksExisted++;
@@ -124,6 +140,14 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
     public void markDirty()
     {
         super.markDirty();
+        this.needsUpdate = true;
+    }
+    
+    public void sync()
+    {
+        BlockPos pos = getPos();
+        IBlockState blockState = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, blockState, blockState, 3);
     }
     
     @Override
@@ -162,13 +186,20 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         NBTTagCompound crucibleData = new NBTTagCompound();
-        crucibleData.setTag("solidContents", itemHandler.serializeNBT());
+    
+        ItemStack stackInSlot = itemHandler.getStackInSlot(0);
+        NBTTagCompound solidContents = stackInSlot.writeToNBT(new NBTTagCompound());
+        solidContents.setByte("Count", (byte) 1);
+        solidContents.setInteger("Amount", stackInSlot.getCount());
+        
+        crucibleData.setTag("solidContents", solidContents);
         crucibleData.setTag("fluidContents", fluidHandler.writeToNBT(new NBTTagCompound()));
     
         crucibleData.setInteger("currentHeat", currentHeatLevel);
         crucibleData.setInteger("sourceHeat", sourceHeatLevel);
         crucibleData.setInteger("requiredHeat", requiredHeatLevel);
         crucibleData.setFloat("meltingRatio", meltingRatio);
+        crucibleData.setFloat("partial", partialFluid);
         
         compound.setTag("crucibleData", crucibleData);
         return super.writeToNBT(compound);
@@ -180,8 +211,14 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         super.readFromNBT(compound);
         
         NBTTagCompound crucibleData = compound.getCompoundTag("crucibleData");
+    
+        NBTTagCompound solidContents = crucibleData.getCompoundTag("solidContents");
         
-        itemHandler.deserializeNBT(crucibleData.getCompoundTag("solidContents"));
+        ItemStack solid = new ItemStack(solidContents);
+        solid.setCount(solidContents.getInteger("Amount"));
+        
+        itemHandler.setStackInSlot(0, solid);
+        
         fluidHandler.readFromNBT(crucibleData.getCompoundTag("fluidContents"));
         
         fluidAmountLastTick = fluidAmount = fluidHandler.getFluidAmount();
@@ -190,6 +227,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         sourceHeatLevel = crucibleData.getInteger("sourceHeat");
         requiredHeatLevel = crucibleData.getInteger("requiredHeat");
         meltingRatio = crucibleData.getFloat("meltingRatio");
+        partialFluid = crucibleData.getFloat("partial");
     }
     
     @Override
@@ -211,25 +249,6 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         return super.getCapability(capability, facing);
     }
     
-    @Optional.Method(modid="albedo")
-    @Nullable
-    @Override
-    public Light provideLight()
-    {
-        FluidStack fluidContents = this.getFluidContents();
-        
-        if (fluidContents != null)
-        {
-            return Light.builder()
-                        .pos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5)
-                        .color(1.0f, 0.0f, 0.0f)
-                        .radius(2.0f)
-                        .build();
-        }
-        
-        return null;
-    }
-    
     public class CrucibleItemHandler extends ItemStackHandler
     {
         public CrucibleItemHandler()
@@ -246,7 +265,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
     
         @Nonnull
         @Override
-        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate)
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
             if (stack.isEmpty())
                 return ItemStack.EMPTY;
@@ -254,16 +273,16 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
             MeltingRecipe meltingRecipe = RegistryManager.getMelting(stack);
             
             if (meltingRecipe == null)
-                return ItemStack.EMPTY;
+                return stack;
             
             if (fluidAmount != 0 && !meltingRecipe.getOutput().isFluidEqual(fluidHandler.getFluid()))
-                return ItemStack.EMPTY;
+                return stack;
     
             ItemStack existing = this.stacks.get(slot);
     
             int inputVolume = meltingRecipe.getInputVolume();
             
-            int allowedIn = Math.floorDiv(crucibleCapacity - existing.getCount(), inputVolume);
+            int allowedIn = Math.floorDiv(solidCapacity - existing.getCount(), inputVolume);
             
             allowedIn = Math.min(allowedIn, stack.getCount());
             
@@ -272,6 +291,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
             
             if (!simulate)
             {
+                requiredHeatLevel = meltingRecipe.getRequiredHeat();
                 meltingRatio = (float) meltingRecipe.getOutput().amount / (float) inputVolume;
                 
                 if (fluidHandler.getFluid() == null)
@@ -286,6 +306,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
                     existing.grow(allowedIn * inputVolume);
                 }
                 onContentsChanged(slot);
+                sync();
             }
             
             return copy;
@@ -294,7 +315,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         @Override
         protected int getStackLimit(int slot, @Nonnull ItemStack stack)
         {
-            return crucibleCapacity;
+            return solidCapacity;
         }
     
         @Override
@@ -307,6 +328,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         protected void onContentsChanged(int slot)
         {
             solidAmount = getStackInSlot(slot).getCount();
+            markDirty();
         }
     }
     
@@ -316,11 +338,26 @@ public class TileEntityCrucible extends TileEntity implements ITickable, ILightP
         {
             super(capacity);
         }
-        
+    
+        @Override
+        public int fill(FluidStack resource, boolean doFill)
+        {
+            sync();
+            return super.fill(resource, doFill);
+        }
+    
+        @Override
+        public FluidStack drain(int maxDrain, boolean doDrain)
+        {
+            sync();
+            return super.drain(maxDrain, doDrain);
+        }
+    
         @Override
         protected void onContentsChanged()
         {
             fluidAmount = getFluidAmount();
+            markDirty();
         }
     }
 }

@@ -8,6 +8,9 @@ import com.jozufozu.exnihiloomnia.common.registries.JsonHelper;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -25,6 +28,8 @@ public class FluidMixingRecipe extends IForgeRegistryEntry.Impl<FluidMixingRecip
     
     private ItemStack output;
     
+    private SoundEvent craftSound;
+    
     public FluidStack getLower()
     {
         return lower;
@@ -37,7 +42,17 @@ public class FluidMixingRecipe extends IForgeRegistryEntry.Impl<FluidMixingRecip
     
     public ItemStack getOutput()
     {
-        return output;
+        return output.copy();
+    }
+    
+    public SoundEvent getCraftSound()
+    {
+        return craftSound;
+    }
+    
+    public boolean matches(FluidStack lower, FluidStack upper)
+    {
+        return this.upper.isFluidEqual(upper) && this.lower.isFluidEqual(lower);
     }
 
     public static FluidMixingRecipe deserialize(JsonObject object) throws JsonParseException
@@ -53,6 +68,8 @@ public class FluidMixingRecipe extends IForgeRegistryEntry.Impl<FluidMixingRecip
         out.upper = new FluidStack(JsonHelper.deserializeFluid(object, LibRegistries.ON_BARREL), 1000);
         
         out.output = JsonHelper.deserializeItem(object.getAsJsonObject(LibRegistries.OUTPUT_BLOCK), true);
+        
+        out.craftSound = SoundEvent.REGISTRY.getObject(new ResourceLocation(JsonUtils.getString(object, "sound", "minecraft:block.lava.extinguish")));
         
         if (Block.getBlockFromItem(out.output.getItem()) == Blocks.AIR)
         {

@@ -50,6 +50,12 @@ public class BlockBarrelColored extends BlockBarrel
     }
     
     @Override
+    public int damageDropped(IBlockState state)
+    {
+        return getMetaFromState(state);
+    }
+    
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, COLOR);
@@ -87,7 +93,5 @@ public class BlockBarrelColored extends BlockBarrel
         {
             ModelLoader.setCustomModelResourceLocation(itemBlock, enumType.getMetadata(), new ModelResourceLocation(this.getRegistryName() + "_" + enumType.getName(), "inventory"));
         }
-        
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySieve.class, new TileEntitySieveRenderer());
     }
 }

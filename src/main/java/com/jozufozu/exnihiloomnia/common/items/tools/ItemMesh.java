@@ -23,6 +23,8 @@ public class ItemMesh extends ItemBaseTool implements IMesh
     {
         super(registryName, material);
         
+        if (masterTable == null) loadMeshTable();
+        
         effectiveness = masterTable.get(registryName.getResourcePath());
         
         if (effectiveness == null)
@@ -31,6 +33,7 @@ public class ItemMesh extends ItemBaseTool implements IMesh
     
     public static void loadMeshTable()
     {
+        RegistryLoader.copySingle("/registries/mesh.json");
         RegistryLoader.loadSingleJson("/registries/mesh.json", mesh -> {
             HashMap<String, HashMap<String, Float>> table = new HashMap<>();
         

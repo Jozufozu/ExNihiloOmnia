@@ -3,7 +3,7 @@ package com.jozufozu.exnihiloomnia.common.registries.recipes;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible;
+import com.jozufozu.exnihiloomnia.common.ModConfig;
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries;
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper;
 import net.minecraft.item.ItemStack;
@@ -25,6 +25,11 @@ public class MeltingRecipe extends IForgeRegistryEntry.Impl<MeltingRecipe>
     private int inputVolume;
     
     private FluidStack output;
+    
+    public Ingredient getInput()
+    {
+        return input;
+    }
     
     public int getRequiredHeat()
     {
@@ -63,13 +68,13 @@ public class MeltingRecipe extends IForgeRegistryEntry.Impl<MeltingRecipe>
         out.requiredHeat = JsonUtils.getInt(object, LibRegistries.HEAT, 1);
         out.output = new FluidStack(JsonHelper.deserializeFluid(object, LibRegistries.OUTPUT_FLUID), JsonUtils.getInt(object, LibRegistries.VOLUME, 1000));
     
-        if (out.inputVolume <= 0 || out.inputVolume > TileEntityCrucible.crucibleCapacity)
+        if (out.inputVolume <= 0 || out.inputVolume > ModConfig.blocks.crucible.solidCapacity)
         {
-            throw new JsonSyntaxException("Melting recipe has invalid inputVolume, expected range: 1 - " + TileEntityCrucible.crucibleCapacity);
+            throw new JsonSyntaxException("Melting recipe has invalid inputVolume, expected range: 1 - " + ModConfig.blocks.crucible.solidCapacity);
         }
-        if (out.output.amount <= 0 || out.output.amount > TileEntityCrucible.crucibleCapacity)
+        if (out.output.amount <= 0 || out.output.amount > ModConfig.blocks.crucible.fluidCapacity)
         {
-            throw new JsonSyntaxException("Melting recipe has invalid outputVolume, expected range: 1 - " + TileEntityCrucible.crucibleCapacity);
+            throw new JsonSyntaxException("Melting recipe has invalid outputVolume, expected range: 1 - " + ModConfig.blocks.crucible.fluidCapacity);
         }
         
         return out;

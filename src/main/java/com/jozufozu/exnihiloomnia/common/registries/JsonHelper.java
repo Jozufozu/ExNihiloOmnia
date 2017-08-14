@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries;
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.IngredientNBT;
+import com.jozufozu.exnihiloomnia.common.util.Color;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -21,13 +22,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
-import java.util.HashMap;
 import java.util.function.Predicate;
 
 public class JsonHelper
 {
-    public static HashMap<String, HashMap<String, Float>> mesh;
-    
     public static Ingredient deserializeBlockIngredient(JsonObject object) throws JsonParseException
     {
         return deserializeIngredient(object, item -> Block.getBlockFromItem(item.getItem()) != Blocks.AIR);
@@ -44,7 +42,6 @@ public class JsonHelper
             if (requirements.test(itemStack))
                 meetsReq = true;
         }
-    
         if (!meetsReq)
             throw new JsonSyntaxException("Given input " + object.toString() + "' is invalid!");
         
@@ -129,11 +126,6 @@ public class JsonHelper
         {
             throw new JsonSyntaxException("Unknown item '" + resourceName + "'");
         }
-        
-        if (item.getHasSubtypes() && !itemObject.has(LibRegistries.DATA))
-        {
-            RegistryLoader.error("Missing data for item '" + resourceName + "', assuming 0");
-        }
 
         int data = JsonUtils.getInt(itemObject, LibRegistries.DATA, 0);
         int count = useCount ? JsonUtils.getInt(itemObject, LibRegistries.COUNT, 1) : 1;
@@ -187,7 +179,7 @@ public class JsonHelper
     /**
      * Turns a given string in either hex or r, g, b(, a) format into a packed color int
      */
-    public static int deserializeColor(String colorString) throws JsonParseException
+    public static Color deserializeColor(String colorString) throws JsonParseException
     {
         int color = 0;
         
@@ -202,14 +194,25 @@ public class JsonHelper
             color |= Integer.parseInt(rgba[0]) << 16;
             color |= Integer.parseInt(rgba[1]) << 8;
             color |= Integer.parseInt(rgba[2]);
-            
-            if (rgba.length == 4)
+    
+            boolean alpha = rgba.length == 4;
+            if (alpha)
+            {
                 color |= Integer.parseInt(rgba[3]) << 24;
+            }
             
+            return new Color(color, alpha);
         }
         else
-            color = Integer.parseInt(colorString, 16);
+        {
+            if (colorString.length() == 8 || colorString.length() == 6)
+            {
+                color = Integer.parseInt(colorString, 16);
+    
+                return new Color(color, colorString.length() == 8);
+            }
+        }
         
-        return color;
+        throw new JsonSyntaxException("Could not parse color '" + colorString + "'");
     }
 }

@@ -2,7 +2,7 @@ package com.jozufozu.exnihiloomnia.common.blocks;
 
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.*;
 import com.jozufozu.exnihiloomnia.common.blocks.crucible.BlockCrucible;
-import com.jozufozu.exnihiloomnia.common.blocks.crucible.BlockFiredCrucible;
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.BlockCrucibleRaw;
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.BlockSieve;
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks;
 import net.minecraft.block.Block;
@@ -56,8 +56,8 @@ public class ExNihiloBlocks
         NETHER_GRAVEL = new BlockBaseFalling(LibBlocks.NETHER_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f);
         DUST = new BlockBaseFalling(LibBlocks.DUST, Material.SAND, SoundType.SNOW).setHardness(0.4f);
         
-        CRUCIBLE = new BlockFiredCrucible();
-        RAW_CRUCIBLE = new BlockCrucible();
+        CRUCIBLE = new BlockCrucible();
+        RAW_CRUCIBLE = new BlockCrucibleRaw();
         
         CAMP_FIRE = new BlockKindling();
         
