@@ -40,7 +40,7 @@ public class ChunkGeneratorSkyBlock implements IChunkGenerator
 
     public static void loadSpawnIsland()
     {
-        RegistryLoader.loadSingleJson("/spawn_island/" + ModConfig.world.spawnIsland + ".json", object -> spawnIsland = SpawnIsland.deserialize(object));
+        RegistryLoader.loadSingleJson("/spawn_island/" + ModConfig.world.spawnIsland + ".json", object -> spawnIsland = SpawnIsland.Companion.deserialize(object));
     }
     
     @Override

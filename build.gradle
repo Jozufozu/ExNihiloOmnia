@@ -1,13 +1,16 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.10'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'kotlin'
 
 
 version = "1.0"
@@ -27,6 +30,8 @@ minecraft {
 }
 
 repositories {
+    jcenter()
+
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
@@ -39,8 +44,8 @@ repositories {
     }
 
     maven { // TOP
-        name 'tterrag maven'
-        url "http://maven.tterrag.com/"
+        name = 'tterrag maven'
+        url = "http://maven.tterrag.com/"
     }
 
     maven {
@@ -49,16 +54,22 @@ repositories {
     }
 
     maven { //Albedo
-        url 'https://repo.elytradev.com/'
+        url = 'https://repo.elytradev.com/'
+    }
+
+    maven {
+        url = "http://maven.shadowfacts.net/"
     }
 }
 
 dependencies {
+    compile group: "net.shadowfacts", name: "Forgelin", version: "1.8.2"
+
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
 
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-${top_version}"
 
-    deobfCompile 'elucent:albedo:2.0-SNAPSHOT'
+    //deobfCompile 'elucent:albedo:2.0-SNAPSHOT'
 }
 
 processResources {

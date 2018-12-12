@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "planks",
+  "pattern": [
+    "# #",
+    "# #",
+    "#X#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:planks",
+      "data": 4
+    },
+    "X": {
+      "item": "minecraft:wooden_slab",
+      "data": 4
+    }
+  },
+  "result": {
+    "item": "exnihiloomnia:barrel_wood",
+    "data": 4
+  }
+}

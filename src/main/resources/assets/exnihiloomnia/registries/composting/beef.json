@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:beef",
-    "amount": 175
-  },
-  "color": "FF4242"
+    "input": {
+        "id": "minecraft:beef",
+        "amount": 175
+    },
+    "color": "FF4242"
 }

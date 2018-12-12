@@ -1,8 +1,8 @@
 {
-  "input": {
-    "id": "minecraft:yellow_flower",
-    "data": 0,
-    "amount": 100
-  },
-  "color": "FFF461"
+    "input": {
+        "id": "minecraft:yellow_flower",
+        "data": 0,
+        "amount": 100
+    },
+    "color": "FFF461"
 }

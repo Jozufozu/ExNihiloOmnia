@@ -20,7 +20,7 @@ public class ExNihiloTabs
         @Override
         public ItemStack getTabIconItem()
         {
-            return new ItemStack(ExNihiloBlocks.WOOD_BARREL);
+            return new ItemStack(ExNihiloBlocks.BARREL_WOOD);
         }
     };
     

@@ -1,12 +1,12 @@
 {
-  "blockInput": {
-    "id": "minecraft:concrete",
-    "data": 8
-  },
-  "rewards": [
-    {
-      "id": "minecraft:concrete_powder",
-      "data": 8
-    }
-  ]
+    "blockInput": {
+        "id": "minecraft:concrete",
+        "data": 8
+    },
+    "rewards": [
+        {
+            "id": "minecraft:concrete_powder",
+            "data": 8
+        }
+    ]
 }

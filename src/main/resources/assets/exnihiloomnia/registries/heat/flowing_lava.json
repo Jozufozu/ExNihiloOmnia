@@ -1,6 +1,6 @@
 {
-  "heat": 5,
-  "source": {
-    "id": "minecraft:flowing_lava"
-  }
+    "heat": 5,
+    "source": {
+        "id": "minecraft:flowing_lava"
+    }
 }

@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:cactus",
-    "amount": 100
-  },
-  "color": "DEFFB5"
+    "input": {
+        "id": "minecraft:cactus",
+        "amount": 100
+    },
+    "color": "DEFFB5"
 }

@@ -11,6 +11,9 @@ jei.exnihiloomnia.info.reward_chance=%.1f%% x%s
 jei.exnihiloomnia.info.reward_chance_category=%.1f%% x%s Type: %s
 jei.exnihiloomnia.info.required_heat=Required Heat: %s
 
+exnihiloomnia.drops.effective_list=Effective on:
+exnihiloomnia.drops.effective_entry=%s: %.1fx
+
 exnihiloomnia.drops.type.junk=Junk
 exnihiloomnia.drops.type.ore=Ores
 exnihiloomnia.drops.type.resource=Resources

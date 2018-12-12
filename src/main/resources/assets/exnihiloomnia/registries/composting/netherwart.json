@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:nether_wart",
-    "amount": 80
-  },
-  "color": "FF2B52"
+    "input": {
+        "id": "minecraft:nether_wart",
+        "amount": 80
+    },
+    "color": "FF2B52"
 }

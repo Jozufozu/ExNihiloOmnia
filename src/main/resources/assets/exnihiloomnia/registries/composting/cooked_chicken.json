@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:cooked_chicken",
-    "amount": 175
-  },
-  "color": "FA955F"
+    "input": {
+        "id": "minecraft:cooked_chicken",
+        "amount": 175
+    },
+    "color": "FA955F"
 }

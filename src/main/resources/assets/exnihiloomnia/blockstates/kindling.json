@@ -1,18 +1,17 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "exnihiloomnia:kindling"
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "lit": {
-      "true": {
-        "submodel": "exnihiloomnia:kindling_fire"
-      },
-      "false": {
-
-      }
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:kindling"
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{ }],
+        "lit": {
+            "true": {
+                "submodel": "exnihiloomnia:kindling_fire"
+            },
+            "false": {
+            }
+        }
     }
-  }
 }

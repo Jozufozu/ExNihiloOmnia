@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:sapling",
-    "data": 0
-  },
-  "color": "35A82A"
+    "input": {
+        "id": "minecraft:sapling",
+        "data": 0
+    },
+    "color": "35A82A"
 }

@@ -29,8 +29,6 @@ public class ExNihiloTriggers
             {
                 Map hopefully = (Map) registry.get(Maps.newHashMap());
                 
-                
-                
                 hopefully.put(criterion.getId(), criterion);
             }
         }

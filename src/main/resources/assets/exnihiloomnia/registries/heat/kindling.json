@@ -1,7 +1,7 @@
 {
-  "heat": 1,
-  "source": {
-    "id": "exnihiloomnia:kindling",
-    "data": 1
-  }
+    "heat": 1,
+    "source": {
+        "id": "exnihiloomnia:kindling",
+        "data": 1
+    }
 }

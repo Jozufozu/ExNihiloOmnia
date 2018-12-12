@@ -1,8 +1,8 @@
 {
-  "input": {
-    "id": "minecraft:tallgrass",
-    "data": 1,
-    "amount": 80
-  },
-  "color": "23630E"
+    "input": {
+        "id": "minecraft:tallgrass",
+        "data": 1,
+        "amount": 80
+    },
+    "color": "23630E"
 }

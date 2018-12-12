@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:cookie",
-    "amount": 60
-  },
-  "color": "c47739"
+    "input": {
+        "id": "minecraft:cookie",
+        "amount": 60
+    },
+    "color": "c47739"
 }

@@ -1,31 +1,31 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "exnihiloomnia:barrel",
-    "textures": {
-      "material": "blocks/concrete_white"
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:barrel",
+        "textures": {
+            "material": "blocks/concrete_white"
+        }
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{ }],
+        "color": {
+            "white": { "textures": { "material": "blocks/concrete_white" } },
+            "orange": { "textures": { "material": "blocks/concrete_orange" } },
+            "magenta": { "textures": { "material": "blocks/concrete_magenta" } },
+            "light_blue": { "textures": { "material": "blocks/concrete_light_blue" } },
+            "yellow": { "textures": { "material": "blocks/concrete_yellow" } },
+            "lime": { "textures": { "material": "blocks/concrete_lime" } },
+            "pink": { "textures": { "material": "blocks/concrete_pink" } },
+            "gray": { "textures": { "material": "blocks/concrete_gray" } },
+            "silver": { "textures": { "material": "blocks/concrete_silver" } },
+            "cyan": { "textures": { "material": "blocks/concrete_cyan" } },
+            "purple": { "textures": { "material": "blocks/concrete_purple" } },
+            "blue": { "textures": { "material": "blocks/concrete_blue" } },
+            "brown": { "textures": { "material": "blocks/concrete_brown" } },
+            "green": { "textures": { "material": "blocks/concrete_green" } },
+            "red": { "textures": { "material": "blocks/concrete_red" } },
+            "black": { "textures": { "material": "blocks/concrete_black" } }
+        }
     }
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "color": {
-      "white": { "textures": { "material": "blocks/concrete_white"} },
-      "orange": { "textures": { "material": "blocks/concrete_orange"} },
-      "magenta": { "textures": { "material": "blocks/concrete_magenta"} },
-      "light_blue": { "textures": { "material": "blocks/concrete_light_blue"} },
-      "yellow": { "textures": { "material": "blocks/concrete_yellow"} },
-      "lime": { "textures": { "material": "blocks/concrete_lime"} },
-      "pink": { "textures": { "material": "blocks/concrete_pink"} },
-      "gray": { "textures": { "material": "blocks/concrete_gray"} },
-      "silver": { "textures": { "material": "blocks/concrete_silver"} },
-      "cyan": { "textures": { "material": "blocks/concrete_cyan"} },
-      "purple": { "textures": { "material": "blocks/concrete_purple"} },
-      "blue": { "textures": { "material": "blocks/concrete_blue"} },
-      "brown": { "textures": { "material": "blocks/concrete_brown"} },
-      "green": { "textures": { "material": "blocks/concrete_green"} },
-      "red": { "textures": { "material": "blocks/concrete_red"} },
-      "black": { "textures": { "material": "blocks/concrete_black"} }
-    }
-  }
 }

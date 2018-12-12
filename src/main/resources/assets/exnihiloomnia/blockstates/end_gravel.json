@@ -1,13 +1,13 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "cube_all",
-    "textures": {
-      "all": "exnihiloomnia:blocks/end_gravel"
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_all",
+        "textures": {
+            "all": "exnihiloomnia:blocks/end_gravel"
+        }
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{ }]
     }
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}]
-  }
 }

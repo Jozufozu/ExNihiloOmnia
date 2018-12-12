@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:apple",
-    "amount": 100
-  },
-  "color": "FFF68F"
+    "input": {
+        "id": "minecraft:apple",
+        "amount": 100
+    },
+    "color": "FFF68F"
 }

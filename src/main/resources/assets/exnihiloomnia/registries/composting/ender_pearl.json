@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:ender_pearl",
-    "amount": 100
-  },
-  "color": "258474"
+    "input": {
+        "id": "minecraft:ender_pearl",
+        "amount": 100
+    },
+    "color": "258474"
 }

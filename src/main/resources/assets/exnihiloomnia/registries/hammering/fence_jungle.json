@@ -1,19 +1,19 @@
 {
-  "blockInput": {
-    "id": "minecraft:jungle_fence"
-  },
-  "rewards": [
-    {
-      "id": "minecraft:stick",
-      "chance": 0.5
+    "blockInput": {
+        "id": "minecraft:jungle_fence"
     },
-    {
-      "id": "minecraft:stick",
-      "chance": 0.5
-    },
-    {
-      "id": "minecraft:stick",
-      "chance": 0.5
-    }
-  ]
+    "rewards": [
+        {
+            "id": "minecraft:stick",
+            "chance": 0.5
+        },
+        {
+            "id": "minecraft:stick",
+            "chance": 0.5
+        },
+        {
+            "id": "minecraft:stick",
+            "chance": 0.5
+        }
+    ]
 }

@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:pumpkin",
-    "amount": 200
-  },
-  "color": "FFDB66"
+    "input": {
+        "id": "minecraft:pumpkin",
+        "amount": 200
+    },
+    "color": "FFDB66"
 }

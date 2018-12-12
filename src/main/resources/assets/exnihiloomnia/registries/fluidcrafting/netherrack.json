@@ -1,9 +1,10 @@
 {
-  "input": {
-    "oredict": "dustRedstone"
-  },
-  "fluidInput": "lava",
-  "output": {
-    "id": "minecraft:netherrack"
-  }
+    "sound": "minecraft:block.lava.extinguish",
+    "input": {
+        "oredict": "dustRedstone"
+    },
+    "fluidInput": "lava",
+    "output": {
+        "id": "minecraft:netherrack"
+    }
 }

@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:ice"
-  },
-  "heat": 0,
-  "fluidOutput": "water"
+    "input": {
+        "id": "minecraft:ice"
+    },
+    "heat": 0,
+    "fluidOutput": "water"
 }

@@ -1,6 +1,0 @@
-{
-  "parent": "exnihiloomnia:block/barrel",
-  "textures": {
-    "material": "blocks/hardened_clay_stained_cyan"
-  }
-}

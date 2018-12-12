@@ -1,8 +1,8 @@
 {
-  "input": {
-    "id": "minecraft:fish",
-    "data": 1,
-    "amount": 120
-  },
-  "color": "FF2E4A"
+    "input": {
+        "id": "minecraft:fish",
+        "data": 1,
+        "amount": 120
+    },
+    "color": "FF2E4A"
 }

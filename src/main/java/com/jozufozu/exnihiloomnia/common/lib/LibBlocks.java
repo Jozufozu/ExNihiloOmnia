@@ -33,6 +33,8 @@ public class LibBlocks
     
     public static final ResourceLocation KINDLING = get("kindling");
     
+    public static final ResourceLocation INFESTED_LEAVES = get("infested_leaves");
+    
     private static ResourceLocation get(String... name)
     {
         StringBuilder builder = new StringBuilder();

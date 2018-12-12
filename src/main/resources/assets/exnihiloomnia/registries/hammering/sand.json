@@ -1,9 +1,9 @@
 {
-  "blockInput": {
-    "id": "minecraft:sand",
-    "data": 0
-  },
-  "rewards": [
-    "exnihiloomnia:dust"
-  ]
+    "blockInput": {
+        "id": "minecraft:sand",
+        "data": 0
+    },
+    "rewards": [
+        "exnihiloomnia:dust"
+    ]
 }

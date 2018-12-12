@@ -1,21 +1,21 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "exnihiloomnia:barrel",
-    "textures": {
-      "material": "blocks/planks_oak"
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:barrel",
+        "textures": {
+            "material": "blocks/planks_oak"
+        }
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{ }],
+        "variant": {
+            "oak": { "textures": { "material": "blocks/planks_oak" } },
+            "spruce": { "textures": { "material": "blocks/planks_spruce" } },
+            "birch": { "textures": { "material": "blocks/planks_birch" } },
+            "jungle": { "textures": { "material": "blocks/planks_jungle" } },
+            "acacia": { "textures": { "material": "blocks/planks_acacia" } },
+            "dark_oak": { "textures": { "material": "blocks/planks_big_oak" } }
+        }
     }
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "variant": {
-      "oak": { "textures": { "material": "blocks/planks_oak"} },
-      "spruce": { "textures": { "material": "blocks/planks_spruce"} },
-      "birch": { "textures": { "material": "blocks/planks_birch"} },
-      "jungle": { "textures": { "material": "blocks/planks_jungle"} },
-      "acacia": { "textures": { "material": "blocks/planks_acacia"} },
-      "dark_oak": { "textures": { "material": "blocks/planks_big_oak"} }
-    }
-  }
 }

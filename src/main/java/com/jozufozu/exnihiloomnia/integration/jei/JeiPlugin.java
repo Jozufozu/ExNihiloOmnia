@@ -66,18 +66,18 @@ public class JeiPlugin implements IModPlugin
             registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.SIEVE, 1, i), SieveRecipeCategory.UID);
         }
     
-        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.GLASS_BARREL), CompostRecipeCategory.UID);
-        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.STONE_BARREL), CompostRecipeCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.BARREL_GLASS), CompostRecipeCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.BARREL_STONE), CompostRecipeCategory.UID);
         for (int i = 0; i < BlockPlanks.EnumType.values().length; i++)
         {
-            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.WOOD_BARREL, 1, i), CompostRecipeCategory.UID);
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.BARREL_WOOD, 1, i), CompostRecipeCategory.UID);
         }
     
         for (int i = 0; i < EnumDyeColor.values().length; i++)
         {
-            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.CONCRETE_BARREL, 1, i), CompostRecipeCategory.UID);
-            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.TERRACOTTA_BARREL, 1, i), CompostRecipeCategory.UID);
-            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.STAINED_GLASS_BARREL, 1, i), CompostRecipeCategory.UID);
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.BARREL_CONCRETE, 1, i), CompostRecipeCategory.UID);
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.BARREL_TERRACOTTA, 1, i), CompostRecipeCategory.UID);
+            registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.BARREL_STAINED_GLASS, 1, i), CompostRecipeCategory.UID);
         }
     
         registry.addRecipeCatalyst(new ItemStack(ExNihiloBlocks.CRUCIBLE), MeltingRecipeCategory.UID);

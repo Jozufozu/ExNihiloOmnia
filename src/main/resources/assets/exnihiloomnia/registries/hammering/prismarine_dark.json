@@ -1,15 +1,15 @@
 {
-  "blockInput": {
-    "oredict": "blockPrismarineDark"
-  },
-  "rewards": [
-    {
-      "id": "minecraft:prismarine_shard",
-      "count": 6
+    "blockInput": {
+        "oredict": "blockPrismarineDark"
     },
-    {
-      "id": "minecraft:prismarine_shard",
-      "chance": 0.3
-    }
-  ]
+    "rewards": [
+        {
+            "id": "minecraft:prismarine_shard",
+            "count": 6
+        },
+        {
+            "id": "minecraft:prismarine_shard",
+            "chance": 0.3
+        }
+    ]
 }

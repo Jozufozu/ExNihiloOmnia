@@ -1,7 +1,7 @@
 {
-  "fluidInput": "water",
-  "blockInput": {
-    "id": "minecraft:mycelium"
-  },
-  "fluidOutput": "exnihiloomnia:witchwater"
+    "fluidInput": "water",
+    "blockInput": {
+        "id": "minecraft:mycelium"
+    },
+    "fluidOutput": "exnihiloomnia:witchwater"
 }

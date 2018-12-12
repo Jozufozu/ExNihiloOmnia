@@ -1,90 +1,127 @@
 package com.jozufozu.exnihiloomnia.common.registries.ingredients;
 
+import com.google.common.collect.Lists;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.jozufozu.exnihiloomnia.common.lib.LibRegistries;
-import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader;
+import com.google.gson.JsonPrimitive;
+import kotlin.collections.CollectionsKt;
+import kotlin.jvm.internal.Intrinsics;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 
-public class WorldIngredient implements Predicate<IBlockState>
-{
+public class WorldIngredient implements Predicate<IBlockState>, Comparable<WorldIngredient> {
     private final Block block;
-    private final int data;
-    
-    public WorldIngredient(Block block, int data)
-    {
+    private final List<String> requirements;
+
+    public WorldIngredient(@NotNull Block block, @NotNull List<String> requirements) {
         this.block = block;
-        this.data = data;
+        this.requirements = requirements;
     }
-    
-    @Override
-    public boolean test(IBlockState iBlockState)
-    {
-        if (data == OreDictionary.WILDCARD_VALUE)
+
+    public boolean test(IBlockState state) {
+        if (state == null || state.getBlock() != this.block || this.requirements.isEmpty())
         {
-            return iBlockState.getBlock() == block;
+            return false;
         }
-        
-        return iBlockState.getBlock() == block && block.getMetaFromState(iBlockState) == data;
-    }
-    
-    public ItemStack getStack()
-    {
-        return new ItemStack(block, 1, data);
-    }
-    
-    public static WorldIngredient deserialize(JsonObject object)
-    {
-        boolean isAbsolute = object.has(LibRegistries.ITEM_ID);
-        boolean isOredict = object.has(LibRegistries.OREDICT);
-    
-        if (isAbsolute && isOredict)
+        else
         {
-            throw new JsonSyntaxException("Cannot have both oredict and item tags in input!");
-        }
-        
-        if (isAbsolute)
-        {
-            Block block = Block.REGISTRY.getObject(new ResourceLocation(JsonUtils.getString(object, LibRegistries.ITEM_ID)));
-            int data = JsonUtils.getInt(object, LibRegistries.DATA, OreDictionary.WILDCARD_VALUE);
-            
-            return new WorldIngredient(block, data);
-        }
-        else if (isOredict)
-        {
-            String oreDict = JsonUtils.getString(object, LibRegistries.OREDICT);
-    
-            if (oreDict.contains(":"))
+            String stateString = state.toString();
+            for (String requirement : this.requirements)
             {
-                Block block = Block.REGISTRY.getObject(new ResourceLocation(oreDict));
-        
-                if (block == null)
-                {
-                    throw new JsonSyntaxException("Unknown block '" + oreDict + "'");
-                }
-        
-                int[] oreIDs = OreDictionary.getOreIDs(new ItemStack(block));
-        
-                if (oreIDs.length == 0)
-                {
-                    RegistryLoader.error("Given block ingredient, '" + oreDict + "' has no Ore Dictionary entries! Using the block instead.");
-            
-                    return new WorldIngredient(block, OreDictionary.WILDCARD_VALUE);
-                }
-        
-                return new OreWorldIngredient(OreDictionary.getOreName(oreIDs[0]));
+                if (!stateString.contains(requirement))
+                    return false;
             }
-    
-            return new OreWorldIngredient(oreDict);
+
+            return true;
         }
-    
-        throw new JsonSyntaxException("Recipe is missing input!");
     }
+
+    public int compareTo(@NotNull WorldIngredient other)
+    {
+        return this.block == other.block ? this.requirements.size() - other.requirements.size() : Block.getIdFromBlock(this.block) - Block.getIdFromBlock(other.block);
+    }
+
+    @NotNull
+    public NonNullList getStacks() {
+        return NonNullList.withSize(0, ItemStack.EMPTY);
+    }
+
+    @NotNull
+    public static WorldIngredient deserialize(@NotNull JsonObject json) {
+            Intrinsics.checkParameterIsNotNull(json, "json");
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(JsonUtils.getString(json, "id")));
+            List args;
+            if (json.has("data"))
+            {
+                int meta = JsonUtils.getInt(json, "data");
+                String string = block.getStateFromMeta(meta).toString();
+                args = Lists.newArrayList(string.substring(string.indexOf('['), string.length()-1).split(","));
+                return new WorldIngredient(block, args);
+            }
+            else if (json.has("variants"))
+            {
+                JsonObject variants = JsonUtils.getJsonObject(json, "variants");
+                Set set = variants.entrySet();
+                if (!set.isEmpty()) {
+                    Iterable $receiver$iv = (Iterable)set;
+                    Collection destination$iv$iv = (Collection)(new ArrayList());
+                    Iterator var9 = $receiver$iv.iterator();
+
+                    Object element$iv$iv;
+                    Entry $k_v;
+                    while(var9.hasNext()) {
+                        boolean var23;
+                        label34: {
+                            element$iv$iv = var9.next();
+                            $k_v = (Entry)element$iv$iv;
+                            JsonElement v = (JsonElement)$k_v.getValue();
+                            Intrinsics.checkExpressionValueIsNotNull(v, "v");
+                            if (v.isJsonPrimitive()) {
+                                JsonPrimitive var10000 = v.getAsJsonPrimitive();
+                                Intrinsics.checkExpressionValueIsNotNull(var10000, "v.asJsonPrimitive");
+                                if (var10000.isString()) {
+                                    var23 = true;
+                                    break label34;
+                                }
+                            }
+
+                            var23 = false;
+                        }
+
+                        if (var23) {
+                            destination$iv$iv.add(element$iv$iv);
+                        }
+                    }
+
+                    $receiver$iv = (Iterable)((List)destination$iv$iv);
+                    destination$iv$iv = (Collection)(new ArrayList(CollectionsKt.collectionSizeOrDefault($receiver$iv, 10)));
+                    var9 = $receiver$iv.iterator();
+
+                    while(var9.hasNext()) {
+                        element$iv$iv = var9.next();
+                        $k_v = (Entry)element$iv$iv;
+                        String k = (String)$k_v.getKey();
+                        JsonElement v = (JsonElement)$k_v.getValue();
+                        String var19 = "" + k + '=' + v;
+                        destination$iv$iv.add(var19);
+                    }
+
+                    args = (List)destination$iv$iv;
+                    Intrinsics.checkExpressionValueIsNotNull(block, "block");
+                    return new WorldIngredient(block, args);
+                }
+            }
+
+            Intrinsics.checkExpressionValueIsNotNull(block, "block");
+            return new WorldIngredient(block, CollectionsKt.emptyList());
+        }
 }

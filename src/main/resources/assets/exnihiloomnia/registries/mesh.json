@@ -1,24 +1,24 @@
 {
-  "mesh_silk": {
-    "junk": 0.7,
-    "resource": 1.0,
-    "plant": 1.2
-  },
-  "mesh_wood": {
-    "junk": 1.3,
-    "ores": 0.1,
-    "resource": 0.1,
-    "plant": 1.5
-  },
-  "mesh_gold": {
-    "junk": 0.3,
-    "ores": 1.1,
-    "plant": 0.8
-  },
-  "mesh_diamond": {
-    "junk": 0.5,
-    "ore": 1.3,
-    "resource": 1.3,
-    "plant": 0.2
-  }
+    "mesh_silk": {
+        "junk": 0.7,
+        "resource": 1.0,
+        "plant": 1.2
+    },
+    "mesh_wood": {
+        "junk": 1.3,
+        "ores": 0.1,
+        "resource": 0.1,
+        "plant": 1.5
+    },
+    "mesh_gold": {
+        "junk": 0.3,
+        "ores": 1.1,
+        "plant": 0.8
+    },
+    "mesh_diamond": {
+        "junk": 0.5,
+        "ore": 1.3,
+        "resource": 1.3,
+        "plant": 0.2
+    }
 }

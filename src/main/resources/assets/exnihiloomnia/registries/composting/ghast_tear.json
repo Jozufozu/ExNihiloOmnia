@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:ghast_tear",
-    "amount": 5
-  },
-  "color": "FFFFFF"
+    "input": {
+        "id": "minecraft:ghast_tear",
+        "amount": 5
+    },
+    "color": "FFFFFF"
 }

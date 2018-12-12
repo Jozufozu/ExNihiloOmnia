@@ -1,6 +1,6 @@
 {
-  "heat": 3,
-  "source": {
-    "id": "minecraft:fire"
-  }
+    "heat": 3,
+    "source": {
+        "id": "minecraft:fire"
+    }
 }

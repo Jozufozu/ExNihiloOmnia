@@ -1,8 +1,8 @@
 {
-  "input": {
-    "id": "minecraft:dye",
-    "data": 3,
-    "amount": 80
-  },
-  "color": "895836"
+    "input": {
+        "id": "minecraft:dye",
+        "data": 3,
+        "amount": 80
+    },
+    "color": "895836"
 }

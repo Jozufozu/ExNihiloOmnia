@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "planks",
+  "pattern": [
+    "# #",
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stained_glass",
+      "data": 4
+    }
+  },
+  "result": {
+    "item": "exnihiloomnia:barrel_stained_glass",
+    "data": 4
+  }
+}

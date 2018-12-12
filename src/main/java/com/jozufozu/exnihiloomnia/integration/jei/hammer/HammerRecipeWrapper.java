@@ -28,7 +28,7 @@ public class HammerRecipeWrapper implements IRecipeWrapper
     {
         List<List<ItemStack>> inputs = new ArrayList<>();
     
-        inputs.add(Lists.newArrayList(recipe.getIngredient().getMatchingStacks()));
+        inputs.add(Lists.newArrayList(recipe.getIngredient().getStacks()));
         iIngredients.setInputLists(ItemStack.class, inputs);
         
         iIngredients.setOutputLists(ItemStack.class, JeiPlugin.getRewardsOutput(rewards.keySet(), 9));

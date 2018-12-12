@@ -1,11 +1,11 @@
 {
-  "input": {
-    "id": "minecraft:rotten_flesh",
-    "amount": 85
-  },
-  "color": "C45631",
-  "output": {
-    "id": "minecraft:dirt",
-    "data": 1
-  }
+    "input": {
+        "id": "minecraft:rotten_flesh",
+        "amount": 85
+    },
+    "color": "C45631",
+    "output": {
+        "id": "minecraft:dirt",
+        "data": 1
+    }
 }

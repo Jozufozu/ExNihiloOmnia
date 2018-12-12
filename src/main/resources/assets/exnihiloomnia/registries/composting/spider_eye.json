@@ -1,11 +1,11 @@
 {
-  "input": {
-    "id": "minecraft:spider_eye",
-    "amount": 85
-  },
-  "color": "963E44",
-  "output": {
-    "id": "minecraft:dirt",
-    "data": 1
-  }
+    "input": {
+        "id": "minecraft:spider_eye",
+        "amount": 85
+    },
+    "color": "963E44",
+    "output": {
+        "id": "minecraft:dirt",
+        "data": 1
+    }
 }

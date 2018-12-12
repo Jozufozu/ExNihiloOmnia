@@ -1,12 +1,12 @@
 {
-  "blockInput": {
-    "id": "minecraft:stonebrick",
-    "data": 0
-  },
-  "rewards": [
-    {
-      "id": "minecraft:stonebrick",
-      "data": 2
-    }
-  ]
+    "blockInput": {
+        "id": "minecraft:stonebrick",
+        "data": 0
+    },
+    "rewards": [
+        {
+            "id": "minecraft:stonebrick",
+            "data": 2
+        }
+    ]
 }

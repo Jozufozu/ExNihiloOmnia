@@ -1,13 +1,13 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "exnihiloomnia:barrel",
-    "textures": {
-      "material": "blocks/stone_slab_top"
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:barrel",
+        "textures": {
+            "material": "blocks/stone_slab_top"
+        }
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{ }]
     }
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}]
-  }
 }

@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:cake",
-    "amount": 150
-  },
-  "color": "b4896f"
+    "input": {
+        "id": "minecraft:cake",
+        "amount": 150
+    },
+    "color": "b4896f"
 }

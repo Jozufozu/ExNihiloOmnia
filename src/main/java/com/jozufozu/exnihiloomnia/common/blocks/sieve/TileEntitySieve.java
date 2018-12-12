@@ -96,7 +96,7 @@ public class TileEntitySieve extends TileEntity implements ITickable
     /**
      * Takes the given item and checks to see if it can be sifted. If it can, it will decrease the stack by one and fill the sieve
      */
-    public void insertContents(EntityPlayer user, ItemStack contents)
+    public void insertContents(@Nullable EntityPlayer user, ItemStack contents)
     {
         if (itemHandler.getStackInSlot(0) != ItemStack.EMPTY)
             return;
@@ -145,7 +145,7 @@ public class TileEntitySieve extends TileEntity implements ITickable
         return itemHandler.getStackInSlot(0);
     }
     
-    public void trySetMesh(EntityPlayer user, ItemStack mesh)
+    public void trySetMesh(@Nullable EntityPlayer user, ItemStack mesh)
     {
         if (!(mesh.getItem() instanceof IMesh))
             return;

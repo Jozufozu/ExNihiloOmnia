@@ -1,8 +1,8 @@
 {
-  "blockInput": {
-    "id": "minecraft:end_stone"
-  },
-  "rewards": [
-    "exnihiloomnia:end_gravel"
-  ]
+    "blockInput": {
+        "id": "minecraft:end_stone"
+    },
+    "rewards": [
+        "exnihiloomnia:end_gravel"
+    ]
 }

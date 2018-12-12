@@ -9,6 +9,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
+
 public class RegistryManager
 {
     public static ReloadableRegistry<Ore> ORES;
@@ -70,6 +72,7 @@ public class RegistryManager
         return false;
     }
     
+    @Nullable
     public static CompostRecipe getCompost(ItemStack input)
     {
         for (CompostRecipe recipe : COMPOST)
@@ -81,6 +84,7 @@ public class RegistryManager
         return null;
     }
     
+    @Nullable
     public static FluidMixingRecipe getMixing(FluidStack in, FluidStack on)
     {
         for (FluidMixingRecipe recipe : FLUID_MIXING)
@@ -92,6 +96,19 @@ public class RegistryManager
         return null;
     }
     
+    @Nullable
+    public static FluidCraftingRecipe getFluidCrafting(ItemStack catalyst, FluidStack fluidStack)
+    {
+        for (FluidCraftingRecipe recipe : FLUID_CRAFTING)
+        {
+            if (recipe.matches(catalyst, fluidStack))
+                return recipe;
+        }
+        
+        return null;
+    }
+    
+    @Nullable
     public static MeltingRecipe getMelting(ItemStack input)
     {
         for (MeltingRecipe recipe : MELTING)

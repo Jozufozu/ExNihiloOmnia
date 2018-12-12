@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:waterlily",
-    "amount": 80
-  },
-  "color": "269900"
+    "input": {
+        "id": "minecraft:waterlily",
+        "amount": 80
+    },
+    "color": "269900"
 }

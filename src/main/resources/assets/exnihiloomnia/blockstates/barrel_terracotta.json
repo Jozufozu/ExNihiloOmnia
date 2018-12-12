@@ -1,31 +1,31 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "exnihiloomnia:barrel",
-    "textures": {
-      "material": "blocks/hardened_clay_stained_white"
+    "forge_marker": 1,
+    "defaults": {
+        "model": "exnihiloomnia:barrel",
+        "textures": {
+            "material": "blocks/hardened_clay_stained_white"
+        }
+    },
+    "variants": {
+        "normal": [{ }],
+        "inventory": [{ }],
+        "color": {
+            "white": { "textures": { "material": "blocks/hardened_clay_stained_white" } },
+            "orange": { "textures": { "material": "blocks/hardened_clay_stained_orange" } },
+            "magenta": { "textures": { "material": "blocks/hardened_clay_stained_magenta" } },
+            "light_blue": { "textures": { "material": "blocks/hardened_clay_stained_light_blue" } },
+            "yellow": { "textures": { "material": "blocks/hardened_clay_stained_yellow" } },
+            "lime": { "textures": { "material": "blocks/hardened_clay_stained_lime" } },
+            "pink": { "textures": { "material": "blocks/hardened_clay_stained_pink" } },
+            "gray": { "textures": { "material": "blocks/hardened_clay_stained_gray" } },
+            "silver": { "textures": { "material": "blocks/hardened_clay_stained_silver" } },
+            "cyan": { "textures": { "material": "blocks/hardened_clay_stained_cyan" } },
+            "purple": { "textures": { "material": "blocks/hardened_clay_stained_purple" } },
+            "blue": { "textures": { "material": "blocks/hardened_clay_stained_blue" } },
+            "brown": { "textures": { "material": "blocks/hardened_clay_stained_brown" } },
+            "green": { "textures": { "material": "blocks/hardened_clay_stained_green" } },
+            "red": { "textures": { "material": "blocks/hardened_clay_stained_red" } },
+            "black": { "textures": { "material": "blocks/hardened_clay_stained_black" } }
+        }
     }
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "color": {
-      "white": { "textures": { "material": "blocks/hardened_clay_stained_white"} },
-      "orange": { "textures": { "material": "blocks/hardened_clay_stained_orange"} },
-      "magenta": { "textures": { "material": "blocks/hardened_clay_stained_magenta"} },
-      "light_blue": { "textures": { "material": "blocks/hardened_clay_stained_light_blue"} },
-      "yellow": { "textures": { "material": "blocks/hardened_clay_stained_yellow"} },
-      "lime": { "textures": { "material": "blocks/hardened_clay_stained_lime"} },
-      "pink": { "textures": { "material": "blocks/hardened_clay_stained_pink"} },
-      "gray": { "textures": { "material": "blocks/hardened_clay_stained_gray"} },
-      "silver": { "textures": { "material": "blocks/hardened_clay_stained_silver"} },
-      "cyan": { "textures": { "material": "blocks/hardened_clay_stained_cyan"} },
-      "purple": { "textures": { "material": "blocks/hardened_clay_stained_purple"} },
-      "blue": { "textures": { "material": "blocks/hardened_clay_stained_blue"} },
-      "brown": { "textures": { "material": "blocks/hardened_clay_stained_brown"} },
-      "green": { "textures": { "material": "blocks/hardened_clay_stained_green"} },
-      "red": { "textures": { "material": "blocks/hardened_clay_stained_red"} },
-      "black": { "textures": { "material": "blocks/hardened_clay_stained_black"} }
-    }
-  }
 }

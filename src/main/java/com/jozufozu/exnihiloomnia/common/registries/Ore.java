@@ -37,8 +37,8 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore>
     private float dust_chance = -1;
     
     /**
-     * The blocks are assigned ...Ore
-     * The ingot is assigned ...Ingot, if an ingot is generated
+     * The blocks are assigned %sOre
+     * The ingot is assigned %sIngot, if an ingot is generated
      */
     private ArrayList<String> oreDictNames;
     

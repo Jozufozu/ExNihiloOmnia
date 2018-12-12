@@ -1,8 +1,8 @@
 {
-  "blockInput": {
-    "id": "minecraft:cobblestone"
-  },
-  "rewards": [
-    "minecraft:gravel"
-  ]
+    "blockInput": {
+        "id": "minecraft:cobblestone"
+    },
+    "rewards": [
+        "minecraft:gravel"
+    ]
 }

@@ -1,7 +1,7 @@
 {
-  "input": {
-    "id": "minecraft:poisonous_potato",
-    "amount": 80
-  },
-  "color": "E0FF8A"
+    "input": {
+        "id": "minecraft:poisonous_potato",
+        "amount": 80
+    },
+    "color": "E0FF8A"
 }
