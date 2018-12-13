@@ -5,6 +5,16 @@ import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloTabs
 import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder
 import com.jozufozu.exnihiloomnia.common.util.IModelRegister
+import net.minecraft.block.Block
+import net.minecraft.block.SoundType
+import net.minecraft.block.material.Material
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.item.Item
+import net.minecraft.item.ItemBlock
+import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 open class BlockBase @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : Block(materialIn), IItemBlockHolder, IModelRegister {
 

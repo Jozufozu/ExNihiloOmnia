@@ -2,6 +2,11 @@ package com.jozufozu.exnihiloomnia.common.items
 
 import com.jozufozu.exnihiloomnia.common.lib.LibItems
 import com.jozufozu.exnihiloomnia.common.world.SpawnIsland
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ActionResult
+import net.minecraft.util.EnumHand
+import net.minecraft.world.World
 
 class ItemJadeAstrolabe : ItemBase(LibItems.ASTROLABE) {
 

@@ -1,6 +1,10 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel
 
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
+import net.minecraft.block.SoundType
+import net.minecraft.block.material.Material
+import net.minecraft.item.EnumDyeColor
+import net.minecraft.util.BlockRenderLayer
 
 class BlockBarrelStainedGlass : BlockBarrelColored(LibBlocks.STAINED_GLASS_BARREL, Material.GLASS, SoundType.GLASS) {
     companion object {

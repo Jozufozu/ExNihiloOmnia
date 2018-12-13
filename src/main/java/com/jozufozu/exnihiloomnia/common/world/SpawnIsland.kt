@@ -1,6 +1,18 @@
 package com.jozufozu.exnihiloomnia.common.world
 
+import com.google.common.collect.Maps
+import com.google.gson.*
 import com.jozufozu.exnihiloomnia.ExNihilo
+import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.nbt.*
+import net.minecraft.util.JsonUtils
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.TextComponentString
+import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.world.World
 import java.io.File
 import java.io.IOException
 import java.io.PrintWriter
@@ -58,7 +70,7 @@ class SpawnIsland {
     }
 
     fun save(user: EntityPlayer) {
-        var writer: PrintWriter? = null
+        val writer: PrintWriter?
         try {
             val now = LocalDateTime.now()
             val name = user.displayNameString + "-" + now.year + now.monthValue + now.dayOfMonth + "-" + now.hour + now.minute + now.second + ".json"
@@ -68,11 +80,11 @@ class SpawnIsland {
             writer = PrintWriter(file)
             writer.append(serialize())
 
+            writer.close()
+
             user.sendMessage(TextComponentTranslation("info.exnihiloomnia.save_island.saved", name))
         } catch (e: IOException) {
             user.sendMessage(TextComponentTranslation("info.exnihiloomnia.save_island.error", e.message))
-        } finally {
-            IOUtils.closeQuietly(writer)
         }
     }
 
