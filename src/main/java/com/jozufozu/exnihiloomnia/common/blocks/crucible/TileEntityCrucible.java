@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityCrucible extends TileEntity implements ITickable
+public class TileEntityCrucible extends TileEntity implements ITickableTileEntity
 {
     public CrucibleItemHandler itemHandler = new CrucibleItemHandler();
     public CrucibleFluidTank fluidHandler;
@@ -65,7 +65,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable
     }
     
     @Override
-    public void update()
+    public void tick()
     {
         solidAmountLastTick = solidAmount;
         fluidAmountLastTick = fluidAmount;

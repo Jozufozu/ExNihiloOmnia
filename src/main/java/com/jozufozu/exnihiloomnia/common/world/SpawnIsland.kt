@@ -1,6 +1,12 @@
 package com.jozufozu.exnihiloomnia.common.world
 
+import com.google.common.collect.Maps
+import com.google.gson.*
 import com.jozufozu.exnihiloomnia.ExNihilo
+import net.minecraft.block.Block
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import java.io.File
 import java.io.IOException
 import java.io.PrintWriter
@@ -246,7 +252,7 @@ class SpawnIsland {
             for (place in JsonUtils.getJsonArray(json, "s")) {
                 try {
                     if (!place.isJsonObject) {
-                        throw JsonSyntaxException("Invalid structure entry: " + place.toString())
+                        throw JsonSyntaxException("Invalid structure entry: $place")
                     }
 
                     val block = place.asJsonObject

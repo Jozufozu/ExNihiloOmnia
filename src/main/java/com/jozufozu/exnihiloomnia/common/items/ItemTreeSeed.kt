@@ -1,36 +1,43 @@
 package com.jozufozu.exnihiloomnia.common.items
 
-import com.jozufozu.exnihiloomnia.ExNihilo
-import com.jozufozu.exnihiloomnia.common.lib.LibItems
+import net.minecraft.advancements.CriteriaTriggers
+import net.minecraft.block.Block
+import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.item.BlockItem
+import net.minecraft.item.BlockItemUseContext
+import net.minecraft.item.ItemStack
+import net.minecraft.item.ItemUseContext
+import net.minecraft.util.ActionResultType
+import net.minecraft.util.ResourceLocation
+import net.minecraft.util.SoundCategory
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 
-class ItemTreeSeed : ItemBase(LibItems.TREE_SEED) {
-    init {
-        this.setHasSubtypes(true)
-    }
+class ItemTreeSeed(
+        private val place: Block,
+        resourceLocation: ResourceLocation,
+        properties: Properties
+) : ItemBase(resourceLocation, properties) {
 
-    override fun getSubItems(tab: CreativeTabs, items: NonNullList<ItemStack>) {
-        if (this.isInCreativeTab(tab)) {
-            for (enumType in BlockPlanks.EnumType.values()) {
-                items.add(ItemStack(this, 1, enumType.metadata))
-            }
-        }
-    }
-
-    override fun getUnlocalizedName(stack: ItemStack): String {
-        return super.getUnlocalizedName(stack) + "." + BlockPlanks.EnumType.byMetadata(stack.metadata).unlocalizedName
-    }
-
-    override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
-        var pos = pos
+    override fun onItemUse(context: ItemUseContext): ActionResultType {
+        val pos = context.pos
+        val worldIn = context.world
         val state = worldIn.getBlockState(pos)
         val block = state.block
+        val player = context.player
 
-        if (!block.isReplaceable(worldIn, pos)) pos = pos.offset(facing)
+        val blockItemUseContext = BlockItemUseContext(context)
+        if (!state.isReplaceable(blockItemUseContext)) pos = pos.offset(facing)
 
-        val stack = player.getHeldItem(hand)
+        val stack = context.item
+
+        BlockItem
 
         return if (!stack.isEmpty && player.canPlayerEdit(pos, facing, stack) && worldIn.mayPlace(Blocks.SAPLING, pos, false, facing, null)) {
-            var placeState = Blocks.SAPLING.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, stack.metadata, player, hand)
+            var placeState = place.getStateForPlacement(blockItemUseContext)
 
             if (this.placeBlockAt(stack, player, worldIn, pos, placeState)) {
                 placeState = worldIn.getBlockState(pos)
@@ -45,24 +52,17 @@ class ItemTreeSeed : ItemBase(LibItems.TREE_SEED) {
         }
     }
 
-    private fun placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, newState: IBlockState): Boolean {
+    private fun placeBlockAt(stack: ItemStack, player: PlayerEntity, world: World, pos: BlockPos, newState: BlockState): Boolean {
         if (!world.setBlockState(pos, newState, 11)) return false
 
         val state = world.getBlockState(pos)
-        if (state.block === Blocks.SAPLING) {
-            Blocks.SAPLING.onBlockPlacedBy(world, pos, state, player, stack)
+        if (state.block === place) {
+            place.onBlockPlacedBy(world, pos, state, player, stack)
 
-            if (player is EntityPlayerMP)
+            if (player is ServerPlayerEntity)
                 CriteriaTriggers.PLACED_BLOCK.trigger(player, pos, stack)
         }
 
         return true
-    }
-
-    @SideOnly(Side.CLIENT)
-    override fun registerModels() {
-        for (enumType in BlockPlanks.EnumType.values()) {
-            ModelLoader.setCustomModelResourceLocation(this, enumType.metadata, ModelResourceLocation(ExNihilo.MODID + ":seed_" + enumType.unlocalizedName, "inventory"))
-        }
     }
 }

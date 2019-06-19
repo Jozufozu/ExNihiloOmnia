@@ -1,11 +1,16 @@
 package com.jozufozu.exnihiloomnia.common.items
 
-import com.jozufozu.exnihiloomnia.common.lib.LibItems
+import com.jozufozu.exnihiloomnia.common.lib.ItemsLib
 import com.jozufozu.exnihiloomnia.common.world.SpawnIsland
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ActionResult
+import net.minecraft.util.Hand
+import net.minecraft.world.World
 
-class ItemJadeAstrolabe : ItemBase(LibItems.ASTROLABE) {
+class ItemJadeAstrolabe : ItemBase(ItemsLib.ASTROLABE, Properties().maxStackSize(1)) {
 
-    override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
+    override fun onItemRightClick(worldIn: World, playerIn: PlayerEntity, handIn: Hand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
             val position = playerIn.position
 

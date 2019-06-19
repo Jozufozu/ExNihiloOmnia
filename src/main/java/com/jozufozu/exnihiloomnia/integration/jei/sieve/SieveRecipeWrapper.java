@@ -21,7 +21,7 @@ public class SieveRecipeWrapper implements IRecipeWrapper
     public SieveRecipeWrapper(SieveRecipe recipe)
     {
         this.input = recipe.getInput();
-        this.rewards = recipe.getOutput().getEquivalencies();
+        this.rewards = recipe.getLoot().getEquivalencies();
     }
     
     @Override

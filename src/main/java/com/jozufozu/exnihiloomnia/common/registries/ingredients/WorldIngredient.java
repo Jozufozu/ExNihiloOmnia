@@ -7,9 +7,8 @@ import com.google.gson.JsonPrimitive;
 import kotlin.collections.CollectionsKt;
 import kotlin.jvm.internal.Intrinsics;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +17,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 
-public class WorldIngredient implements Predicate<IBlockState>, Comparable<WorldIngredient> {
+public class WorldIngredient implements Predicate<BlockState>, Comparable<WorldIngredient> {
     private final Block block;
     private final List<String> requirements;
 
@@ -27,7 +26,8 @@ public class WorldIngredient implements Predicate<IBlockState>, Comparable<World
         this.requirements = requirements;
     }
 
-    public boolean test(IBlockState state) {
+    @Override
+    public boolean test(BlockState state) {
         if (state == null || state.getBlock() != this.block || this.requirements.isEmpty())
         {
             return false;
@@ -47,7 +47,7 @@ public class WorldIngredient implements Predicate<IBlockState>, Comparable<World
 
     public int compareTo(@NotNull WorldIngredient other)
     {
-        return this.block == other.block ? this.requirements.size() - other.requirements.size() : Block.getIdFromBlock(this.block) - Block.getIdFromBlock(other.block);
+        return this.block == other.block ? this.requirements.size() - other.requirements.size() : Block.(this.block) - Block.getIdFromBlock(other.block);
     }
 
     @NotNull

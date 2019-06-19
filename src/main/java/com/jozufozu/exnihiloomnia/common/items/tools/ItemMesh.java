@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ItemMesh extends ItemBaseTool implements IMesh
+public class ItemMesh extends ItemBaseTool
 {
     public static HashMap<String, HashMap<String, Float>> masterTable;
     private HashMap<String, Float> effectiveness;

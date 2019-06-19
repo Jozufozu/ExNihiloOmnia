@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import com.jozufozu.exnihiloomnia.common.lib.LibRegistries;
+import com.jozufozu.exnihiloomnia.common.lib.RegistriesLib;
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.IngredientNBT;
 import com.jozufozu.exnihiloomnia.common.util.Color;
 import net.minecraft.block.Block;
@@ -17,8 +17,6 @@ import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
@@ -53,9 +51,9 @@ public class JsonHelper
      */
     public static Ingredient deserializeIngredient(JsonObject input) throws JsonParseException
     {
-        boolean isItem = input.has(LibRegistries.ITEM_ID);
-        boolean isOredict = input.has(LibRegistries.OREDICT);
-        boolean isNbt = input.has(LibRegistries.NBT);
+        boolean isItem = input.has(RegistriesLib.ITEM_ID);
+        boolean isOredict = input.has(RegistriesLib.OREDICT);
+        boolean isNbt = input.has(RegistriesLib.NBT);
         
         if (isItem && isOredict)
         {
@@ -71,7 +69,7 @@ public class JsonHelper
         {
             ItemStack itemStack = deserializeItem(input, false);
             
-            if (!input.has(LibRegistries.DATA))
+            if (!input.has(RegistriesLib.DATA))
                 itemStack = new ItemStack(itemStack.getItem(), 1, OreDictionary.WILDCARD_VALUE);
     
             if (isNbt)
@@ -83,7 +81,7 @@ public class JsonHelper
         }
         else if (isOredict)
         {
-            String oreDict = JsonUtils.getString(input, LibRegistries.OREDICT);
+            String oreDict = JsonUtils.getString(input, RegistriesLib.OREDICT);
             
             if (oreDict.contains(":"))
             {
@@ -119,7 +117,7 @@ public class JsonHelper
      */
     public static ItemStack deserializeItem(JsonObject itemObject, boolean useCount) throws JsonParseException
     {
-        String resourceName = JsonUtils.getString(itemObject, LibRegistries.ITEM_ID);
+        String resourceName = JsonUtils.getString(itemObject, RegistriesLib.ITEM_ID);
         Item item = Item.REGISTRY.getObject(new ResourceLocation(resourceName));
         
         if (item == null)
@@ -127,8 +125,8 @@ public class JsonHelper
             throw new JsonSyntaxException("Unknown item '" + resourceName + "'");
         }
 
-        int data = JsonUtils.getInt(itemObject, LibRegistries.DATA, 0);
-        int count = useCount ? JsonUtils.getInt(itemObject, LibRegistries.COUNT, 1) : 1;
+        int data = JsonUtils.getInt(itemObject, RegistriesLib.DATA, 0);
+        int count = useCount ? JsonUtils.getInt(itemObject, RegistriesLib.COUNT, 1) : 1;
     
         if (itemObject.has("nbt"))
         {
@@ -164,17 +162,17 @@ public class JsonHelper
         return new ItemStack(item, count, data);
     }
     
-    public static Fluid deserializeFluid(JsonObject object, String memberName) throws JsonParseException
-    {
-        String name = JsonUtils.getString(object, memberName);
-    
-        if (!FluidRegistry.isFluidRegistered(name))
-        {
-            throw new JsonSyntaxException("Fluid '" + name + "' does not exist!");
-        }
-    
-        return FluidRegistry.getFluid(name);
-    }
+//    public static Fluid deserializeFluid(JsonObject object, String memberName) throws JsonParseException
+//    {
+//        String name = JsonUtils.getString(object, memberName);
+//
+//        if (!FluidRegistry.isFluidRegistered(name))
+//        {
+//            throw new JsonSyntaxException("Fluid '" + name + "' does not exist!");
+//        }
+//
+//        return FluidRegistry.getFluid(name);
+//    }
     
     /**
      * Turns a given string in either hex or r, g, b(, a) format into a packed color int

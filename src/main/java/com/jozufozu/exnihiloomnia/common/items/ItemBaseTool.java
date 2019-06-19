@@ -2,18 +2,13 @@ package com.jozufozu.exnihiloomnia.common.items;
 
 import com.google.common.collect.Sets;
 import com.jozufozu.exnihiloomnia.ExNihilo;
-import com.jozufozu.exnihiloomnia.common.util.IModelRegister;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.ToolItem;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Set;
 
-public class ItemBaseTool extends ItemTool implements IModelRegister
+public class ItemBaseTool extends ToolItem
 {
     public ItemBaseTool(ResourceLocation registryName, ToolMaterial toolMaterial)
     {
@@ -38,12 +33,5 @@ public class ItemBaseTool extends ItemTool implements IModelRegister
         }
         
         ExNihiloItems.modItems.add(this);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModels()
-    {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
     }
 }
