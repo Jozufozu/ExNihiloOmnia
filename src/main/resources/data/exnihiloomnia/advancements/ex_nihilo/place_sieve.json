@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "exnihiloomnia:sieve",
+      "data": 0
+    },
+    "title": {
+      "translate": "advancements.exnihiloomnia.ex_nihilo.place_sieve.title"
+    },
+    "description": {
+      "translate": "advancements.exnihiloomnia.ex_nihilo.place_sieve.description"
+    },
+    "announce_to_chat": false
+  },
+  "parent": "exnihiloomnia:ex_nihilo/root",
+  "criteria": {
+    "place_sieve": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "exnihiloomnia:sieve"
+      }
+    }
+  }
+}

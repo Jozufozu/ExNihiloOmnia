@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel
 
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlock
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloTabs
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
@@ -23,13 +23,18 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
 open class BarrelBlock(registryName: ResourceLocation, properties: Properties) : ExNihiloBlock(registryName, properties) {
+    init {
+        INSTANCES.add(this)
+    }
+
     companion object {
+        @JvmField val INSTANCES: ArrayList<BarrelBlock> = ArrayList()
         @JvmField val BARREL_AABB: VoxelShape = VoxelShapes.create(1.0 / 16.0, 0.0, 1.0 / 16.0, 15.0 / 16.0, 1.0, 15.0 / 16.0)
     }
 
     override fun onBlockActivated(state: BlockState, worldIn: World, pos: BlockPos, playerIn: PlayerEntity, hand: Hand, blockRayTraceResult: BlockRayTraceResult): Boolean {
         if (worldIn.isRemote) return true
-        val barrel = worldIn.getTileEntity(pos) as? TileEntityBarrel ?: return true
+        val barrel = worldIn.getTileEntity(pos) as? BarrelTileEntity ?: return true
 
         val held = playerIn.getHeldItem(hand)
 
@@ -86,7 +91,7 @@ open class BarrelBlock(registryName: ResourceLocation, properties: Properties) :
 
     override fun canEntitySpawn(state: BlockState, worldIn: IBlockReader, pos: BlockPos, type: EntityType<*>) = false
 
-    override fun createTileEntity(state: BlockState, world: IBlockReader) = TileEntityBarrel()
+    override fun createTileEntity(state: BlockState, world: IBlockReader) = BarrelTileEntity()
 
     override fun asItem(): Item {
         if (item == null) {

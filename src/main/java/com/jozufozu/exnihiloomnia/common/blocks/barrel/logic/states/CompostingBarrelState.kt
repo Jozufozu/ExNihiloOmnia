@@ -5,7 +5,7 @@ import com.jozufozu.exnihiloomnia.common.ModConfig
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelLogic
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import com.jozufozu.exnihiloomnia.proxy.ClientProxy
 import com.mojang.blaze3d.platform.GlStateManager
@@ -23,7 +23,7 @@ class CompostingBarrelState : BarrelState(BarrelStates.ID_COMPOSTING) {
         this.logic.add(CompostLogic())
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
         val timerNow = (ModConfig.blocks.barrel.compostTime - barrel.timer).toFloat() / ModConfig.blocks.barrel.compostTime.toFloat()
@@ -95,11 +95,11 @@ class CompostingBarrelState : BarrelState(BarrelStates.ID_COMPOSTING) {
     }
 
     class CompostLogic : BarrelLogic() {
-        override fun onActivate(barrel: TileEntityBarrel, world: World, previousState: BarrelState) {
+        override fun onActivate(barrel: BarrelTileEntity, world: World, previousState: BarrelState) {
             barrel.timer = ModConfig.blocks.barrel.compostTime
         }
 
-        override fun onUpdate(barrel: TileEntityBarrel, world: World): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity, world: World): Boolean {
             barrel.timer--
             if (!world.isRemote) {
                 if (barrel.timer <= 0) {

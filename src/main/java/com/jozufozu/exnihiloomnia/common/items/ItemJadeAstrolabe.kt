@@ -8,7 +8,7 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.world.World
 
-class ItemJadeAstrolabe : ItemBase(ItemsLib.ASTROLABE, Properties().maxStackSize(1)) {
+class ItemJadeAstrolabe : ModItem(ItemsLib.ASTROLABE, Properties().maxStackSize(1)) {
 
     override fun onItemRightClick(worldIn: World, playerIn: PlayerEntity, handIn: Hand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {

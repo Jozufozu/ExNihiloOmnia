@@ -18,21 +18,21 @@ import java.util.*
 open class BarrelState(val id: ResourceLocation) {
     protected var logic = ArrayList<BarrelLogic>()
 
-    open fun canInteractWithFluids(barrel: TileEntityBarrel) = true
+    open fun canInteractWithFluids(barrel: BarrelTileEntity) = true
 
-    open fun canInteractWithItems(barrel: TileEntityBarrel) = true
+    open fun canInteractWithItems(barrel: BarrelTileEntity) = true
 
-    open fun canExtractItems(barrel: TileEntityBarrel) = false
+    open fun canExtractItems(barrel: BarrelTileEntity) = false
 
-    //open fun canExtractFluids(barrel: TileEntityBarrel) = false
+    //open fun canExtractFluids(barrel: BarrelTileEntity) = false
 
-    open fun activate(barrel: TileEntityBarrel, world: World, previousState: BarrelState) {
+    open fun activate(barrel: BarrelTileEntity, world: World, previousState: BarrelState) {
         for (barrelLogic in logic) {
             barrelLogic.onActivate(barrel, world, previousState)
         }
     }
 
-    fun update(barrel: TileEntityBarrel, world: World) {
+    fun update(barrel: BarrelTileEntity, world: World) {
         for (barrelLogic in logic) {
             if (barrelLogic.onUpdate(barrel, world)) {
                 return
@@ -40,7 +40,7 @@ open class BarrelState(val id: ResourceLocation) {
         }
     }
 
-    fun canUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
+    fun canUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
         for (barrelLogic in logic) {
             if (barrelLogic.canUseItem(barrel, world, itemStack, player, hand)) {
                 return true
@@ -49,7 +49,7 @@ open class BarrelState(val id: ResourceLocation) {
         return false
     }
 
-    fun onUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
+    fun onUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
         for (barrelLogic in logic) {
             val interactResult = barrelLogic.onUseItem(barrel, world, itemStack, player, hand)
             if (interactResult != InteractResult.PASS) {
@@ -61,7 +61,7 @@ open class BarrelState(val id: ResourceLocation) {
         return InteractResult.PASS
     }
 
-//    fun canFillFluid(barrel: TileEntityBarrel, world: World, fluidStack: FluidStack): Boolean {
+//    fun canFillFluid(barrel: BarrelTileEntity, world: World, fluidStack: FluidStack): Boolean {
 //        for (barrelLogic in logic) {
 //            if (barrelLogic.canFillFluid(barrel, world, fluidStack)) {
 //                return true
@@ -70,7 +70,7 @@ open class BarrelState(val id: ResourceLocation) {
 //        return false
 //    }
 //
-//    fun onFillFluid(barrel: TileEntityBarrel, world: World, fluidStack: FluidStack): InteractResult {
+//    fun onFillFluid(barrel: BarrelTileEntity, world: World, fluidStack: FluidStack): InteractResult {
 //        for (barrelLogic in logic) {
 //            val interactResult = barrelLogic.onFillFluid(barrel, world, fluidStack)
 //            if (interactResult != InteractResult.PASS) {
@@ -83,11 +83,11 @@ open class BarrelState(val id: ResourceLocation) {
 //    }
 
     @OnlyIn(Dist.CLIENT)
-    open fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) { }
+    open fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) { }
 
     companion object {
 //        @OnlyIn(Dist.CLIENT)
-//        fun renderFluid(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+//        fun renderFluid(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
 //            val fluidStack = barrel.fluid ?: return
 //
 //            GlStateManager.pushMatrix()
@@ -134,7 +134,7 @@ open class BarrelState(val id: ResourceLocation) {
 //        }
 
         @OnlyIn(Dist.CLIENT)
-        fun renderContents(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+        fun renderContents(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
             val contents = barrel.item
 
             if (contents.isEmpty)

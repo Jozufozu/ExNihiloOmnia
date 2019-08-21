@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "planks",
+  "pattern": [
+    "# #",
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stained_hardened_clay",
+      "data": 7
+    }
+  },
+  "result": {
+    "item": "exnihiloomnia:barrel_terracotta",
+    "data": 7
+  }
+}

@@ -9,6 +9,8 @@ operator fun CompoundNBT.set(key: String, value: ItemStack) = this.put(key, valu
 
 operator fun CompoundNBT.set(key: String, value: INBT) = this.put(key, value)
 
+operator fun CompoundNBT.set(key: String, value: CompoundNBT) = this.put(key, value)
+
 operator fun CompoundNBT.set(key: String, value: Byte) = this.putByte(key, value)
 operator fun CompoundNBT.set(key: String, value: Short) = this.putShort(key, value)
 operator fun CompoundNBT.set(key: String, value: Int) = this.putInt(key, value)

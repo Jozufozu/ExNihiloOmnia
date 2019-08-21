@@ -9,33 +9,36 @@ import net.minecraft.entity.item.ItemEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.*
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.BlockRayTraceResult
 import net.minecraft.util.math.shapes.IBooleanFunction
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.shapes.VoxelShape
 import net.minecraft.util.math.shapes.VoxelShapes
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.*
 
-class SieveBlock(registryName: ResourceLocation, properties: Properties) : ExNihiloBlock(registryName, properties) {
+class SieveBlock(registryName: Identifier, properties: Settings) : ExNihiloBlock(registryName, properties) {
     companion object {
-        private val FRAME_BOX: VoxelShape = VoxelShapes.create(0.0, 9.0, 0.0, 16.0, 13.0, 16.0)
-        private val FRAME_MIDDLE: VoxelShape = VoxelShapes.create(1.0, 9.0, 1.0, 15.0, 13.0, 15.0)
+        private val FRAME_BOX: VoxelShape = VoxelShapes.cuboid(0.0, 9.0, 0.0, 16.0, 13.0, 16.0)
+        private val FRAME_MIDDLE: VoxelShape = VoxelShapes.cuboid(1.0, 9.0, 1.0, 15.0, 13.0, 15.0)
 
-        private val SIEVE_SHAPE: VoxelShape = VoxelShapes.combineAndSimplify(FRAME_BOX, FRAME_MIDDLE, IBooleanFunction.ONLY_FIRST)
+        private val SIEVE_SHAPE: VoxelShape = VoxelShapes.combineAndSimplify(FRAME_BOX, FRAME_MIDDLE, BooleanBiFunction.ONLY_FIRST)
     }
 
-    override fun onBlockActivated(state: BlockState, worldIn: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hit: BlockRayTraceResult): Boolean {
-        val sieve = worldIn.getTileEntity(pos) as? SieveTileEntity ?: return true
+    override fun activate(state: BlockState, worldIn: World, pos: BlockPos, player: PlayerEntity, hand: Hand, blockHitResult_1: BlockHitResult): Boolean {
+        val sieve = worldIn.getBlockEntity(pos) as? SieveTileEntity ?: return true
 
-        val held = player.getHeldItem(hand)
+        val held = player.getStackInHand(hand)
 
         if (sieve.hasContents() && sieve.hasMesh()) {
             sieve.queueWork(player, held)
 
             val soundType = sieve.blockSound(player)
             worldIn.playSound(null, pos, soundType.hitSound, SoundCategory.BLOCKS, 0.2f, soundType.getPitch() * 0.8f + worldIn.rand.nextFloat() * 0.4f)
-        } else if (!worldIn.isRemote) {
+        } else if (!worldIn.isClient) {
             if (!sieve.hasMesh()) {
                 sieve.trySetMesh(player, held)
             } else {

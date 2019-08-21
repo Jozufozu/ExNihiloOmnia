@@ -1,37 +1,19 @@
 package com.jozufozu.exnihiloomnia.common.util
 
-import com.google.gson.JsonParseException
-import com.google.gson.JsonSyntaxException
+import com.github.salomonbrys.kotson.jsonDeserializer
+import com.github.salomonbrys.kotson.jsonSerializer
+import com.github.salomonbrys.kotson.typeAdapter
+import com.google.gson.*
 import net.minecraft.nbt.IntNBT
+import net.minecraft.util.JSONUtils
+import java.lang.reflect.Type
 
-class Color {
-
-    val r: Float
-    val g: Float
-    val b: Float
-    val a: Float
-
-    constructor(packed: Int, hasAlpha: Boolean) {
-        this.r = (packed shr 16 and 255) / 255.0f
-        this.g = (packed shr 8 and 255) / 255.0f
-        this.b = (packed and 255) / 255.0f
-        this.a = if (hasAlpha) (packed shr 24 and 255) / 255.0f else 1.0f
-    }
-
-    constructor(packed: Int) {
-        this.r = (packed shr 16 and 255) / 255.0f
-        this.g = (packed shr 8 and 255) / 255.0f
-        this.b = (packed and 255) / 255.0f
-        this.a = 1.0f
-    }
-
-    @JvmOverloads
-    constructor(r: Float, g: Float, b: Float, a: Float = 1.0f) {
-        this.r = r
-        this.g = g
-        this.b = b
-        this.a = a
-    }
+class Color(val r: Float, val g: Float, val b: Float, val a: Float = 1.0f) {
+    constructor(packed: Int, hasAlpha: Boolean = false) : this(
+            (packed shr 16 and 255) / 255.0f,
+            (packed shr 8 and 255) / 255.0f,
+            (packed and 255) / 255.0f,
+            if (hasAlpha) (packed shr 24 and 255) / 255.0f else 1.0f)
 
     fun toInt(): Int {
         var i = 0
@@ -80,35 +62,44 @@ class Color {
             return Color(r, g, b, a)
         }
 
-        @Throws(JsonParseException::class)
-        fun deserialize(colorString: String): Color {
-            var color = 0
+        val serde = typeAdapter<Color> {
+            jsonDeserializer {
+                var color = 0
 
-            if (colorString.contains(",")) {
-                val rgba = colorString.replace(" ", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                if (it.json.isJsonPrimitive) (it.json as? JsonPrimitive)?.asString?.let { colorString ->
+                    if (colorString.contains(",")) {
+                        val rgba = colorString.replace(" ", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                if (rgba.size > 4 || rgba.size < 3)
+                        if (rgba.size > 4 || rgba.size < 3)
+                            throw JsonSyntaxException("Could not parse color '$colorString'")
+
+                        color = color or (Integer.parseInt(rgba[0]) shl 16)
+                        color = color or (Integer.parseInt(rgba[1]) shl 8)
+                        color = color or Integer.parseInt(rgba[2])
+
+                        val alpha = rgba.size == 4
+                        if (alpha) {
+                            color = color or (Integer.parseInt(rgba[3]) shl 24)
+                        }
+
+                        return@jsonDeserializer Color(color, alpha)
+                    } else {
+                        if (colorString.length == 8 || colorString.length == 6) {
+                            color = Integer.parseInt(colorString, 16)
+
+                            return@jsonDeserializer Color(color, colorString.length == 8)
+                        }
+                    }
+
                     throw JsonSyntaxException("Could not parse color '$colorString'")
-
-                color = color or (Integer.parseInt(rgba[0]) shl 16)
-                color = color or (Integer.parseInt(rgba[1]) shl 8)
-                color = color or Integer.parseInt(rgba[2])
-
-                val alpha = rgba.size == 4
-                if (alpha) {
-                    color = color or (Integer.parseInt(rgba[3]) shl 24)
                 }
 
-                return Color(color, alpha)
-            } else {
-                if (colorString.length == 8 || colorString.length == 6) {
-                    color = Integer.parseInt(colorString, 16)
-
-                    return Color(color, colorString.length == 8)
-                }
+                throw JsonSyntaxException("Expected a string")
             }
 
-            throw JsonSyntaxException("Could not parse color '$colorString'")
+            jsonSerializer<Color> {
+                JsonPrimitive(Integer.toHexString(it.src.toInt()))
+            }
         }
     }
 }

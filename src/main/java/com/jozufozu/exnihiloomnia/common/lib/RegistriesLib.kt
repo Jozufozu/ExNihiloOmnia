@@ -12,13 +12,13 @@ object RegistriesLib {
     const val ITEM = "item"
     const val BLOCK = "block"
 
-    const val INPUT_FLUID = get(FLUID, INPUT)
-    const val INPUT_ITEM = get(ITEM, INPUT)
-    const val INPUT_BLOCK = get(BLOCK, INPUT)
+    val INPUT_FLUID = get(FLUID, INPUT)
+    val INPUT_ITEM = get(ITEM, INPUT)
+    val INPUT_BLOCK = get(BLOCK, INPUT)
 
-    const val OUTPUT_FLUID = get(FLUID, OUTPUT)
-    const val OUTPUT_ITEM = get(ITEM, OUTPUT)
-    const val OUTPUT_BLOCK = get(BLOCK, OUTPUT)
+    val OUTPUT_FLUID = get(FLUID, OUTPUT)
+    val OUTPUT_ITEM = get(ITEM, OUTPUT)
+    val OUTPUT_BLOCK = get(BLOCK, OUTPUT)
 
     const val REWARDS = "rewards"     //Multiple weighted outputs
 
@@ -45,11 +45,11 @@ object RegistriesLib {
 
     //Crucibles
     const val HEAT = "heat"
-    const val INPUT_VOLUME = get(INPUT, VOLUME)
-    const val OUTPUT_VOLUME = get(OUTPUT, VOLUME)
+    val INPUT_VOLUME = get(INPUT, VOLUME)
+    val OUTPUT_VOLUME = get(OUTPUT, VOLUME)
 
     //Ores
-    const val ORE_INGOT = get("ingot", ITEM) //The ItemStack that you get when you smelt the ore
+    val ORE_INGOT = get("ingot", ITEM) //The ItemStack that you get when you smelt the ore
 
     //Registries
     val ORE = ResourceLocation(ExNihilo.MODID, "ores")

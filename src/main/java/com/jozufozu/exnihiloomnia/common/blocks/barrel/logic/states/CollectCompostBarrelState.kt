@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.Hand
 import net.minecraft.world.World
 import org.lwjgl.opengl.GL11
+import kotlin.math.min
 
 class CollectCompostBarrelState : BarrelState(BarrelStates.ID_COLLECT_COMPOST) {
     init {
@@ -22,15 +23,15 @@ class CollectCompostBarrelState : BarrelState(BarrelStates.ID_COLLECT_COMPOST) {
         this.logic.add(CompostCollectionLogic())
     }
 
-    override fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
+    override fun canInteractWithItems(barrel: BarrelTileEntity): Boolean {
         return true
     }
 
-    override fun canInteractWithFluids(barrel: TileEntityBarrel): Boolean {
+    override fun canInteractWithFluids(barrel: BarrelTileEntity): Boolean {
         return false
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
         val height = 0.875 * MathStuff.lerp(barrel.compostAmountLastTick.toDouble() / barrel.compostCapacity.toDouble(), barrel.compostAmount.toDouble() / barrel.compostCapacity.toDouble(), partialTicks.toDouble())
@@ -67,16 +68,16 @@ class CollectCompostBarrelState : BarrelState(BarrelStates.ID_COLLECT_COMPOST) {
     }
 
     class CompostCollectionLogic : BarrelLogic() {
-        override fun canUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
 
-        override fun onUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
             RegistryManager.getCompost(itemStack)?.let {
                 if (barrel.world?.isRemote == false) {
                     if (barrel.item.isEmpty) {
-                        barrel.item = it.getOutput()
-                    } else if (!ItemStack.areItemStacksEqual(barrel.item, it.getOutput())) {
+                        barrel.item = it.output
+                    } else if (!ItemStack.areItemStacksEqual(barrel.item, it.output)) {
                         return InteractResult.PASS
                     }
 
@@ -84,11 +85,11 @@ class CollectCompostBarrelState : BarrelState(BarrelStates.ID_COLLECT_COMPOST) {
                         barrel.color = it.color
                     } else {
                         val weight = barrel.compostAmount.toFloat() / (barrel.compostAmount + it.amount).toFloat()
-                        barrel.color = Color.weightedAverage(it.color!!, barrel.color!!, weight)
+                        barrel.color = Color.weightedAverage(it.color, barrel.color!!, weight)
                     }
 
                     barrel.compostAmount += it.amount
-                    barrel.compostAmount = Math.min(barrel.compostAmount, barrel.compostCapacity)
+                    barrel.compostAmount = min(barrel.compostAmount, barrel.compostCapacity)
 
                     if (barrel.compostAmount == barrel.compostCapacity) {
                         barrel.state = BarrelStates.COMPOSTING

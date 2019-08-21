@@ -1,8 +1,8 @@
 package com.jozufozu.exnihiloomnia.proxy
 
 import com.jozufozu.exnihiloomnia.ExNihilo
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
-import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelTileEntity
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.CrucibleTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.SieveTileEntity
 import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.lib.MiscLib
@@ -19,10 +19,6 @@ open class CommonProxy {
         ConfigManager.sync(ExNihilo.MODID, Config.Type.INSTANCE)
 
         ExNihiloMaterials.preInit()
-
-        TileEntity.register("exnihiloomnia:sieve", SieveTileEntity::class.java)
-        TileEntity.register("exnihiloomnia:crucible", TileEntityCrucible::class.java)
-        TileEntity.register("exnihiloomnia:barrel", TileEntityBarrel::class.java)
 
         EntityRegistry.registerModEntity(MiscLib.ENTITY_STONE, EntityThrownStone::class.java, "thrown_stone", 0, ExNihilo.INSTANCE, 64, 3, true)
 

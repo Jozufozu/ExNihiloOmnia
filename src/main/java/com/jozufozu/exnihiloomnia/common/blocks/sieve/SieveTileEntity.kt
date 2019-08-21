@@ -1,12 +1,15 @@
 package com.jozufozu.exnihiloomnia.common.blocks.sieve
 
-import com.jozufozu.exnihiloomnia.client.SieveParticle
+import com.jozufozu.exnihiloomnia.client.ParticleSieve
+import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloTileEntities
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.IMesh
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.block.SoundType
+import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.Minecraft
+import net.minecraft.client.network.packet.BlockEntityUpdateS2CPacket
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
@@ -18,6 +21,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.Direction
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
+import net.minecraft.util.Tickable
 import net.minecraft.world.ServerWorld
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.LazyOptional
@@ -26,9 +30,9 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
 
-class SieveTileEntity() : TileEntity(tileEntityType), ITickableTileEntity {
+class SieveTileEntity() : BlockEntity(ExNihiloTileEntities.SIEVE), Tickable {
     private val itemHandler = SieveItemHandler(2)
-    private val holder = LazyOptional.of<IItemHandler> { itemHandler }
+    private val holder = LazyOptional.of<IItemH> { itemHandler }
 
     var requiredTime: Int = 0
 
@@ -63,7 +67,7 @@ class SieveTileEntity() : TileEntity(tileEntityType), ITickableTileEntity {
             if (world!!.isRemote) {
                 val mimic = itemHandler.getStackInSlot(0)
                 for (i in 0 until world!!.rand.nextInt(10) + 25) {
-                    Minecraft.getInstance().particles.addEffect(SieveParticle(world!!, mimic, pos))
+                    Minecraft.getInstance().particles.addEffect(ParticleSieve(world!!, mimic, pos))
                 }
             }
 
@@ -212,9 +216,11 @@ class SieveTileEntity() : TileEntity(tileEntityType), ITickableTileEntity {
         return write(CompoundNBT())
     }
 
-    override fun getUpdatePacket(): SUpdateTileEntityPacket? {
+    override fun getUpdatePacket(): BlockEntityUpdateS2CPacket {
         return SUpdateTileEntityPacket(getPos(), 1, this.updateTag)
     }
+
+
 
     override fun onDataPacket(net: NetworkManager?, packet: SUpdateTileEntityPacket) {
         this.read(packet.nbtCompound)

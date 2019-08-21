@@ -24,18 +24,18 @@ package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 //        this.logic.add(FluidCraftingTrigger())
 //    }
 //
-//    override fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
+//    override fun canInteractWithItems(barrel: BarrelTileEntity): Boolean {
 //        return true
 //    }
 //
-//    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+//    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
 //        super.draw(barrel, x, y, z, partialTicks)
 //
 //        renderFluid(barrel, x, y, z, partialTicks)
 //    }
 //
 //    class FluidMixingTrigger : BarrelLogic() {
-//        override fun onUpdate(barrel: TileEntityBarrel, world: World): Boolean {
+//        override fun onUpdate(barrel: BarrelTileEntity, world: World): Boolean {
 //            barrel.world?.let { world ->
 //                if (!world.isRemote) {
 //                    val blockState = world.getBlockState(barrel.pos.up())
@@ -68,11 +68,11 @@ package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 //    }
 //
 //    class FluidCraftingTrigger : BarrelLogic() {
-//        override fun canUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
+//        override fun canUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
 //            return barrel.fluid != null && barrel.fluidAmount == barrel.fluidCapacity && RegistryManager.getFluidCrafting(itemStack, barrel.fluid) != null
 //        }
 //
-//        override fun onUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
+//        override fun onUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
 //            if (barrel.fluid != null) {
 //                RegistryManager.getFluidCrafting(itemStack, barrel.fluid)?.let {
 //                    barrel.world?.playSound(null, barrel.pos, it.craftSound, SoundCategory.BLOCKS, 1.0f, 1.0f)

@@ -4,6 +4,9 @@ import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.SieveTileEntity
 import com.mojang.datafixers.DataFixUtils
 import com.mojang.datafixers.types.Type
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelBlock
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.CrucibleTileEntity
+import net.minecraft.tileentity.BarrelTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.tileentity.TileEntityType
 import net.minecraft.util.ResourceLocation
@@ -16,9 +19,11 @@ import java.util.function.Supplier
 object ExNihiloTileEntities {
     private val tileEntities: ArrayList<TileEntityType<*>> = ArrayList()
 
-    val SIEVE = register(ResourceLocation(), TileEntityType.Builder.create<SieveTileEntity>( Supplier { SieveTileEntity() }, ExNihiloBlocks.OAK_SIEVE, ExNihiloBlocks.SPRUCE_SIEVE, ExNihiloBlocks.BIRCH_SIEVE, ExNihiloBlocks.JUNGLE_SIEVE, ExNihiloBlocks.ACACIA_SIEVE, ExNihiloBlocks.DARK_OAK_SIEVE,))
+    val SIEVE = register(ResourceLocation(ExNihilo.MODID, "sieve"), TileEntityType.Builder.create<SieveTileEntity>( { SieveTileEntity() }, ExNihiloBlocks.OAK_SIEVE, ExNihiloBlocks.SPRUCE_SIEVE, ExNihiloBlocks.BIRCH_SIEVE, ExNihiloBlocks.JUNGLE_SIEVE, ExNihiloBlocks.ACACIA_SIEVE, ExNihiloBlocks.DARK_OAK_SIEVE))
+    val BARREL = register(ResourceLocation(ExNihilo.MODID, "barrel"), TileEntityType.Builder.create<BarrelTileEntity>( { BarrelTileEntity() }, *BarrelBlock.INSTANCES.toTypedArray()))
+    val CRUCIBLE = register(ResourceLocation(ExNihilo.MODID, "crucible"), TileEntityType.Builder.create<CrucibleTileEntity>( { CrucibleTileEntity() }, ExNihiloBlocks.RAW_CRUCIBLE))
 
-    fun registerBlocks(event: RegistryEvent.Register<TileEntityType<*>>) {
+    fun register(event: RegistryEvent.Register<TileEntityType<*>>) {
         tileEntities.forEach(event.registry::register)
     }
 
@@ -26,7 +31,7 @@ object ExNihiloTileEntities {
         var type: Type<*>? = null
 
         try {
-            type = DataFixesManager.getDataFixer().getSchema(DataFixUtils.makeKey(SharedConstants.getVersion().worldVersion)).getChoiceType(TypeReferences.BLOCK_ENTITY, key)
+            type = DataFixesManager.getDataFixer().getSchema(DataFixUtils.makeKey(SharedConstants.getVersion().worldVersion)).getChoiceType(TypeReferences.BLOCK_ENTITY, key.path)
         } catch (illegalstateexception: IllegalArgumentException) {
             if (SharedConstants.developmentMode) {
                 throw illegalstateexception

@@ -13,7 +13,7 @@ class EmptyBarrelState : BarrelState(BarrelStates.ID_EMPTY) {
         this.logic.add(CompostTrigger())
     }
 
-    override fun activate(barrel: TileEntityBarrel, world: World, previousState: BarrelState) {
+    override fun activate(barrel: BarrelTileEntity, world: World, previousState: BarrelState) {
         barrel.item = ItemStack.EMPTY
         //barrel.fluid = null
         barrel.color = null
@@ -23,11 +23,11 @@ class EmptyBarrelState : BarrelState(BarrelStates.ID_EMPTY) {
     }
 
     class CompostTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
 
-        override fun onUseItem(barrel: TileEntityBarrel, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, world: World, itemStack: ItemStack, player: PlayerEntity?, hand: Hand?): InteractResult {
             val compost = RegistryManager.getCompost(itemStack) ?: return InteractResult.PASS
 
             if (!world.isRemote) {
@@ -43,9 +43,9 @@ class EmptyBarrelState : BarrelState(BarrelStates.ID_EMPTY) {
     }
 
 //    class FluidFillTrigger : BarrelLogic() {
-//        override fun canFillFluid(barrel: TileEntityBarrel, world: World, fluidStack: FluidStack) = true
+//        override fun canFillFluid(barrel: BarrelTileEntity, world: World, fluidStack: FluidStack) = true
 //
-//        override fun onFillFluid(barrel: TileEntityBarrel, world: World, fluidStack: FluidStack): InteractResult {
+//        override fun onFillFluid(barrel: BarrelTileEntity, world: World, fluidStack: FluidStack): InteractResult {
 //            if (!world.isRemote) {
 //                barrel.state = BarrelStates.FLUID
 //            }
