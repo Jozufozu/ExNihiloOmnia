@@ -1,127 +1,150 @@
-package com.jozufozu.exnihiloomnia.common.registries.ingredients;
+package com.jozufozu.exnihiloomnia.common.registries.ingredients
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import kotlin.collections.CollectionsKt;
-import kotlin.jvm.internal.Intrinsics;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.JsonUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
+import com.google.common.collect.Maps
+import com.google.gson.JsonObject
+import com.google.gson.JsonSyntaxException
+import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
+import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
+import com.jozufozu.exnihiloomnia.common.util.contains
+import net.minecraft.block.Block
+import net.minecraft.block.properties.IProperty
+import net.minecraft.block.state.BlockStateContainer
+import net.minecraft.block.state.IBlockState
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.util.JsonUtils
+import net.minecraft.util.NonNullList
+import java.util.*
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.function.Predicate;
+import java.util.function.Predicate
+import java.util.logging.LogManager
+import kotlin.collections.ArrayList
 
-public class WorldIngredient implements Predicate<IBlockState>, Comparable<WorldIngredient> {
-    private final Block block;
-    private final List<String> requirements;
+class WorldIngredient(private val block: Block, private val data: Optional<Int> = Optional.empty()) : Predicate<IBlockState>, Comparable<WorldIngredient> {
+    private val predicates = ArrayList<Predicate<IBlockState>>()
 
-    public WorldIngredient(@NotNull Block block, @NotNull List<String> requirements) {
-        this.block = block;
-        this.requirements = requirements;
-    }
-
-    public boolean test(IBlockState state) {
-        if (state == null || state.getBlock() != this.block || this.requirements.isEmpty())
-        {
-            return false;
-        }
-        else
-        {
-            String stateString = state.toString();
-            for (String requirement : this.requirements)
-            {
-                if (!stateString.contains(requirement))
-                    return false;
-            }
-
-            return true;
-        }
-    }
-
-    public int compareTo(@NotNull WorldIngredient other)
-    {
-        return this.block == other.block ? this.requirements.size() - other.requirements.size() : Block.getIdFromBlock(this.block) - Block.getIdFromBlock(other.block);
-    }
-
-    @NotNull
-    public NonNullList getStacks() {
-        return NonNullList.withSize(0, ItemStack.EMPTY);
-    }
-
-    @NotNull
-    public static WorldIngredient deserialize(@NotNull JsonObject json) {
-            Intrinsics.checkParameterIsNotNull(json, "json");
-            Block block = Block.REGISTRY.getObject(new ResourceLocation(JsonUtils.getString(json, "id")));
-            List args;
-            if (json.has("data"))
-            {
-                int meta = JsonUtils.getInt(json, "data");
-                String string = block.getStateFromMeta(meta).toString();
-                args = Lists.newArrayList(string.substring(string.indexOf('['), string.length()-1).split(","));
-                return new WorldIngredient(block, args);
-            }
-            else if (json.has("variants"))
-            {
-                JsonObject variants = JsonUtils.getJsonObject(json, "variants");
-                Set set = variants.entrySet();
-                if (!set.isEmpty()) {
-                    Iterable $receiver$iv = (Iterable)set;
-                    Collection destination$iv$iv = (Collection)(new ArrayList());
-                    Iterator var9 = $receiver$iv.iterator();
-
-                    Object element$iv$iv;
-                    Entry $k_v;
-                    while(var9.hasNext()) {
-                        boolean var23;
-                        label34: {
-                            element$iv$iv = var9.next();
-                            $k_v = (Entry)element$iv$iv;
-                            JsonElement v = (JsonElement)$k_v.getValue();
-                            Intrinsics.checkExpressionValueIsNotNull(v, "v");
-                            if (v.isJsonPrimitive()) {
-                                JsonPrimitive var10000 = v.getAsJsonPrimitive();
-                                Intrinsics.checkExpressionValueIsNotNull(var10000, "v.asJsonPrimitive");
-                                if (var10000.isString()) {
-                                    var23 = true;
-                                    break label34;
-                                }
-                            }
-
-                            var23 = false;
-                        }
-
-                        if (var23) {
-                            destination$iv$iv.add(element$iv$iv);
-                        }
-                    }
-
-                    $receiver$iv = (Iterable)((List)destination$iv$iv);
-                    destination$iv$iv = (Collection)(new ArrayList(CollectionsKt.collectionSizeOrDefault($receiver$iv, 10)));
-                    var9 = $receiver$iv.iterator();
-
-                    while(var9.hasNext()) {
-                        element$iv$iv = var9.next();
-                        $k_v = (Entry)element$iv$iv;
-                        String k = (String)$k_v.getKey();
-                        JsonElement v = (JsonElement)$k_v.getValue();
-                        String var19 = "" + k + '=' + v;
-                        destination$iv$iv.add(var19);
-                    }
-
-                    args = (List)destination$iv$iv;
-                    Intrinsics.checkExpressionValueIsNotNull(block, "block");
-                    return new WorldIngredient(block, args);
+    val stacks: NonNullList<ItemStack> get() = if (Item.getItemFromBlock(block).hasSubtypes) {
+        if (data.isPresent) NonNullList.from(ItemStack.EMPTY, ItemStack(block, 1, data.get()))
+        else {
+            NonNullList.create<ItemStack>().also {
+                for (i in 0..16) {
+                    if (test(block.getStateFromMeta(i)))
+                        it.add(ItemStack(block, 1, i))
                 }
             }
-
-            Intrinsics.checkExpressionValueIsNotNull(block, "block");
-            return new WorldIngredient(block, CollectionsKt.emptyList());
         }
+    } else NonNullList.from(ItemStack.EMPTY, ItemStack(block, 1))
+
+    override fun test(state: IBlockState): Boolean {
+        if (state.block === this.block) {
+            if (this.predicates.isEmpty()) {
+                return true
+            } else {
+                for (predicate in predicates) {
+                    if (!predicate.test(state)) {
+                        return false
+                    }
+                }
+
+                return true
+            }
+        } else {
+            return false
+        }
+    }
+
+    override fun compareTo(other: WorldIngredient): Int {
+        return if (block === other.block) {
+            if (data.isPresent)
+                if (other.data.isPresent) data.get() - other.data.get()
+                else -other.predicates.size
+            else if (other.data.isPresent)
+                predicates.size
+            else
+                predicates.size - other.predicates.size
+        }
+        else
+            Block.getIdFromBlock(block) - Block.getIdFromBlock(other.block)
+    }
+
+    companion object {
+        fun deserialize(json: JsonObject): WorldIngredient {
+            RegistryLoader.pushCtx("Input")
+            val blockName = JsonUtils.getString(json, LibRegistries.ID)
+            val block = Block.getBlockFromName(blockName) ?: throw JsonSyntaxException("$blockName is not a valid block")
+
+            if (LibRegistries.DATA in json && LibRegistries.VARIANTS in json) throw JsonSyntaxException("blockInput can have \"data\" or \"variants\", but not both")
+
+            var out = WorldIngredient(block)
+
+            if (LibRegistries.DATA in json) {
+                val data = JsonUtils.getInt(json, LibRegistries.DATA)
+
+                out = WorldIngredient(block, Optional.of(data))
+
+            } else if (LibRegistries.VARIANTS in json) {
+                val variants = JsonUtils.getJsonObject(json, LibRegistries.VARIANTS)
+
+                out = WorldIngredient(block)
+
+                RegistryLoader.pushCtx("Blockstate Properties")
+                for ((key, value) in variants.entrySet()) {
+                    val property = block.blockState.getProperty(key)
+
+                    if (property == null) {
+                        RegistryLoader.warn("'$key' is not a valid property of '$blockName', ignoring")
+                        continue
+                    }
+
+                    RegistryLoader.pushCtx("Property: $key")
+
+                    if (!value.isJsonPrimitive || !value.isJsonArray) {
+                        RegistryLoader.warn("Value of property must be either a single value or an array of values; ignoring")
+                        continue
+                    }
+
+                    if (value.isJsonPrimitive && value.asJsonPrimitive.isString) {
+                        val optional = property.parseValue(value.asString)
+
+                        if (!optional.isPresent) {
+                            RegistryLoader.warn("${value.asString} is not a valid value for this property; ignoring")
+                            continue
+                        }
+
+                        val comparable = optional.get()
+
+                        out.predicates.add(Predicate { comparable == it.properties[property] })
+                    } else {
+                        val possibleValues = ArrayList<Comparable<*>>()
+                        for (element in value.asJsonArray) {
+                            if (!value.isJsonPrimitive) {
+                                RegistryLoader.warn("Value of property must be either a single value or an array of values")
+                                continue
+                            }
+
+                            val optional = property.parseValue(value.asString)
+
+                            if (!optional.isPresent) {
+                                RegistryLoader.warn("${value.asString} is not a valid value for this property")
+                                continue
+                            }
+
+                            possibleValues.add(optional.get())
+                        }
+
+                        out.predicates.add(Predicate { state -> possibleValues.any { it == state.properties[property] } })
+                    }
+
+                    RegistryLoader.popCtx()
+                }
+
+                RegistryLoader.popCtx()
+            }
+
+            RegistryLoader.popCtx()
+
+            return out
+        }
+    }
 }

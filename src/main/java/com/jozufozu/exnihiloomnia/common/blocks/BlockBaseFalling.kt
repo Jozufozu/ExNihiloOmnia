@@ -5,6 +5,17 @@ import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloTabs
 import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder
 import com.jozufozu.exnihiloomnia.common.util.IModelRegister
+import net.minecraft.block.Block
+import net.minecraft.block.BlockFalling
+import net.minecraft.block.SoundType
+import net.minecraft.block.material.Material
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.item.Item
+import net.minecraft.item.ItemBlock
+import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : BlockFalling(materialIn), IItemBlockHolder, IModelRegister {
 
@@ -20,13 +31,10 @@ class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation,
             ExNihilo.log.warn("Tried to make a block $registryName after registering!")
     }
 
-    override fun getItemBlock(): ItemBlock {
-        if (ExNihiloItems.hasRegisteredItems())
-            return Item.getItemFromBlock(this) as ItemBlock
-
+    override val itemBlock: ItemBlock by lazy {
         val itemBlock = ItemBlock(this)
         itemBlock.registryName = this.registryName
-        return itemBlock
+        itemBlock
     }
 
     @SideOnly(Side.CLIENT)
