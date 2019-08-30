@@ -86,6 +86,10 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
         return true
     }
 
+    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
+        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185477_7_)
+    }
+
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = BARREL_AABB
 
     override fun isNormalCube(state: IBlockState, world: IBlockAccess, pos: BlockPos) = false

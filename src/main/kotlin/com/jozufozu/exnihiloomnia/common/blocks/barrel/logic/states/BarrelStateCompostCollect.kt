@@ -85,12 +85,12 @@ class BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) {
                         if (it == null) {
                             barrel.color = compostRecipe.color
                         } else {
-                            val weight = barrel.compostAmount.toFloat() / (barrel.compostAmount + compostRecipe.amount).toFloat()
+                            val weight = barrel.compostAmount.toFloat() / (barrel.compostAmount + compostRecipe.volume).toFloat()
                             barrel.color = Color.weightedAverage(compostRecipe.color, it, weight)
                         }
                     }
 
-                    barrel.compostAmount += compostRecipe.amount
+                    barrel.compostAmount += compostRecipe.volume
                     barrel.compostAmount = min(barrel.compostAmount, barrel.compostCapacity)
 
                     if (barrel.compostAmount == barrel.compostCapacity) {

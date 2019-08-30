@@ -1,0 +1,15 @@
+{
+    "blockInput": {
+        "block": "minecraft:mob_spawner"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:iron_bars",
+            "count": 6
+        },
+        {
+            "item": "minecraft:iron_bars",
+            "chance": 0.5
+        }
+    ]
+}

@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
-import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.IFluidBlock
@@ -34,26 +33,19 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
             if (!world.isRemote) {
                 val blockState = world.getBlockState(barrel.pos.up())
 
-                var fluid: Fluid? = null
-
                 val block = blockState.block
 
-                if (block is IFluidBlock) {
-                    fluid = (block as IFluidBlock).fluid
-                } else if (blockState.material === Material.LAVA) {
-                    fluid = FluidRegistry.LAVA
-                } else if (blockState.material === Material.WATER) {
-                    fluid = FluidRegistry.WATER
+                val fluid = when {
+                    block is IFluidBlock -> block.fluid
+                    blockState.material === Material.LAVA -> FluidRegistry.LAVA
+                    blockState.material === Material.WATER -> FluidRegistry.WATER
+                    else -> return false
                 }
 
-                if (fluid == null) {
-                    return false
-                }
+                val onBarrel = FluidStack(fluid, 1000)
+                val inBarrel = barrel.fluid ?: return false
 
-                val on = FluidStack(fluid, 1000)
-                val `in` = barrel.fluid ?: return false
-
-                val recipe = RegistryManager.getMixing(`in`, on) ?: return false
+                val recipe = RegistryManager.getMixing(inBarrel, onBarrel) ?: return false
 
                 barrel.state = BarrelStates.ITEMS
 
@@ -78,7 +70,7 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
                 if (fluidCraftingRecipe != null) {
                     barrel.world.playSound(null, barrel.pos, fluidCraftingRecipe.craftSound, SoundCategory.BLOCKS, 1.0f, 1.0f)
                     barrel.state = BarrelStates.ITEMS
-                    barrel.item = fluidCraftingRecipe.result
+                    barrel.item = fluidCraftingRecipe.output
                     barrel.fluid = null
 
                     return EnumInteractResult.CONSUME

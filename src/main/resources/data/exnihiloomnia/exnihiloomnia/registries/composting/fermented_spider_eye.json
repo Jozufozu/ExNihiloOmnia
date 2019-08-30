@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "minecraft:fermented_spider_eye"
+    },
+    "amount": 85,
+    "color": "963E44",
+    "output": {
+        "item": "minecraft:dirt",
+        "data": 1
+    }
+}

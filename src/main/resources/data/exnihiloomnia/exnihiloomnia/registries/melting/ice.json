@@ -1,0 +1,7 @@
+{
+    "input": {
+        "item": "minecraft:ice"
+    },
+    "heat": 0,
+    "fluidOutput": "water"
+}

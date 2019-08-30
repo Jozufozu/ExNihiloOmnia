@@ -40,7 +40,7 @@ class CompostRecipeWrapper(val recipe: CompostRecipe) : IRecipeWrapper {
 
     override fun getTooltipStrings(mouseX: Int, mouseY: Int): List<String> {
         return if (mouseX > 36 && mouseY > 15 && mouseX < 54 && mouseY < 35) {
-            Lists.newArrayList(I18n.format("jei.exnihiloomnia.info.compost_amount", recipe.amount, ModConfig.blocks.barrel.compostCapacity))
+            Lists.newArrayList(I18n.format("jei.exnihiloomnia.info.compost_amount", recipe.volume, ModConfig.blocks.barrel.compostCapacity))
         } else emptyList()
 
     }

@@ -1,0 +1,23 @@
+{
+    "blockInput": {
+        "block": "minecraft:nether_brick_fence"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:netherbrick",
+            "count": 3
+        },
+        {
+            "item": "minecraft:netherbrick",
+            "chance": 0.5
+        },
+        {
+            "item": "minecraft:netherbrick",
+            "chance": 0.5
+        },
+        {
+            "item": "minecraft:netherbrick",
+            "chance": 0.5
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+{
+    "lower": "water",
+    "upper": "lava",
+    "output": {
+        "item": "minecraft:cobblestone"
+    }
+}

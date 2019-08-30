@@ -1,0 +1,6 @@
+{
+    "heat": 2,
+    "source": {
+        "block": "minecraft:torch"
+    }
+}

@@ -157,11 +157,11 @@ class TileEntityBarrel : TileEntity(), ITickable {
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.state.canInteractWithItems(this))
-            return itemHandler as T
-
-        return if (capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && this.state.canInteractWithFluids(this)) fluidHandler as T else super.getCapability(capability, facing)
-
+        return when {
+            capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.state.canInteractWithItems(this) -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler)
+            capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && this.state.canInteractWithFluids(this) -> CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler)
+            else -> super.getCapability(capability, facing)
+        }
     }
 
     inner class BarrelItemHandler : ItemStackHandler(1) {

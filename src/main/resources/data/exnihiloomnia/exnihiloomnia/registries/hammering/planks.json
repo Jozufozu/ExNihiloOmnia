@@ -1,0 +1,19 @@
+{
+    "blockInput": {
+        "ore": "plankWood"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:stick",
+            "count": 4
+        },
+        {
+            "item": "minecraft:stick",
+            "chance": 0.1
+        },
+        {
+            "item": "minecraft:stick",
+            "chance": 0.1
+        }
+    ]
+}

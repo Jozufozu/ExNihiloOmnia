@@ -1,0 +1,7 @@
+{
+    "input": {
+        "item": "minecraft:stonebrick"
+    },
+    "heat": 3,
+    "fluidOutput": "lava"
+}

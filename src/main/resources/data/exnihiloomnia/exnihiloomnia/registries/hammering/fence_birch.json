@@ -1,0 +1,19 @@
+{
+    "blockInput": {
+        "block": "minecraft:birch_fence"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:stick",
+            "chance": 0.5
+        },
+        {
+            "item": "minecraft:stick",
+            "chance": 0.5
+        },
+        {
+            "item": "minecraft:stick",
+            "chance": 0.5
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "input": {
+        "item": "minecraft:sand",
+        "data": 0
+    },
+    "time": 20,
+    "rewards": [
+        {
+            "item": "minecraft:redstone",
+            "count": 4,
+            "chance": 0.4,
+            "type": "resource"
+        },
+        {
+            "item": "minecraft:quartz",
+            "chance": 0.1,
+            "type": "resource"
+        }
+    ]
+}

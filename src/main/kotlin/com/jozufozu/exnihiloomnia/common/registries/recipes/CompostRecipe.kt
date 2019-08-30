@@ -5,68 +5,64 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.util.Color
+import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.JsonUtils
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
 
-class CompostRecipe : IForgeRegistryEntry.Impl<CompostRecipe>() {
-    /**
-     * The thing that you put in to compost
-     */
-    lateinit var input: Ingredient
-        private set
+class CompostRecipe(
+        /**
+         * The thing that you put in to compost
+         */
+        val input: Ingredient,
 
-    /**
-     * How much stuff each item will fill the barrel with, in mB
-     * Default is 125, or 8 items to fill the barrel
-     */
-    var amount = 125
-        private set
+        /**
+         * The color that the compost will appear as in the
+         */
+        val color: Color,
 
-    /**
-     * The color that the compost will appear as in the
-     */
-    lateinit var color: Color
-        private set
+        /**
+         * How much stuff each item will fill the barrel with, in mB
+         * Default is 125, or 8 items to fill the barrel
+         */
+        val volume: Int = 125,
 
-    /**
-     * The item that will be given once composting is complete
-     */
-    private var _output = ItemStack(Blocks.DIRT)
+        /**
+         * The item that will be given once composting is complete
+         */
+        output: ItemStack = ItemStack(Blocks.DIRT)
+) : IForgeRegistryEntry.Impl<CompostRecipe>() {
 
-    val output: ItemStack
-        get() = _output.copy()
+    val output: ItemStack = output
+        get() = field.copy()
 
 
-    fun matches(stack: ItemStack): Boolean {
-        return input.apply(stack)
-    }
+    fun matches(stack: ItemStack) = input.apply(stack)
 
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        @JvmStatic fun deserialize(recipeObject: JsonObject): CompostRecipe {
-            if (!recipeObject.has(LibRegistries.INPUT_GENERIC)) {
-                throw JsonSyntaxException("Compost recipe has no input!")
+        @JvmStatic fun deserialize(recipe: JsonObject): CompostRecipe {
+            if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("compost recipe has no input")
+
+            RegistryLoader.pushCtx(LibRegistries.INPUT)
+            val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)
+            RegistryLoader.popCtx()
+
+            val color = JsonHelper.deserializeColor(JsonUtils.getString(recipe, LibRegistries.COLOR, "ffffff"))
+            val volume = JsonUtils.getInt(recipe, LibRegistries.VOLUME, 125)
+
+            return if (LibRegistries.OUTPUT in recipe) {
+                val output = JsonHelper.deserializeItem(JsonUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
+                CompostRecipe(input, color, volume, output)
+            } else {
+                CompostRecipe(input, color, volume)
             }
-
-            val out = CompostRecipe()
-
-            val input = recipeObject.getAsJsonObject(LibRegistries.INPUT_GENERIC)
-
-            out.input = JsonHelper.deserializeIngredient(input)
-            out.color = JsonHelper.deserializeColor(JsonUtils.getString(recipeObject, LibRegistries.COLOR, "ffffff"))
-
-            out.amount = JsonUtils.getInt(input, LibRegistries.VOLUME, 125)
-
-            if (recipeObject.has(LibRegistries.OUTPUT_GENERIC)) {
-                out._output = JsonHelper.deserializeItem(recipeObject.getAsJsonObject(LibRegistries.OUTPUT_GENERIC), true)
-            }
-
-            return out
         }
     }
 }

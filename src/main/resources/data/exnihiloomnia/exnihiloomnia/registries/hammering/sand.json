@@ -1,0 +1,9 @@
+{
+    "blockInput": {
+        "block": "minecraft:sand",
+        "data": 0
+    },
+    "rewards": [
+        "exnihiloomnia:dust"
+    ]
+}

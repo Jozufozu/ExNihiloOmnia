@@ -1,0 +1,7 @@
+{
+    "fluidInput": "water",
+    "blockInput": {
+        "block": "minecraft:mycelium"
+    },
+    "fluidOutput": "exnihiloomnia:witchwater"
+}

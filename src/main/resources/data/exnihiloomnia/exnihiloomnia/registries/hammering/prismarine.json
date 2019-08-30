@@ -1,0 +1,15 @@
+{
+    "blockInput": {
+        "ore": "blockPrismarine"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:prismarine_shard",
+            "count": 3
+        },
+        {
+            "item": "minecraft:prismarine_shard",
+            "chance": 0.5
+        }
+    ]
+}

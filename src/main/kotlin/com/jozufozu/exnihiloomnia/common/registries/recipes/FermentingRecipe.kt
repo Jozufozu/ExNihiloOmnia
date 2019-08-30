@@ -5,31 +5,40 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
+import com.jozufozu.exnihiloomnia.common.util.contains
+import net.minecraft.util.JsonUtils
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.registries.IForgeRegistryEntry
 
-class FermentingRecipe : IForgeRegistryEntry.Impl<FermentingRecipe>() {
-    private lateinit var block: WorldIngredient
-    private lateinit var toFerment: FluidStack
-    private lateinit var output: FluidStack
+class FermentingRecipe(
+        val block: WorldIngredient,
+        val toFerment: FluidStack,
+        output: FluidStack
+) : IForgeRegistryEntry.Impl<FermentingRecipe>() {
+
+    val output: FluidStack = output
+        get() = field.copy()
 
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        @JvmStatic fun deserialize(jsonObject: JsonObject): FermentingRecipe {
-            if (!jsonObject.has(LibRegistries.INPUT_BLOCK)) {
-                throw JsonSyntaxException("Fermenting recipe is missing block input!")
-            }
+        @JvmStatic fun deserialize(recipe: JsonObject): FermentingRecipe {
+            if (LibRegistries.WORLD_INPUT !in recipe) throw JsonSyntaxException("fermenting recipe is missing \"${LibRegistries.WORLD_INPUT}\"")
+            if (LibRegistries.FLUID_INPUT !in recipe) throw JsonSyntaxException("fermenting recipe is missing \"${LibRegistries.FLUID_INPUT}\"")
+            if (LibRegistries.FLUID_OUTPUT !in recipe) throw JsonSyntaxException("fermenting recipe is missing \"${LibRegistries.FLUID_OUTPUT}\"")
 
-            val out = FermentingRecipe()
+            RegistryLoader.pushCtx(LibRegistries.WORLD_INPUT)
+            val block = WorldIngredient.deserialize(JsonUtils.getJsonObject(recipe, LibRegistries.WORLD_INPUT))
 
-            out.block = WorldIngredient.deserialize(jsonObject.getAsJsonObject(LibRegistries.INPUT_BLOCK))
+            RegistryLoader.pushPopCtx(LibRegistries.FLUID_INPUT)
+            val toFerment = JsonHelper.deserializeFluid(recipe[LibRegistries.FLUID_INPUT])
 
-            out.toFerment = FluidStack(JsonHelper.deserializeFluid(jsonObject, LibRegistries.INPUT_FLUID), 1000)
-            out.output = FluidStack(JsonHelper.deserializeFluid(jsonObject, LibRegistries.OUTPUT_FLUID), 1000)
+            RegistryLoader.pushPopCtx(LibRegistries.FLUID_OUTPUT)
+            val output = JsonHelper.deserializeFluid(recipe[LibRegistries.FLUID_OUTPUT])
 
-            return out
+            return FermentingRecipe(block, toFerment, output)
         }
     }
 }

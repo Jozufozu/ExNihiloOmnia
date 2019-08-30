@@ -1,0 +1,11 @@
+{
+    "blockInput": {
+        "ore": "glowstone"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:glowstone_dust",
+            "count": 4
+        }
+    ]
+}

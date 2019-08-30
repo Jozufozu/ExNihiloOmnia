@@ -12,31 +12,26 @@ object LibRegistries {
     const val ITEM = "item"
     const val BLOCK = "block"
 
-    const val INPUT_FLUID = FLUID + INPUT_SUFFIX
-    const val INPUT_ITEM = ITEM + INPUT_SUFFIX
-    const val INPUT_BLOCK = BLOCK + INPUT_SUFFIX
-    const val INPUT_GENERIC = "input"
+    const val FLUID_INPUT = FLUID + INPUT_SUFFIX
+    const val WORLD_INPUT = BLOCK + INPUT_SUFFIX
+    const val INPUT = "input"
 
-    const val OUTPUT_FLUID = FLUID + OUTPUT_SUFFIX
-    const val OUTPUT_ITEM = ITEM + OUTPUT_SUFFIX
-    const val OUTPUT_BLOCK = BLOCK + OUTPUT_SUFFIX
-    const val OUTPUT_GENERIC = "output"
+    const val FLUID_OUTPUT = FLUID + OUTPUT_SUFFIX
+    const val OUTPUT = "output"
 
     const val REWARDS = "rewards"     // Multiple weighted outputs
 
     // Generic fields
-    const val VOLUME = "amount"       // How much of something, in mB
+    const val VOLUME = "volume"       // How much of something, in mB
     const val TIME = "time"           // How long something takes, in ticks
     const val COLOR = "color"         // What color something is
 
     // Ingredient & ItemStack
-    const val ID = "id"          // The item or block's registry name
     const val COUNT = "count"         // How many things in this ItemStack
     const val DATA = "data"           // The metadata
     const val VARIANTS = "variants"   // The blockstate variants in the world ingredient
 
-    const val OREDICT = "oredict"     // The oredict name of the input, or an item that is registered to the oredict
-    const val NBT = "nbt"             // An item NBT tag
+    const val OREDICT = "ore"     // The oredict name of the input, or an item that is registered to the oredict
 
     // Fields for WeightedRewards, in addition to the ItemStack fields
     const val CHANCE = "chance"       // The chance for this reward to drop
@@ -48,6 +43,7 @@ object LibRegistries {
 
     // Crucibles
     const val HEAT = "heat"
+    const val SOURCE = "source"
     const val INPUT_VOLUME = "inputVolume"
     const val OUTPUT_VOLUME = "outputVolume"
 

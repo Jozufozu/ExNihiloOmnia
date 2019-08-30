@@ -1,0 +1,12 @@
+{
+    "blockInput": {
+        "block": "minecraft:stonebrick",
+        "data": 0
+    },
+    "rewards": [
+        {
+            "item": "minecraft:stonebrick",
+            "data": 2
+        }
+    ]
+}

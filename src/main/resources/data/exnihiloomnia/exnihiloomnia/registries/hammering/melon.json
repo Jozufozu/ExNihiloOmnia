@@ -1,0 +1,31 @@
+{
+    "blockInput": {
+        "block": "minecraft:melon_block"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:melon",
+            "count": 4
+        },
+        {
+            "item": "minecraft:melon_seeds",
+            "count": 1
+        },
+        {
+            "item": "minecraft:melon",
+            "chance": 0.11
+        },
+        {
+            "item": "minecraft:melon",
+            "chance": 0.11
+        },
+        {
+            "item": "minecraft:melon",
+            "chance": 0.11
+        },
+        {
+            "item": "minecraft:melon",
+            "chance": 0.11
+        }
+    ]
+}

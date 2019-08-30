@@ -4,12 +4,10 @@ import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.gson.JsonArray
 import com.google.gson.JsonParseException
-import com.google.gson.JsonSyntaxException
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.items.ItemHandlerHelper
 import java.util.*
 
@@ -62,7 +60,6 @@ class WeightedRewards {
     fun roll(player: EntityPlayer?, processor: ItemStack, random: Random): NonNullList<ItemStack> {
         val ret = NonNullList.create<ItemStack>()
 
-
         val temp = NonNullList.create<ItemStack>()
 
         for (reward in outputs) {
@@ -92,42 +89,22 @@ class WeightedRewards {
 
         @Throws(JsonParseException::class)
         fun deserialize(array: JsonArray?): WeightedRewards {
-            if (array == null) {
-                throw JsonParseException("Recipe is missing rewards! Skipping")
-            }
+            if (array == null) throw JsonParseException("recipe is missing rewards")
 
             val out = WeightedRewards()
 
-            RegistryLoader.pushCtx("Rewards")
-
-            for (jsonElement in array) {
-                if (jsonElement.isJsonObject) {
-                    try {
-                        out.addOutput(WeightedDrop.deserialize(jsonElement.asJsonObject))
-                    } catch (e: JsonParseException) {
-                        RegistryLoader.error(e.message)
-                    }
-
-                } else if (jsonElement.isJsonPrimitive && jsonElement.asJsonPrimitive.isString) {
-                    val string = jsonElement.asJsonPrimitive.asString
-                    val itemMaybe = Item.REGISTRY.getObject(ResourceLocation(string))
-
-                    if (itemMaybe == null) {
-                        RegistryLoader.error("Unknown item '$string'")
-                        continue
-                    }
-
-                    out.addOutput(WeightedDrop(ItemStack(itemMaybe), 1f))
-                } else {
-                    RegistryLoader.error("Null reward")
+            for ((i, drop) in array.withIndex()) {
+                RegistryLoader.pushCtx(i.toString())
+                try {
+                    out.addOutput(WeightedDrop.deserialize(drop))
+                } catch (e: Exception) {
+                    RegistryLoader.error(e)
+                } finally {
+                    RegistryLoader.popCtx()
                 }
             }
 
-            RegistryLoader.popCtx()
-
-            if (out.outputs.size == 0) {
-                throw JsonSyntaxException("Recipe has no rewards!")
-            }
+            if (out.outputs.size == 0) throw JsonParseException("recipe has empty rewards set")
 
             return out
         }

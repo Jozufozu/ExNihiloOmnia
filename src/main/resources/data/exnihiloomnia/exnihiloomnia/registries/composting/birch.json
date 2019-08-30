@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "minecraft:leaves",
+        "data": 2
+    },
+    "color": "6CC449",
+    "output": {
+        "item": "minecraft:dirt",
+        "data": 2
+    }
+}

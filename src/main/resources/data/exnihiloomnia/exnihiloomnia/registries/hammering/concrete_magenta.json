@@ -1,0 +1,12 @@
+{
+    "blockInput": {
+        "block": "minecraft:concrete",
+        "data": 2
+    },
+    "rewards": [
+        {
+            "item": "minecraft:concrete_powder",
+            "data": 2
+        }
+    ]
+}

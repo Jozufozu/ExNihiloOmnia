@@ -4,34 +4,30 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
+import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.JsonUtils
 import net.minecraftforge.registries.IForgeRegistryEntry
 
-class HeatSource : IForgeRegistryEntry.Impl<HeatSource>() {
-    var heatLevel: Int = 0
-        private set
+class HeatSource(
+        val heatLevel: Int,
+        val heatSource: WorldIngredient
+) : IForgeRegistryEntry.Impl<HeatSource>() {
 
-    private lateinit var heatSource: WorldIngredient
-
-    fun matches(state: IBlockState): Boolean {
-        return heatSource.test(state)
-    }
+    fun matches(state: IBlockState) = heatSource.test(state)
 
     companion object Serde {
 
-        fun deserialize(jsonObject: JsonObject): HeatSource {
-            if (!jsonObject.has("source")) {
-                throw JsonSyntaxException("Heat source is missing block!")
-            }
+        fun deserialize(heatSource: JsonObject): HeatSource {
+            if (LibRegistries.SOURCE !in heatSource) throw JsonSyntaxException("Heat source is missing block!")
 
-            val out = HeatSource()
+            val heatLevel = JsonUtils.getInt(heatSource, LibRegistries.HEAT)
 
-            out.heatLevel = JsonUtils.getInt(jsonObject, LibRegistries.HEAT)
+            RegistryLoader.pushCtx(LibRegistries.SOURCE)
+            val source = WorldIngredient.deserialize(JsonUtils.getJsonObject(heatSource, LibRegistries.SOURCE))
+            RegistryLoader.popCtx()
 
-            out.heatSource = WorldIngredient.deserialize(jsonObject.getAsJsonObject("source"))
-
-            return out
+            return HeatSource(heatLevel, source)
         }
     }
 }

@@ -6,31 +6,28 @@ import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.ModConfig
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
+import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.JsonUtils
-import net.minecraftforge.fluids.Fluid
-import net.minecraftforge.fluids.FluidRegistry
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.registries.IForgeRegistryEntry
 
-class MeltingRecipe : IForgeRegistryEntry.Impl<MeltingRecipe>() {
-    /**
-     * The minimum heat level required for this to melt.
-     * Every heat level over the Crucible is will add 1x to the speed multiplier
-     */
-    var requiredHeat: Int = 0
-        private set
+class MeltingRecipe(
+        /**
+         * The minimum heat level required for this to melt.
+         * Every heat level over the Crucible is will add 1x to the speed multiplier
+         */
+        val requiredHeat: Int,
+        val input: Ingredient,
+        val inputVolume: Int,
+        output: FluidStack
+) : IForgeRegistryEntry.Impl<MeltingRecipe>() {
 
-    lateinit var input: Ingredient
-        private set
-
-    var inputVolume: Int = 0
-        private set
-
-    private var _output: FluidStack = FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME)
-
-    val output get() = _output.copy()
+    val output: FluidStack = output
+        get() = field.copy()
 
     fun matches(input: ItemStack): Boolean {
         return this.input.apply(input)
@@ -39,29 +36,25 @@ class MeltingRecipe : IForgeRegistryEntry.Impl<MeltingRecipe>() {
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        fun deserialize(jsonObject: JsonObject): MeltingRecipe {
-            val out = MeltingRecipe()
+        fun deserialize(recipe: JsonObject): MeltingRecipe {
+            if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("melting recipe is missing \"${LibRegistries.INPUT}\"")
+            if (LibRegistries.FLUID_OUTPUT !in recipe) throw JsonSyntaxException("melting recipe is missing \"${LibRegistries.FLUID_OUTPUT}\"")
 
-            if (!jsonObject.has(LibRegistries.INPUT_GENERIC)) {
-                throw JsonSyntaxException("Melting recipe is missing input!")
+            val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)
+            val inputVolume = JsonUtils.getInt(recipe, LibRegistries.VOLUME, 1000)
+
+            val requiredHeat = JsonUtils.getInt(recipe, LibRegistries.HEAT, 1)
+
+            val output = JsonHelper.deserializeFluid(recipe[LibRegistries.FLUID_OUTPUT])
+
+            if (inputVolume <= 0 || inputVolume > ModConfig.blocks.crucible.solidCapacity) {
+                throw JsonSyntaxException("melting recipe has invalid ${LibRegistries.VOLUME}, expected range: [1, ${ModConfig.blocks.crucible.solidCapacity}]")
+            }
+            if (output.amount <= 0 || output.amount > ModConfig.blocks.crucible.fluidCapacity) {
+                throw JsonSyntaxException("melting recipe has invalid ${LibRegistries.FLUID_OUTPUT}, expected range: [1, ${ModConfig.blocks.crucible.fluidCapacity}]")
             }
 
-            val input = jsonObject.getAsJsonObject(LibRegistries.INPUT_GENERIC)
-
-            out.input = JsonHelper.deserializeIngredient(input)
-            out.inputVolume = JsonUtils.getInt(input, LibRegistries.VOLUME, 1000)
-
-            out.requiredHeat = JsonUtils.getInt(jsonObject, LibRegistries.HEAT, 1)
-            out._output = FluidStack(JsonHelper.deserializeFluid(jsonObject, LibRegistries.OUTPUT_FLUID), JsonUtils.getInt(jsonObject, LibRegistries.VOLUME, 1000))
-
-            if (out.inputVolume <= 0 || out.inputVolume > ModConfig.blocks.crucible.solidCapacity) {
-                throw JsonSyntaxException("Melting recipe has invalid inputVolume, expected range: 1 - " + ModConfig.blocks.crucible.solidCapacity)
-            }
-            if (out._output.amount <= 0 || out._output.amount > ModConfig.blocks.crucible.fluidCapacity) {
-                throw JsonSyntaxException("Melting recipe has invalid outputVolume, expected range: 1 - " + ModConfig.blocks.crucible.fluidCapacity)
-            }
-
-            return out
+            return MeltingRecipe(requiredHeat, input, inputVolume, output)
         }
     }
 }

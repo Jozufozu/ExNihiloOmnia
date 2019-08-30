@@ -1,0 +1,20 @@
+{
+    "color": "ffffff",
+    "__oredictNames_comment": "Optional, will register blocks and items to the ore dictionary under these names",
+    "oredictNames": [
+        "copper",
+        "brownCopper"
+    ],
+    "__ingotItem_comment": "Optional",
+    "ingotItem": {
+        "id": "othermod:copper_ingot",
+        "__data_comment": "Optional, defaults to 0",
+        "data": 0
+    },
+    "__chance_comment": "Optional, if no chances are provided, this ore will not drop from sifting",
+    "chance": 0.2,
+    "__chances_comment": "Optional",
+    "gravelChance": 0.2,
+    "sandChance": 0.2,
+    "dustChance": 0.2
+}

@@ -1,0 +1,8 @@
+{
+    "blockInput": {
+        "block": "minecraft:cobblestone"
+    },
+    "rewards": [
+        "minecraft:gravel"
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "blockInput": {
+        "block": "minecraft:netherrack"
+    },
+    "rewards": [
+        "exnihiloomnia:nether_gravel"
+    ]
+}

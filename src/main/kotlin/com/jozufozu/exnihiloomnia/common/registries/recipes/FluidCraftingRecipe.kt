@@ -5,35 +5,37 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
+import com.jozufozu.exnihiloomnia.common.util.contains
+import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundEvent
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.registries.IForgeRegistryEntry
 
-class FluidCraftingRecipe : IForgeRegistryEntry.Impl<FluidCraftingRecipe>() {
-    /**
-     * The fluid that is in the barrel
-     */
-    lateinit var fluid: FluidStack
-        private set
+class FluidCraftingRecipe(
+        /**
+         * The fluid that is in the barrel
+         */
+        val fluid: FluidStack,
 
-    /**
-     * The item required to trigger the crafting
-     */
-    lateinit var catalyst: Ingredient
-        private set
+        /**
+         * The item required to trigger the crafting
+         */
+        val catalyst: Ingredient,
+        output: ItemStack,
+        val craftSound: SoundEvent = SoundEvents.ENTITY_BOBBER_SPLASH
+) : IForgeRegistryEntry.Impl<FluidCraftingRecipe>() {
 
     /**
      * The item that you get from crafting
      */
-    var result: ItemStack = ItemStack.EMPTY
-        private set
-
-    lateinit var craftSound: SoundEvent
-        private set
+    val output: ItemStack = output
+        get() = field.copy()
 
     fun matches(catalyst: ItemStack, fluid: FluidStack): Boolean {
         return this.catalyst.apply(catalyst) && this.fluid.isFluidEqual(fluid)
@@ -41,27 +43,29 @@ class FluidCraftingRecipe : IForgeRegistryEntry.Impl<FluidCraftingRecipe>() {
 
     companion object Serde {
 
+        private const val DEFAULT_SOUND: String = "minecraft:entity.bobber.splash"
+
         @Throws(JsonParseException::class)
-        fun deserialize(jsonObject: JsonObject): FluidCraftingRecipe {
-            if (!jsonObject.has(LibRegistries.INPUT_GENERIC)) {
-                throw JsonSyntaxException("Fluid crafting recipe is missing input!")
+        fun deserialize(recipe: JsonObject): FluidCraftingRecipe {
+            if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("fluid crafting recipe is missing \"${LibRegistries.INPUT}\"")
+            if (LibRegistries.FLUID_INPUT !in recipe) throw JsonSyntaxException("fluid crafting recipe is missing \"${LibRegistries.FLUID_INPUT}\"")
+            if (LibRegistries.OUTPUT !in recipe) throw JsonSyntaxException("fluid crafting recipe is missing \"${LibRegistries.OUTPUT}\"")
+
+            val catalyst = CraftingHelper.getIngredient(JsonUtils.getJsonObject(recipe, LibRegistries.INPUT), RegistryLoader.CONTEXT)
+
+            val fluid = JsonHelper.deserializeFluid(recipe[LibRegistries.FLUID_INPUT])
+
+            val soundName = JsonUtils.getString(recipe, "sound", DEFAULT_SOUND)
+            val craftSound = SoundEvent.REGISTRY.getObject(ResourceLocation(soundName))
+
+            val result = JsonHelper.deserializeItem(JsonUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
+
+            if (craftSound == null) {
+                RegistryLoader.warn("$soundName is not a valid sound, defaulting to $DEFAULT_SOUND")
+                return FluidCraftingRecipe(fluid, catalyst, result)
             }
 
-            if (!jsonObject.has(LibRegistries.OUTPUT_GENERIC)) {
-                throw JsonSyntaxException("Fluid crafting recipe is missing output!")
-            }
-
-            val out = FluidCraftingRecipe()
-
-            out.catalyst = JsonHelper.deserializeIngredient(jsonObject.getAsJsonObject(LibRegistries.INPUT_GENERIC))
-
-            out.fluid = FluidStack(JsonHelper.deserializeFluid(jsonObject, LibRegistries.INPUT_FLUID), 1000)
-
-            out.craftSound = SoundEvent.REGISTRY.getObject(ResourceLocation(JsonUtils.getString(jsonObject, "sound", "minecraft:entity.bobber.splash")))!!
-
-            out.result = JsonHelper.deserializeItem(jsonObject.getAsJsonObject(LibRegistries.OUTPUT_GENERIC), true)
-
-            return out
+            return FluidCraftingRecipe(fluid, catalyst, result, craftSound)
         }
     }
 }

@@ -5,8 +5,9 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
-import net.minecraft.block.Block
-import net.minecraft.init.Blocks
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
+import com.jozufozu.exnihiloomnia.common.util.contains
+import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.ResourceLocation
@@ -14,52 +15,53 @@ import net.minecraft.util.SoundEvent
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.registries.IForgeRegistryEntry
 
-class FluidMixingRecipe : IForgeRegistryEntry.Impl<FluidMixingRecipe>() {
-    /**
-     * What's in the barrel
-     */
-    var lower: FluidStack? = null
-        private set
+class FluidMixingRecipe(
+        /**
+         * What's in the barrel
+         */
+        val lower: FluidStack,
 
-    /**
-     * What goes on the barrel
-     */
-    var upper: FluidStack? = null
-        private set
+        /**
+         * What goes on the barrel
+         */
+        val upper: FluidStack,
 
-    private var _output: ItemStack = ItemStack.EMPTY
+        output: ItemStack,
 
-    val output: ItemStack get() = _output.copy()
+        val craftSound: SoundEvent = SoundEvents.BLOCK_LAVA_EXTINGUISH
+): IForgeRegistryEntry.Impl<FluidMixingRecipe>() {
 
-    var craftSound: SoundEvent? = null
-        private set
+    val output: ItemStack = output
+        get() = field.copy()
 
     fun matches(lower: FluidStack, upper: FluidStack): Boolean {
-        return this.upper!!.isFluidEqual(upper) && this.lower!!.isFluidEqual(lower)
+        return this.upper.isFluidEqual(upper) && this.lower.isFluidEqual(lower)
     }
 
     companion object Serde {
 
+        private const val DEFAULT_SOUND: String = "minecraft:block.lava.extinguish"
+
         @Throws(JsonParseException::class)
-        fun deserialize(jsonObject: JsonObject): FluidMixingRecipe {
-            if (!jsonObject.has(LibRegistries.OUTPUT_BLOCK)) {
-                throw JsonSyntaxException("Fluid mixing recipe is missing output!")
+        fun deserialize(recipe: JsonObject): FluidMixingRecipe {
+            if (LibRegistries.OUTPUT !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.OUTPUT}\"")
+            if (LibRegistries.IN_BARREL !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.IN_BARREL}\"")
+            if (LibRegistries.ON_BARREL !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.ON_BARREL}\"")
+
+            val lower = JsonHelper.deserializeFluid(recipe[LibRegistries.IN_BARREL])
+            val upper = JsonHelper.deserializeFluid(recipe[LibRegistries.ON_BARREL])
+
+            val output = JsonHelper.deserializeItem(JsonUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
+
+            val soundName = JsonUtils.getString(recipe, "sound", DEFAULT_SOUND)
+            val craftSound = SoundEvent.REGISTRY.getObject(ResourceLocation(soundName))
+
+            if (craftSound == null) {
+                RegistryLoader.warn("$soundName is not a valid sound, defaulting to $DEFAULT_SOUND")
+                return FluidMixingRecipe(lower, upper, output)
             }
 
-            val out = FluidMixingRecipe()
-
-            out.lower = FluidStack(JsonHelper.deserializeFluid(jsonObject, LibRegistries.IN_BARREL), 1000)
-            out.upper = FluidStack(JsonHelper.deserializeFluid(jsonObject, LibRegistries.ON_BARREL), 1000)
-
-            out._output = JsonHelper.deserializeItem(jsonObject.getAsJsonObject(LibRegistries.OUTPUT_BLOCK), true)
-
-            out.craftSound = SoundEvent.REGISTRY.getObject(ResourceLocation(JsonUtils.getString(jsonObject, "sound", "minecraft:block.lava.extinguish")))
-
-            if (Block.getBlockFromItem(out._output.item) === Blocks.AIR) {
-                throw JsonSyntaxException("Recipe does not output a block, ignoring")
-            }
-
-            return out
+            return FluidMixingRecipe(lower, upper, output, craftSound)
         }
     }
 }

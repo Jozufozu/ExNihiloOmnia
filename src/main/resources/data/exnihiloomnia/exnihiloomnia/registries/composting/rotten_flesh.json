@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "minecraft:rotten_flesh"
+    },
+    "amount": 85,
+    "color": "C45631",
+    "output": {
+        "item": "minecraft:dirt",
+        "data": 1
+    }
+}

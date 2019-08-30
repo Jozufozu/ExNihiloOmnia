@@ -1,0 +1,6 @@
+{
+    "heat": 3,
+    "source": {
+        "block": "minecraft:magma"
+    }
+}

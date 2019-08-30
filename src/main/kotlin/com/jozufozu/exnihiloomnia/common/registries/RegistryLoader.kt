@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException
 import com.jozufozu.exnihiloomnia.ExNihilo
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.crafting.JsonContext
 import net.minecraftforge.registries.IForgeRegistryEntry
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.IOUtils
@@ -21,9 +22,11 @@ object RegistryLoader {
     private const val DEV_MODE = true //Reloads all registries from assets every time
 
     val GSON: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
+    val CONTEXT = JsonContext(ExNihilo.MODID)
+
     private val LOGGER = LogManager.getLogger("Ex Nihilo")
 
-    private val CONTEXT = Stack<String>()
+    private val loggerLayers = Stack<String>()
 
     fun loadOres() {
         RegistryManager.ORES.load()
@@ -41,14 +44,14 @@ object RegistryLoader {
     }
 
     fun <T : IForgeRegistryEntry<T>> genericLoad(registry: ReloadableRegistry<T>, resourcePath: String, deserializer: (JsonObject) -> T) {
-        val clear = pushCtx("Registry: ${registry.registryName}")
+        val clear = pushCtx(registry.registryName.resourcePath)
 
         copyIfUnconfigured(resourcePath)
 
         try {
             val root = File(ExNihilo.PATH, resourcePath)
 
-            val files = root.listFiles { dir, name -> "json" == FilenameUtils.getExtension(name) } ?: return
+            val files = root.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: return
 
             for (file in files) {
                 val fileName = FilenameUtils.getName(FilenameUtils.removeExtension(file.name)).replace("\\\\".toRegex(), "/")
@@ -58,7 +61,7 @@ object RegistryLoader {
                 try {
                     reader = BufferedReader(FileReader(file))
 
-                    pushCtx("Entry: $resourceLocation")
+                    pushCtx(resourceLocation.resourcePath)
 
                     JsonUtils.fromJson(GSON, reader, JsonObject::class.java)?.let(deserializer)?.let {
                         it.registryName = resourceLocation
@@ -98,6 +101,8 @@ object RegistryLoader {
 
     }
 
+    private fun getFullyQualifiedResourcePath(path: String) = "/data/exnihiloomnia/exnihiloomnia$path"
+
     fun copySingle(resourcePath: String) {
         val to = File(ExNihilo.PATH, resourcePath)
 
@@ -112,7 +117,7 @@ object RegistryLoader {
         var inputStream: InputStream? = null
 
         try {
-            val resource = RegistryLoader::class.java.getResource("/assets/exnihiloomnia$resourcePath") ?: return
+            val resource = RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath)) ?: return
 
             val file = File(resource.toURI())
 
@@ -139,20 +144,20 @@ object RegistryLoader {
         config.mkdirs()
 
         try {
-            val registryPath = File(RegistryLoader::class.java.getResource("/assets/exnihiloomnia$resourcePath").toURI())
+            val registryPath = File(RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath)).toURI())
 
-            val files = registryPath.listFiles { dir, name -> "json" == FilenameUtils.getExtension(name) }
-                    ?: throw MissingResourceException("No files to load!", "RegistryLoader", "/assets/exnihiloomnia$resourcePath")
+            val files = registryPath.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) }
+                    ?: throw MissingResourceException("No files to load!", "RegistryLoader", getFullyQualifiedResourcePath(resourcePath))
 
             for (file in files) {
                 val to = File(config, FilenameUtils.getName(file.name))
-                var `in`: InputStream? = null
+                var inputStream: InputStream? = null
 
                 try {
-                    `in` = FileInputStream(file)
-                    Files.copy(`in`, to.toPath())
+                    inputStream = FileInputStream(file)
+                    Files.copy(inputStream, to.toPath())
                 } finally {
-                    IOUtils.closeQuietly(`in`)
+                    IOUtils.closeQuietly(inputStream)
                 }
             }
         } catch (uriSyntaxException: IOException) {
@@ -181,26 +186,31 @@ object RegistryLoader {
     }
 
     fun pushCtx(ctx: String): Int {
-        CONTEXT.push(ctx)
-        return CONTEXT.size
+        loggerLayers.push(ctx)
+        return loggerLayers.size
+    }
+
+    fun pushPopCtx(ctx: String): Int {
+        popCtx()
+        return pushCtx(ctx)
     }
 
     fun restoreCtx(size: Int) {
-        while (CONTEXT.size > size) CONTEXT.pop()
+        while (loggerLayers.size > size) loggerLayers.pop()
     }
 
     fun popCtx(): String {
-        return CONTEXT.pop()
+        return loggerLayers.pop()
     }
 
     fun clearCtx() {
-        CONTEXT.clear()
+        loggerLayers.clear()
     }
 
     fun error(s: String?) {
         val out = StringBuilder()
 
-        for (s1 in CONTEXT) {
+        for (s1 in loggerLayers) {
             out.append("[").append(s1).append("]")
         }
 
@@ -212,7 +222,7 @@ object RegistryLoader {
     fun warn(s: String?) {
         val out = StringBuilder()
 
-        for (s1 in CONTEXT) {
+        for (s1 in loggerLayers) {
             out.append("[").append(s1).append("]")
         }
 
@@ -224,7 +234,7 @@ object RegistryLoader {
     fun error(s: String, t: Throwable) {
         val out = StringBuilder()
 
-        for (s1 in CONTEXT) {
+        for (s1 in loggerLayers) {
             out.append("[").append(s1).append("]")
         }
 
@@ -236,7 +246,7 @@ object RegistryLoader {
     fun error(t: Throwable) {
         val out = StringBuilder()
 
-        for (s1 in CONTEXT) {
+        for (s1 in loggerLayers) {
             out.append("[").append(s1).append("]")
         }
 

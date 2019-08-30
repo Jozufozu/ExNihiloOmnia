@@ -36,7 +36,7 @@ class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
                 barrel.item = compost.output
 
                 barrel.color = compost.color
-                barrel.compostAmount = compost.amount
+                barrel.compostAmount = compost.volume
             }
             return EnumInteractResult.CONSUME
         }

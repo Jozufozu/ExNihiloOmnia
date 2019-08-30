@@ -1,0 +1,11 @@
+{
+    "sound": "minecraft:block.lava.extinguish",
+    "input": {
+        "type": "forge:ore_dict",
+        "ore": "dustRedstone"
+    },
+    "fluidInput": "lava",
+    "output": {
+        "item": "minecraft:netherrack"
+    }
+}

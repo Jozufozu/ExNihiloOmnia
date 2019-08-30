@@ -1,0 +1,10 @@
+{
+    "input": {
+        "item": "minecraft:magma"
+    },
+    "heat": 3,
+    "fluidOutput": {
+        "fluid": "lava",
+        "volume": 2000
+    }
+}

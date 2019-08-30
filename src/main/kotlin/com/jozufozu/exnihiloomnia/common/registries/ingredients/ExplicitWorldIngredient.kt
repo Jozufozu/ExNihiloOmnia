@@ -5,20 +5,19 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
-import java.util.*
 import java.util.function.Predicate
-import kotlin.collections.ArrayList
 
-class ExplicitWorldIngredient(val block: Block, val data: Optional<Int> = Optional.empty()) : WorldIngredient() {
-    val predicates = ArrayList<Predicate<IBlockState>>()
+class ExplicitWorldIngredient(val block: Block, val info: Info = Info.None) : WorldIngredient() {
 
     override val stacks: NonNullList<ItemStack> get() = if (Item.getItemFromBlock(block).hasSubtypes) {
-        if (data.isPresent) NonNullList.from(ItemStack.EMPTY, ItemStack(block, 1, data.get()))
-        else {
-            NonNullList.create<ItemStack>().also {
-                for (i in 0..16) {
-                    if (test(block.getStateFromMeta(i)))
-                        it.add(ItemStack(block, 1, i))
+        when (info) {
+            is Info.Data -> NonNullList.from(ItemStack.EMPTY, ItemStack(block, 1, info.data))
+            else -> {
+                NonNullList.create<ItemStack>().also {
+                    for (i in 0..16) {
+                        if (test(block.getStateFromMeta(i)))
+                            it.add(ItemStack(block, 1, i))
+                    }
                 }
             }
         }
@@ -26,19 +25,27 @@ class ExplicitWorldIngredient(val block: Block, val data: Optional<Int> = Option
 
     override fun test(state: IBlockState): Boolean {
         if (state.block === this.block) {
-            if (this.predicates.isEmpty()) {
-                return true
-            } else {
-                for (predicate in predicates) {
-                    if (!predicate.test(state)) {
-                        return false
+            when (info) {
+                is Info.None -> return true
+                is Info.Data -> return this.block.getMetaFromState(state) == info.data
+                is Info.Variants -> {
+                    for (predicate in info.predicates) {
+                        if (!predicate.test(state)) {
+                            return false
+                        }
                     }
-                }
 
-                return true
+                    return true
+                }
             }
         } else {
             return false
         }
+    }
+
+    sealed class Info {
+        object None : Info()
+        class Data(val data: Int) : Info()
+        class Variants(val predicates: ArrayList<Predicate<IBlockState>>) : Info()
     }
 }

@@ -1,0 +1,15 @@
+{
+    "blockInput": {
+        "block": "minecraft:brick_block"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:brick",
+            "count": 3
+        },
+        {
+            "item": "minecraft:brick",
+            "chance": 0.5
+        }
+    ]
+}

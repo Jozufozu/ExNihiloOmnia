@@ -82,7 +82,7 @@ class ReloadableRegistry<T : IForgeRegistryEntry<T>>(
         return object : Iterator<T> {
             var cur = 0
 
-            override fun hasNext() = cur >= values.size
+            override fun hasNext() = cur < values.size
 
             override fun next(): T = values[cur++]
         }

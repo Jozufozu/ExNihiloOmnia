@@ -1,0 +1,12 @@
+{
+    "blockInput": {
+        "block": "minecraft:coal_block"
+    },
+    "rewards": [
+        {
+            "item": "minecraft:coal",
+            "data": 0,
+            "count": 9
+        }
+    ]
+}
