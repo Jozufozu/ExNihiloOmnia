@@ -21,8 +21,12 @@ open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material
         this.setLightOpacity(1)
     }
 
-    override fun getBlockFaceShape(p_193383_1_: IBlockAccess, p_193383_2_: IBlockState, p_193383_3_: BlockPos, p_193383_4_: EnumFacing): BlockFaceShape {
-        return if (p_193383_4_ == EnumFacing.UP) BlockFaceShape.BOWL else BlockFaceShape.UNDEFINED
+    override fun getBlockFaceShape(p_193383_1_: IBlockAccess, p_193383_2_: IBlockState, p_193383_3_: BlockPos, enumFacing: EnumFacing): BlockFaceShape {
+        return when (enumFacing) {
+            EnumFacing.UP -> BlockFaceShape.BOWL
+            in EnumFacing.HORIZONTALS -> BlockFaceShape.SOLID
+            else -> BlockFaceShape.UNDEFINED
+        }
     }
 
     override fun isNormalCube(state: IBlockState, world: IBlockAccess, pos: BlockPos): Boolean {
@@ -30,7 +34,7 @@ open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material
     }
 
     override fun doesSideBlockRendering(state: IBlockState, world: IBlockAccess, pos: BlockPos, face: EnumFacing): Boolean {
-        return false
+        return face == EnumFacing.UP
     }
 
     override fun isFullCube(state: IBlockState): Boolean {
@@ -38,7 +42,7 @@ open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material
     }
 
     override fun isSideSolid(state: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean {
-        return false
+        return side in EnumFacing.HORIZONTALS
     }
 
     override fun canEntitySpawn(state: IBlockState, entityIn: Entity): Boolean {

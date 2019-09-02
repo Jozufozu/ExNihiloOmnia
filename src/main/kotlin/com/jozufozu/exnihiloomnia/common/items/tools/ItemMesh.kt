@@ -26,14 +26,12 @@ class ItemMesh(registryName: ResourceLocation, material: ToolMaterial) : ItemBas
         super.addInformation(stack, worldIn, tooltip, flagIn)
 
         tooltip.add(I18n.format("exnihiloomnia.drops.effective_list"))
-        for ((type, value) in effectiveness) {
-            val translationKey = "exnihiloomnia.drops.type.$type"
-            var translate = I18n.format(translationKey)
+        for ((type, modifier) in effectiveness) {
+            val localizedTypeName = "exnihiloomnia.drops.type.$type".let { if (I18n.hasKey(it)) I18n.format(it) else it }
 
-            if (translate == translationKey)
-                translate = type
-            tooltip.add(I18n.format("exnihiloomnia.drops.effective_entry", translate, value))
+            tooltip.add(I18n.format("exnihiloomnia.drops.effective_entry", localizedTypeName, modifier))
         }
+        tooltip.add("")
     }
 
     override fun getEffectivenessForType(type: String) = effectiveness.getOrDefault(type, 1.0f)

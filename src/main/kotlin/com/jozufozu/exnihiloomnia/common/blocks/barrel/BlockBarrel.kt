@@ -3,7 +3,6 @@ package com.jozufozu.exnihiloomnia.common.blocks.barrel
 import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloTabs
-import net.minecraft.block.Block
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -23,6 +22,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
+import java.util.*
 
 open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : BlockBase(registryName, materialIn, soundType), ITileEntityProvider {
     init {
@@ -32,7 +32,14 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
     }
 
     companion object {
-        @JvmField val BARREL_AABB = AxisAlignedBB(1.0 / 16.0, 0.0, 1.0 / 16.0, 15.0 / 16.0, 1.0, 15.0 / 16.0)
+        val boundingBox = AxisAlignedBB(1.0 / 16.0, 0.0, 1.0 / 16.0, 15.0 / 16.0, 1.0, 15.0 / 16.0)
+        val collisionBoxes = arrayOf(
+                AxisAlignedBB(1.0 / 16.0, 0.0, 1.0 / 16.0, 15.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0),
+                AxisAlignedBB(1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0, 15.0 / 16.0),
+                AxisAlignedBB(1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0, 1.0, 2.0 / 16.0),
+                AxisAlignedBB(14.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0, 1.0, 15.0 / 16.0),
+                AxisAlignedBB(1.0 / 16.0, 1.0 / 16.0, 14.0 / 16.0, 15.0 / 16.0, 1.0, 15.0 / 16.0)
+        )
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
@@ -42,12 +49,9 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
         val held = playerIn.getHeldItem(hand)
 
         if (barrel.state.canExtractItems(barrel) && playerIn.isSneaking && held.isEmpty) {
-            val barrelItems = barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
-
-            if (barrelItems != null) {
-                ItemHandlerHelper.giveItemToPlayer(playerIn, barrelItems.extractItem(0, 64, false))
-                worldIn.playSound(null, pos,
-                        SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7f + 1.0f) * 2.0f)
+            barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)?.let {
+                ItemHandlerHelper.giveItemToPlayer(playerIn, it.extractItem(0, 64, false))
+                worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7f + 1.0f) * 2.0f)
             }
         } else {
             var input = ItemHandlerHelper.copyStackWithSize(held, 1)
@@ -55,9 +59,8 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
 
             if (!FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
                 input = ItemHandlerHelper.insertItem(barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), input, false)
-            } else
-            //TODO: Sounds don't play when the play is holding a stack of buckets
-            {
+            } else {
+                //TODO: Sounds don't play when the player is holding a stack of buckets
                 val fluidContained = FluidUtil.getFluidContained(playerIn.getHeldItem(hand))
 
                 if (fluidContained != null) {
@@ -70,7 +73,7 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
             }
 
             if (input.isEmpty) {
-                val blockFromItem = Block.getBlockFromItem(held.item)
+                val blockFromItem = getBlockFromItem(held.item)
 
                 if (blockFromItem !== Blocks.AIR) {
                     val soundType = blockFromItem.getSoundType(blockFromItem.getStateFromMeta(held.metadata), worldIn, pos, playerIn)
@@ -87,10 +90,23 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
     }
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
-        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185477_7_)
+        for (box in collisionBoxes) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, box)
+        }
+
+        (worldIn.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            it.state.addCollisionBoxToList(it, state, worldIn, pos, entityBox, collidingBoxes, entityIn)
+        }
     }
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = BARREL_AABB
+    override fun getLightValue(state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
+        (world.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            it.fluid?.fluid?.getLuminosity(it.fluid)?.let { return it }
+        }
+        return super.getLightValue(state, world, pos)
+    }
+
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = boundingBox
 
     override fun isNormalCube(state: IBlockState, world: IBlockAccess, pos: BlockPos) = false
 
@@ -103,4 +119,12 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
     override fun canEntitySpawn(state: IBlockState, entityIn: Entity) = false
 
     override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntityBarrel()
+
+    override fun randomDisplayTick(stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
+//        (worldIn.getTileEntity(pos) as? TileEntityBarrel)?.let {
+//            if (it.burnTimer > 0) {
+//                // TODO: Add smoke
+//            }
+//        }
+    }
 }

@@ -8,6 +8,7 @@ import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
 import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloMaterials
 import com.jozufozu.exnihiloomnia.common.lib.LibMisc
+import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
 import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.world.WorldProviderSkyblock
 import com.jozufozu.exnihiloomnia.common.world.WorldTypeSkyblock
@@ -42,8 +43,8 @@ open class CommonProxy {
     }
 
     fun init(event: FMLInitializationEvent) {
+        ExNihiloNetwork.init()
         ExNihiloMaterials.init()
-
         RegistryLoader.loadRecipes()
     }
 

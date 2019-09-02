@@ -2,6 +2,8 @@ package com.jozufozu.exnihiloomnia.common.blocks
 
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.*
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.BlockCrucible
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.BlockCrucibleRaw
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.BlockSieve
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
 import net.minecraft.block.Block
@@ -19,6 +21,10 @@ object ExNihiloBlocks {
     var modBlocks = ArrayList<Block>()
 
     val SIEVE: Block = register(BlockSieve())
+
+    val CRUCIBLE: Block = register(BlockCrucible())
+    val RAW_CRUCIBLE: Block = register(BlockCrucibleRaw())
+
     val BARREL_WOOD: Block = register(BlockBarrelWood())
     val BARREL_STAINED_GLASS: Block = register(BlockBarrelStainedGlass())
     val BARREL_CONCRETE: Block = register(BlockBarrelColored(LibBlocks.CONCRETE_BARREL, Material.ROCK).setHardness(1.8f))

@@ -9,17 +9,26 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import com.jozufozu.exnihiloomnia.proxy.ClientProxy
 import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.texture.TextureMap
+import net.minecraft.entity.Entity
 import net.minecraft.init.Blocks
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import org.lwjgl.opengl.GL11
 
 class BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
     init {
         this.logic.add(CompostLogic())
+    }
+
+    override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 1.0 / 16.0 + (barrel.compostAmount / TileEntityBarrel.compostCapacity) * 14.0 / 16.0, 14.0 / 16.0))
     }
 
     override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
@@ -85,9 +94,9 @@ class BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
 
         RenderHelper.disableStandardItemLighting()
         if (barrel.world.getBlockState(barrel.pos).material.isOpaque) {
-            RenderUtil.renderContents(ClientProxy.COMPOST, 0.875, barrel.color!!.withAlpha(1.0f - progress))
+            RenderUtil.renderContents(ClientProxy.COMPOST, 0.875, barrel.color.withAlpha(1.0f - progress))
         } else {
-            RenderUtil.renderContents3D(ClientProxy.COMPOST, ClientProxy.COMPOST, 0.875, barrel.color!!.withAlpha(1.0f - progress))
+            RenderUtil.renderContents3D(ClientProxy.COMPOST, ClientProxy.COMPOST, 0.875, barrel.color.withAlpha(1.0f - progress))
         }
 
         GlStateManager.popMatrix()

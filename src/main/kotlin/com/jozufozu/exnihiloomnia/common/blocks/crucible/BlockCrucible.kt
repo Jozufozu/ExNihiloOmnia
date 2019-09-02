@@ -54,7 +54,7 @@ class BlockCrucible : BlockCrucibleRaw(LibBlocks.CRUCIBLE, Material.ROCK, SoundT
                     val soundType = blockFromItem.getSoundType(blockFromItem.getStateFromMeta(held.metadata), worldIn, pos, playerIn)
                     worldIn.playSound(null, pos, soundType.placeSound, SoundCategory.BLOCKS, 0.2f + worldIn.rand.nextFloat() * 0.2f, 1.1f + worldIn.rand.nextFloat() * 0.4f)
                 }
-                held.shrink(1)
+                if (!playerIn.isCreative) held.shrink(1)
             }
         }
 

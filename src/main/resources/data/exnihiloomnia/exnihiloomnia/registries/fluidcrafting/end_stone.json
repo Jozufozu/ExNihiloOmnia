@@ -1,0 +1,11 @@
+{
+    "sound": "minecraft:block.lava.extinguish",
+    "input": {
+        "type": "forge:ore_dict",
+        "ore": "dustGlowstone"
+    },
+    "fluidInput": "lava",
+    "output": {
+        "item": "minecraft:end_stone"
+    }
+}

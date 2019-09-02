@@ -1,15 +1,17 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic
 
 import com.jozufozu.exnihiloomnia.client.RenderUtil
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates.STATES
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import net.minecraft.block.Block
+import net.minecraft.block.Block.NULL_AABB
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.texture.TextureMap
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.monster.EntityEndermite
 import net.minecraft.entity.player.EntityPlayer
@@ -17,6 +19,9 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -25,10 +30,6 @@ import java.util.*
 
 open class BarrelState(val id: ResourceLocation) {
     protected var logic: ArrayList<BarrelLogic> = ArrayList()
-
-    init {
-        STATES[id] = this
-    }
 
     open fun canInteractWithFluids(barrel: TileEntityBarrel): Boolean {
         return true
@@ -45,6 +46,8 @@ open class BarrelState(val id: ResourceLocation) {
     fun canExtractFluids(barrel: TileEntityBarrel): Boolean {
         return false
     }
+
+    open fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) { }
 
     open fun activate(barrel: TileEntityBarrel, previousState: BarrelState?) {
         for (barrelLogic in logic) {
@@ -73,7 +76,6 @@ open class BarrelState(val id: ResourceLocation) {
         for (barrelLogic in logic) {
             val interactResult = barrelLogic.onUseItem(barrel, player, hand, itemStack)
             if (interactResult != EnumInteractResult.PASS) {
-                barrel.sync(true)
                 return interactResult
             }
         }
@@ -94,7 +96,6 @@ open class BarrelState(val id: ResourceLocation) {
         for (barrelLogic in logic) {
             val interactResult = barrelLogic.onFillFluid(barrel, fluidStack)
             if (interactResult != EnumInteractResult.PASS) {
-                barrel.sync(true)
                 return interactResult
             }
         }
@@ -116,6 +117,18 @@ open class BarrelState(val id: ResourceLocation) {
         lateinit var renderSlave: EntityLivingBase
         private val isSlaveReady: Boolean get() = ::renderSlave.isInitialized
 
+        val infiniteBoundingBox = AxisAlignedBB(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE)
+
+        @JvmStatic fun addCollisionBoxToList(pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, blockBox: AxisAlignedBB?) {
+            if (blockBox !== NULL_AABB) {
+                val axisalignedbb = blockBox!!.offset(pos)
+
+                if (entityBox.intersects(axisalignedbb)) {
+                    collidingBoxes.add(axisalignedbb)
+                }
+            }
+        }
+
         @SideOnly(Side.CLIENT)
         fun renderFluid(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
             val fluidStack = barrel.fluid ?: return
@@ -136,8 +149,8 @@ open class BarrelState(val id: ResourceLocation) {
 
             val fluidTexture = textureMapBlocks.getAtlasSprite(fluidStack.fluid.getStill(fluidStack).toString())
 
-            val fluid = barrel.fluidAmount.toFloat() / barrel.fluidCapacity.toFloat()
-            val fluidLastTick = barrel.fluidAmountLastTick.toFloat() / barrel.fluidCapacity.toFloat()
+            val fluid = barrel.fluidAmount.toFloat() / TileEntityBarrel.fluidCapacity.toFloat()
+            val fluidLastTick = barrel.fluidAmountLastTick.toFloat() / TileEntityBarrel.fluidCapacity.toFloat()
             val fullness = MathStuff.lerp(fluid, fluidLastTick, partialTicks)
             val contentsSize = 0.875 * fullness
 
@@ -191,7 +204,7 @@ open class BarrelState(val id: ResourceLocation) {
                 GlStateManager.rotate(90f, 1f, 0f, 0f)
             }
 
-            Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave!!, contents, ItemCameraTransforms.TransformType.NONE)
+            Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave, contents, ItemCameraTransforms.TransformType.NONE)
 
             GlStateManager.disableBlend()
             GlStateManager.popMatrix()

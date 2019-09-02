@@ -50,25 +50,23 @@ class SieveRecipeCategory(guiHelper: IGuiHelper) : IRecipeCategory<SieveRecipeWr
 
         itemStacks.set(ingredients)
 
-        itemStacks.addTooltipCallback { slot, isInput, stack, toolTip ->
+        itemStacks.addTooltipCallback { _, isInput, stack, toolTip ->
             if (isInput)
                 return@addTooltipCallback
 
             sieveRecipeWrapper.rewards[stack]?.let {
-                for (weightedDrop in it) {
-                    val percentChance = weightedDrop.chance * 100
-                    val count = weightedDrop.drop.count
-
-                    val type = weightedDrop.type
+                for ((type, dropList) in it) {
                     val translationKey = "exnihiloomnia.drops.type.$type"
-                    var translate = I18n.format(translationKey)
+                    val localizedTypeName = if (I18n.hasKey(translationKey)) I18n.format(translationKey) else type
 
-                    if (translate == translationKey)
-                        translate = type
+                    toolTip.add(I18n.format("jei.exnihiloomnia.info.type_list", localizedTypeName))
 
-                    val drop = I18n.format("jei.exnihiloomnia.info.reward_chance_category", percentChance, count, translate)
+                    for (weightedDrop in dropList) {
+                        val percentChance = weightedDrop.chance * 100
+                        val count = weightedDrop.drop.count
 
-                    toolTip.add(drop)
+                        toolTip.add(I18n.format("jei.exnihiloomnia.info.reward_chance", percentChance, count))
+                    }
                 }
             }
         }

@@ -28,7 +28,7 @@ class SieveRecipe(
         /**
          * What could drop when fully processed.
          */
-        val output: WeightedRewards
+        val rewards: WeightedRewards
 ) : IForgeRegistryEntry.Impl<SieveRecipe>() {
 
     fun matches(input: ItemStack): Boolean {

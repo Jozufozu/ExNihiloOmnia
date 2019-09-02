@@ -14,7 +14,7 @@ class CompostRecipeCategory(guiHelper: IGuiHelper) : IRecipeCategory<CompostReci
     init {
         CompostRecipeCategory.background = guiHelper.createDrawable(texture, 0, 0, 90, 39)
         overlay = guiHelper.createDrawable(texture, 90, 0, 18, 20)
-        compost = guiHelper.createDrawable(compostLoc, 0, 0, 16, 16)
+        compost = guiHelper.drawableBuilder(compostLoc, 0, 0, 16, 16).setTextureSize(16, 16).build()
     }
 
 

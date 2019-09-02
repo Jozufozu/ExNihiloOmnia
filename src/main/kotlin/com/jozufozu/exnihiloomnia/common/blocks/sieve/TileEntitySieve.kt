@@ -173,7 +173,7 @@ class TileEntitySieve : TileEntity(), ITickable {
 
         for (recipe in RegistryManager.SIFTING) {
             if (recipe.matches(contents)) {
-                val roll = recipe.output.roll(this.user, mesh, world.rand)
+                val roll = recipe.rewards.roll(this.user, mesh, world.rand)
 
                 if (user is EntityPlayerMP)
                     ExNihiloTriggers.USE_SIEVE_TRIGGER.trigger((user as EntityPlayerMP?)!!, recipe.registryName!!, roll)

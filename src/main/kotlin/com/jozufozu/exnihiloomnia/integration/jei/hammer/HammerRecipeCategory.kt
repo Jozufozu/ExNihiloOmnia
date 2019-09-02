@@ -51,6 +51,7 @@ class HammerRecipeCategory(guiHelper: IGuiHelper) : IRecipeCategory<HammerRecipe
                 return@addTooltipCallback
 
             hammerRecipeWrapper.rewards[stack]?.let {
+                toolTip.add("")
                 for (weightedDrop in it) {
                     val percentChance = weightedDrop.chance * 100
                     val count = weightedDrop.drop.count

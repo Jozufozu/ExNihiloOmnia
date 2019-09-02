@@ -4,6 +4,7 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.*
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
@@ -15,6 +16,7 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     init {
         this.logic.add(FluidMixingTrigger())
         this.logic.add(FluidCraftingTrigger())
+        this.logic.add(WoodenBarrelBurn())
     }
 
     override fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
@@ -25,6 +27,22 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
         super.draw(barrel, x, y, z, partialTicks)
 
         renderFluid(barrel, x, y, z, partialTicks)
+    }
+
+    class WoodenBarrelBurn : BarrelLogic() {
+        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+            if (barrel.world.getBlockState(barrel.pos).material.canBurn) {
+                barrel.fluid?.fluid?.takeIf { it.temperature > TileEntityBarrel.burnTemperature }?.let {
+                    if (barrel.burnTimer++ > TileEntityBarrel.burnTime) {
+                        val block = it.block
+                        barrel.world.setBlockState(barrel.pos, block.defaultState)
+                        barrel.world.scheduleBlockUpdate(barrel.pos, block, 1, 3)
+                        barrel.world.playSound(null, barrel.pos, SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 0.7f, 0.8f)
+                    }
+                } ?: barrel.resetBurnTimer()
+            }
+            return false
+        }
     }
 
     class FluidMixingTrigger : BarrelLogic() {
@@ -61,7 +79,7 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
 
     class FluidCraftingTrigger : BarrelLogic() {
         override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
-            return barrel.fluid != null && barrel.fluidAmount == barrel.fluidCapacity && RegistryManager.getFluidCrafting(itemStack, barrel.fluid!!) != null
+            return barrel.fluid != null && barrel.fluidAmount == TileEntityBarrel.fluidCapacity && RegistryManager.getFluidCrafting(itemStack, barrel.fluid!!) != null
         }
 
         override fun onUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {

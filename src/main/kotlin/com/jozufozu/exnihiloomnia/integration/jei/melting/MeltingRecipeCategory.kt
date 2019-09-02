@@ -44,7 +44,10 @@ class MeltingRecipeCategory(guiHelper: IGuiHelper) : IRecipeCategory<MeltingReci
         itemStacks.set(ingredients)
         fluidStacks.set(ingredients)
 
-        fluidStacks.addTooltipCallback { slotIndex, input, ingredient, tooltip -> tooltip.add(I18n.format("jei.exnihiloomnia.info.required_heat", meltingRecipeWrapper.recipe.requiredHeat)) }
+        fluidStacks.addTooltipCallback { slotIndex, input, ingredient, tooltip ->
+            tooltip.add("")
+            tooltip.add(I18n.format("jei.exnihiloomnia.info.required_heat", meltingRecipeWrapper.recipe.requiredHeat))
+        }
     }
 
     companion object {

@@ -2,6 +2,7 @@ package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.*
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
+import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
@@ -16,7 +17,7 @@ class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     override fun activate(barrel: TileEntityBarrel, previousState: BarrelState?) {
         barrel.item = ItemStack.EMPTY
         barrel.fluid = null
-        barrel.color = null
+        barrel.color = Color.WHITE
         barrel.compostAmount = 0
 
         super.activate(barrel, previousState)

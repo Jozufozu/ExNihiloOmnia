@@ -70,7 +70,7 @@ class JeiPlugin : IModPlugin {
             registry.addRecipeCatalyst(ItemStack(ExNihiloBlocks.BARREL_STAINED_GLASS, 1, i), CompostRecipeCategory.UID)
         }
 
-        //registry.addRecipeCatalyst(ItemStack(ExNihiloBlocks.CRUCIBLE), MeltingRecipeCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ExNihiloBlocks.CRUCIBLE), MeltingRecipeCategory.UID)
     }
 
     companion object {

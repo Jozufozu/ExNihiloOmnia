@@ -1,6 +1,8 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic
 
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
+import com.jozufozu.exnihiloomnia.common.network.MessageUpdateBarrel
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -15,19 +17,32 @@ import net.minecraftforge.fluids.FluidEvent
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
+import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
+import java.util.*
 import kotlin.math.min
 
 class TileEntityBarrel : TileEntity(), ITickable {
-    val compostCapacity = ModConfig.blocks.barrel.compostCapacity
-    val fluidCapacity = ModConfig.blocks.barrel.fluidCapacity
-
+    /**
+     * When set, marks the compost level to be sent to the client
+     */
     var compostAmount: Int = 0
+        set(value) {
+            field = value
+            packet?.compostLevel = Optional.of(value)
+        }
     var compostAmountLastTick: Int = 0
 
-    var color: Color? = null
+    /**
+     * When set, marks the color to be sent to the client
+     */
+    var color: Color = Color.WHITE
+        set(value) {
+            field = value
+            packet?.color = Optional.of(value.toInt())
+        }
 
     var fluidAmount: Int = 0
     var fluidAmountLastTick: Int = 0
@@ -35,35 +50,61 @@ class TileEntityBarrel : TileEntity(), ITickable {
     var timer: Int = 0
     var timerLastTick: Int = 0
 
+    var burnTimer: Int = 0
+
+    /**
+     * Barrels are state machines and this field represents the logical state the barrel is in.
+     *
+     * When set, marks the state to be sent to the client
+     */
     var state = BarrelStates.EMPTY
         set(state) {
             val last = this.state
             field = state
 
             this.state.activate(this, last)
-            sync(true)
+
+            packet?.barrelState = Optional.of(state.id.toString())
+        }
+
+    /**
+     * Accessing packet on the server will populate the backing field if it is null,
+     * letting the update loop know for sure that a packet has to be sent.
+     * If packet is accessed on the client it will always return null,
+     * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
+     */
+    val packet: MessageUpdateBarrel?
+        get() {
+            if (world == null || world.isRemote) return null
+            if (_packet == null) {
+                _packet = MessageUpdateBarrel(pos)
+            }
+            return _packet
+        }
+    // Separate backing field so the update loop can know whether or not to send a packet
+    private var _packet: MessageUpdateBarrel? = null
+
+    /**
+     * When set, marks the fluid to be sent to the client
+     */
+    var fluid: FluidStack?
+        get() = fluidHandler.fluid
+        set(value) {
+            fluidHandler.fluid = value
+        }
+
+    /**
+     * When set, marks the item to be sent to the client
+     */
+    var item: ItemStack
+        get() = itemHandler.getStackInSlot(0)
+        set(value) {
+            itemHandler.setStackInSlot(0, value)
+            packet?.item = Optional.of(value)
         }
 
     private val fluidHandler = BarrelFluidHandler(fluidCapacity)
     private val itemHandler = BarrelItemHandler()
-
-    private var updateTimer: Int = 0
-    private var updateNeeded: Boolean = false
-
-    var fluid: FluidStack?
-        get() = fluidHandler.fluid
-        set(fluid) {
-            fluidHandler.fluid = fluid
-            sync(true)
-        }
-
-    var item: ItemStack
-        get() = itemHandler.getStackInSlot(0)
-        set(content) {
-            itemHandler.setStackInSlot(0, content)
-            sync(true)
-        }
-
     private val barrel: TileEntityBarrel
         get() = this
 
@@ -77,44 +118,28 @@ class TileEntityBarrel : TileEntity(), ITickable {
         this.fluidAmount = this.fluidHandler.fluidAmount
 
         if (!world.isRemote) {
-            if (updateNeeded && updateTimer == 0) {
-                sync()
+            _packet?.let {
+                markDirty()
+                ExNihiloNetwork.channel.sendToAllAround(it, NetworkRegistry.TargetPoint(world.provider.dimension, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 64.0))
             }
-            updateTimer--
+            _packet = null
         }
     }
 
-    private fun sync() {
-        val pos = getPos()
-        val blockState = world.getBlockState(pos)
-        world.notifyBlockUpdate(pos, blockState, blockState, 3)
-
-        updateNeeded = false
-    }
-
-    fun sync(now: Boolean) {
-        if (now) {
-            updateNeeded = true
-            updateTimer = 0
-        } else if (!updateNeeded) {
-            updateNeeded = true
-            updateTimer = 10
-        }
+    fun resetBurnTimer() {
+        burnTimer = 0
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         val barrelTag = NBTTagCompound()
 
         barrelTag.setString("state", this.state.id.toString())
+        barrelTag.setInteger("color", this.color.toInt())
 
-        if (this.color != null) {
-            barrelTag.setInteger("color", this.color!!.toInt())
-        }
-
-        barrelTag.setTag("itemHandler", itemHandler.serializeNBT())
-        barrelTag.setTag("fluidHandler", fluidHandler.writeToNBT(NBTTagCompound()))
-
-        barrelTag.setInteger("compostAmount", this.compostAmount)
+        item.takeIf { !it.isEmpty }?.let { barrelTag.setTag("item", it.writeToNBT(NBTTagCompound())) }
+        fluid?.let { barrelTag.setTag("fluid", it.writeToNBT(NBTTagCompound())) }
+        if (compostAmount != 0) barrelTag.setInteger("compostAmount", this.compostAmount)
+        if (burnTimer != 0) barrelTag.setInteger("burnTimer", this.burnTimer)
 
         compound.setTag("barrel", barrelTag)
 
@@ -124,16 +149,15 @@ class TileEntityBarrel : TileEntity(), ITickable {
     override fun readFromNBT(compound: NBTTagCompound) {
         val barrelTag = compound.getCompoundTag("barrel")
 
-        if (barrelTag.hasKey("color")) {
-            this.color = Color(barrelTag.getInteger("color"), true)
-        }
+        color = Color(barrelTag.getInteger("color"), true)
 
-        this.state = BarrelStates.STATES.getOrDefault(ResourceLocation(barrelTag.getString("state")), BarrelStates.EMPTY)
+        state = BarrelStates.STATES.getOrDefault(ResourceLocation(barrelTag.getString("state")), BarrelStates.EMPTY)
 
-        this.itemHandler.deserializeNBT(barrelTag.getCompoundTag("itemHandler"))
-        this.fluidHandler.readFromNBT(barrelTag.getCompoundTag("fluidHandler"))
+        item = if (barrelTag.hasKey("item")) ItemStack(barrelTag.getCompoundTag("item")) else ItemStack.EMPTY
+        fluid = if (barrelTag.hasKey("fluid")) FluidStack.loadFluidStackFromNBT(barrelTag.getCompoundTag("fluid")) else null
 
-        this.compostAmount = barrelTag.getInteger("compostAmount")
+        compostAmount = barrelTag.getInteger("compostAmount")
+        burnTimer = barrelTag.getInteger("burnTimer")
 
         super.readFromNBT(compound)
     }
@@ -227,7 +251,7 @@ class TileEntityBarrel : TileEntity(), ITickable {
         }
 
         override fun onContentsChanged(slot: Int) {
-            sync(true)
+            packet?.item = Optional.of(getStackInSlot(0))
         }
     }
 
@@ -311,8 +335,21 @@ class TileEntityBarrel : TileEntity(), ITickable {
             return out
         }
 
-        override fun onContentsChanged() {
-            sync(true)
+        override fun setFluid(fluid: FluidStack?) {
+            super.setFluid(fluid)
+            onContentsChanged()
         }
+
+        override fun onContentsChanged() {
+            packet?.updateFluid = true
+            packet?.fluid = fluid
+        }
+    }
+
+    companion object {
+        val compostCapacity get() = ModConfig.blocks.barrel.compostCapacity
+        val fluidCapacity get() = ModConfig.blocks.barrel.fluidCapacity
+        val burnTemperature get() = ModConfig.blocks.barrel.burnTemperature
+        val burnTime get() = ModConfig.blocks.barrel.burnTime
     }
 }

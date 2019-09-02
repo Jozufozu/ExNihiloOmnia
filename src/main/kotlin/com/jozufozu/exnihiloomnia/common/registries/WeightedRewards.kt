@@ -1,54 +1,20 @@
 package com.jozufozu.exnihiloomnia.common.registries
 
-import com.google.common.collect.Lists
-import com.google.common.collect.Maps
 import com.google.gson.JsonArray
 import com.google.gson.JsonParseException
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
-import net.minecraftforge.items.ItemHandlerHelper
 import java.util.*
 
 
 class WeightedRewards {
-    private val outputs = ArrayList<WeightedDrop>()
+    private val _outputs = ArrayList<WeightedDrop>()
 
-    val equivalencies: HashMap<ItemStack, List<WeightedDrop>>
-        get() {
-            val temp = Maps.newHashMap<ItemStack, MutableList<WeightedDrop>>()
-
-            output@ for (reward in outputs) {
-                val drop = reward.drop
-
-                if (drop == ItemStack.EMPTY)
-                    continue
-
-                for ((itemStack, entries) in temp.entries) {
-                    if (itemStack.isItemEqual(drop)) {
-                        entries.add(reward)
-                        continue@output
-                    }
-                }
-
-                temp[ItemHandlerHelper.copyStackWithSize(drop, 1)] = Lists.newArrayList(reward)
-            }
-
-            val sorted = ArrayList(temp.keys)
-            sorted.sortWith(Comparator.comparingInt { o -> Item.REGISTRY.getIDForObject(o.item) })
-
-            val out = Maps.newHashMap<ItemStack, List<WeightedDrop>>()
-
-            for (stack in sorted) {
-                out[stack] = temp[stack]
-            }
-
-            return out
-        }
+    val outputs: List<WeightedDrop> get() = _outputs
 
     fun addOutput(output: WeightedDrop) {
-        outputs.add(output)
+        _outputs.add(output)
     }
 
     /**
@@ -104,7 +70,7 @@ class WeightedRewards {
                 }
             }
 
-            if (out.outputs.size == 0) throw JsonParseException("recipe has empty rewards set")
+            if (out.outputs.isEmpty()) throw JsonParseException("recipe has empty rewards set")
 
             return out
         }
