@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -49,9 +50,9 @@ open class BarrelState(val id: ResourceLocation) {
 
     open fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) { }
 
-    open fun activate(barrel: TileEntityBarrel, previousState: BarrelState?) {
+    open fun activate(barrel: TileEntityBarrel) {
         for (barrelLogic in logic) {
-            barrelLogic.onActivate(barrel, previousState)
+            barrelLogic.onActivate(barrel)
         }
     }
 
@@ -130,9 +131,19 @@ open class BarrelState(val id: ResourceLocation) {
         }
 
         @SideOnly(Side.CLIENT)
-        fun renderFluid(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
-            val fluidStack = barrel.fluid ?: return
+        fun drawFluid(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+            val fluid = barrel.fluid?.fluid ?: return
+            drawFluid(
+                    fluid,
+                    barrel.fluidAmount.toFloat() / TileEntityBarrel.fluidCapacity.toFloat(),
+                    barrel.fluidAmountLastTick.toFloat() / TileEntityBarrel.fluidCapacity.toFloat(),
+                    x, y, z, partialTicks,
+                    Color(fluid.color),
+                    barrel.world.getBlockState(barrel.pos).material.isOpaque)
+        }
 
+        @SideOnly(Side.CLIENT)
+        fun drawFluid(fluid: Fluid, amount: Float, amountLastTick: Float, x: Double, y: Double, z: Double, partialTicks: Float, color: Color, complex: Boolean = false) {
             GlStateManager.pushMatrix()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
             GlStateManager.enableBlend()
@@ -147,11 +158,9 @@ open class BarrelState(val id: ResourceLocation) {
             Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
             val textureMapBlocks = Minecraft.getMinecraft().textureMapBlocks
 
-            val fluidTexture = textureMapBlocks.getAtlasSprite(fluidStack.fluid.getStill(fluidStack).toString())
+            val fluidTexture = textureMapBlocks.getAtlasSprite(fluid.still.toString())
 
-            val fluid = barrel.fluidAmount.toFloat() / TileEntityBarrel.fluidCapacity.toFloat()
-            val fluidLastTick = barrel.fluidAmountLastTick.toFloat() / TileEntityBarrel.fluidCapacity.toFloat()
-            val fullness = MathStuff.lerp(fluid, fluidLastTick, partialTicks)
+            val fullness = MathStuff.lerp(amount, amountLastTick, partialTicks)
             val contentsSize = 0.875 * fullness
 
             GlStateManager.translate(x + 0.125, y + 0.0625, z + 0.125)
@@ -159,11 +168,11 @@ open class BarrelState(val id: ResourceLocation) {
 
             RenderHelper.disableStandardItemLighting()
 
-            if (barrel.world.getBlockState(barrel.pos).material.isOpaque) {
-                RenderUtil.renderContents(fluidTexture, contentsSize, Color(fluidStack.fluid.getColor(fluidStack)))
+            if (complex) {
+                RenderUtil.renderContents(fluidTexture, contentsSize, color)
             } else {
                 //TextureAtlasSprite fluidFlow = textureMapBlocks.getAtlasSprite(fluidStack.getFluid().getFlowing(fluidStack).toString());
-                RenderUtil.renderContents3D(fluidTexture, fluidTexture, contentsSize, Color(fluidStack.fluid.getColor(fluidStack)))
+                RenderUtil.renderContents3D(fluidTexture, fluidTexture, contentsSize, color)
             }
 
 

@@ -59,10 +59,8 @@ class TileEntityBarrel : TileEntity(), ITickable {
      */
     var state = BarrelStates.EMPTY
         set(state) {
-            val last = this.state
             field = state
-
-            this.state.activate(this, last)
+            state.activate(this)
 
             packet?.barrelState = Optional.of(state.id.toString())
         }

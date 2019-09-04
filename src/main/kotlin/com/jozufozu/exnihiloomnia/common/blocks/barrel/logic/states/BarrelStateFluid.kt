@@ -4,10 +4,12 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.*
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Blocks
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
+import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.IFluidBlock
@@ -17,6 +19,8 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
         this.logic.add(FluidMixingTrigger())
         this.logic.add(FluidCraftingTrigger())
         this.logic.add(WoodenBarrelBurn())
+        this.logic.add(FermentingTrigger())
+        this.logic.add(RainLogic())
     }
 
     override fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
@@ -26,7 +30,43 @@ class BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
-        renderFluid(barrel, x, y, z, partialTicks)
+        drawFluid(barrel, x, y, z, partialTicks)
+    }
+
+    class RainLogic : BarrelLogic() {
+        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+            val world = barrel.world
+            if (!world.isRemote && barrel.fluid?.fluid === FluidRegistry.WATER && world.isRainingAt(barrel.pos.up())) {
+                barrel.fluid?.let {
+                    if (it.amount < TileEntityBarrel.fluidCapacity) it.amount++
+                    barrel.fluid = it
+                }
+            }
+
+            return false
+        }
+    }
+
+    class FermentingTrigger : BarrelLogic() {
+        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+
+            if (!barrel.world.isRemote) {
+                barrel.fluid?.let { fluid: FluidStack ->
+                    if (fluid.fluid === FluidRegistry.WATER && fluid.amount == TileEntityBarrel.fluidCapacity) {
+
+                        val barrelPos = barrel.pos
+                        val count = BlockPos.MutableBlockPos.getAllInBoxMutable(barrelPos.add(-1, -1, -1), barrelPos.add(1, -1, 1)).count { Blocks.MYCELIUM === barrel.world.getBlockState(it).block }
+
+                        if (barrel.world.rand.nextFloat() < 0.0005 * count) {
+                            barrel.state = BarrelStates.FERMENTING
+                            return true
+                        }
+                    }
+                }
+            }
+
+            return false
+        }
     }
 
     class WoodenBarrelBurn : BarrelLogic() {

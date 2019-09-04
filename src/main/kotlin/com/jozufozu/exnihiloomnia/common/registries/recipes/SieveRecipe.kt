@@ -38,8 +38,10 @@ class SieveRecipe(
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        fun deserialize(recipe: JsonObject): SieveRecipe {
+        fun deserialize(recipe: JsonObject): SieveRecipe? {
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("sieve recipe has no input")
+
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val input = CraftingHelper.getIngredient(recipe.get(LibRegistries.INPUT), RegistryLoader.CONTEXT)
             val siftTime = JsonUtils.getInt(recipe, LibRegistries.TIME, 40)

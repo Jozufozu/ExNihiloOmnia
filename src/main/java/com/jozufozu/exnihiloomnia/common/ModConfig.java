@@ -58,6 +58,9 @@ public class ModConfig
             @Config.Comment("How much time in ticks it takes for compost to turn into its output")
             public int compostTime = 400;
 
+            @Config.Comment("How much time in ticks it takes for witchwater to ferment")
+            public int fermentTime = 400;
+
             @Config.Comment("The fluid temperature required to make wooden barrels burn")
             public int burnTemperature = 873;
 

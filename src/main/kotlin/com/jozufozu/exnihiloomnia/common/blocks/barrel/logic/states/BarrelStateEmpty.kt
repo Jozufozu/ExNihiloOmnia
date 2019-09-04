@@ -6,21 +6,21 @@ import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
+import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
 
 class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     init {
         this.logic.add(FluidFillTrigger())
         this.logic.add(CompostTrigger())
+        this.logic.add(RainTrigger())
     }
 
-    override fun activate(barrel: TileEntityBarrel, previousState: BarrelState?) {
+    override fun activate(barrel: TileEntityBarrel) {
         barrel.item = ItemStack.EMPTY
         barrel.fluid = null
         barrel.color = Color.WHITE
         barrel.compostAmount = 0
-
-        super.activate(barrel, previousState)
     }
 
     class CompostTrigger : BarrelLogic() {
@@ -53,6 +53,21 @@ class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
                 barrel.state = BarrelStates.FLUID
             }
             return EnumInteractResult.INSERT
+        }
+    }
+
+    class RainTrigger : BarrelLogic() {
+        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+            val world = barrel.world
+
+            if (!world.isRemote) {
+                if (world.isRainingAt(barrel.pos.up())) {
+                    barrel.fluid = FluidStack(FluidRegistry.WATER, 1)
+                    barrel.state = BarrelStates.FLUID
+                }
+            }
+
+            return false
         }
     }
 }

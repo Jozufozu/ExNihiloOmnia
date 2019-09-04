@@ -2,9 +2,9 @@ package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
 import com.jozufozu.exnihiloomnia.client.RenderUtil
 import com.jozufozu.exnihiloomnia.common.ModConfig
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelLogic
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.CountdownLogic
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import com.jozufozu.exnihiloomnia.proxy.ClientProxy
@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11
 
 class BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
     init {
-        this.logic.add(CompostLogic())
+        this.logic.add(CountdownLogic({ ModConfig.blocks.barrel.compostTime }, { it.state = BarrelStates.ITEMS }))
     }
 
     override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
@@ -100,21 +100,5 @@ class BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
         }
 
         GlStateManager.popMatrix()
-    }
-
-    class CompostLogic : BarrelLogic() {
-        override fun onActivate(barrel: TileEntityBarrel, previousState: BarrelState?) {
-            barrel.timer = ModConfig.blocks.barrel.compostTime
-        }
-
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
-            barrel.timer--
-            if (!barrel.world.isRemote) {
-                if (barrel.timer <= 0) {
-                    barrel.state = BarrelStates.ITEMS
-                }
-            }
-            return false
-        }
     }
 }

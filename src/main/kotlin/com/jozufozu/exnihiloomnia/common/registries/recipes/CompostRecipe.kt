@@ -47,8 +47,10 @@ class CompostRecipe(
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        @JvmStatic fun deserialize(recipe: JsonObject): CompostRecipe {
+        fun deserialize(recipe: JsonObject): CompostRecipe? {
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("compost recipe has no input")
+
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             RegistryLoader.pushCtx(LibRegistries.INPUT)
             val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)

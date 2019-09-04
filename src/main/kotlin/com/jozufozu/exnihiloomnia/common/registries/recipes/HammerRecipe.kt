@@ -10,6 +10,7 @@ import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.JsonUtils
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
 
 class HammerRecipe(
@@ -24,10 +25,12 @@ class HammerRecipe(
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        fun deserialize(recipe: JsonObject): HammerRecipe {
+        fun deserialize(recipe: JsonObject): HammerRecipe? {
             if (LibRegistries.WORLD_INPUT !in recipe) throw JsonSyntaxException("hammer recipe is missing input")
 
-            val ingredient = WorldIngredient.deserialize(JsonUtils.getJsonObject(recipe, LibRegistries.WORLD_INPUT))
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+
+            val ingredient = WorldIngredient.deserialize(recipe[LibRegistries.WORLD_INPUT])
 
             RegistryLoader.pushCtx(LibRegistries.REWARDS)
             val rewards = WeightedRewards.deserialize(JsonUtils.getJsonArray(recipe, LibRegistries.REWARDS))

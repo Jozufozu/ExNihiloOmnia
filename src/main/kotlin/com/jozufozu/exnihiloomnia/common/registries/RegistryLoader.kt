@@ -43,7 +43,7 @@ object RegistryLoader {
         RegistryManager.HEAT.load()
     }
 
-    fun <T : IForgeRegistryEntry<T>> genericLoad(registry: ReloadableRegistry<T>, resourcePath: String, deserializer: (JsonObject) -> T) {
+    fun <T : IForgeRegistryEntry<T>> genericLoad(registry: ReloadableRegistry<T>, resourcePath: String, deserializer: (JsonObject) -> T?) {
         val clear = pushCtx(registry.registryName.resourcePath)
 
         copyIfUnconfigured(resourcePath)
@@ -63,7 +63,7 @@ object RegistryLoader {
 
                     pushCtx(resourceLocation.resourcePath)
 
-                    JsonUtils.fromJson(GSON, reader, JsonObject::class.java)?.let(deserializer)?.let {
+                    JsonUtils.fromJson(GSON, reader, JsonObject::class.java)?.run(deserializer)?.let {
                         it.registryName = resourceLocation
                         registry.register(it)
                     }

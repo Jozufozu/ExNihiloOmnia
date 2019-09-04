@@ -1,0 +1,11 @@
+{
+    "sound": "minecraft:entity.generic.splash",
+    "input": {
+        "item": "minecraft:sand",
+        "data": 0
+    },
+    "fluidInput": "exnihiloomnia:witchwater",
+    "output": {
+        "item": "minecraft:soul_sand"
+    }
+}

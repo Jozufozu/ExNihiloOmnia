@@ -1,0 +1,20 @@
+{
+    "color": "ffffff",
+    "oredictNames": {
+        "ingot": [
+            "ingotIron"
+        ],
+        "blocks": "oreIron",
+        "gravel": [
+            "oreIron",
+            "oreGravelIron"
+        ],
+        "netherGravel": "copperLmao"
+    },
+    "gravel": true,
+    "netherGravel": true,
+    "endGravel": true,
+    "ingotItem": {
+        "item": "minecraft:iron_ingot"
+    }
+}

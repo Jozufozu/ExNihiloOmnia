@@ -1,6 +1,7 @@
 {
     "input": {
-        "item": "minecraft:stonebrick"
+        "item": "minecraft:stonebrick",
+        "data": -1
     },
     "heat": 3,
     "fluidOutput": "lava"

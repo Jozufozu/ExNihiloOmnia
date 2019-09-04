@@ -1,22 +1,94 @@
 package com.jozufozu.exnihiloomnia.common.blocks.leaves
 
-import net.minecraft.block.state.IBlockState
-import net.minecraft.init.Blocks
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ITickable
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.ChunkPos
 
 class TileEntityInfestedLeaves : TileEntity(), ITickable {
     companion object {
-        private const val infestMax: Int = 20 * 30
+        private const val infestMax: Int = 20 * 50
+
+        private val chunkUpdates: MutableMap<ChunkPos, Long> = hashMapOf()
     }
 
-    var mimic: IBlockState = Blocks.LEAVES.defaultState
     var infestTimer: Int = 0
         private set
 
+    val infested: Boolean get() = infestTimer >= infestMax
+    val percentInfested: Float get() = infestTimer.toFloat() / infestMax.toFloat()
+
     override fun update() {
-        if (infestTimer < infestMax) {
+        if (infestTimer <= infestMax) {
             infestTimer++
+
+            if (infestTimer % 20 == 0 || infestTimer == infestMax) {
+                markDirty()
+            }
+            maybeDoRenderUpdate()
         }
+
+        if (!world.isRemote && percentInfested > 0.7 && world.worldTime % 20 == 0L) {
+            for (pos in BlockPos.MutableBlockPos.getAllInBoxMutable(pos.add(-1, -1, -1), pos.add(1, 1, 1))) {
+                if (world.rand.nextFloat() < 0.01 && pos != this.pos) {
+                    val uninfested = world.getBlockState(pos)
+
+                    if (uninfested.block in BlockInfestedLeaves.leafMap) {
+                        val infested = BlockInfestedLeaves.leafMap[uninfested.block] ?: continue
+
+                        world.setBlockState(pos, infested.uninfestedToInfested(uninfested))
+
+                        (world.getTileEntity(pos) as? TileEntityInfestedLeaves)?.infestTimer = (infestMax * (world.rand.nextFloat() * 0.25f + 0.1f)).toInt()
+
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    private fun maybeDoRenderUpdate() {
+        val chunkPos = ChunkPos(pos)
+
+        if (infested) chunkUpdates.remove(chunkPos)
+
+        if (chunkUpdates.containsKey(chunkPos)) {
+            val i = chunkUpdates[chunkPos] ?: 0
+
+            if (world.worldTime - i > 20) {
+                doRenderUpdate(chunkPos)
+            }
+        } else {
+            doRenderUpdate(chunkPos)
+        }
+    }
+
+    private fun doRenderUpdate(chunkPos: ChunkPos) {
+        world.markBlockRangeForRenderUpdate(pos, pos)
+        chunkUpdates[chunkPos] = world.worldTime
+    }
+
+    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
+        compound.setInteger("infestTimer", infestTimer)
+
+        return super.writeToNBT(compound)
+    }
+
+    override fun readFromNBT(compound: NBTTagCompound) {
+        super.readFromNBT(compound)
+
+        infestTimer = compound.getInteger("infestTimer")
+    }
+
+    override fun getUpdateTag(): NBTTagCompound {
+        val updateTag = super.getUpdateTag()
+        updateTag.setInteger("infestTimer", infestTimer)
+        return updateTag
+    }
+
+    override fun getUpdatePacket(): SPacketUpdateTileEntity? {
+        return SPacketUpdateTileEntity(pos, 0, updateTag)
     }
 }

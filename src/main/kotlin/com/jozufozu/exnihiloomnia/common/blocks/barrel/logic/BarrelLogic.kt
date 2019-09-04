@@ -9,7 +9,7 @@ abstract class BarrelLogic {
     /**
      * Called when a barrel state is set
      */
-    open fun onActivate(barrel: TileEntityBarrel, previousState: BarrelState?) {
+    open fun onActivate(barrel: TileEntityBarrel) {
 
     }
 

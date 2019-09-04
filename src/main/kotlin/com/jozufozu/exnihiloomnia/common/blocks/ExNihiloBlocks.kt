@@ -36,6 +36,8 @@ object ExNihiloBlocks {
     val END_GRAVEL: Block = register(BlockBaseFalling(LibBlocks.END_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
     val NETHER_GRAVEL: Block = register(BlockBaseFalling(LibBlocks.NETHER_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
 
+    val WITCHWATER: Block = register(BlockFluidWitchWater())
+
     fun hasRegisteredBlocks(): Boolean {
         return registeredBlocks
     }

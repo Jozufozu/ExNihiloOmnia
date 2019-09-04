@@ -2,8 +2,10 @@ package com.jozufozu.exnihiloomnia.proxy
 
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
+import com.jozufozu.exnihiloomnia.common.ExNihiloFluids
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
+import com.jozufozu.exnihiloomnia.common.blocks.leaves.TileEntityInfestedLeaves
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
 import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloMaterials
@@ -27,6 +29,7 @@ open class CommonProxy {
 
         ConfigManager.sync(ExNihilo.MODID, Config.Type.INSTANCE)
 
+        ExNihiloFluids.preInit()
         ExNihiloMaterials.preInit()
         ExNihiloTriggers.preInit()
 
@@ -35,6 +38,7 @@ open class CommonProxy {
         TileEntity.register("exnihiloomnia:sieve", TileEntitySieve::class.java)
         TileEntity.register("exnihiloomnia:crucible", TileEntityCrucible::class.java)
         TileEntity.register("exnihiloomnia:barrel", TileEntityBarrel::class.java)
+        TileEntity.register("exnihiloomnia:infested_leaves", TileEntityInfestedLeaves::class.java)
 
         EntityRegistry.registerModEntity(LibMisc.ENTITY_STONE, EntityThrownStone::class.java, "thrown_stone", 0, ExNihilo, 64, 3, true)
 
@@ -42,13 +46,14 @@ open class CommonProxy {
         WorldProviderSkyblock.preInit()
     }
 
-    fun init(event: FMLInitializationEvent) {
+    open fun init(event: FMLInitializationEvent) {
+        ExNihiloFluids.init()
         ExNihiloNetwork.init()
         ExNihiloMaterials.init()
         RegistryLoader.loadRecipes()
     }
 
-    fun postInit(event: FMLPostInitializationEvent) {
+    open fun postInit(event: FMLPostInitializationEvent) {
 
     }
 }

@@ -8,6 +8,8 @@ object LibRegistries {
     const val INPUT_SUFFIX = "Input"
     const val OUTPUT_SUFFIX = "Output"
 
+    const val CONDITIONS = "conditions"
+
     const val FLUID = "fluid"
     const val ITEM = "item"
     const val BLOCK = "block"

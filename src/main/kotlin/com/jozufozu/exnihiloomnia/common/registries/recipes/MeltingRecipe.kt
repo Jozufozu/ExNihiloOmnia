@@ -36,9 +36,11 @@ class MeltingRecipe(
     companion object Serde {
 
         @Throws(JsonParseException::class)
-        fun deserialize(recipe: JsonObject): MeltingRecipe {
+        fun deserialize(recipe: JsonObject): MeltingRecipe? {
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("melting recipe is missing \"${LibRegistries.INPUT}\"")
             if (LibRegistries.FLUID_OUTPUT !in recipe) throw JsonSyntaxException("melting recipe is missing \"${LibRegistries.FLUID_OUTPUT}\"")
+
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)
             val inputVolume = JsonUtils.getInt(recipe, LibRegistries.VOLUME, 1000)

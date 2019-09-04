@@ -7,6 +7,7 @@ import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.JsonUtils
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
 
 class HeatSource(
@@ -18,13 +19,15 @@ class HeatSource(
 
     companion object Serde {
 
-        fun deserialize(heatSource: JsonObject): HeatSource {
+        fun deserialize(heatSource: JsonObject): HeatSource? {
             if (LibRegistries.SOURCE !in heatSource) throw JsonSyntaxException("Heat source is missing block!")
+
+            if (!CraftingHelper.processConditions(heatSource, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val heatLevel = JsonUtils.getInt(heatSource, LibRegistries.HEAT)
 
             RegistryLoader.pushCtx(LibRegistries.SOURCE)
-            val source = WorldIngredient.deserialize(JsonUtils.getJsonObject(heatSource, LibRegistries.SOURCE))
+            val source = WorldIngredient.deserialize(heatSource[LibRegistries.SOURCE])
             RegistryLoader.popCtx()
 
             return HeatSource(heatLevel, source)

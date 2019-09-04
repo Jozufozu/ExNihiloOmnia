@@ -1,5 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.registries.ingredients
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
@@ -14,42 +16,33 @@ import net.minecraft.util.NonNullList
 import net.minecraftforge.oredict.OreDictionary
 import java.util.function.Predicate
 
-abstract class WorldIngredient: Predicate<IBlockState>, Comparable<WorldIngredient> {
+abstract class WorldIngredient: Predicate<IBlockState> {
 
     abstract val stacks: NonNullList<ItemStack>
 
-    override fun compareTo(other: WorldIngredient): Int {
-        return when {
-            this is ExplicitWorldIngredient -> when (other) {
-                is ExplicitWorldIngredient -> if (block === other.block) {
-                    when (info) {
-                        is Info.Data -> when (other.info) {
-                            is Info.Data -> info.data - other.info.data
-                            is Info.Variants -> -other.info.predicates.size
-                            is Info.None -> 1
-                        }
-                        is Info.Variants -> when (other.info) {
-                            is Info.Data -> info.predicates.size
-                            is Info.Variants -> info.predicates.size - other.info.predicates.size
-                            is Info.None -> 1
-                        }
-                        is Info.None -> -1
-                    }
-                } else
-                    Block.getIdFromBlock(block) - Block.getIdFromBlock(other.block)
-                else -> 1
-            }
-            other is ExplicitWorldIngredient -> -1
-            else -> 0
-        }
-    }
-
     companion object {
+        fun deserialize(ingredient: JsonElement): WorldIngredient {
+            return when (ingredient) {
+                is JsonObject -> deserialize(ingredient)
+                is JsonArray -> {
+                    val ingredients = ArrayList<WorldIngredient>()
+                    ingredient.forEachIndexed { i, it ->
+                        RegistryLoader.pushCtx(i.toString())
+                        ingredients.add(deserialize(it))
+                        RegistryLoader.popCtx()
+                    }
+
+                    CompoundWorldIngredient(ingredients)
+                }
+                else -> throw JsonSyntaxException("a world ingredient must be either a json object or an array of json objects")
+            }
+        }
+
         fun deserialize(ingredient: JsonObject): WorldIngredient {
             val isBlock = LibRegistries.BLOCK in ingredient
             val isOre = LibRegistries.OREDICT in ingredient
 
-            if (isBlock && isOre) throw JsonSyntaxException("blockInput can have either \"${LibRegistries.BLOCK}\" or \"${LibRegistries.OREDICT}\", but not both")
+            if (isBlock && isOre) throw JsonSyntaxException("a world ingredient can have either \"${LibRegistries.BLOCK}\" or \"${LibRegistries.OREDICT}\", but not both")
             when {
                 isOre -> return deserializeOre(ingredient)
                 isBlock -> {
@@ -83,7 +76,7 @@ abstract class WorldIngredient: Predicate<IBlockState>, Comparable<WorldIngredie
 
             val predicates = ArrayList<Predicate<IBlockState>>()
 
-            val ctx = RegistryLoader.pushCtx("Blockstate Properties")
+            val ctx = RegistryLoader.pushCtx("variants")
             for ((key, value) in variants.entrySet()) {
                 RegistryLoader.restoreCtx(ctx)
                 val property = block.blockState.getProperty(key)
@@ -93,9 +86,9 @@ abstract class WorldIngredient: Predicate<IBlockState>, Comparable<WorldIngredie
                     continue
                 }
 
-                RegistryLoader.pushCtx("Property: $key")
+                RegistryLoader.pushCtx(key)
 
-                if (!value.isJsonPrimitive || !value.isJsonArray) {
+                if (!value.isJsonPrimitive && !value.isJsonArray) {
                     RegistryLoader.warn("Value of property must be either a single value or an array of values; ignoring")
                     continue
                 }

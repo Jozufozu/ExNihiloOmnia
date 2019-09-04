@@ -46,10 +46,12 @@ class FluidCraftingRecipe(
         private const val DEFAULT_SOUND: String = "minecraft:entity.bobber.splash"
 
         @Throws(JsonParseException::class)
-        fun deserialize(recipe: JsonObject): FluidCraftingRecipe {
+        fun deserialize(recipe: JsonObject): FluidCraftingRecipe? {
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("fluid crafting recipe is missing \"${LibRegistries.INPUT}\"")
             if (LibRegistries.FLUID_INPUT !in recipe) throw JsonSyntaxException("fluid crafting recipe is missing \"${LibRegistries.FLUID_INPUT}\"")
             if (LibRegistries.OUTPUT !in recipe) throw JsonSyntaxException("fluid crafting recipe is missing \"${LibRegistries.OUTPUT}\"")
+
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val catalyst = CraftingHelper.getIngredient(JsonUtils.getJsonObject(recipe, LibRegistries.INPUT), RegistryLoader.CONTEXT)
 

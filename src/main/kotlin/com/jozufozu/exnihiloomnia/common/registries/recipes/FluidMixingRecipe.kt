@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundEvent
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.registries.IForgeRegistryEntry
 
@@ -43,10 +44,12 @@ class FluidMixingRecipe(
         private const val DEFAULT_SOUND: String = "minecraft:block.lava.extinguish"
 
         @Throws(JsonParseException::class)
-        fun deserialize(recipe: JsonObject): FluidMixingRecipe {
+        fun deserialize(recipe: JsonObject): FluidMixingRecipe? {
             if (LibRegistries.OUTPUT !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.OUTPUT}\"")
             if (LibRegistries.IN_BARREL !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.IN_BARREL}\"")
             if (LibRegistries.ON_BARREL !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.ON_BARREL}\"")
+
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val lower = JsonHelper.deserializeFluid(recipe[LibRegistries.IN_BARREL])
             val upper = JsonHelper.deserializeFluid(recipe[LibRegistries.ON_BARREL])

@@ -2,6 +2,7 @@ package com.jozufozu.exnihiloomnia.common.registries
 
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
+import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -64,6 +65,15 @@ object RegistryManager {
         }
 
         return false
+    }
+
+    fun getFermenting(fluid: FluidStack): FermentingRecipe? {
+        for (recipe in FERMENTING) {
+            if (recipe.matches(fluid))
+                return recipe
+        }
+
+        return null
     }
 
     fun getCompost(input: ItemStack): CompostRecipe? {
