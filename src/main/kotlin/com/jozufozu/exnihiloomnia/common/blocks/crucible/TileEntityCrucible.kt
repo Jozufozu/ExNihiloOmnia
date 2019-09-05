@@ -1,6 +1,8 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
+import com.jozufozu.exnihiloomnia.common.network.MessageUpdateCrucible
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -13,134 +15,134 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
+import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
-import net.minecraftforge.items.ItemStackHandler
+import kotlin.math.floor
+import kotlin.math.min
 
 class TileEntityCrucible : TileEntity(), ITickable {
-    var itemHandler = CrucibleItemHandler()
-    var fluidHandler: CrucibleFluidTank
-
-    val solidCapacity = ModConfig.blocks.crucible.solidCapacity
-    val fluidCapacity = ModConfig.blocks.crucible.fluidCapacity
-
-    /** How many mB of solid this crucible has  */
-    var solidAmount: Int = 0
-    var solidAmountLastTick: Int = 0
-
-    /** How many mB of fluid this crucible has  */
-    var fluidAmount: Int = 0
-    var fluidAmountLastTick: Int = 0
-
-    var partialFluid: Float = 0.toFloat()
-    var partialFluidLastTick: Float = 0.toFloat()
-
-    /** How hot this crucible currently is  */
-    var currentHeatLevel: Int = 0
-
-    /** How hot this crucible's heat source is  */
-    var sourceHeatLevel: Int = 0
-
-    /** How hot this crucible has to be for its contents to melt  */
-    var requiredHeatLevel: Int = 0
-
-    var meltingRatio: Float = 0.toFloat()
-
-    private var ticksExisted: Int = 0
-
-    private var needsUpdate: Boolean = false
-
-    val solidContents: ItemStack
-        get() = this.itemHandler.getStackInSlot(0).copy()
-
-    val fluidContents: FluidStack?
-        get() {
-            val fluid = this.fluidHandler.fluid ?: return null
-
-            return fluid.copy()
-        }
+    private val itemHandler = CrucibleItemHandler()
+    val fluidHandler = FluidTank(fluidCapacity)
 
     init {
-        fluidHandler = CrucibleFluidTank(fluidCapacity)
         fluidHandler.setCanFill(false)
         fluidHandler.setTileEntity(this)
     }
+
+    var solid: ItemStack = ItemStack.EMPTY
+    /** How many mB of solid this crucible has  */
+    var solidAmount: Int
+        get() = solid.count
+        set(value) {
+            if (solid.count != value) packet?.solidAmount = value
+            solid.count = value
+        }
+
+    var solidAmountLastTick: Int = 0
+
+    /** How many mB of fluid this crucible has  */
+    val fluidAmount: Int get() = fluidHandler.fluidAmount
+    var fluidAmountLastTick: Int = 0
+
+    var partialFluid: Float = 0f
+    var partialFluidLastTick: Float = 0f
+
+    /** How hot this crucible currently is  */
+    var currentHeatLevel: Int = 0
+        set(value) {
+            if (value != field) packet?.heat = currentHeatLevel
+            field = value
+        }
+
+    /** How hot this crucible has to be for its contents to melt  */
+    var requiredHeatLevel: Int = 0
+    var meltingRatio: Float = 0f
+
+    val fluidContents: FluidStack? get() = this.fluidHandler.fluid?.copy()
+
+    /**
+     * Accessing packet on the server will populate the backing field if it is null,
+     * letting the update loop know for sure that a packet has to be sent.
+     * If packet is accessed on the client it will always return null,
+     * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
+     */
+    private val packet: MessageUpdateCrucible?
+        get() {
+            if (world == null || world.isRemote) return null
+            if (_packet == null) _packet = MessageUpdateCrucible(pos)
+            return _packet
+        }
+    // Separate backing field so the update loop can know whether or not to send a packet
+    private var _packet: MessageUpdateCrucible? = null
 
     override fun update() {
         solidAmountLastTick = solidAmount
         fluidAmountLastTick = fluidAmount
         partialFluidLastTick = partialFluid
 
-        if (!world.isRemote && ticksExisted % 100 == 0) {
-            val lastSource = sourceHeatLevel
-            val lastCurrent = currentHeatLevel
-            sourceHeatLevel = RegistryManager.getHeat(world.getBlockState(pos.down()))
+        if (!world.isRemote && world.totalWorldTime % 100 == 0L) {
+            val sourceHeatLevel = RegistryManager.getHeat(world.getBlockState(pos.down()))
             //Every 5 seconds, increase the heat by one if the heat source is hotter, decrease it by 1 if it is cooler, or leave it alone
             currentHeatLevel += Integer.signum(sourceHeatLevel - currentHeatLevel)
-
-            if (lastCurrent != currentHeatLevel || lastSource != sourceHeatLevel) {
-                markDirty()
-            }
         }
 
-        if (solidAmount > 0 && currentHeatLevel >= requiredHeatLevel) {
-            val meltingSpeed = currentHeatLevel - requiredHeatLevel
+        if (solidAmount > 0) {
+            if (currentHeatLevel >= requiredHeatLevel) {
+                val meltingSpeed = currentHeatLevel - requiredHeatLevel
 
-            val solid = itemHandler.getStackInSlot(0)
+                // We can't melt more than we have or more than we have space for
+                val melted = solidAmount
+                        .coerceAtMost(meltingSpeed)
+                        .coerceAtMost(floor((fluidHandler.capacity - fluidHandler.fluidAmount).toDouble() / meltingRatio.toDouble()).toInt())
 
-            //We can't melt more than we have
-            var melted = Math.min(solid.count, meltingSpeed)
+                solidAmount -= melted
 
-            //We can't melt more than we have space for
-            melted = Math.min(melted, Math.floor(((fluidHandler.capacity - fluidHandler.fluidAmount) / meltingRatio).toDouble()).toInt())
+                var fluid = fluidHandler.fluid
 
-            solid.shrink(melted)
-            itemHandler.onContentsChanged(0)
+                if (fluid == null) {
+                    val meltingRecipe = RegistryManager.getMelting(solid)
 
-            var fluid = fluidHandler.fluid
+                    // Something is pretty wrong
+                    if (meltingRecipe == null) {
+                        solid = ItemStack.EMPTY
+                        meltingRatio = 0f
+                        requiredHeatLevel = 0
 
-            if (fluid == null) {
-                val meltingRecipe = RegistryManager.getMelting(solid)
+                        packet?.sendItem()
 
-                if (meltingRecipe == null)
-                //Something's fucked up
-                {
-                    itemHandler.setStackInSlot(0, ItemStack.EMPTY)
-                    meltingRatio = 0f
-                    requiredHeatLevel = 0
+                        return
+                    }
 
-                    ticksExisted++
-                    return
+                    fluid = meltingRecipe.output
+                    packet?.fluid = fluid
                 }
 
-                fluid = meltingRecipe.output
+                if (melted > 0) {
+                    val actual = melted * meltingRatio + partialFluid
+                    val toFill = floor(actual.toDouble()).toInt()
+                    partialFluid = actual - toFill
+
+                    fluidHandler.fillInternal(FluidStack(fluid, toFill), true)
+                    packet?.sendFluidAmount(fluidAmount, partialFluid)
+                }
             }
-            markDirty()
+        } else if (!solid.isEmpty) {
+            solid = ItemStack.EMPTY
+            meltingRatio = 0f
+            requiredHeatLevel = 0
 
-            val actual = melted * meltingRatio + partialFluid
-            val `in` = Math.floor(actual.toDouble()).toInt()
-            partialFluid = actual - `in`
-
-            fluidHandler.fillInternal(FluidStack(fluid!!, `in`), true)
+            packet?.sendItem()
         }
 
-        if (!world.isRemote && ticksExisted % 10 == 0 && needsUpdate) {
-            sync()
-            needsUpdate = false
+        if (!world.isRemote) {
+            _packet?.let {
+                markDirty()
+                ExNihiloNetwork.channel.sendToAllAround(it, NetworkRegistry.TargetPoint(world.provider.dimension, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 64.0))
+            }
+            _packet = null
         }
-
-        ticksExisted++
-    }
-
-    override fun markDirty() {
-        super.markDirty()
-        this.needsUpdate = true
-    }
-
-    fun sync() {
-        val pos = getPos()
-        val blockState = world.getBlockState(pos)
-        world.notifyBlockUpdate(pos, blockState, blockState, 3)
     }
 
     override fun getUpdateTag(): NBTTagCompound {
@@ -158,16 +160,14 @@ class TileEntityCrucible : TileEntity(), ITickable {
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         val crucibleData = NBTTagCompound()
 
-        val stackInSlot = itemHandler.getStackInSlot(0)
-        val solidContents = stackInSlot.writeToNBT(NBTTagCompound())
-        solidContents.setByte("Count", 1.toByte())
-        solidContents.setInteger("Amount", stackInSlot.count)
+        val solidContents = solid.writeToNBT(NBTTagCompound())
+        solidContents.removeTag("Count")
+        crucibleData.setInteger("solidAmount", solidAmount)
 
         crucibleData.setTag("solidContents", solidContents)
         crucibleData.setTag("fluidContents", fluidHandler.writeToNBT(NBTTagCompound()))
 
         crucibleData.setInteger("currentHeat", currentHeatLevel)
-        crucibleData.setInteger("sourceHeat", sourceHeatLevel)
         crucibleData.setInteger("requiredHeat", requiredHeatLevel)
         crucibleData.setFloat("meltingRatio", meltingRatio)
         crucibleData.setFloat("partial", partialFluid)
@@ -181,20 +181,14 @@ class TileEntityCrucible : TileEntity(), ITickable {
 
         val crucibleData = compound.getCompoundTag("crucibleData")
 
-        val solidContents = crucibleData.getCompoundTag("solidContents")
-
-        val solid = ItemStack(solidContents)
-        solid.count = solidContents.getInteger("Amount")
-
-        itemHandler.setStackInSlot(0, solid)
+        solid = ItemStack(crucibleData.getCompoundTag("solidContents"))
+        solidAmount = crucibleData.getInteger("Amount")
 
         fluidHandler.readFromNBT(crucibleData.getCompoundTag("fluidContents"))
 
-        fluidAmount = fluidHandler.fluidAmount
         fluidAmountLastTick = fluidAmount
 
         currentHeatLevel = crucibleData.getInteger("currentHeat")
-        sourceHeatLevel = crucibleData.getInteger("sourceHeat")
         requiredHeatLevel = crucibleData.getInteger("requiredHeat")
         meltingRatio = crucibleData.getFloat("meltingRatio")
         partialFluid = crucibleData.getFloat("partial")
@@ -205,18 +199,22 @@ class TileEntityCrucible : TileEntity(), ITickable {
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY === capability)
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler)
-
-        return if (CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY === capability) CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler) else super.getCapability(capability, facing)
+        return when {
+            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY === capability -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler)
+            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY === capability -> CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler)
+            else -> super.getCapability(capability, facing)
+        }
 
     }
 
-    inner class CrucibleItemHandler : ItemStackHandler(1) {
+    inner class CrucibleItemHandler : IItemHandler {
+        override fun getStackInSlot(slot: Int): ItemStack = solid.copy().also { it.count = 1 }
 
-        override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack {
-            return ItemStack.EMPTY
-        }
+        override fun getSlotLimit(slot: Int) = solidCapacity
+
+        override fun getSlots() = 1
+
+        override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack = ItemStack.EMPTY
 
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             if (stack.isEmpty)
@@ -227,66 +225,36 @@ class TileEntityCrucible : TileEntity(), ITickable {
             if (fluidAmount != 0 && !meltingRecipe.output.isFluidEqual(fluidHandler.fluid))
                 return stack
 
-            val existing = this.stacks[slot]
-
             val inputVolume = meltingRecipe.inputVolume
 
-            var allowedIn = Math.floorDiv(solidCapacity - existing.count, inputVolume)
-
-            allowedIn = Math.min(allowedIn, stack.count)
+            val allowedIn = min(Math.floorDiv(solidCapacity - solidAmount, inputVolume), stack.count)
 
             val copy = stack.copy()
             copy.shrink(allowedIn)
 
             if (!simulate) {
-                requiredHeatLevel = meltingRecipe.requiredHeat
-                meltingRatio = meltingRecipe.output.amount.toFloat() / inputVolume.toFloat()
-
-                if (fluidHandler.fluid == null)
+                if (fluidHandler.fluid == null) {
                     fluidHandler.fluid = FluidStack(meltingRecipe.output, 0)
-
-                if (existing.isEmpty) {
-                    this.stacks[slot] = ItemHandlerHelper.copyStackWithSize(stack, allowedIn * inputVolume)
-                } else {
-                    existing.grow(allowedIn * inputVolume)
+                    packet?.fluid = fluidHandler.fluid
                 }
-                onContentsChanged(slot)
-                sync()
+
+                if (solid.isEmpty) {
+                    solid = ItemHandlerHelper.copyStackWithSize(stack, allowedIn * inputVolume)
+                    requiredHeatLevel = meltingRecipe.requiredHeat
+                    meltingRatio = meltingRecipe.output.amount.toFloat() / inputVolume.toFloat()
+
+                    packet?.sendItem(solid, requiredHeatLevel, meltingRatio)
+                } else {
+                    solidAmount += allowedIn * inputVolume
+                }
             }
 
             return copy
         }
-
-        override fun getStackLimit(slot: Int, stack: ItemStack): Int {
-            return solidCapacity
-        }
-
-        override fun onLoad() {
-            solidAmount = getStackInSlot(0).count
-            solidAmountLastTick = solidAmount
-        }
-
-        public override fun onContentsChanged(slot: Int) {
-            solidAmount = getStackInSlot(slot).count
-            markDirty()
-        }
     }
 
-    inner class CrucibleFluidTank(capacity: Int) : FluidTank(capacity) {
-
-        override fun fill(resource: FluidStack, doFill: Boolean): Int {
-            sync()
-            return super.fill(resource, doFill)
-        }
-
-        override fun drain(maxDrain: Int, doDrain: Boolean): FluidStack? {
-            sync()
-            return super.drain(maxDrain, doDrain)
-        }
-
-        override fun onContentsChanged() {
-            this@TileEntityCrucible.fluidAmount = fluidAmount
-            markDirty()
-        }
+    companion object {
+        val solidCapacity get() = ModConfig.blocks.crucible.solidCapacity
+        val fluidCapacity get() = ModConfig.blocks.crucible.fluidCapacity
     }
 }

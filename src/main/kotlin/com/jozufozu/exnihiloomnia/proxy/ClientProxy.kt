@@ -4,7 +4,7 @@ import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.client.renderers.TileEntityBarrelRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
-import com.jozufozu.exnihiloomnia.common.blocks.leaves.BlockInfestedLeaves
+import com.jozufozu.exnihiloomnia.common.blocks.leaves.BlockSilkwormInfested
 import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
@@ -39,7 +39,7 @@ class ClientProxy : CommonProxy() {
 
     override fun postInit(event: FMLPostInitializationEvent) {
         super.postInit(event)
-        BlockInfestedLeaves.postInit()
+        BlockSilkwormInfested.postInit()
     }
 
     @SubscribeEvent

@@ -13,6 +13,7 @@ object ExNihiloNetwork {
 
     fun init() {
         registerMessage(MessageUpdateBarrel::class.java, MessageUpdateBarrel.Handler::class.java, Side.CLIENT)
+        registerMessage(MessageUpdateCrucible::class.java, MessageUpdateCrucible.Handler::class.java, Side.CLIENT)
     }
 
     private fun <REQ : IMessage, REPLY : IMessage> registerMessage(requestMessageType: Class<REQ>, messageHandler: Class<out IMessageHandler<REQ, REPLY>>, side: Side) {

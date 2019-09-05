@@ -49,9 +49,7 @@ tile.exnihiloomnia.sieve.big_oak.name=Dark Oak Sieve
 
 tile.exnihiloomnia.end_gravel.name=End Gravel
 tile.exnihiloomnia.nether_gravel.name=Nether Gravel
-
 tile.exnihiloomnia.dust.name=Dust
-tile.exnihiloomnia.kindling.name=Kindling
 
 tile.exnihiloomnia.crucible.name=Crucible
 tile.exnihiloomnia.raw_crucible.name=Unfired Crucible
@@ -117,8 +115,12 @@ tile.exnihiloomnia.barrel_terracotta.green.name=Green Terracotta Barrel
 tile.exnihiloomnia.barrel_terracotta.red.name=Red Terracotta Barrel
 tile.exnihiloomnia.barrel_terracotta.black.name=Black Terracotta Barrel
 
+
+tile.exnihiloomnia.infested_generic.name=Infested %s
+
 item.exnihiloomnia.small_stone.name=Small Stone
 item.exnihiloomnia.ash.name=Pile of Ash
+item.exnihiloomnia.silkworm.name=Silkworm
 
 item.exnihiloomnia.mesh_wood.name=Wooden Mesh
 item.exnihiloomnia.mesh_silk.name=Silk Mesh

@@ -7,7 +7,7 @@ import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.ChunkPos
 
-class TileEntityInfestedLeaves : TileEntity(), ITickable {
+class TileEntitySilkwormInfested : TileEntity(), ITickable {
     companion object {
         private const val infestMax: Int = 20 * 50
 
@@ -30,17 +30,17 @@ class TileEntityInfestedLeaves : TileEntity(), ITickable {
             maybeDoRenderUpdate()
         }
 
-        if (!world.isRemote && percentInfested > 0.7 && world.worldTime % 20 == 0L) {
+        if (!world.isRemote && percentInfested > 0.7 && world.totalWorldTime % 20 == 0L) {
             for (pos in BlockPos.MutableBlockPos.getAllInBoxMutable(pos.add(-1, -1, -1), pos.add(1, 1, 1))) {
                 if (world.rand.nextFloat() < 0.01 && pos != this.pos) {
                     val uninfested = world.getBlockState(pos)
 
-                    if (uninfested.block in BlockInfestedLeaves.leafMap) {
-                        val infested = BlockInfestedLeaves.leafMap[uninfested.block] ?: continue
+                    if (uninfested.block in BlockSilkwormInfested.blockMappings) {
+                        val infested = BlockSilkwormInfested.blockMappings[uninfested.block] ?: continue
 
                         world.setBlockState(pos, infested.uninfestedToInfested(uninfested))
 
-                        (world.getTileEntity(pos) as? TileEntityInfestedLeaves)?.infestTimer = (infestMax * (world.rand.nextFloat() * 0.25f + 0.1f)).toInt()
+                        (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.infestTimer = (infestMax * (world.rand.nextFloat() * 0.25f + 0.1f)).toInt()
 
                         break
                     }
@@ -57,7 +57,7 @@ class TileEntityInfestedLeaves : TileEntity(), ITickable {
         if (chunkUpdates.containsKey(chunkPos)) {
             val i = chunkUpdates[chunkPos] ?: 0
 
-            if (world.worldTime - i > 20) {
+            if (world.totalWorldTime - i > 20) {
                 doRenderUpdate(chunkPos)
             }
         } else {
@@ -67,7 +67,7 @@ class TileEntityInfestedLeaves : TileEntity(), ITickable {
 
     private fun doRenderUpdate(chunkPos: ChunkPos) {
         world.markBlockRangeForRenderUpdate(pos, pos)
-        chunkUpdates[chunkPos] = world.worldTime
+        chunkUpdates[chunkPos] = world.totalWorldTime
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {

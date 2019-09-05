@@ -35,6 +35,7 @@ object ExNihiloItems {
     val STONE: Item = register(ItemStone())
     val ASTROLABE: Item = register(ItemJadeAstrolabe())
     val ASH: Item = register(ItemAsh())
+    val SILKWORM: Item = register(ItemSilkWorm())
 
     @SubscribeEvent
     @JvmStatic fun registerItems(event: RegistryEvent.Register<Item>) {

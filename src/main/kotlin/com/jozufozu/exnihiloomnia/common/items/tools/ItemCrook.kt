@@ -19,7 +19,7 @@ class ItemCrook(registryName: ResourceLocation, toolMaterial: ToolMaterial) : It
         if (!world.isRemote && state.material === Material.LEAVES) {
             val leaves = state.block
 
-            leaves.dropBlockAsItem(world, pos, state, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemstack))
+            leaves.dropBlockAsItem(world, pos, state, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemstack) + 1)
         }
 
         return false

@@ -71,12 +71,10 @@ class TileEntityBarrel : TileEntity(), ITickable {
      * If packet is accessed on the client it will always return null,
      * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
      */
-    val packet: MessageUpdateBarrel?
+    private val packet: MessageUpdateBarrel?
         get() {
             if (world == null || world.isRemote) return null
-            if (_packet == null) {
-                _packet = MessageUpdateBarrel(pos)
-            }
+            if (_packet == null) _packet = MessageUpdateBarrel(pos)
             return _packet
         }
     // Separate backing field so the update loop can know whether or not to send a packet

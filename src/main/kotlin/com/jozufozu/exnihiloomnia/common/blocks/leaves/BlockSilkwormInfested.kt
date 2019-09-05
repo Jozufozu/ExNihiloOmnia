@@ -2,6 +2,7 @@ package com.jozufozu.exnihiloomnia.common.blocks.leaves
 
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
+import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.Block
 import net.minecraft.block.ITileEntityProvider
@@ -11,11 +12,13 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.color.IBlockColor
+import net.minecraft.client.resources.I18n
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraft.item.EnumDyeColor
+import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -37,7 +40,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.*
 
-class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : BlockBase(blockName, mimic.defaultState.material, mimic.soundType), ITileEntityProvider {
+class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : BlockBase(blockName, mimic.defaultState.material, mimic.soundType), ITileEntityProvider {
     val mimicState: MimicBlockState
 
     init {
@@ -52,11 +55,45 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
     fun uninfestedToInfested(uninfested: IBlockState): IBlockState = mimicState.getMimickingBlockState(uninfested)
     fun infestedToUninfested(infested: IBlockState): IBlockState = mimicState.getMimickedBlockState(infested)
 
-    override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntityInfestedLeaves()
+    override fun removedByPlayer(state: IBlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean): Boolean {
+        if (!world.isRemote) {
+            (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.let {
+                if (world.rand.nextFloat() < it.percentInfested * 1 / 4.0)
+                    spawnAsEntity(world, pos, ItemStack(Items.STRING))
 
-    override fun isLeaves(state: IBlockState, world: IBlockAccess, pos: BlockPos) = false
+                if (world.rand.nextFloat() < it.percentInfested)
+                    spawnAsEntity(world, pos, ItemStack(Items.STRING))
 
-    override fun hasTileEntity(state: IBlockState) = true
+                if (world.rand.nextFloat() < 0.6)
+                    spawnAsEntity(world, pos, ItemStack(ExNihiloItems.SILKWORM))
+            }
+        }
+
+        world.removeTileEntity(pos)
+        return world.setBlockToAir(pos)
+    }
+
+    override fun breakBlock(world: World, pos: BlockPos, state: IBlockState) {
+        mimic.breakBlock(world, pos, state)
+        super.breakBlock(world, pos, state)
+    }
+
+    override fun getLocalizedName(): String {
+        val name = I18n.format(unlocalizedName)
+
+        return if (name == unlocalizedName)
+            I18n.format("tile.exnihiloomnia.infested_generic.name", mimic.localizedName)
+        else
+            name
+    }
+
+    override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntitySilkwormInfested()
+
+    override fun beginLeavesDecay(state: IBlockState, world: World, pos: BlockPos) {
+        mimic.beginLeavesDecay(state, world, pos)
+    }
+
+    override fun isLeaves(state: IBlockState, world: IBlockAccess, pos: BlockPos) = mimic.isLeaves(state, world, pos)
 
     override fun getMapColor(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): MapColor = MapColor.WHITE_STAINED_HARDENED_CLAY
 
@@ -65,63 +102,45 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
         return uninfestedToInfested(actualState)
     }
 
-    override fun getMetaFromState(state: IBlockState): Int {
-        return mimic.getMetaFromState(infestedToUninfested(state))
-    }
+    override fun getMetaFromState(state: IBlockState): Int = mimic.getMetaFromState(infestedToUninfested(state))
 
-    override fun getStateFromMeta(meta: Int): IBlockState {
-        return uninfestedToInfested(mimic.getStateFromMeta(meta))
-    }
+    override fun getStateFromMeta(meta: Int): IBlockState = uninfestedToInfested(mimic.getStateFromMeta(meta))
+
+    override fun getFlammability(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Int = mimic.getFlammability(world, pos, face)
+
+    override fun isFlammable(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Boolean = mimic.isFlammable(world, pos, face)
+
+    override fun getFireSpreadSpeed(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Int = mimic.getFireSpreadSpeed(world, pos, face)
+
+    override fun isFireSource(world: World, pos: BlockPos, side: EnumFacing): Boolean = mimic.isFireSource(world, pos, side)
 
     override fun canRenderInLayer(state: IBlockState, layer: BlockRenderLayer): Boolean = mimic.canRenderInLayer(mimicState.getMimickedBlockState(state), layer)
 
-    override fun recolorBlock(world: World, pos: BlockPos, side: EnumFacing, color: EnumDyeColor): Boolean {
-        return mimic.recolorBlock(world, pos, side, color)
-    }
+    override fun recolorBlock(world: World, pos: BlockPos, side: EnumFacing, color: EnumDyeColor): Boolean = mimic.recolorBlock(world, pos, side, color)
 
-    override fun isCollidable(): Boolean {
-        return mimic.isCollidable
-    }
+    override fun isCollidable(): Boolean = mimic.isCollidable
 
-    override fun canCollideCheck(state: IBlockState, hitIfLiquid: Boolean): Boolean {
-        return mimic.canCollideCheck(state, hitIfLiquid)
-    }
+    override fun canCollideCheck(state: IBlockState, hitIfLiquid: Boolean): Boolean = mimic.canCollideCheck(state, hitIfLiquid)
 
-    override fun modifyAcceleration(worldIn: World, pos: BlockPos, entityIn: Entity, motion: Vec3d): Vec3d {
-        return mimic.modifyAcceleration(worldIn, pos, entityIn, motion)
-    }
+    override fun modifyAcceleration(worldIn: World, pos: BlockPos, entityIn: Entity, motion: Vec3d): Vec3d = mimic.modifyAcceleration(worldIn, pos, entityIn, motion)
 
-    override fun doesSideBlockChestOpening(blockState: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean {
-        return mimic.doesSideBlockChestOpening(blockState, world, pos, side)
-    }
+    override fun doesSideBlockChestOpening(blockState: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean = mimic.doesSideBlockChestOpening(blockState, world, pos, side)
 
-    override fun isBurning(world: IBlockAccess, pos: BlockPos): Boolean {
-        return mimic.isBurning(world, pos)
-    }
+    override fun isBurning(world: IBlockAccess, pos: BlockPos): Boolean = mimic.isBurning(world, pos)
 
-    override fun getExplosionResistance(world: World, pos: BlockPos, exploder: Entity?, explosion: Explosion): Float {
-        return mimic.getExplosionResistance(world, pos, exploder, explosion)
-    }
+    override fun getExplosionResistance(world: World, pos: BlockPos, exploder: Entity?, explosion: Explosion): Float = mimic.getExplosionResistance(world, pos, exploder, explosion)
 
     override fun onBlockAdded(worldIn: World, pos: BlockPos, state: IBlockState) {
         mimic.onBlockAdded(worldIn, pos, state)
     }
 
-    override fun isToolEffective(type: String, state: IBlockState): Boolean {
-        return mimic.isToolEffective(type, state)
-    }
+    override fun isToolEffective(type: String, state: IBlockState): Boolean = mimic.isToolEffective(type, state)
 
-    override fun rotateBlock(world: World, pos: BlockPos, axis: EnumFacing): Boolean {
-        return mimic.rotateBlock(world, pos, axis)
-    }
+    override fun rotateBlock(world: World, pos: BlockPos, axis: EnumFacing): Boolean = mimic.rotateBlock(world, pos, axis)
 
-    override fun isLadder(state: IBlockState, world: IBlockAccess, pos: BlockPos, entity: EntityLivingBase): Boolean {
-        return mimic.isLadder(state, world, pos, entity)
-    }
+    override fun isLadder(state: IBlockState, world: IBlockAccess, pos: BlockPos, entity: EntityLivingBase): Boolean = mimic.isLadder(state, world, pos, entity)
 
-    override fun canSpawnInBlock(): Boolean {
-        return mimic.canSpawnInBlock()
-    }
+    override fun canSpawnInBlock(): Boolean = mimic.canSpawnInBlock()
 
     override fun onEntityWalk(worldIn: World, pos: BlockPos, entityIn: Entity) {
         mimic.onEntityWalk(worldIn, pos, entityIn)
@@ -131,14 +150,7 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
         mimic.updateTick(worldIn, pos, state, rand)
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        return mimic.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ)
-    }
-
-    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
-        mimic.breakBlock(worldIn, pos, state)
-        super.breakBlock(worldIn, pos, state)
-    }
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = mimic.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ)
 
     override fun randomTick(worldIn: World, pos: BlockPos, state: IBlockState, random: Random) {}
 
@@ -146,13 +158,9 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
         mimic.onEntityCollidedWithBlock(worldIn, pos, state, entityIn)
     }
 
-    override fun canPlaceBlockOnSide(worldIn: World, pos: BlockPos, side: EnumFacing): Boolean {
-        return mimic.canPlaceBlockOnSide(worldIn, pos, side)
-    }
+    override fun canPlaceBlockOnSide(worldIn: World, pos: BlockPos, side: EnumFacing): Boolean = mimic.canPlaceBlockOnSide(worldIn, pos, side)
 
-    override fun canPlaceBlockAt(worldIn: World, pos: BlockPos): Boolean {
-        return mimic.canPlaceBlockAt(worldIn, pos)
-    }
+    override fun canPlaceBlockAt(worldIn: World, pos: BlockPos): Boolean = mimic.canPlaceBlockAt(worldIn, pos)
 
     @SideOnly(Side.CLIENT)
     override fun randomDisplayTick(stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
@@ -163,19 +171,19 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
     companion object {
         private val blockStateField by lazy { ReflectionHelper.findField(Block::class.java, "blockState") }
 
-        private val leaves = mutableListOf<BlockInfestedLeaves>()
+        private val infestedBlocks = mutableListOf<BlockSilkwormInfested>()
 
-        private val leafMappings = hashMapOf<Block, BlockInfestedLeaves>()
-        val leafMap: Map<Block, BlockInfestedLeaves> get() = this.leafMappings
+        private val infestedMap = hashMapOf<Block, BlockSilkwormInfested>()
+        val blockMappings: Map<Block, BlockSilkwormInfested> get() = this.infestedMap
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
         fun registerBlocks(event: RegistryEvent.Register<Block>) {
             val registry = event.registry
-            registry.filter { it.defaultState.material == Material.LEAVES || it == Blocks.VINE }
-                    .map { it to BlockInfestedLeaves(it, ResourceLocation(ExNihilo.MODID, "infested_${it.registryName!!.resourceDomain}_${it.registryName!!.resourcePath}")) }
+            registry.filter { it.defaultState.material == Material.LEAVES || it.defaultState.material == Material.VINE }
+                    .map { it to BlockSilkwormInfested(it, ResourceLocation(ExNihilo.MODID, "infested_${it.registryName!!.resourceDomain}_${it.registryName!!.resourcePath}")) }
                     .forEach {
-                        leaves.add(it.second)
-                        leafMappings[it.first] = it.second
+                        infestedBlocks.add(it.second)
+                        infestedMap[it.first] = it.second
                         registry.register(it.second)
                     }
         }
@@ -184,7 +192,7 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
         @SideOnly(Side.CLIENT)
         @SubscribeEvent(priority = EventPriority.LOWEST)
         fun registerModels(event: ModelBakeEvent) {
-            leaves.forEach { leaf ->
+            infestedBlocks.forEach { leaf ->
                 event.modelManager.blockModelShapes.registerBlockWithStateMapper(leaf) { _ ->
                     event.modelManager.blockModelShapes.blockStateMapper.getVariants(leaf.mimic).map {
                         leaf.uninfestedToInfested(it.key) to it.value
@@ -197,7 +205,7 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
         @SideOnly(Side.CLIENT)
         @SubscribeEvent
         fun registerModels(event: ModelRegistryEvent) {
-            leaves.forEach { leaf ->
+            infestedBlocks.forEach { leaf ->
                 ModelLoader.setCustomStateMapper(leaf) {
                     leaf.mimicState.validStates.map { it to ModelResourceLocation("minecraft:reeds", "normal") }.toMap()
                 }
@@ -207,9 +215,9 @@ class BlockInfestedLeaves(val mimic: Block, blockName: ResourceLocation) : Block
         @SideOnly(Side.CLIENT)
         fun postInit() {
             with(Minecraft.getMinecraft().blockColors) {
-                for (leaf in leaves) {
+                for (leaf in infestedBlocks) {
                     registerBlockColorHandler(IBlockColor { infested: IBlockState, world: IBlockAccess?, pos: BlockPos?, i: Int ->
-                        if (world != null && pos != null) (world.getTileEntity(pos) as? TileEntityInfestedLeaves)?.let {
+                        if (world != null && pos != null) (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.let {
                             if (it.infested) return@IBlockColor -1
 
                             val mimic = leaf.infestedToUninfested(infested)

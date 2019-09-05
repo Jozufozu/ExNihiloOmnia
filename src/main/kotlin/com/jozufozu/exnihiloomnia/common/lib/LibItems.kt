@@ -47,6 +47,7 @@ object LibItems {
 
     val ASTROLABE = get("astrolabe")
     val ASH = get("ash")
+    val SILKWORM = get("silkworm")
 
     private operator fun get(vararg name: String): ResourceLocation {
         val builder = StringBuilder()
