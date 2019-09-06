@@ -34,6 +34,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.items.ItemHandlerHelper
 
 class BlockSieve : BlockBase(LibBlocks.SIEVE, Material.WOOD), ITileEntityProvider, IModelRegister {
     companion object {
@@ -51,28 +52,33 @@ class BlockSieve : BlockBase(LibBlocks.SIEVE, Material.WOOD), ITileEntityProvide
         this.soundType = SoundType.WOOD
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val sieve = worldIn.getTileEntity(pos) as? TileEntitySieve ?: return true
 
-        val held = playerIn.getHeldItem(hand)
+        val held = player.getHeldItem(hand)
 
-        if (sieve.hasContents() && sieve.hasMesh()) {
-            sieve.queueWork(playerIn, held)
+        if (sieve.hasContents && sieve.hasMesh) {
+            sieve.queueWork(player, held)
 
-            val soundType = sieve.blockSound(playerIn)
+            val soundType = sieve.blockSound(player)
             worldIn.playSound(null, pos, soundType.hitSound, SoundCategory.BLOCKS, 0.2f, soundType.getPitch() * 0.8f + worldIn.rand.nextFloat() * 0.4f)
-        } else if (!worldIn.isRemote) {
-            if (!sieve.hasMesh()) {
-                sieve.trySetMesh(playerIn, held)
-            } else {
-                if (playerIn.isSneaking && held == ItemStack.EMPTY) {
-                    sieve.removeMesh(playerIn)
+
+            return true
+        }
+
+        if (!worldIn.isRemote) {
+            if (sieve.hasMesh && !sieve.hasContents) {
+                if (player.isSneaking && held.isEmpty) {
+                    ItemHandlerHelper.giveItemToPlayer(player, sieve.removeMesh(), player.inventory.currentItem)
+
                     worldIn.playSound(null, pos,
                             SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7f + 1.0f) * 2.0f)
                     return true
                 }
 
-                if (RegistryManager.siftable(held)) sieve.insertContents(playerIn, held)
+                if (RegistryManager.siftable(held)) sieve.tryAddContents(player, held)
+            } else {
+                sieve.trySetMesh(player, held)
             }
         }
 
@@ -122,9 +128,7 @@ class BlockSieve : BlockBase(LibBlocks.SIEVE, Material.WOOD), ITileEntityProvide
     override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntitySieve()
 
     override val itemBlock: ItemBlock by lazy {
-        ItemMultiTexture(this, this) { item -> BlockPlanks.EnumType.byMetadata(item.metadata).unlocalizedName }.also {
-            it.registryName = registryName
-        }
+        ItemMultiTexture(this, this) { item -> BlockPlanks.EnumType.byMetadata(item.metadata).unlocalizedName }.also { it.registryName = registryName }
     }
 
     @SideOnly(Side.CLIENT)

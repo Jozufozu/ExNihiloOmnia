@@ -2,7 +2,6 @@ package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
 import com.jozufozu.exnihiloomnia.client.renderers.TileEntityCrucibleRenderer
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
-import net.minecraft.block.Block
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -29,26 +28,24 @@ class BlockCrucible : BlockCrucibleRaw(LibBlocks.CRUCIBLE, Material.ROCK, SoundT
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        val crucible = worldIn.getTileEntity(pos) as TileEntityCrucible?
-
-        if (crucible != null && !worldIn.isRemote) {
+        if (!worldIn.isRemote) (worldIn.getTileEntity(pos) as? TileEntityCrucible)?.let {
             val held = playerIn.getHeldItem(hand)
 
-            var fluidIn = ItemHandlerHelper.copyStackWithSize(held, 1)
+            var toInsert = ItemHandlerHelper.copyStackWithSize(held, 1)
 
-            if (!FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
-                fluidIn = ItemHandlerHelper.insertItem(crucible.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), fluidIn, false)
-            } else {
+            if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
                 val fluidContained = FluidUtil.getFluidContained(playerIn.getHeldItem(hand))
 
                 if (fluidContained != null) {
                     val fluid = fluidContained.fluid
                     worldIn.playSound(null, pos, fluid.getFillSound(fluidContained), SoundCategory.NEUTRAL, 1.0f, 1.0f)
                 }
+            } else {
+                toInsert = ItemHandlerHelper.insertItem(it.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), toInsert, false)
             }
 
-            if (fluidIn.isEmpty) {
-                val blockFromItem = Block.getBlockFromItem(held.item)
+            if (toInsert.isEmpty) {
+                val blockFromItem = getBlockFromItem(held.item)
 
                 if (blockFromItem !== Blocks.AIR) {
                     val soundType = blockFromItem.getSoundType(blockFromItem.getStateFromMeta(held.metadata), worldIn, pos, playerIn)

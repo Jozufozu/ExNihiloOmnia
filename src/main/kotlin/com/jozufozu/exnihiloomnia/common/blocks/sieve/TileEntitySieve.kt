@@ -3,6 +3,8 @@ package com.jozufozu.exnihiloomnia.common.blocks.sieve
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.client.ParticleSieve
 import com.jozufozu.exnihiloomnia.common.items.tools.IMesh
+import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
+import com.jozufozu.exnihiloomnia.common.network.MessageUpdateSieve
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
@@ -22,161 +24,163 @@ import net.minecraft.util.ITickable
 import net.minecraft.util.NonNullList
 import net.minecraft.util.SoundCategory
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.util.Constants
+import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.items.CapabilityItemHandler
-import net.minecraftforge.items.ItemHandlerHelper
-import net.minecraftforge.items.ItemStackHandler
+import net.minecraftforge.items.IItemHandlerModifiable
 
 class TileEntitySieve : TileEntity(), ITickable {
-    private val itemHandler = SieveItemHandler(2)
+    private val itemHandler = SieveItemHandler()
 
+    var mesh: ItemStack = ItemStack.EMPTY
+        set(value) {
+            packet?.mesh = value
+            field = value
+        }
+
+    var contents: ItemStack = ItemStack.EMPTY
     var requiredTime: Int = 0
 
     var countdown: Int = 0
+        set(value) {
+            if (value != field) {
+                packet?.countdown = value
+                field = value
+            }
+        }
     var countdownLastTick: Int = 0
 
+    var workTimer: Int = 0
+        set(value) {
+            if (value != field) {
+                packet?.workTimer = value
+                field = value
+            }
+        }
+
+    val hasContents get() = !contents.isEmpty
+    val hasMesh get() = !mesh.isEmpty
+
     private var user: EntityPlayer? = null
-    private var workTimer: Int = 0
 
-    val contents: ItemStack
-        get() = itemHandler.getStackInSlot(0)
-
-    val mesh: ItemStack
-        get() = itemHandler.getStackInSlot(1)
-
-    fun queueWork(player: EntityPlayer, held: ItemStack) {
-        this.user = player
-
-        workTimer += 4
-    }
+    /**
+     * Accessing packet on the server will populate the backing field if it is null,
+     * letting the update loop know for sure that a packet has to be sent.
+     * If packet is accessed on the client it will always return null,
+     * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
+     */
+    private val packet: MessageUpdateSieve?
+        get() {
+            if (world == null || world.isRemote) return null
+            if (_packet == null) _packet = MessageUpdateSieve(pos)
+            return _packet
+        }
+    // Separate backing field so the update loop can know whether or not to send a packet
+    private var _packet: MessageUpdateSieve? = null
 
     override fun update() {
         countdownLastTick = countdown
 
-        if (requiredTime == 0)
-            return
+        if (requiredTime > 0) {
+            if (workTimer > 0) {
+                workTimer--
+                countdown--
 
-        if (workTimer > 0) {
-            workTimer--
-            countdown--
-
-            if (world.isRemote) {
-                val mimic = itemHandler.getStackInSlot(0)
-                for (i in 0 until world.rand.nextInt(10) + 25) {
-                    Minecraft.getMinecraft().effectRenderer.addEffect(ParticleSieve(world, mimic, pos))
+                if (world.isRemote) {
+                    val mimic = contents
+                    for (i in 0 until world.rand.nextInt(10) + 25) {
+                        Minecraft.getMinecraft().effectRenderer.addEffect(ParticleSieve(world, mimic, pos))
+                    }
                 }
             }
 
-            markDirty()
+            if (countdown <= 0) {
+                if (!world.isRemote) {
+                    rollRewards()
+
+                    if (user?.isCreative?.not() == true) {
+                        if (mesh.attemptDamageItem(1, world.rand, user as? EntityPlayerMP)) {
+                            world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.8f, 0.8f + world.rand.nextFloat() * 0.4f)
+
+                            mesh = ItemStack.EMPTY
+                        }
+                    }
+
+                    val soundType = blockSound(user)
+                    world.playSound(null, pos, soundType.breakSound, SoundCategory.BLOCKS, 0.8f, soundType.getPitch() * 0.8f + world.rand.nextFloat() * 0.4f)
+                }
+
+                reset()
+            }
         }
 
-        if (countdown <= 0) {
-            if (!world.isRemote) {
-                rollRewards()
-
-                if (itemHandler.getStackInSlot(1).attemptDamageItem(1, world.rand, null)) {
-                    this.world.playSound(null, this.pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.8f, 0.8f + this.world.rand.nextFloat() * 0.4f)
-
-                    setStackInSlot(1, ItemStack.EMPTY)
-                }
-
-                val soundType = blockSound(user!!)
-                this.world.playSound(null, this.pos, soundType.breakSound, SoundCategory.BLOCKS, 0.8f, soundType.getPitch() * 0.8f + this.world.rand.nextFloat() * 0.4f)
+        if (!world.isRemote) {
+            _packet?.let {
+                markDirty()
+                ExNihiloNetwork.channel.sendToAllAround(it, NetworkRegistry.TargetPoint(world.provider.dimension, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 64.0))
             }
-
-            reset()
+            _packet = null
         }
     }
 
-    /**
-     * Takes the given item and checks to see if it can be sifted. If it can, it will decrease the stack by one and fill the sieve
-     */
-    fun insertContents(user: EntityPlayer?, contents: ItemStack) {
-        if (itemHandler.getStackInSlot(0) != ItemStack.EMPTY)
-            return
+    fun queueWork(player: EntityPlayer, held: ItemStack) {
+        user = player
 
-        if (RegistryManager.siftable(contents)) {
-            val insert = ItemStack(contents.item, 1, contents.metadata)
+        workTimer += 4
+    }
 
-            if (user == null || !user.isCreative)
-                contents.shrink(1)
+    fun trySetMesh(player: EntityPlayer, stack: ItemStack) {
+        user = player
+        if (!stack.isEmpty && stack.item is IMesh) {
+            mesh = stack.splitStack(1)
+        }
+    }
 
-            workTimer = 0
+    fun tryAddContents(player: EntityPlayer, stack: ItemStack) {
+        user = player
+        if (contents.isEmpty && RegistryManager.siftable(stack)) {
+            val insert = if (player.isCreative) stack.copy().also { it.count = 1 } else stack.splitStack(1)
 
-            requiredTime = 0
+            itemHandler.setStackInSlot(1, insert)
 
-            for (recipe in RegistryManager.SIFTING) {
-                if (recipe.matches(insert))
-                    requiredTime = Math.max(requiredTime, recipe.siftTime)
-            }
-
-            countdownLastTick = 0
-            countdown = requiredTime
-
-            setStackInSlot(0, insert)
-
-            var soundEvent = SoundEvents.BLOCK_GRAVEL_HIT
-
-            val sifting = itemHandler.getStackInSlot(0)
-            val block = Block.getBlockFromItem(sifting.item)
-
-            if (block !== Blocks.AIR)
-                soundEvent = block.getSoundType(block.getStateFromMeta(sifting.metadata), world, pos, user).placeSound
+            val block = Block.getBlockFromItem(insert.item)
+            val soundEvent = if (block !== Blocks.AIR)
+                block.getSoundType(block.getStateFromMeta(insert.metadata), world, pos, player).placeSound
+            else
+                SoundEvents.BLOCK_GRAVEL_HIT
 
             world.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, 0.4f, 0.75f + world.rand.nextFloat() * 0.1f)
         }
     }
 
-    fun hasContents(): Boolean {
-        return itemHandler.getStackInSlot(0) != ItemStack.EMPTY
+    fun removeMesh(): ItemStack {
+        val out = mesh
+        mesh = ItemStack.EMPTY
+        return out
     }
 
-    fun trySetMesh(user: EntityPlayer?, mesh: ItemStack) {
-        if (mesh.item !is IMesh)
-            return
 
-        val toInsert = mesh.copy()
-
-        user?.inventory?.deleteStack(mesh)
-
-        setStackInSlot(1, toInsert)
-    }
-
-    fun removeMesh(user: EntityPlayer) {
-        ItemHandlerHelper.giveItemToPlayer(user, itemHandler.getStackInSlot(1))
-
-        setStackInSlot(1, ItemStack.EMPTY)
-    }
-
-    fun hasMesh(): Boolean {
-        return itemHandler.getStackInSlot(1) != ItemStack.EMPTY
-    }
-
-    fun blockSound(user: EntityPlayer): SoundType {
+    fun blockSound(user: EntityPlayer?): SoundType {
         var soundEvent = SoundType.GROUND
 
-        val sifting = itemHandler.getStackInSlot(0)
-        val block = Block.getBlockFromItem(sifting.item)
+        val block = Block.getBlockFromItem(contents.item)
 
         if (block !== Blocks.AIR)
-            soundEvent = block.getSoundType(block.getStateFromMeta(sifting.metadata), world, pos, user)
+            soundEvent = block.getSoundType(block.getStateFromMeta(contents.metadata), world, pos, user)
 
         return soundEvent
     }
 
-    fun rollRewards() {
-        markDirty()
-
+    private fun rollRewards() {
         val drops = NonNullList.create<ItemStack>()
 
-        val contents = contents
         val mesh = mesh
 
         for (recipe in RegistryManager.SIFTING) {
             if (recipe.matches(contents)) {
-                val roll = recipe.rewards.roll(this.user, mesh, world.rand)
+                val roll = recipe.rewards.roll(user, mesh, world.rand)
 
-                if (user is EntityPlayerMP)
-                    ExNihiloTriggers.USE_SIEVE_TRIGGER.trigger((user as EntityPlayerMP?)!!, recipe.registryName!!, roll)
+                (user as? EntityPlayerMP)?.let { ExNihiloTriggers.USE_SIEVE_TRIGGER.trigger(it, recipe.registryName!!, roll) }
 
                 drops.addAll(roll)
             }
@@ -205,16 +209,7 @@ class TileEntitySieve : TileEntity(), ITickable {
         countdownLastTick = 0
         requiredTime = 0
 
-        setStackInSlot(0, ItemStack.EMPTY)
-    }
-
-    fun setStackInSlot(slot: Int, stack: ItemStack) {
-        itemHandler.setStackInSlot(slot, stack)
-
-
-        val blockState = this.world.getBlockState(this.getPos())
-        this.world.notifyBlockUpdate(this.getPos(), blockState, blockState, 3)
-        markDirty()
+        contents = ItemStack.EMPTY
     }
 
     override fun getUpdateTag(): NBTTagCompound {
@@ -222,23 +217,24 @@ class TileEntitySieve : TileEntity(), ITickable {
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        return SPacketUpdateTileEntity(getPos(), 1, this.updateTag)
+        return SPacketUpdateTileEntity(getPos(), 1, updateTag)
     }
 
     override fun onDataPacket(net: NetworkManager, packet: SPacketUpdateTileEntity) {
-        this.readFromNBT(packet.nbtCompound)
+        readFromNBT(packet.nbtCompound)
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
-        compound.setTag("inventory", itemHandler.serializeNBT())
-        compound.setInteger("countdown", countdown)
-        compound.setInteger("requiredTime", requiredTime)
+        if (!mesh.isEmpty) compound.setTag("mesh", mesh.writeToNBT(NBTTagCompound()))
+        if (!contents.isEmpty) compound.setTag("contents", contents.writeToNBT(NBTTagCompound()))
+        if (countdown != 0) compound.setInteger("countdown", countdown)
+        if (requiredTime != 0) compound.setInteger("requiredTime", requiredTime)
         return super.writeToNBT(compound)
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
-        itemHandler.deserializeNBT(compound.getCompoundTag("inventory"))
+        if (compound.hasKey("mesh", Constants.NBT.TAG_COMPOUND))
         countdown = compound.getInteger("countdown")
         countdownLastTick = countdown
         requiredTime = compound.getInteger("requiredTime")
@@ -249,21 +245,80 @@ class TileEntitySieve : TileEntity(), ITickable {
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-        return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) itemHandler as T else super.getCapability(capability, facing)
+        return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler) else super.getCapability(capability, facing)
     }
 
-    private inner class SieveItemHandler(size: Int) : ItemStackHandler(size) {
-
+    private inner class SieveItemHandler : IItemHandlerModifiable {
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
-            if (slot == 1 && stack.item !is IMesh)
-                return stack
+            if (stack.isEmpty) return stack
+            when (slot) {
+                0 -> {
+                    if (mesh.isEmpty && stack.item is IMesh) {
+                        val copy = stack.copy()
 
-            return if (slot == 0 && !RegistryManager.siftable(stack)) stack else super.insertItem(slot, stack, simulate)
+                        val insert = copy.splitStack(1)
 
+                        if (!simulate) mesh = insert
+
+                        return copy
+                    }
+
+                    return ItemStack.EMPTY
+                }
+                1 -> {
+                    if (contents.isEmpty && RegistryManager.siftable(stack)) {
+                        val copy = stack.copy()
+
+                        val insert = copy.splitStack(1)
+
+                        if (!simulate) setStackInSlot(1, insert)
+
+                        return copy
+                    }
+
+                    return ItemStack.EMPTY
+                }
+                else -> return ItemStack.EMPTY
+            }
         }
 
-        override fun getStackLimit(slot: Int, stack: ItemStack): Int {
-            return if (slot == 0) 1 else super.getStackLimit(slot, stack)
+        override fun getStackInSlot(slot: Int): ItemStack = when (slot) {
+            0 -> mesh
+            1 -> contents
+            else -> ItemStack.EMPTY
         }
+
+        override fun getSlotLimit(slot: Int) = 1
+
+        override fun setStackInSlot(slot: Int, stack: ItemStack) {
+            when (slot) {
+                0 -> mesh = stack
+                1 -> {
+                    if (!stack.isEmpty) {
+                        workTimer = 0
+
+                        requiredTime = 0
+
+                        for (recipe in RegistryManager.SIFTING) {
+                            if (recipe.matches(stack))
+                                requiredTime = requiredTime.coerceAtLeast(recipe.siftTime)
+                        }
+
+                        countdownLastTick = 0
+                        countdown = requiredTime
+
+                        contents = stack
+                        packet?.sendContents(stack, requiredTime)
+                    } else {
+                        reset()
+                        packet?.sendContents()
+                    }
+                }
+            }
+        }
+
+        override fun getSlots() = 2
+
+        override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack = ItemStack.EMPTY
     }
 }

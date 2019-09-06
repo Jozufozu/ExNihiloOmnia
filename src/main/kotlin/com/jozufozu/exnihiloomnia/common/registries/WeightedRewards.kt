@@ -24,31 +24,23 @@ class WeightedRewards {
      * @param random
      */
     fun roll(player: EntityPlayer?, processor: ItemStack, random: Random): NonNullList<ItemStack> {
-        val ret = NonNullList.create<ItemStack>()
-
-        val temp = NonNullList.create<ItemStack>()
+        val out = NonNullList.create<ItemStack>()
 
         for (reward in outputs) {
-            val roll = reward.roll(player!!, processor, random)
+            val roll = reward.roll(player, processor, random)
 
             if (roll.isEmpty)
                 continue
 
-            temp.add(roll)
-        }
-
-        for (stack in temp) {
-            if (stack.count > 1) {
-                while (stack.count > 0) {
-                    ret.add(ItemStack(stack.item, 1, stack.metadata))
-                    stack.shrink(1)
+            if (roll.count > 1) {
+                while (roll.count > 0) {
+                    out.add(ItemStack(roll.item, 1, roll.metadata).also { it.tagCompound = roll.tagCompound?.copy() })
+                    roll.shrink(1)
                 }
-            } else {
-                ret.add(stack)
-            }
+            } else out.add(roll)
         }
 
-        return ret
+        return out
     }
 
     companion object {

@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
@@ -158,40 +159,38 @@ class TileEntityCrucible : TileEntity(), ITickable {
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
-        val crucibleData = NBTTagCompound()
+        if (!solid.isEmpty) {
+            val solidContents = solid.writeToNBT(NBTTagCompound())
+            solidContents.removeTag("Count")
+            compound.setTag("solidContents", solidContents)
+        }
 
-        val solidContents = solid.writeToNBT(NBTTagCompound())
-        solidContents.removeTag("Count")
-        crucibleData.setInteger("solidAmount", solidAmount)
+        if (solidAmount != 0) compound.setInteger("solidAmount", solidAmount)
 
-        crucibleData.setTag("solidContents", solidContents)
-        crucibleData.setTag("fluidContents", fluidHandler.writeToNBT(NBTTagCompound()))
+        if (fluidContents != null) compound.setTag("fluidContents", fluidHandler.writeToNBT(NBTTagCompound()))
 
-        crucibleData.setInteger("currentHeat", currentHeatLevel)
-        crucibleData.setInteger("requiredHeat", requiredHeatLevel)
-        crucibleData.setFloat("meltingRatio", meltingRatio)
-        crucibleData.setFloat("partial", partialFluid)
+        if (currentHeatLevel != 0) compound.setInteger("currentHeat", currentHeatLevel)
+        if (requiredHeatLevel != 0) compound.setInteger("requiredHeat", requiredHeatLevel)
+        compound.setFloat("meltingRatio", meltingRatio)
+        compound.setFloat("partial", partialFluid)
 
-        compound.setTag("crucibleData", crucibleData)
         return super.writeToNBT(compound)
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
 
-        val crucibleData = compound.getCompoundTag("crucibleData")
+        if (compound.hasKey("solidContents", Constants.NBT.TAG_COMPOUND)) solid = ItemStack(compound.getCompoundTag("solidContents"))
+        solidAmount = compound.getInteger("Amount")
 
-        solid = ItemStack(crucibleData.getCompoundTag("solidContents"))
-        solidAmount = crucibleData.getInteger("Amount")
-
-        fluidHandler.readFromNBT(crucibleData.getCompoundTag("fluidContents"))
+        if (compound.hasKey("fluidContents", Constants.NBT.TAG_COMPOUND)) fluidHandler.readFromNBT(compound.getCompoundTag("fluidContents"))
 
         fluidAmountLastTick = fluidAmount
 
-        currentHeatLevel = crucibleData.getInteger("currentHeat")
-        requiredHeatLevel = crucibleData.getInteger("requiredHeat")
-        meltingRatio = crucibleData.getFloat("meltingRatio")
-        partialFluid = crucibleData.getFloat("partial")
+        currentHeatLevel = compound.getInteger("currentHeat")
+        requiredHeatLevel = compound.getInteger("requiredHeat")
+        meltingRatio = compound.getFloat("meltingRatio")
+        partialFluid = compound.getFloat("partial")
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {

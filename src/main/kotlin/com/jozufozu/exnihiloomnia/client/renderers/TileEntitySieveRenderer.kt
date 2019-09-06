@@ -7,22 +7,12 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.monster.EntityGuardian
-import net.minecraft.item.ItemStack
-import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraft.entity.passive.EntityBat
 
 class TileEntitySieveRenderer : TileEntitySpecialRenderer<TileEntitySieve>() {
 
     override fun render(sieve: TileEntitySieve, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
-        val itemHandler = sieve.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) ?: return
-
-        val contents = itemHandler.getStackInSlot(0)
-        val mesh = itemHandler.getStackInSlot(1)
-
-        //if (mesh == ItemStack.EMPTY)
-        //    return;
-
-        if (!isSlaveReady) renderSlave = EntityGuardian(world)
+        if (!isSlaveReady) renderSlave = EntityBat(world)
 
         GlStateManager.pushMatrix()
 
@@ -30,9 +20,9 @@ class TileEntitySieveRenderer : TileEntitySpecialRenderer<TileEntitySieve>() {
         GlStateManager.scale(scale, 0.2, scale)
         GlStateManager.rotate(90.0f, 1.0f, 0.0f, 0.0f)
 
-        Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave, mesh, ItemCameraTransforms.TransformType.NONE)
+        Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave, sieve.mesh, ItemCameraTransforms.TransformType.NONE)
 
-        if (contents != ItemStack.EMPTY) {
+        if (sieve.hasContents) {
             val progress = MathStuff.lerp(sieve.countdownLastTick.toDouble() / sieve.requiredTime, sieve.countdown.toDouble() / sieve.requiredTime, partialTicks.toDouble())
 
             val contentsSize = 7.0 / 16.0 * progress
@@ -43,7 +33,7 @@ class TileEntitySieveRenderer : TileEntitySpecialRenderer<TileEntitySieve>() {
             GlStateManager.translate(0.0, contentsSize / 2.0, 0.0)
             GlStateManager.scale(1.0, contentsSize, 1.0)
 
-            Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave, contents, ItemCameraTransforms.TransformType.NONE)
+            Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave, sieve.contents, ItemCameraTransforms.TransformType.NONE)
         }
 
         GlStateManager.popMatrix()
