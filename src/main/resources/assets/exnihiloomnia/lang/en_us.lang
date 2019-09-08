@@ -40,6 +40,8 @@ advancements.exnihiloomnia.ex_nihilo.place_crucible.description=Create a crucibl
 advancements.exnihiloomnia.ex_nihilo.lava_bucket.title=Hammer Time
 advancements.exnihiloomnia.ex_nihilo.lava_bucket.description=Craft a hammer to smash stuff
 
+fluid.exnihiloomnia.witchwater=Witchwater
+
 tile.exnihiloomnia.sieve.oak.name=Oak Sieve
 tile.exnihiloomnia.sieve.spruce.name=Spruce Sieve
 tile.exnihiloomnia.sieve.birch.name=Birch Sieve

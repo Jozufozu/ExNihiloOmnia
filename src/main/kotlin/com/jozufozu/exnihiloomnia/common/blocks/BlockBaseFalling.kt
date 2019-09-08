@@ -23,16 +23,9 @@ class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation,
         this.registryName = registryName
         this.unlocalizedName = ExNihilo.MODID + "." + registryName.resourcePath
         this.setCreativeTab(ExNihiloTabs.BLOCKS)
-
-        if (ExNihiloBlocks.hasRegisteredBlocks())
-            ExNihilo.log.warn("Tried to make a block $registryName after registering!")
     }
 
-    override val itemBlock: ItemBlock by lazy {
-        val itemBlock = ItemBlock(this)
-        itemBlock.registryName = this.registryName
-        itemBlock
-    }
+    override val itemBlock: ItemBlock by lazy { ItemBlock(this).also { it.registryName = registryName } }
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {

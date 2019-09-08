@@ -56,7 +56,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
     fun infestedToUninfested(infested: IBlockState): IBlockState = mimicState.getMimickedBlockState(infested)
 
     override fun removedByPlayer(state: IBlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean): Boolean {
-        if (!world.isRemote) {
+        if (!world.isRemote && !player.isCreative) {
             (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.let {
                 if (world.rand.nextFloat() < it.percentInfested * 1 / 4.0)
                     spawnAsEntity(world, pos, ItemStack(Items.STRING))

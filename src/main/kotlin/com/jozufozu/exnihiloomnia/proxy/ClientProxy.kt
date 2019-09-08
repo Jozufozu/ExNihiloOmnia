@@ -1,7 +1,8 @@
 package com.jozufozu.exnihiloomnia.proxy
 
 import com.jozufozu.exnihiloomnia.ExNihilo
-import com.jozufozu.exnihiloomnia.client.renderers.TileEntityBarrelRenderer
+import com.jozufozu.exnihiloomnia.client.ores.textures.ExNihiloOreTextures
+import com.jozufozu.exnihiloomnia.client.tileentities.TileEntityBarrelRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.blocks.leaves.BlockSilkwormInfested
@@ -45,6 +46,7 @@ class ClientProxy : CommonProxy() {
     @SubscribeEvent
     fun onTextureStitch(event: TextureStitchEvent.Pre) {
         COMPOST = event.map.registerSprite(COMPOST_RESOURCE)
+        ExNihiloOreTextures.register(event.map)
     }
 
     @SubscribeEvent

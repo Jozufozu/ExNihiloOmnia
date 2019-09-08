@@ -2,7 +2,10 @@ package com.jozufozu.exnihiloomnia.common.registries.ores
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
+import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
+import com.jozufozu.exnihiloomnia.common.ores.BlockType
+import com.jozufozu.exnihiloomnia.common.ores.ItemType
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.item.ItemStack
@@ -27,7 +30,18 @@ class Ore(
         private val lazyIngot: LazyItemStack?
 ) : IForgeRegistryEntry.Impl<Ore>() {
 
-    val ingot: ItemStack? get() = lazyIngot?.get()?.copy()
+    val ingot: ItemStack get() = lazyIngot?.get()?.copy() ?: ItemStack.EMPTY
+
+    fun getNameForItem(type: ItemType) = ResourceLocation(ExNihilo.MODID, "ore_${registryName!!.resourcePath}_$type")
+    fun getNameForBlock(type: BlockType) = ResourceLocation(ExNihilo.MODID, "ore_${registryName!!.resourcePath}_$type")
+
+    fun hasItem(type: ItemType): Boolean {
+        return true
+    }
+
+    fun hasBlock(type: BlockType): Boolean {
+        return true
+    }
 
     companion object Serde {
 
@@ -45,22 +59,5 @@ class Ore(
 
             return Ore(color, ingot)
         }
-    }
-
-    enum class BlockTypes {
-        GRAVEL, NETHER_GRAVEL, END_GRAVEL;
-
-        fun fromString(string: String): BlockTypes? {
-            return when (string) {
-                "gravel" -> GRAVEL
-                "netherGravel" -> NETHER_GRAVEL
-                "endGravel" -> END_GRAVEL
-                else -> null
-            }
-        }
-    }
-
-    enum class ItemTypes {
-        CHUNK, NETHER_CHUNK, END_CHUNK, CRUSHED, POWDER
     }
 }

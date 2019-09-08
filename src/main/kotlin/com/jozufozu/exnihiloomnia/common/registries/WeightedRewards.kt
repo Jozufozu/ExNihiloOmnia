@@ -56,7 +56,7 @@ class WeightedRewards {
                 try {
                     out.addOutput(WeightedDrop.deserialize(drop))
                 } catch (e: Exception) {
-                    RegistryLoader.error(e)
+                    RegistryLoader.error(e.message)
                 } finally {
                     RegistryLoader.popCtx()
                 }

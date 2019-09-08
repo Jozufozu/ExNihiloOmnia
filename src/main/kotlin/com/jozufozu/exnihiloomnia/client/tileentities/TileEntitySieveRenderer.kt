@@ -1,4 +1,4 @@
-package com.jozufozu.exnihiloomnia.client.renderers
+package com.jozufozu.exnihiloomnia.client.tileentities
 
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
 import com.jozufozu.exnihiloomnia.common.util.MathStuff

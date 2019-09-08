@@ -1,4 +1,4 @@
-package com.jozufozu.exnihiloomnia.client.renderers
+package com.jozufozu.exnihiloomnia.client.tileentities
 
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer

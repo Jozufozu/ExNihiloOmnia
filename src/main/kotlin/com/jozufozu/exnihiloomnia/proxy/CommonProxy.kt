@@ -30,10 +30,10 @@ open class CommonProxy {
         ConfigManager.sync(ExNihilo.MODID, Config.Type.INSTANCE)
 
         ExNihiloFluids.preInit()
-        ExNihiloMaterials.preInit()
-        ExNihiloTriggers.preInit()
-
         RegistryLoader.loadOres()
+        ExNihiloMaterials.preInit()
+
+        ExNihiloTriggers.preInit()
 
         TileEntity.register("exnihiloomnia:sieve", TileEntitySieve::class.java)
         TileEntity.register("exnihiloomnia:crucible", TileEntityCrucible::class.java)

@@ -4,6 +4,7 @@ import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.common.registries.command.CommandRegistry
 import com.jozufozu.exnihiloomnia.proxy.CommonProxy
 import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.SidedProxy
@@ -29,6 +30,7 @@ object ExNihilo {
     var PATH: File? = null
 
     init {
+        FluidRegistry.enableUniversalBucket()
         ExNihiloTriggers.USE_SIEVE_TRIGGER.toString() // Ensure that the trigger is properly loaded before it could be used
     }
 

@@ -16,8 +16,6 @@ import java.util.*
 
 @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
 object ExNihiloBlocks {
-    private var registeredBlocks = false
-
     var modBlocks = ArrayList<Block>()
 
     val SIEVE: Block = register(BlockSieve())
@@ -38,16 +36,10 @@ object ExNihiloBlocks {
 
     val WITCHWATER: Block = register(BlockFluidWitchWater())
 
-    fun hasRegisteredBlocks(): Boolean {
-        return registeredBlocks
-    }
-
     @SubscribeEvent
     @JvmStatic fun registerBlocks(event: RegistryEvent.Register<Block>) {
         for (block in modBlocks)
             event.registry.register(block)
-
-        registeredBlocks = true
     }
 
     private fun <T: Block> register(block: T): T = block.also { modBlocks.add(it) }

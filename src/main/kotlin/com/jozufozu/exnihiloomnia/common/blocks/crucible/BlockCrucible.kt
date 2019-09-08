@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
-import com.jozufozu.exnihiloomnia.client.renderers.TileEntityCrucibleRenderer
+import com.jozufozu.exnihiloomnia.client.tileentities.TileEntityCrucibleRenderer
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType

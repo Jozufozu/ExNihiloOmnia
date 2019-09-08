@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.blocks.sieve
 
-import com.jozufozu.exnihiloomnia.client.renderers.TileEntitySieveRenderer
+import com.jozufozu.exnihiloomnia.client.tileentities.TileEntitySieveRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
 import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
