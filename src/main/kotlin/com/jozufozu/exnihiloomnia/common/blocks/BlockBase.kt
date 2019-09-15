@@ -17,18 +17,13 @@ import net.minecraftforge.fml.relauncher.SideOnly
 open class BlockBase @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : Block(materialIn), IItemBlockHolder, IModelRegister {
 
     init {
-
         this.soundType = soundType
         this.registryName = registryName
-        this.unlocalizedName = ExNihilo.MODID + "." + registryName.resourcePath
-        this.setCreativeTab(ExNihiloTabs.BLOCKS)
+        unlocalizedName = ExNihilo.MODID + "." + registryName.resourcePath
+        setCreativeTab(ExNihiloTabs.ITEMS)
     }
 
-    override val itemBlock: ItemBlock by lazy {
-        ItemBlock(this).also {
-            it.registryName = registryName
-        }
-    }
+    override val itemBlock: ItemBlock by lazy { ItemBlock(this).also { it.registryName = registryName } }
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {

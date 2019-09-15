@@ -12,14 +12,26 @@ object BarrelStates {
     val ID_COMPOSTING = get("composting")
     val ID_FLUID = get("fluid")
     val ID_ITEMS = get("items")
-    val ID_FERMENTING = get("fermenting")
 
-    val EMPTY = register(BarrelStateEmpty())
-    val COMPOST_COLLECT = register(BarrelStateCompostCollect())
-    val COMPOSTING = register(BarrelStateComposting())
-    val FLUID = register(BarrelStateFluid())
-    val ITEMS = register(BarrelStateItem())
-    val FERMENTING = register(BarrelStateFermenting())
+    val EMPTY = BarrelStateEmpty()
+    val COMPOST_COLLECT = BarrelStateCompostCollect()
+    val COMPOSTING = BarrelStateComposting()
+    val FLUID = BarrelStateFluid()
+    val ITEMS = BarrelStateItem()
+
+    init {
+        init()
+    }
+
+    fun init() {
+        STATES.clear()
+
+        register(EMPTY)
+        register(COMPOST_COLLECT)
+        register(COMPOSTING)
+        register(FLUID)
+        register(ITEMS)
+    }
 
     fun getState(id: String) = STATES[ResourceLocation(id)]
 

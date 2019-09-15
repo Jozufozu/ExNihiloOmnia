@@ -1,6 +1,8 @@
 package com.jozufozu.exnihiloomnia.common.items.tools
 
+import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.items.ItemBaseTool
+import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.enchantment.EnchantmentHelper
@@ -20,6 +22,8 @@ class ItemCrook(registryName: ResourceLocation, toolMaterial: ToolMaterial) : It
             val leaves = state.block
 
             leaves.dropBlockAsItem(world, pos, state, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemstack) + 1)
+
+            if (world.rand.nextFloat() < 0.1) Block.spawnAsEntity(world, pos, ItemStack(ExNihiloItems.SILKWORM))
         }
 
         return false

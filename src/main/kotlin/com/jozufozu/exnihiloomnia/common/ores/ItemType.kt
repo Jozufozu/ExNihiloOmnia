@@ -1,11 +1,12 @@
 package com.jozufozu.exnihiloomnia.common.ores
 
-enum class ItemType(val blockEquivalent: BlockType) {
+enum class ItemType(val blockEquivalent: BlockType?) {
     CHUNK(BlockType.GRAVEL),
     NETHER_CHUNK(BlockType.NETHER_GRAVEL),
     END_CHUNK(BlockType.END_GRAVEL),
     CRUSHED(BlockType.SAND),
-    POWDER(BlockType.DUST);
+    POWDER(BlockType.DUST),
+    INGOT(null);
 
     override fun toString(): String = when (this) {
         CHUNK -> "chunk"
@@ -13,16 +14,20 @@ enum class ItemType(val blockEquivalent: BlockType) {
         END_CHUNK -> "end_chunk"
         CRUSHED -> "crushed"
         POWDER -> "powder"
+        INGOT -> "ingot"
     }
 
-    fun deserialize(string: String): ItemType? {
-        return when (string) {
-            "chunk" -> CHUNK
-            "netherChunk" -> NETHER_CHUNK
-            "endChunk" -> END_CHUNK
-            "crushed" -> CRUSHED
-            "powder" -> POWDER
-            else -> null
+    companion object {
+        fun deserialize(string: String): ItemType? {
+            return when (string) {
+                "chunk" -> CHUNK
+                "netherChunk" -> NETHER_CHUNK
+                "endChunk" -> END_CHUNK
+                "crushed" -> CRUSHED
+                "powder" -> POWDER
+                "ingot" -> INGOT
+                else -> null
+            }
         }
     }
 }

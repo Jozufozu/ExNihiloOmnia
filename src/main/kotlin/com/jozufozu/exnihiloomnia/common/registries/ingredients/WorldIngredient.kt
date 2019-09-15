@@ -74,7 +74,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
         private fun deserializeWithBlockStateVariants(ingredient: JsonObject, block: Block, blockName: String): ExplicitWorldIngredient {
             val variants = JsonUtils.getJsonObject(ingredient, LibRegistries.VARIANTS)
 
-            val predicates = ArrayList<Predicate<IBlockState>>()
+            val predicates = ArrayList<(IBlockState) -> Boolean>()
 
             val ctx = RegistryLoader.pushCtx("variants")
             for ((key, value) in variants.entrySet()) {
@@ -103,7 +103,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
 
                     val comparable = optional.get()
 
-                    predicates.add(Predicate { comparable == it.properties[property] })
+                    predicates.add { comparable == it.properties[property] }
                 } else {
                     val possibleValues = ArrayList<Comparable<*>>()
                     for (element in value.asJsonArray) {
@@ -122,7 +122,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
                         possibleValues.add(optional.get())
                     }
 
-                    predicates.add(Predicate { state -> possibleValues.any { it == state.properties[property] } })
+                    predicates.add { state -> possibleValues.any { it == state.properties[property] } }
                 }
             }
 

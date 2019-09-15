@@ -17,9 +17,6 @@ import javax.imageio.ImageIO
 object ExNihiloOreTextures {
     fun register(map: TextureMap) {
         for (type in BlockType.values()) {
-//            map.registerSprite(ResourceLocation(ExNihilo.MODID, "blocks/ore_${type}_template"))
-//            map.registerSprite(ResourceLocation(ExNihilo.MODID, "blocks/ore_${type}_base"))
-
             val fore = load(ResourceLocation(ExNihilo.MODID, "textures/blocks/ore_${type}_template.png")) ?: continue
             val back = load(ResourceLocation(ExNihilo.MODID, "textures/blocks/ore_${type}_base.png")) ?: continue
 
@@ -28,16 +25,13 @@ object ExNihiloOreTextures {
                     val recolor = TextureManipulation.recolor(fore, ore.color)
                     val comp = TextureManipulation.composite(back, recolor) ?: continue
 
-                    val sprite = GeneratedSprite.fromImage(ore.getNameForBlock(type), comp)
+                    val sprite = GeneratedSprite.fromImage(ore.getName(type).let { ResourceLocation(it.resourceDomain, "ores/block/${it.resourcePath}") }, comp)
                     map.setTextureEntry(sprite)
                 }
             }
         }
 
         for (type in ItemType.values()) {
-//            map.registerSprite(ResourceLocation(ExNihilo.MODID, "items/ore_${type}_template"))
-//            map.registerSprite(ResourceLocation(ExNihilo.MODID, "items/ore_${type}_base"))
-
             val fore = load(ResourceLocation(ExNihilo.MODID, "textures/items/ore_${type}_template.png")) ?: continue
             val back = load(ResourceLocation(ExNihilo.MODID, "textures/items/ore_${type}_base.png")) ?: continue
 
@@ -46,7 +40,7 @@ object ExNihiloOreTextures {
                     val recolor = TextureManipulation.recolor(fore, ore.color)
                     val comp = TextureManipulation.composite(back, recolor) ?: continue
 
-                    val sprite = GeneratedSprite.fromImage(ore.getNameForItem(type), comp)
+                    val sprite = GeneratedSprite.fromImage(ore.getName(type).let { ResourceLocation(it.resourceDomain, "ores/item/${it.resourcePath}") }, comp)
                     map.setTextureEntry(sprite)
                 }
             }

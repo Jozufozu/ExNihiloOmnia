@@ -1,8 +1,8 @@
 package com.jozufozu.exnihiloomnia.common.world
 
-import com.google.common.collect.Maps
 import com.google.gson.*
 import com.jozufozu.exnihiloomnia.ExNihilo
+import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -19,49 +19,67 @@ import java.io.PrintWriter
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.max
+import kotlin.math.min
 
 data class Placement(val state: IBlockState) {
+    fun serialize(): JsonObject {
+        val json = JsonObject()
+
+        val block = state.block
+        json.addProperty("id", Block.REGISTRY.getNameForObject(block).toString())
+
+        if (state.properties.isNotEmpty()) {
+            json.addProperty("variant", block.blockState.validStates.indexOf(state))
+        }
+
+        return json
+    }
+
     override fun equals(other: Any?): Boolean {
         (other as? Placement)?.let {
             return it.state.toString() == state.toString()
         } ?: return false
     }
-    override fun hashCode(): Int {
-        return state.toString().hashCode()
+    override fun hashCode() = state.hashCode()
+
+    companion object {
+        fun deserialize(placement: JsonObject): Placement {
+            val blockName = JsonUtils.getString(placement, "id")
+
+            val block = Block.REGISTRY.getObject(ResourceLocation(blockName))
+
+            return Placement(if ("variant" in placement) block.blockState.validStates[JsonUtils.getInt(placement, "variant")] else block.defaultState)
+        }
     }
 }
 
 class SpawnIsland {
-    private var origin = BlockPos(0, 0, 0)
 
     private val palette = ArrayList<Placement>()
-    private val structure = Maps.newHashMap<BlockPos, Int>()
-    private val tiles = Maps.newHashMap<BlockPos, NBTTagCompound>()
+    private val structure = hashMapOf<BlockPos, Int>()
+    private val tiles = hashMapOf<BlockPos, NBTTagCompound>()
 
     fun placeInWorld(world: World, origin: BlockPos) {
         val nanoStart = System.nanoTime()
 
-        val xOff = origin.x - this.origin.x
-        val yOff = origin.y - this.origin.y
-        val zOff = origin.z - this.origin.z
-
-        for ((i, pos) in this.structure.keys.withIndex()) {
-            val placement = this.palette[i]
-            val place = pos.add(xOff, yOff, zOff)
+        for ((pos, paletteId) in this.structure.entries) {
+            val placement = this.palette[paletteId]
+            val place = origin.add(pos)
             world.setBlockState(place, placement.state, 2)
         }
 
         for ((pos, tile) in tiles.entries) {
-            val pos = pos.add(xOff, yOff, zOff)
-            val tileEntity = world.getTileEntity(pos)
+            val place = origin.add(pos)
+            val tileEntity = world.getTileEntity(place)
 
             if (tileEntity != null) {
-                tile.setInteger("x", pos.x)
-                tile.setInteger("y", pos.y)
-                tile.setInteger("z", pos.z)
+                tile.setInteger("x", place.x)
+                tile.setInteger("y", place.y)
+                tile.setInteger("z", place.z)
 
                 tileEntity.readFromNBT(tile)
-                world.getBlockState(pos).let { world.notifyBlockUpdate(pos, it, it, 2) }
+                world.getBlockState(place).let { world.notifyBlockUpdate(place, it, it, 2) }
             }
         }
 
@@ -74,7 +92,10 @@ class SpawnIsland {
         try {
             val now = LocalDateTime.now()
             val name = user.displayNameString + "-" + now.year + now.monthValue + now.dayOfMonth + "-" + now.hour + now.minute + now.second + ".json"
-            val file = File(ExNihilo.PATH, String.format("/spawn_island/%s", name))
+            val root = File(ExNihilo.PATH, "/spawn_island")
+            root.mkdirs()
+
+            val file = File(root, name)
             file.createNewFile()
 
             writer = PrintWriter(file)
@@ -91,30 +112,29 @@ class SpawnIsland {
     fun serialize(): String {
         val json = JsonObject()
 
-        json.add("origin", serializeBlockPos(this.origin))
-
         val palette = JsonArray()
-        val tiles = JsonArray()
         val structure = JsonArray()
 
-        this.palette.forEach { palette.add(serializePlacement(it)) }
-        this.tiles.forEach { pos, tile ->
-            JsonObject().let {
-                it.add("pos", serializeBlockPos(pos))
-                it.add("tile", serializeNBT(tile))
-                tiles.add(it)
+        this.palette.forEach { palette.add(it.serialize()) }
+
+        if (this.tiles.isNotEmpty()) {
+            val tiles = JsonArray()
+            this.tiles.forEach { (pos, tile) ->
+                tiles.add(JsonObject().also {
+                    it.add("pos", serializeBlockPos(pos))
+                    it.add("tile", serializeNBT(tile))
+                })
             }
+            json.add("tiles", tiles)
         }
-        this.structure.forEach { pos, s ->
-            JsonObject().let {
+        this.structure.forEach { (pos, s) ->
+            structure.add(JsonObject().also {
                 it.add("pos", serializeBlockPos(pos))
                 it.addProperty("id", s)
-                structure.add(it)
-            }
+            })
         }
 
         json.add("palette", palette)
-        json.add("tiles", tiles)
         json.add("structure", structure)
 
         return GSON.toJson(json)
@@ -125,29 +145,32 @@ class SpawnIsland {
 
         fun createFromWorld(world: World, from: BlockPos, to: BlockPos, origin: BlockPos): SpawnIsland {
             val nanoStart = System.nanoTime()
-            val startX = Math.min(from.x, to.x)
-            val startY = Math.min(from.y, to.y)
-            val startZ = Math.min(from.z, to.z)
+            val startX = min(from.x, to.x)
+            val startY = min(from.y, to.y)
+            val startZ = min(from.z, to.z)
 
-            val sizeX = Math.abs(from.x - to.x)
-            val sizeY = Math.abs(from.y - to.y)
-            val sizeZ = Math.abs(from.z - to.z)
+            val endX = max(from.x, to.x)
+            val endY = max(from.y, to.y)
+            val endZ = max(from.z, to.z)
 
-            val process = HashMap<Placement, MutableList<BlockPos>>()
-            val tiles = HashMap<BlockPos, NBTTagCompound>()
+            val stateLocations = HashMap<Placement, MutableList<BlockPos>>()
 
             val read = BlockPos.MutableBlockPos()
 
-            for (y in startY until startY + sizeY) {
-                for (x in startX until startX + sizeX) {
-                    for (z in startZ until startZ + sizeZ) {
+            val out = SpawnIsland()
+
+            for (y in startY until endY) {
+                for (x in startX until endX) {
+                    for (z in startZ until endZ) {
                         read.setPos(x, y, z)
 
                         if (world.isAirBlock(read))
                             continue
 
                         val state = world.getBlockState(read)
-                        val relative = read.toImmutable()
+                        val immutable = read.subtract(origin)
+
+                        stateLocations.getOrPut(Placement(state)) { ArrayList() }.add(immutable)
 
                         if (state.block.hasTileEntity(state)) {
                             val tileEntity = world.getTileEntity(read)
@@ -159,39 +182,17 @@ class SpawnIsland {
                                 tileData.removeTag("y")
                                 tileData.removeTag("z")
 
-                                tiles[relative] = tileData
+                                out.tiles[immutable] = tileData
                             }
                         }
-
-                        val placement = Placement(state)
-
-                        process.computeIfAbsent(placement) { ArrayList() }.add(relative)
                     }
                 }
             }
 
-            val out = SpawnIsland()
+            for ((i, entry) in stateLocations.entries.withIndex()) {
+                out.palette.add(entry.key)
 
-            var minX = Integer.MAX_VALUE
-            var minY = Integer.MAX_VALUE
-            var minZ = Integer.MAX_VALUE
-
-            process.values.forEach {
-                it.forEach { pos ->
-                    minX = Math.min(minX, pos.x)
-                    minY = Math.min(minY, pos.y)
-                    minZ = Math.min(minZ, pos.z)
-                }
-            }
-
-            out.origin = origin.add(-minX, -minY, -minZ)
-
-            var i = 0
-            for ((placement, locations) in process.entries) {
-                out.palette[i] = placement
-
-                for (pos in locations) out.structure[pos.add(-minX, -minY, -minZ)] = i
-                i++
+                for (pos in entry.value) out.structure[pos] = i
             }
 
             val nanoNow = System.nanoTime()
@@ -199,7 +200,7 @@ class SpawnIsland {
             val seconds = (nanoNow - nanoStart).toDouble() * 1E-9
 
             for (player in world.playerEntities) {
-                player.sendMessage(TextComponentString(String.format("Made spawn island. Took %.3f", seconds)))
+                player.sendMessage(TextComponentString(String.format("Made spawn island. Took %.3f seconds", seconds)))
             }
 
             return out
@@ -211,16 +212,6 @@ class SpawnIsland {
             array.add(pos.y)
             array.add(pos.z)
             return array
-        }
-
-        fun serializePlacement(placement: Placement): JsonObject {
-            val json = JsonObject()
-
-            val block = placement.state.block
-            json.addProperty("id", Block.REGISTRY.getNameForObject(block).toString())
-            json.addProperty("data", block.getMetaFromState(placement.state))
-
-            return json
         }
 
         fun serializeNBT(nbt: NBTBase): JsonElement {
@@ -242,34 +233,40 @@ class SpawnIsland {
         fun deserialize(json: JsonObject): SpawnIsland {
             val out = SpawnIsland()
 
-            if (!json.has("palette")) {
-                throw JsonSyntaxException("Structure json needs a palette!")
-            }
-
-            for ((key, value) in JsonUtils.getJsonObject(json, "p").entrySet()) {
+            for (value in JsonUtils.getJsonArray(json, "palette")) {
                 val state = value.asJsonObject
-                out.palette[key.toInt()] = deserializePlacement(state)
+                out.palette.add(Placement.deserialize(state))
             }
 
-            if (!json.has("structure")) {
-                throw JsonSyntaxException("Structure json needs a structure!")
+            if ("tiles" in json) {
+                for (tile in JsonUtils.getJsonArray(json, "tiles")) {
+                    try {
+                        if (tile !is JsonObject) {
+                            throw JsonSyntaxException("Invalid tile entity: $tile")
+                        }
+
+                        val pos = deserializeBlockPos(JsonUtils.getJsonArray(tile, "pos"))
+
+                        out.tiles[pos] = JsonToNBT.getTagFromJson(tile["tile"].toString())
+                    } catch (e: JsonParseException) {
+                        ExNihilo.log.warn(e.message)
+                    }
+                }
             }
 
-            for (place in JsonUtils.getJsonArray(json, "s")) {
+            for (place in JsonUtils.getJsonArray(json, "structure")) {
                 try {
-                    if (!place.isJsonObject) {
-                        throw JsonSyntaxException("Invalid structure entry: " + place.toString())
+                    if (place !is JsonObject) {
+                        throw JsonSyntaxException("Invalid structure entry: $place")
                     }
 
-                    val block = place.asJsonObject
-
-                    if (!block.has("block")) {
+                    if (!place.has("id")) {
                         throw JsonSyntaxException("Structure json block info has no block!")
                     }
 
-                    val paletteName = JsonUtils.getInt(block, "block")
+                    val paletteName = JsonUtils.getInt(place, "id")
 
-                    val pos = deserializeBlockPos(block.getAsJsonArray("pos"))
+                    val pos = deserializeBlockPos(JsonUtils.getJsonArray(place, "pos"))
 
                     out.structure[pos] = paletteName
                 } catch (e: JsonParseException) {
@@ -277,32 +274,7 @@ class SpawnIsland {
                 }
             }
 
-            if (json.has("origin")) {
-                out.origin = deserializeBlockPos(json.getAsJsonArray("origin"))
-            }
-
             return out
-        }
-
-        @Throws(JsonSyntaxException::class)
-        private fun deserializePlacement(placement: JsonObject): Placement {
-            val string = JsonUtils.getString(placement, "n")
-
-            val name = ResourceLocation(string)
-
-            if (!Block.REGISTRY.containsKey(name)) {
-                throw JsonSyntaxException("Unknown block type '$name'")
-            }
-
-            val block = Block.REGISTRY.getObject(name)
-
-            val state = if (placement.has("d")) {
-                block.getStateFromMeta(JsonUtils.getInt(placement, "d"))
-            } else {
-                block.defaultState
-            }
-
-            return Placement(state)
         }
 
         @Throws(JsonParseException::class)

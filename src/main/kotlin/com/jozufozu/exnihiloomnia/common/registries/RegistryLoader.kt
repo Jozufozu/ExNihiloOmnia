@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.jozufozu.exnihiloomnia.ExNihilo
+import com.jozufozu.exnihiloomnia.common.ModConfig
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.JsonContext
@@ -19,8 +20,6 @@ import java.nio.file.StandardCopyOption
 import java.util.*
 
 object RegistryLoader {
-    private const val DEV_MODE = true //Reloads all registries from assets every time
-
     val GSON: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
     val CONTEXT = JsonContext(ExNihilo.MODID)
 
@@ -29,10 +28,16 @@ object RegistryLoader {
     private val loggerLayers = Stack<String>()
 
     fun loadOres() {
+        val timeThen = System.nanoTime()
         RegistryManager.ORES.load()
+        val timeNow = System.nanoTime()
+
+        clearCtx()
+        LOGGER.info("Finished loading ores, took ${(timeNow - timeThen).toFloat() * 1e-9} seconds")
     }
 
     fun loadRecipes() {
+        val timeThen = System.nanoTime()
         RegistryManager.COMPOST.load()
         RegistryManager.FLUID_CRAFTING.load()
         RegistryManager.FLUID_MIXING.load()
@@ -41,19 +46,18 @@ object RegistryLoader {
         RegistryManager.HAMMERING.load()
         RegistryManager.MELTING.load()
         RegistryManager.HEAT.load()
+        val timeNow = System.nanoTime()
+
+        clearCtx()
+        LOGGER.info("Finished loading all registries, took ${(timeNow - timeThen).toFloat() * 1e-9} seconds")
     }
 
     fun <T : IForgeRegistryEntry<T>> genericLoad(registry: ReloadableRegistry<T>, resourcePath: String, deserializer: (JsonObject) -> T?) {
         val clear = pushCtx(registry.registryName.resourcePath)
 
-        copyIfUnconfigured(resourcePath)
-
         try {
-            val root = File(ExNihilo.PATH, resourcePath)
-
-            val files = root.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: return
-
-            for (file in files) {
+            for (file in getFilesToLoad(resourcePath)) {
+                restoreCtx(clear)
                 val fileName = FilenameUtils.getName(FilenameUtils.removeExtension(file.name)).replace("\\\\".toRegex(), "/")
                 val resourceLocation = ResourceLocation(ExNihilo.MODID, fileName)
                 var reader: BufferedReader? = null
@@ -73,7 +77,6 @@ object RegistryLoader {
                     error("Couldn't read '${registry.registryName}' entries '$resourceLocation' from ${file.path}", ioexception)
                 } finally {
                     IOUtils.closeQuietly(reader)
-                    restoreCtx(clear)
                 }
             }
         } catch (ioException: Exception) {
@@ -83,8 +86,52 @@ object RegistryLoader {
         }
     }
 
-    fun loadSingleJson(resourcePath: String, toDo: (JsonObject) -> Unit) {
-        val toLoad = File(ExNihilo.PATH, resourcePath)
+    fun getFilesToLoad(resourcePath: String): Array<File> {
+        return if (ModConfig.enableCraftingCustomization) {
+            copyIfUnconfigured(resourcePath)
+
+            val root = File(ExNihilo.PATH, resourcePath)
+
+            root.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: emptyArray()
+        } else {
+            val registryPath = File(RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath)).toURI())
+
+            registryPath.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: emptyArray()
+        }
+    }
+
+    fun loadSingleJson(resourcePath: String, callback: (JsonObject) -> Unit): Boolean {
+        val toLoad = if (ModConfig.enableCraftingCustomization) {
+            val to = File(ExNihilo.PATH, resourcePath)
+
+            if (!to.exists()) {
+
+                var inputStream: InputStream? = null
+
+                try {
+                    val resource = RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath))
+                            ?: return false
+
+                    val file = File(resource.toURI())
+
+                    to.mkdirs()
+                    inputStream = FileInputStream(file)
+                    Files.copy(inputStream, to.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                } catch (e: Exception) {
+                    error(e)
+                    return false
+                } finally {
+                    IOUtils.closeQuietly(inputStream)
+                }
+            }
+
+            to
+        } else {
+            val resource = RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath))
+                    ?: return false
+
+            File(resource.toURI())
+        }
 
         try {
             val reader = BufferedReader(FileReader(toLoad))
@@ -92,51 +139,21 @@ object RegistryLoader {
             val json = JsonUtils.fromJson(GSON, reader, JsonObject::class.java)
             if (json == null) {
                 LOGGER.error("Could not load JSON file '$resourcePath'")
-                return
+                return false
             }
-            toDo(json)
+            callback(json)
+            return true
         } catch (e: FileNotFoundException) {
             LOGGER.error("Could not find resource: '$resourcePath'")
         }
 
+        return false
     }
 
     private fun getFullyQualifiedResourcePath(path: String) = "/data/exnihiloomnia/exnihiloomnia$path"
 
-    fun copySingle(resourcePath: String) {
-        val to = File(ExNihilo.PATH, resourcePath)
-
-        if (DEV_MODE) {
-            recursiveDelete(to)
-        }
-
-        if (to.exists()) {
-            return
-        }
-
-        var inputStream: InputStream? = null
-
-        try {
-            val resource = RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath)) ?: return
-
-            val file = File(resource.toURI())
-
-            to.mkdirs()
-            inputStream = FileInputStream(file)
-            Files.copy(inputStream, to.toPath(), StandardCopyOption.REPLACE_EXISTING)
-        } catch (e: Exception) {
-            error(e)
-        } finally {
-            IOUtils.closeQuietly(inputStream)
-        }
-    }
-
     fun copyIfUnconfigured(resourcePath: String) {
         val config = File(ExNihilo.PATH, resourcePath)
-
-        if (DEV_MODE) {
-            recursiveDelete(config)
-        }
 
         if (config.exists())
             return
@@ -164,24 +181,6 @@ object RegistryLoader {
             error("Error copying assets to config: ${uriSyntaxException.message}")
         } catch (uriSyntaxException: URISyntaxException) {
             error("Error copying assets to config: ${uriSyntaxException.message}")
-        }
-
-    }
-
-    private fun recursiveDelete(file: File) {
-        if (!file.exists() || !file.absolutePath.contains("config"))
-            return
-
-        if (file.isDirectory) {
-            val files = file.listFiles() ?: return
-
-            for (file1 in files) {
-                recursiveDelete(file1)
-            }
-
-            file.delete()
-        } else {
-            file.delete()
         }
     }
 

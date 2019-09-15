@@ -1,5 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.registries.command
 
+import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.registries.ReloadableRegistry
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
@@ -31,8 +32,10 @@ class CommandRegistry : CommandBase() {
         var count = 0
 
         for (registry in ReloadableRegistry.getRegistries()) {
+            if (registry == RegistryManager.ORES) continue
+
             val resourcePath = registry.registryName.resourcePath
-            if (all || resourcePath == args[1]) {
+            if (all || resourcePath in args.slice(1 until args.size)) {
                 if ("reload" == args[0]) {
                     registry.load()
                 } else if ("clear" == args[0]) {

@@ -30,7 +30,7 @@ object ExNihiloBlocks {
     val BARREL_STONE: Block = register(BlockBarrel(LibBlocks.STONE_BARREL, Material.ROCK).setHardness(1.5f).setResistance(10.0f))
     val BARREL_GLASS: Block = register(BlockBarrelGlass())
 
-    val DUST: Block = register(BlockBaseFalling(LibBlocks.DUST, Material.SAND, SoundType.SNOW).setHardness(0.4f))
+    val DUST: Block = register(BlockDust())
     val END_GRAVEL: Block = register(BlockBaseFalling(LibBlocks.END_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
     val NETHER_GRAVEL: Block = register(BlockBaseFalling(LibBlocks.NETHER_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
 

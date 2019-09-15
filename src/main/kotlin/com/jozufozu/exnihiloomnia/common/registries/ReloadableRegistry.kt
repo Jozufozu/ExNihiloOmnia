@@ -9,7 +9,7 @@ import java.util.*
 class ReloadableRegistry<T : IForgeRegistryEntry<T>>(
         val registryName: ResourceLocation,
         private val registryType: Class<T>,
-        private val onReload: (ReloadableRegistry<T>) -> Unit) {
+        private val onReload: (ReloadableRegistry<T>) -> Unit) : Iterable<T> {
     private var entries: BiMap<ResourceLocation, T> = HashBiMap.create()
     private var values: MutableList<T> = Lists.newArrayList()
 
@@ -78,7 +78,7 @@ class ReloadableRegistry<T : IForgeRegistryEntry<T>>(
         return entries.entries
     }
 
-    operator fun iterator(): Iterator<T> {
+    override fun iterator(): Iterator<T> {
         return object : Iterator<T> {
             var cur = 0
 

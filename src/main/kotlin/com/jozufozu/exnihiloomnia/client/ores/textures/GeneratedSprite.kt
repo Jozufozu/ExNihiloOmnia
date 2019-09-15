@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
-
 import java.awt.image.BufferedImage
 import java.util.function.Function
 

@@ -11,6 +11,7 @@ import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloMaterials
 import com.jozufozu.exnihiloomnia.common.lib.LibMisc
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
+import com.jozufozu.exnihiloomnia.common.ores.OreManager
 import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.world.WorldProviderSkyblock
 import com.jozufozu.exnihiloomnia.common.world.WorldTypeSkyblock
@@ -51,6 +52,7 @@ open class CommonProxy {
         ExNihiloNetwork.init()
         ExNihiloMaterials.init()
         RegistryLoader.loadRecipes()
+        OreManager.initOreDict()
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {

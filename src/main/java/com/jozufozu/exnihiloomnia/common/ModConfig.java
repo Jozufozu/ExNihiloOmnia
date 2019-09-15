@@ -13,6 +13,8 @@ public class ModConfig
 {
     @Config.Comment("Options for the world")
     public static World world = new World();
+
+    public static boolean enableCraftingCustomization = false;
     
     public static class World
     {
@@ -39,13 +41,15 @@ public class ModConfig
     
     public static class Blocks
     {
-        @Config.Comment("How likely kindling is to light when using a stick")
-        @Config.RangeDouble(min = 0.0, max = 1.0)
-        public double kindlingLightChance = 0.05;
-        
         @Config.Comment("Options for barrels")
         @Config.RequiresWorldRestart
         public Barrel barrel = new Barrel();
+
+        @Config.Comment("Options for crucibles")
+        @Config.RequiresWorldRestart
+        public Crucible crucible = new Crucible();
+
+        public String[] silkwormInfestable = new String[] { "minecraft:leaves", "minecraft:leaves2", "minecraft:vines" };
         
         public static class Barrel
         {
@@ -58,19 +62,12 @@ public class ModConfig
             @Config.Comment("How much time in ticks it takes for compost to turn into its output")
             public int compostTime = 400;
 
-            @Config.Comment("How much time in ticks it takes for witchwater to ferment")
-            public int fermentTime = 400;
-
             @Config.Comment("The fluid temperature required to make wooden barrels burn")
             public int burnTemperature = 873;
 
             @Config.Comment("The amount of time (in ticks) that a wooden barrel can hold liquids that are too hot")
             public int burnTime = 400;
         }
-    
-        @Config.Comment("Options for crucibles")
-        @Config.RequiresWorldRestart
-        public Crucible crucible = new Crucible();
     
         public static class Crucible
         {

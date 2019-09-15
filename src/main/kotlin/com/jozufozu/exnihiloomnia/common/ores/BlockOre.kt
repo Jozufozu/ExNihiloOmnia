@@ -7,7 +7,10 @@ import net.minecraft.item.ItemBlock
 
 class BlockOre(val ore: Ore, val type: BlockType) : BlockFalling(type.material), IItemBlockHolder {
     init {
-        registryName = ore.getNameForBlock(type)
+        registryName = ore.getName(type)
+        soundType = type.soundType
+        setCreativeTab(OreManager.ORES_TAB)
+        unlocalizedName = "exnihiloomnia.ores.${ore.getName(type).resourcePath}"
     }
 
     override val itemBlock: ItemBlock by lazy { ItemBlock(this).also { it.registryName = registryName } }

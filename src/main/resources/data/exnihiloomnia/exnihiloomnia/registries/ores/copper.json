@@ -1,0 +1,12 @@
+{
+    "color": "F46E00",
+    "oredict": {
+        "ingot": "ingotCopper"
+    },
+    "variants": [
+        "gravel",
+        "netherGravel",
+        "sand",
+        "dust"
+    ]
+}

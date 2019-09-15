@@ -30,16 +30,7 @@ class Color {
         this.a = a
     }
 
-    fun toInt(): Int {
-        var i = 0
-
-        i = i or ((this.r * 255).toInt() shl 16)
-        i = i or ((this.g * 255).toInt() shl 8)
-        i = i or (this.b * 255).toInt()
-        i = i or ((this.a * 255).toInt() shl 24)
-
-        return i
-    }
+    fun toInt() = Companion.toInt(r, g, b, a)
 
     fun withAlpha(alpha: Float): Color {
         return Color(r, g, b, a * alpha)
@@ -75,6 +66,17 @@ class Color {
             val a = MathStuff.lerp(from.a, to.a, percentage)
 
             return Color(r, g, b, a)
+        }
+
+        fun toInt(r: Float, g: Float, b: Float, a: Float = 0f): Int {
+            var i = 0
+
+            i = i or ((r * 255).toInt() shl 16)
+            i = i or ((g * 255).toInt() shl 8)
+            i = i or (b * 255).toInt()
+            i = i or ((a * 255).toInt() shl 24)
+
+            return i
         }
     }
 }

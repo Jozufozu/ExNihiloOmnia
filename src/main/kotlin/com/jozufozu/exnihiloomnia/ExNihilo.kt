@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia
 
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
+import com.jozufozu.exnihiloomnia.client.ores.models.ExNihiloOreModels
 import com.jozufozu.exnihiloomnia.common.registries.command.CommandRegistry
 import com.jozufozu.exnihiloomnia.proxy.CommonProxy
 import net.minecraftforge.common.MinecraftForge
@@ -32,6 +33,7 @@ object ExNihilo {
     init {
         FluidRegistry.enableUniversalBucket()
         ExNihiloTriggers.USE_SIEVE_TRIGGER.toString() // Ensure that the trigger is properly loaded before it could be used
+        ExNihiloOreModels
     }
 
     @EventHandler

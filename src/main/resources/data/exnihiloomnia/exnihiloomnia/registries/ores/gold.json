@@ -1,6 +1,5 @@
 {
-    "color": "F2AB7C",
-    "smeltingExp": 0.7,
+    "color": "FFD000",
     "variants": [
         "gravel",
         "netherGravel",
@@ -8,6 +7,6 @@
         "dust"
     ],
     "ingotItem": {
-        "item": "minecraft:iron_ingot"
+        "item": "minecraft:gold_ingot"
     }
 }

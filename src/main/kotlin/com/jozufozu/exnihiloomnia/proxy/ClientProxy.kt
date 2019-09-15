@@ -49,7 +49,7 @@ class ClientProxy : CommonProxy() {
         ExNihiloOreTextures.register(event.map)
     }
 
-    @SubscribeEvent
+   @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
         for (modBlock in ExNihiloBlocks.modBlocks)
             if (modBlock is IModelRegister)

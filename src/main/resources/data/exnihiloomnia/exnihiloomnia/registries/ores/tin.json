@@ -1,0 +1,12 @@
+{
+    "color": "ABC9B6",
+    "oredict": {
+        "ingot": "ingotTin"
+    },
+    "variants": [
+        "gravel",
+        "endGravel",
+        "sand",
+        "dust"
+    ]
+}

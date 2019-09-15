@@ -14,7 +14,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : BlockFalling(materialIn), IItemBlockHolder, IModelRegister {
+open class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : BlockFalling(materialIn), IItemBlockHolder, IModelRegister {
 
     init {
 
@@ -22,7 +22,7 @@ class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation,
         this.soundType = soundType
         this.registryName = registryName
         this.unlocalizedName = ExNihilo.MODID + "." + registryName.resourcePath
-        this.setCreativeTab(ExNihiloTabs.BLOCKS)
+        this.setCreativeTab(ExNihiloTabs.ITEMS)
     }
 
     override val itemBlock: ItemBlock by lazy { ItemBlock(this).also { it.registryName = registryName } }

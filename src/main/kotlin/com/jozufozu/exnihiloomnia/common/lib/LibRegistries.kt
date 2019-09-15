@@ -58,7 +58,7 @@ object LibRegistries {
     const val DUST_CHANCE = "dustChance"
 
     // What an ore should be registered as
-    const val OREDICT_NAMES = OREDICT + "Names"
+    const val OREDICT_NAMES = "oredict"
 
     // Registries
     @JvmField val ORE = ResourceLocation(ExNihilo.MODID, "ores")

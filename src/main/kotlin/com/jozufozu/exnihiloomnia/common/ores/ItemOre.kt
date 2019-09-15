@@ -5,6 +5,8 @@ import net.minecraft.item.Item
 
 class ItemOre(val ore: Ore, val type: ItemType) : Item() {
     init {
-        this.registryName = ore.getNameForItem(type)
+        registryName = ore.getName(type)
+        unlocalizedName = "exnihiloomnia.ores.${ore.getName(type).resourcePath}"
+        creativeTab = OreManager.ORES_TAB
     }
 }

@@ -1,0 +1,8 @@
+{
+    "fluidInput": "water",
+    "blockInput": {
+        "block": "minecraft:magma"
+    },
+    "time": 10,
+    "fluidOutput": "lava"
+}

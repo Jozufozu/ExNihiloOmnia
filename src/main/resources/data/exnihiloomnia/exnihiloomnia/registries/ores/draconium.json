@@ -1,0 +1,11 @@
+{
+    "color": "733DAB",
+    "oredict": {
+        "ingot": "ingotDraconium"
+    },
+    "variants": [
+        "endGravel",
+        "sand",
+        "dust"
+    ]
+}

@@ -42,7 +42,6 @@ class ItemMesh(registryName: ResourceLocation, material: ToolMaterial) : ItemBas
         fun loadMeshTable() {
             if (::masterTable.isInitialized) return
 
-            RegistryLoader.copySingle("/registries/mesh.json")
             RegistryLoader.loadSingleJson("/registries/mesh.json") { mesh: JsonObject ->
                 val table = HashMap<String, HashMap<String, Float>>()
 

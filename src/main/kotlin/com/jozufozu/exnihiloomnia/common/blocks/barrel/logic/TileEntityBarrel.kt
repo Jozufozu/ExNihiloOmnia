@@ -4,6 +4,7 @@ import com.jozufozu.exnihiloomnia.common.ModConfig
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
 import com.jozufozu.exnihiloomnia.common.network.MessageUpdateBarrel
 import com.jozufozu.exnihiloomnia.common.util.Color
+import net.minecraft.block.material.Material
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
@@ -57,7 +58,7 @@ class TileEntityBarrel : TileEntity(), ITickable {
      *
      * When set, marks the state to be sent to the client
      */
-    var state = BarrelStates.EMPTY
+    var state: BarrelState = BarrelStates.EMPTY
         set(state) {
             field = state
             state.activate(this)
@@ -98,6 +99,8 @@ class TileEntityBarrel : TileEntity(), ITickable {
             itemHandler.setStackInSlot(0, value)
             packet?.item = Optional.of(value)
         }
+
+    val material: Material get() = world.getBlockState(pos).material
 
     private val fluidHandler = BarrelFluidHandler(fluidCapacity)
     private val itemHandler = BarrelItemHandler()

@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.registries
 
 import com.jozufozu.exnihiloomnia.ExNihilo
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*
@@ -20,7 +21,15 @@ object RegistryManager {
     val COMPOST = ReloadableRegistry(LibRegistries.COMPOST, CompostRecipe::class.java) { RegistryLoader.genericLoad(it, "/registries/composting", CompostRecipe.Serde::deserialize) }
     val FLUID_CRAFTING = ReloadableRegistry(LibRegistries.FLUID_CRAFTING, FluidCraftingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/fluidcrafting", FluidCraftingRecipe.Serde::deserialize) }
     val FLUID_MIXING = ReloadableRegistry(LibRegistries.MIXING, FluidMixingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/fluidmixing", FluidMixingRecipe.Serde::deserialize) }
-    val FERMENTING = ReloadableRegistry(LibRegistries.FERMENTING, FermentingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/fermenting", FermentingRecipe.Serde::deserialize) }
+    val FERMENTING = ReloadableRegistry(LibRegistries.FERMENTING, FermentingRecipe::class.java)  {
+        RegistryLoader.genericLoad(it, "/registries/fermenting", FermentingRecipe.Serde::deserialize)
+        BarrelStates.init()
+
+        for (recipe in it) {
+            val state = recipe.barrelState
+            BarrelStates.STATES[state.id] = state
+        }
+    }
 
     val SIFTING = ReloadableRegistry(LibRegistries.SIEVE, SieveRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/sieve", SieveRecipe.Serde::deserialize) }
     val HAMMERING = ReloadableRegistry(LibRegistries.HAMMER, HammerRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/hammering", HammerRecipe.Serde::deserialize) }
@@ -67,13 +76,8 @@ object RegistryManager {
         return false
     }
 
-    fun getFermenting(fluid: FluidStack): FermentingRecipe? {
-        for (recipe in FERMENTING) {
-            if (recipe.matches(fluid))
-                return recipe
-        }
-
-        return null
+    fun getFermenting(fluid: FluidStack): List<FermentingRecipe> {
+        return FERMENTING.filter { it.matches(fluid) }
     }
 
     fun getCompost(input: ItemStack): CompostRecipe? {

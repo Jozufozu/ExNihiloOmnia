@@ -1,13 +1,13 @@
 package com.jozufozu.exnihiloomnia.common.blocks.leaves
 
 import com.jozufozu.exnihiloomnia.ExNihilo
+import com.jozufozu.exnihiloomnia.common.ModConfig
 import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.Block
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.MapColor
-import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -179,7 +179,9 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
         @SubscribeEvent(priority = EventPriority.LOWEST)
         fun registerBlocks(event: RegistryEvent.Register<Block>) {
             val registry = event.registry
-            registry.filter { it.defaultState.material == Material.LEAVES || it.defaultState.material == Material.VINE }
+            ModConfig.blocks.silkwormInfestable.asSequence()
+                    .map { ResourceLocation(it) }
+                    .mapNotNull { registry.getValue(it) }
                     .map { it to BlockSilkwormInfested(it, ResourceLocation(ExNihilo.MODID, "infested_${it.registryName!!.resourceDomain}_${it.registryName!!.resourcePath}")) }
                     .forEach {
                         infestedBlocks.add(it.second)
@@ -194,7 +196,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
         fun registerModels(event: ModelBakeEvent) {
             infestedBlocks.forEach { leaf ->
                 event.modelManager.blockModelShapes.registerBlockWithStateMapper(leaf) { _ ->
-                    event.modelManager.blockModelShapes.blockStateMapper.getVariants(leaf.mimic).map {
+                    event.modelManager.blockModelShapes.blockStateMapper.getVariants(leaf.mimic).asSequence().map {
                         leaf.uninfestedToInfested(it.key) to it.value
                     }.toMap()
                 }
@@ -207,7 +209,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
         fun registerModels(event: ModelRegistryEvent) {
             infestedBlocks.forEach { leaf ->
                 ModelLoader.setCustomStateMapper(leaf) {
-                    leaf.mimicState.validStates.map { it to ModelResourceLocation("minecraft:reeds", "normal") }.toMap()
+                    leaf.mimicState.validStates.asSequence().map { it to ModelResourceLocation("minecraft:reeds", "normal") }.toMap()
                 }
             }
         }

@@ -98,7 +98,7 @@ class ChunkGeneratorSkyBlock(var world: World, seed: Long) : IChunkGenerator {
         var spawnIsland: SpawnIsland? = null
 
         fun loadSpawnIsland() {
-            RegistryLoader.loadSingleJson("/spawn_island/" + ModConfig.world.spawnIsland + ".json") { `object` -> spawnIsland = SpawnIsland.deserialize(`object`) }
+            RegistryLoader.loadSingleJson("/spawn_island/" + ModConfig.world.spawnIsland + ".json") { spawnIsland = SpawnIsland.deserialize(it) }
         }
     }
 }

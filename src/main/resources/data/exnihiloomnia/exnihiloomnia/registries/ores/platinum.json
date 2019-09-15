@@ -1,0 +1,15 @@
+{
+    "color": "38CDFF",
+    "oredict": {
+        "ingot": [
+            "ingotPlatinum",
+            "ingotShiny"
+        ]
+    },
+    "variants": [
+        "gravel",
+        "endGravel",
+        "sand",
+        "dust"
+    ]
+}

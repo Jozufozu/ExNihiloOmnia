@@ -5,7 +5,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
-import java.util.function.Predicate
 
 class ExplicitWorldIngredient(val block: Block, val info: Info = Info.None) : WorldIngredient() {
 
@@ -30,7 +29,7 @@ class ExplicitWorldIngredient(val block: Block, val info: Info = Info.None) : Wo
                 is Info.Data -> return this.block.getMetaFromState(state) == info.data
                 is Info.Variants -> {
                     for (predicate in info.predicates) {
-                        if (!predicate.test(state)) {
+                        if (!predicate(state)) {
                             return false
                         }
                     }
@@ -46,6 +45,6 @@ class ExplicitWorldIngredient(val block: Block, val info: Info = Info.None) : Wo
     sealed class Info {
         object None : Info()
         class Data(val data: Int) : Info()
-        class Variants(val predicates: ArrayList<Predicate<IBlockState>>) : Info()
+        class Variants(val predicates: ArrayList<(IBlockState) -> Boolean>) : Info()
     }
 }
