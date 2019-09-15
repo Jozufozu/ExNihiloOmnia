@@ -49,7 +49,7 @@ public class ModConfig
         @Config.RequiresWorldRestart
         public Crucible crucible = new Crucible();
 
-        public String[] silkwormInfestable = new String[] { "minecraft:leaves", "minecraft:leaves2", "minecraft:vines" };
+        public String[] silkwormInfestable = new String[] { "minecraft:leaves", "minecraft:leaves2", "minecraft:vine" };
         
         public static class Barrel
         {

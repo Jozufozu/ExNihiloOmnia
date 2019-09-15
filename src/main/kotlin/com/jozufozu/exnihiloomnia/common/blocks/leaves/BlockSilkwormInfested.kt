@@ -8,6 +8,7 @@ import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.Block
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.MapColor
+import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -44,6 +45,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
     val mimicState: MimicBlockState
 
     init {
+        if (mimic.defaultState.material === Material.AIR) throw BlockMimicException("Cannot mimic air! This is likely a programmer's mistake, and probably not a config issue")
         MimicBlockState.currentMimic = mimic
         mimicState = MimicBlockState(mimic, this)
         blockStateField.set(this, mimicState)
@@ -182,6 +184,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
             ModConfig.blocks.silkwormInfestable.asSequence()
                     .map { ResourceLocation(it) }
                     .mapNotNull { registry.getValue(it) }
+                    .filterNot { it.defaultState.material === Material.AIR }
                     .map { it to BlockSilkwormInfested(it, ResourceLocation(ExNihilo.MODID, "infested_${it.registryName!!.resourceDomain}_${it.registryName!!.resourcePath}")) }
                     .forEach {
                         infestedBlocks.add(it.second)
