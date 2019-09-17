@@ -64,9 +64,10 @@ object LibRegistries {
     @JvmField val ORE = ResourceLocation(ExNihilo.MODID, "ores")
 
     @JvmField val COMPOST = ResourceLocation(ExNihilo.MODID, "composting")
-    @JvmField val FERMENTING = ResourceLocation(ExNihilo.MODID, "fermenting")
     @JvmField val FLUID_CRAFTING = ResourceLocation(ExNihilo.MODID, "fluid_crafting")
     @JvmField val MIXING = ResourceLocation(ExNihilo.MODID, "fluid_mixing")
+    @JvmField val FERMENTING = ResourceLocation(ExNihilo.MODID, "fermenting")
+    @JvmField val SUMMONING = ResourceLocation(ExNihilo.MODID, "summoning")
 
     @JvmField val SIEVE = ResourceLocation(ExNihilo.MODID, "sifting")
     @JvmField val HAMMER = ResourceLocation(ExNihilo.MODID, "hammering")

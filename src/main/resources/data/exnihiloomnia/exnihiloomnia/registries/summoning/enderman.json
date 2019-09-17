@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "minecraft:ender_pearl"
+    },
+    "fluidInput": "exnihiloomnia:witchwater",
+    "time": 100,
+    "color": "22A57F",
+    "entity": {
+        "id": "minecraft:enderman"
+    }
+}

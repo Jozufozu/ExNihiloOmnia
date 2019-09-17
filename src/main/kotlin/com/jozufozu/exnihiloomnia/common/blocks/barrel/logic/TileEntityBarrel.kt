@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.FluidEvent
 import net.minecraftforge.fluids.FluidStack
@@ -88,6 +89,7 @@ class TileEntityBarrel : TileEntity(), ITickable {
         get() = fluidHandler.fluid
         set(value) {
             fluidHandler.fluid = value
+            world.checkLight(pos)
         }
 
     /**
@@ -101,6 +103,8 @@ class TileEntityBarrel : TileEntity(), ITickable {
         }
 
     val material: Material get() = world.getBlockState(pos).material
+    val fluidBB get() = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, (1.0 / 16.0) + ((fluid?.amount?.toDouble() ?: 0.0) / fluidCapacity) * (14.0 / 16.0), 14.0 / 16.0)
+    val compostBB get() = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, (1.0 / 16.0) + (barrel.compostAmount.toDouble() / compostCapacity) * (14.0 / 16.0), 14.0 / 16.0)
 
     private val fluidHandler = BarrelFluidHandler(fluidCapacity)
     private val itemHandler = BarrelItemHandler()
@@ -132,8 +136,8 @@ class TileEntityBarrel : TileEntity(), ITickable {
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         val barrelTag = NBTTagCompound()
 
-        barrelTag.setString("state", this.state.id.toString())
-        barrelTag.setInteger("color", this.color.toInt())
+        barrelTag.setString("state", state.id.toString())
+        barrelTag.setInteger("color", color.toInt())
 
         item.takeIf { !it.isEmpty }?.let { barrelTag.setTag("item", it.writeToNBT(NBTTagCompound())) }
         fluid?.let { barrelTag.setTag("fluid", it.writeToNBT(NBTTagCompound())) }

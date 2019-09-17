@@ -23,15 +23,14 @@ object RegistryManager {
     val FLUID_MIXING = ReloadableRegistry(LibRegistries.MIXING, FluidMixingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/fluidmixing", FluidMixingRecipe.Serde::deserialize) }
     val FERMENTING = ReloadableRegistry(LibRegistries.FERMENTING, FermentingRecipe::class.java)  {
         RegistryLoader.genericLoad(it, "/registries/fermenting", FermentingRecipe.Serde::deserialize)
-        BarrelStates.init()
-
-        for (recipe in it) {
-            val state = recipe.barrelState
-            BarrelStates.STATES[state.id] = state
-        }
+        BarrelStates.setShouldReload()
+    }
+    val SUMMONING = ReloadableRegistry(LibRegistries.SUMMONING, SummoningRecipe::class.java)  {
+        RegistryLoader.genericLoad(it, "/registries/summoning", SummoningRecipe.Serde::deserialize)
+        BarrelStates.setShouldReload()
     }
 
-    val SIFTING = ReloadableRegistry(LibRegistries.SIEVE, SieveRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/sieve", SieveRecipe.Serde::deserialize) }
+    val SIFTING = ReloadableRegistry(LibRegistries.SIEVE, SieveRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/sifting", SieveRecipe.Serde::deserialize) }
     val HAMMERING = ReloadableRegistry(LibRegistries.HAMMER, HammerRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/hammering", HammerRecipe.Serde::deserialize) }
 
     val MELTING = ReloadableRegistry(LibRegistries.MELTING, MeltingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/melting", MeltingRecipe.Serde::deserialize) }
@@ -100,6 +99,15 @@ object RegistryManager {
 
     fun getFluidCrafting(catalyst: ItemStack, fluidStack: FluidStack): FluidCraftingRecipe? {
         for (recipe in FLUID_CRAFTING) {
+            if (recipe.matches(catalyst, fluidStack))
+                return recipe
+        }
+
+        return null
+    }
+
+    fun getSummoning(catalyst: ItemStack, fluidStack: FluidStack): SummoningRecipe? {
+        for (recipe in SUMMONING) {
             if (recipe.matches(catalyst, fluidStack))
                 return recipe
         }

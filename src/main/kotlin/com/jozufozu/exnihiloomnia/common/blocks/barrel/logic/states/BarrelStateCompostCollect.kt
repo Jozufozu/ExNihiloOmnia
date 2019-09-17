@@ -21,13 +21,13 @@ import net.minecraft.world.World
 import org.lwjgl.opengl.GL11
 import kotlin.math.min
 
-class BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) {
+object BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) {
     init {
-        this.logic.add(CompostCollectionLogic())
+        logic.add(CompostCollectionLogic)
     }
 
     override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 1.0 / 16.0 + ((barrel.compostAmount / TileEntityBarrel.compostCapacity) * 14.0 / 16.0), 14.0 / 16.0))
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, barrel.compostBB)
     }
 
     override fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
@@ -74,7 +74,7 @@ class BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) {
         GlStateManager.popMatrix()
     }
 
-    class CompostCollectionLogic : BarrelLogic() {
+    object CompostCollectionLogic : BarrelLogic() {
         override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }

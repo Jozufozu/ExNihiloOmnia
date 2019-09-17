@@ -22,13 +22,15 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.lwjgl.opengl.GL11
 
-class BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
+object BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
     init {
-        this.logic.add(CountdownLogic({ ModConfig.blocks.barrel.compostTime }, { it.state = BarrelStates.ITEMS }))
+        logic.add(CountdownLogic({ ModConfig.blocks.barrel.compostTime }, { it.state = BarrelStates.ITEMS }))
     }
 
+    private val compostBB = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 15.0 / 16.0, 14.0 / 16.0)
+
     override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 1.0 / 16.0 + (barrel.compostAmount / TileEntityBarrel.compostCapacity) * 14.0 / 16.0, 14.0 / 16.0))
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, compostBB)
     }
 
     override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
@@ -70,7 +72,7 @@ class BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
         }
 
         GlStateManager.scale(0.9999, 0.9999, 0.9999)
-        Minecraft.getMinecraft().itemRenderer.renderItem(BarrelState.renderSlave, contents, ItemCameraTransforms.TransformType.NONE)
+        Minecraft.getMinecraft().itemRenderer.renderItem(renderSlave, contents, ItemCameraTransforms.TransformType.NONE)
 
         RenderHelper.enableStandardItemLighting()
 

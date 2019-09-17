@@ -42,6 +42,7 @@ object RegistryLoader {
         RegistryManager.FLUID_CRAFTING.load()
         RegistryManager.FLUID_MIXING.load()
         RegistryManager.FERMENTING.load()
+        RegistryManager.SUMMONING.load()
         RegistryManager.SIFTING.load()
         RegistryManager.HAMMERING.load()
         RegistryManager.MELTING.load()

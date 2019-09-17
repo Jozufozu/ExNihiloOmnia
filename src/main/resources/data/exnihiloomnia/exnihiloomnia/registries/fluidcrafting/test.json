@@ -1,0 +1,9 @@
+{
+    "input": {
+        "item": "minecraft:clay_ball"
+    },
+    "fluidInput": "water",
+    "output": {
+        "item": "minecraft:glowstone"
+    }
+}

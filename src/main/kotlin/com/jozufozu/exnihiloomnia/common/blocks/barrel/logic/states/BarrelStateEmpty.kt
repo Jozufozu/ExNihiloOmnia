@@ -9,11 +9,11 @@ import net.minecraft.util.EnumHand
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
 
-class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
+object BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     init {
-        this.logic.add(FluidFillTrigger())
-        this.logic.add(CompostTrigger())
-        this.logic.add(RainTrigger())
+        logic.add(FluidFillTrigger)
+        logic.add(CompostTrigger)
+        logic.add(RainTrigger)
     }
 
     override fun activate(barrel: TileEntityBarrel) {
@@ -23,7 +23,7 @@ class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
         barrel.compostAmount = 0
     }
 
-    class CompostTrigger : BarrelLogic() {
+    object CompostTrigger : BarrelLogic() {
         override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
@@ -43,7 +43,7 @@ class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
         }
     }
 
-    class FluidFillTrigger : BarrelLogic() {
+    object FluidFillTrigger : BarrelLogic() {
         override fun canFillFluid(barrel: TileEntityBarrel, fluidStack: FluidStack): Boolean {
             return true
         }
@@ -56,7 +56,7 @@ class BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
         }
     }
 
-    class RainTrigger : BarrelLogic() {
+    object RainTrigger : BarrelLogic() {
         override fun onUpdate(barrel: TileEntityBarrel): Boolean {
             val world = barrel.world
 

@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11
 class BarrelStateFermenting(val recipe: FermentingRecipe, name: ResourceLocation) : BarrelState(name) {
     val output = recipe.output
     init {
-        this.logic.add(CountdownLogic({ recipe.time }, {
+        logic.add(CountdownLogic({ recipe.time }, {
             it.fluid = recipe.output
             it.state = BarrelStates.FLUID
         }))
@@ -41,12 +41,12 @@ class BarrelStateFermenting(val recipe: FermentingRecipe, name: ResourceLocation
         Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         val textureMapBlocks = Minecraft.getMinecraft().textureMapBlocks
 
-        val waterTexture = textureMapBlocks.getAtlasSprite((barrel.fluid?.fluid ?: FluidRegistry.WATER).still.toString())
-        val witchWaterTexture = textureMapBlocks.getAtlasSprite(output.fluid.still.toString())
+        val oldTexture = textureMapBlocks.getAtlasSprite((barrel.fluid?.fluid ?: FluidRegistry.WATER).still.toString())
+        val newTexture = textureMapBlocks.getAtlasSprite(output.fluid.still.toString())
 
         val progress: Float = (recipe.time - barrel.timer).toFloat() / recipe.time
-        val waterTint = Color(1.0f, 1.0f, 1.0f, 1.0f - progress)
-        val witchWaterTint = Color(1.0f, 1.0f, 1.0f, progress)
+        val oldTint = Color(1.0f, 1.0f, 1.0f, 1.0f - progress)
+        val newTint = Color(1.0f, 1.0f, 1.0f, progress)
 
         GlStateManager.translate(x + 0.125, y + 0.0625, z + 0.125)
         GlStateManager.scale(0.75, 1.0, 0.75)
@@ -54,11 +54,11 @@ class BarrelStateFermenting(val recipe: FermentingRecipe, name: ResourceLocation
         RenderHelper.disableStandardItemLighting()
 
         if (barrel.world.getBlockState(barrel.pos).material.isOpaque) {
-            RenderUtil.renderContents(waterTexture, 0.875, waterTint)
-            RenderUtil.renderContents(witchWaterTexture, 0.875, witchWaterTint)
+            RenderUtil.renderContents(oldTexture, 0.875, oldTint)
+            RenderUtil.renderContents(newTexture, 0.875, newTint)
         } else {
-            RenderUtil.renderContents3D(waterTexture, waterTexture, 0.875, waterTint)
-            RenderUtil.renderContents3D(witchWaterTexture, witchWaterTexture, 0.875, witchWaterTint)
+            RenderUtil.renderContents3D(oldTexture, oldTexture, 0.875, oldTint)
+            RenderUtil.renderContents3D(newTexture, newTexture, 0.875, newTint)
         }
 
         RenderHelper.enableStandardItemLighting()

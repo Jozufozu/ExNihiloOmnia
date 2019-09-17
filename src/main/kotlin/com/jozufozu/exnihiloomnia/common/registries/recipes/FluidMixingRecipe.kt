@@ -60,7 +60,7 @@ class FluidMixingRecipe(
             val craftSound = SoundEvent.REGISTRY.getObject(ResourceLocation(soundName))
 
             if (craftSound == null) {
-                RegistryLoader.warn("$soundName is not a valid sound, defaulting to $DEFAULT_SOUND")
+                RegistryLoader.warn("'$soundName' is not a valid sound, defaulting to '$DEFAULT_SOUND'")
                 return FluidMixingRecipe(lower, upper, output)
             }
 

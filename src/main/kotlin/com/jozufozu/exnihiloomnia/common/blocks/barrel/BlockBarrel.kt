@@ -100,10 +100,9 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
     }
 
     override fun getLightValue(state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
-        (world.getTileEntity(pos) as? TileEntityBarrel)?.let {
-            it.fluid?.fluid?.getLuminosity(it.fluid)?.let { return it }
-        }
-        return super.getLightValue(state, world, pos)
+        return (world.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            it.state.getLightValue(it, state, world, pos)
+        } ?: super.getLightValue(state, world, pos)
     }
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = boundingBox
@@ -121,10 +120,40 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
     override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntityBarrel()
 
     override fun randomDisplayTick(stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
-//        (worldIn.getTileEntity(pos) as? TileEntityBarrel)?.let {
-//            if (it.burnTimer > 0) {
-//                // TODO: Add smoke
-//            }
-//        }
+        (worldIn.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            it.state.randomDisplayTick(it, stateIn, worldIn, pos, rand)
+        }
+    }
+
+    override fun isAABBInsideMaterial(world: World, pos: BlockPos, boundingBox: AxisAlignedBB, material: Material): Boolean {
+        (world.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            it.fluid?.let { fluid ->
+                if (it.fluidBB.offset(pos).intersects(boundingBox)) {
+                    return fluid.fluid.block.defaultState.material == material
+                }
+            }
+        }
+
+        return false
+    }
+
+    override fun isEntityInsideMaterial(world: IBlockAccess, pos: BlockPos, state: IBlockState, entity: Entity, yToTest: Double, material: Material, testingHead: Boolean): Boolean {
+        (world.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            it.fluid?.let { fluid ->
+                if (it.fluidBB.offset(pos).intersects(entity.entityBoundingBox)) {
+                    return fluid.fluid.block.defaultState.material == material
+                }
+            }
+        }
+
+        return false
+    }
+
+    override fun isAABBInsideLiquid(world: World, pos: BlockPos, boundingBox: AxisAlignedBB): Boolean {
+        (world.getTileEntity(pos) as? TileEntityBarrel)?.let {
+            return it.fluidBB.offset(pos).intersects(boundingBox)
+        }
+
+        return false
     }
 }

@@ -21,6 +21,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
@@ -32,23 +33,17 @@ import java.util.*
 open class BarrelState(val id: ResourceLocation) {
     protected var logic: ArrayList<BarrelLogic> = ArrayList()
 
-    open fun canInteractWithFluids(barrel: TileEntityBarrel): Boolean {
-        return true
-    }
+    open fun canInteractWithFluids(barrel: TileEntityBarrel): Boolean = true
 
-    open fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
-        return true
-    }
+    open fun canInteractWithItems(barrel: TileEntityBarrel): Boolean = true
 
-    open fun canExtractItems(barrel: TileEntityBarrel): Boolean {
-        return false
-    }
+    open fun canExtractItems(barrel: TileEntityBarrel): Boolean = false
 
-    fun canExtractFluids(barrel: TileEntityBarrel): Boolean {
-        return false
-    }
+    fun canExtractFluids(barrel: TileEntityBarrel): Boolean = false
 
-    open fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) { }
+    open fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {  }
+
+    open fun getLightValue(barrel: TileEntityBarrel, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int = 0
 
     open fun activate(barrel: TileEntityBarrel) {
         for (barrelLogic in logic) {
@@ -113,6 +108,9 @@ open class BarrelState(val id: ResourceLocation) {
             renderSlave.noClip = true
         }
     }
+
+    @SideOnly(Side.CLIENT)
+    open fun randomDisplayTick(barrel: TileEntityBarrel, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {}
 
     companion object {
         lateinit var renderSlave: EntityLivingBase
