@@ -1,0 +1,13 @@
+{
+    "blockInput": {
+        "block": "minecraft:stonebrick",
+        "variants": {
+            "variant": "stonebrick"
+        }
+    },
+    "fluidInput": "water",
+    "result": {
+        "block": "minecraft:stonebrick",
+        "data": 1
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "exnihiloomnia:porcelain_clay"
+    }
+  },
+  "result": {
+    "item": "exnihiloomnia:raw_crucible"
+  }
+}

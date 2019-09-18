@@ -21,6 +21,7 @@ object RegistryManager {
     val COMPOST = ReloadableRegistry(LibRegistries.COMPOST, CompostRecipe::class.java) { RegistryLoader.genericLoad(it, "/registries/composting", CompostRecipe.Serde::deserialize) }
     val FLUID_CRAFTING = ReloadableRegistry(LibRegistries.FLUID_CRAFTING, FluidCraftingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/fluidcrafting", FluidCraftingRecipe.Serde::deserialize) }
     val FLUID_MIXING = ReloadableRegistry(LibRegistries.MIXING, FluidMixingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/fluidmixing", FluidMixingRecipe.Serde::deserialize) }
+    val LEAKING = ReloadableRegistry(LibRegistries.LEAKING, LeakingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/leaking", LeakingRecipe.Serde::deserialize) }
     val FERMENTING = ReloadableRegistry(LibRegistries.FERMENTING, FermentingRecipe::class.java)  {
         RegistryLoader.genericLoad(it, "/registries/fermenting", FermentingRecipe.Serde::deserialize)
         BarrelStates.setShouldReload()
@@ -77,6 +78,10 @@ object RegistryManager {
 
     fun getFermenting(fluid: FluidStack): List<FermentingRecipe> {
         return FERMENTING.filter { it.matches(fluid) }
+    }
+
+    fun getLeaking(fluid: FluidStack): List<LeakingRecipe> {
+        return LEAKING.filter { it.matches(fluid) }
     }
 
     fun getCompost(input: ItemStack): CompostRecipe? {

@@ -76,7 +76,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
 
             val predicates = ArrayList<(IBlockState) -> Boolean>()
 
-            val ctx = RegistryLoader.pushCtx("variants")
+            val ctx = RegistryLoader.pushCtx(LibRegistries.VARIANTS)
             for ((key, value) in variants.entrySet()) {
                 RegistryLoader.restoreCtx(ctx)
                 val property = block.blockState.getProperty(key)

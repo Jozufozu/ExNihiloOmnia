@@ -20,6 +20,7 @@ object LibRegistries {
 
     const val FLUID_OUTPUT = FLUID + OUTPUT_SUFFIX
     const val OUTPUT = "output"
+    const val RESULT = "result"
 
     const val REWARDS = "rewards"     // Multiple weighted outputs
 
@@ -66,6 +67,7 @@ object LibRegistries {
     @JvmField val COMPOST = ResourceLocation(ExNihilo.MODID, "composting")
     @JvmField val FLUID_CRAFTING = ResourceLocation(ExNihilo.MODID, "fluid_crafting")
     @JvmField val MIXING = ResourceLocation(ExNihilo.MODID, "fluid_mixing")
+    @JvmField val LEAKING = ResourceLocation(ExNihilo.MODID, "leaking")
     @JvmField val FERMENTING = ResourceLocation(ExNihilo.MODID, "fermenting")
     @JvmField val SUMMONING = ResourceLocation(ExNihilo.MODID, "summoning")
 

@@ -6,7 +6,6 @@ import com.jozufozu.exnihiloomnia.common.registries.recipes.FermentingRecipe
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Blocks
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
@@ -49,18 +48,20 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     object MossLogic : BarrelLogic() {
         override fun onUpdate(barrel: TileEntityBarrel): Boolean {
             val world = barrel.world
-            if (!world.isRemote && barrel.material === Material.WOOD && barrel.fluid?.fluid === FluidRegistry.WATER) {
-                val chance = 0.00006f * (barrel.fluid?.amount?.toFloat()?.div(TileEntityBarrel.fluidCapacity) ?: 0f)
+            if (!world.isRemote && barrel.material === Material.WOOD) barrel.fluid?.let { fluid ->
+                val leaks = RegistryManager.getLeaking(fluid)
+                val chanceMultiplier = (barrel.fluid?.amount?.toFloat()?.div(TileEntityBarrel.fluidCapacity) ?: 0f)
                 val barrelPos = barrel.pos
 
-                BlockPos.MutableBlockPos.getAllInBoxMutable(barrelPos.add(-1, -1, -1), barrelPos.add(1, -1, 1)).asSequence()
-                        .filter { world.getBlockState(it) === Blocks.COBBLESTONE.defaultState }
-                        .forEach {
-                            val raining = world.isRainingAt(it.up())
-                            if (world.rand.nextFloat() < (chance * if (raining) 3 else 1)) {
-                                world.setBlockState(it, Blocks.MOSSY_COBBLESTONE.defaultState)
-                            }
+                for (pos in BlockPos.MutableBlockPos.getAllInBoxMutable(barrelPos.add(-1, -1, -1), barrelPos.add(1, -1, 1))) {
+                    for (leak in leaks.asSequence().filter { it.matches(world.getBlockState(pos)) }) {
+                        val raining = world.isRainingAt(pos.up())
+                        if (world.rand.nextFloat() < (leak.chance * chanceMultiplier * if (raining) 3 else 1)) {
+                            world.setBlockState(pos, leak.result)
+                            break
                         }
+                    }
+                }
             }
 
             return false

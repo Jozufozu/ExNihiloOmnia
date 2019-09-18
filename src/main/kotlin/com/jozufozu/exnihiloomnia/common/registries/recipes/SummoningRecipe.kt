@@ -44,9 +44,9 @@ class SummoningRecipe(
 
         @Throws(JsonParseException::class)
         @JvmStatic fun deserialize(recipe: JsonObject): SummoningRecipe? {
-            if (LibRegistries.FLUID_INPUT !in recipe) throw JsonSyntaxException("fermenting recipe is missing \"${LibRegistries.FLUID_INPUT}\"")
-            if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("fermenting recipe is missing \"${LibRegistries.INPUT}\"")
-            if ("entity" !in recipe) throw JsonSyntaxException("fermenting recipe is missing \"entity\"")
+            if (LibRegistries.FLUID_INPUT !in recipe) throw JsonSyntaxException("summoning recipe is missing \"${LibRegistries.FLUID_INPUT}\"")
+            if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("summoning recipe is missing \"${LibRegistries.INPUT}\"")
+            if ("entity" !in recipe) throw JsonSyntaxException("summoning recipe is missing \"entity\"")
 
             if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
