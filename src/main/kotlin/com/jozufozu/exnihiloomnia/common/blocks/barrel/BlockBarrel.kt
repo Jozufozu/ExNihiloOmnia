@@ -57,9 +57,7 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
             var input = ItemHandlerHelper.copyStackWithSize(held, 1)
             val fluidBefore = FluidUtil.getFluidContained(playerIn.getHeldItem(hand))
 
-            if (!FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
-                input = ItemHandlerHelper.insertItem(barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), input, false)
-            } else {
+            if (FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing)) {
                 //TODO: Sounds don't play when the player is holding a stack of buckets
                 val fluidContained = FluidUtil.getFluidContained(playerIn.getHeldItem(hand))
 
@@ -70,6 +68,8 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
                     val fluid = fluidBefore.fluid
                     worldIn.playSound(null, pos, fluid.getEmptySound(fluidBefore), SoundCategory.NEUTRAL, 1.0f, 1.0f)
                 }
+            } else {
+                input = ItemHandlerHelper.insertItem(barrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing), input, false)
             }
 
             if (input.isEmpty) {
@@ -79,10 +79,7 @@ open class BlockBarrel @JvmOverloads constructor(registryName: ResourceLocation,
                     val soundType = blockFromItem.getSoundType(blockFromItem.getStateFromMeta(held.metadata), worldIn, pos, playerIn)
                     worldIn.playSound(null, pos, soundType.placeSound, SoundCategory.BLOCKS, 0.2f + worldIn.rand.nextFloat() * 0.2f, 1.1f + worldIn.rand.nextFloat() * 0.4f)
                 }
-
-                if (!playerIn.isCreative) {
-                    held.shrink(1)
-                }
+                if (!playerIn.isCreative) held.shrink(1)
             }
         }
 

@@ -9,8 +9,10 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraft.world.World
 
 open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material, soundType: SoundType) : BlockBase(registryName, materialIn, soundType) {
     constructor() : this(LibBlocks.RAW_CRUCIBLE, Material.GROUND, SoundType.GROUND) {
@@ -47,5 +49,21 @@ open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material
 
     override fun canEntitySpawn(state: IBlockState, entityIn: Entity): Boolean {
         return false
+    }
+
+    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
+        for (box in collisionBoxes) {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, box)
+        }
+    }
+
+    companion object {
+        val collisionBoxes = arrayOf(
+                AxisAlignedBB(0.0, 2.0 / 16.0, 1.0 / 16.0, 1.0, 3.0 / 16.0, 1.0),
+                AxisAlignedBB(0.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0, 1.0),
+                AxisAlignedBB(0.0, 1.0 / 16.0, 1.0 / 16.0, 1.0, 1.0, 1.0 / 16.0),
+                AxisAlignedBB(1.0, 1.0 / 16.0, 1.0 / 16.0, 1.0, 1.0, 1.0),
+                AxisAlignedBB(0.0, 1.0 / 16.0, 15.0 / 16.0, 1.0, 1.0, 1.0)
+        )
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fluids.FluidStack
@@ -28,7 +29,6 @@ class TileEntityCrucible : TileEntity(), ITickable {
     val fluidHandler = FluidTank(fluidCapacity)
 
     init {
-        fluidHandler.setCanFill(false)
         fluidHandler.setTileEntity(this)
     }
 
@@ -62,6 +62,9 @@ class TileEntityCrucible : TileEntity(), ITickable {
     var meltingRatio: Float = 0f
 
     val fluidContents: FluidStack? get() = this.fluidHandler.fluid?.copy()
+
+    val fluidBB get() = AxisAlignedBB(1.0 / 16.0, 3.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0, (3.0 / 16.0) + (fluidAmount.toDouble() / fluidCapacity) * (12.0 / 16.0), 15.0 / 16.0)
+    val solidBB get() = AxisAlignedBB(1.0 / 16.0, 3.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0, (3.0 / 16.0) + (solidAmount.toDouble() / solidCapacity) * (12.0 / 16.0), 15.0 / 16.0)
 
     /**
      * Accessing packet on the server will populate the backing field if it is null,

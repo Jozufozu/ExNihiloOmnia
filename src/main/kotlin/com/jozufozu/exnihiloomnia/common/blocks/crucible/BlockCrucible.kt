@@ -6,13 +6,15 @@ import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fml.client.registry.ClientRegistry
@@ -58,9 +60,47 @@ class BlockCrucible : BlockCrucibleRaw(LibBlocks.CRUCIBLE, Material.ROCK, SoundT
         return true
     }
 
-    override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity? {
-        return TileEntityCrucible()
+    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
+        super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185477_7_)
+
+        (worldIn.getTileEntity(pos) as? TileEntityCrucible)?.let {
+            addCollisionBoxToList(pos, entityBox, collidingBoxes, it.solidBB)
+        }
     }
+
+    override fun isAABBInsideMaterial(world: World, pos: BlockPos, boundingBox: AxisAlignedBB, material: Material): Boolean {
+        (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
+            it.fluidContents?.let { fluid ->
+                if (it.fluidBB.offset(pos).intersects(boundingBox)) {
+                    return fluid.fluid.block.defaultState.material == material
+                }
+            }
+        }
+
+        return false
+    }
+
+    override fun isEntityInsideMaterial(world: IBlockAccess, pos: BlockPos, state: IBlockState, entity: Entity, yToTest: Double, material: Material, testingHead: Boolean): Boolean {
+        (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
+            it.fluidContents?.let { fluid ->
+                if (it.fluidBB.offset(pos).intersects(entity.entityBoundingBox)) {
+                    return fluid.fluid.block.defaultState.material == material
+                }
+            }
+        }
+
+        return false
+    }
+
+    override fun isAABBInsideLiquid(world: World, pos: BlockPos, boundingBox: AxisAlignedBB): Boolean {
+        (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
+            return it.fluidBB.offset(pos).intersects(boundingBox)
+        }
+
+        return false
+    }
+
+    override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntityCrucible()
 
     @SideOnly(Side.CLIENT)
     override fun registerModels() {

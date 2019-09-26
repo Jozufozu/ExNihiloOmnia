@@ -89,7 +89,7 @@ class TileEntityBarrel : TileEntity(), ITickable {
         get() = fluidHandler.fluid
         set(value) {
             fluidHandler.fluid = value
-            world.checkLight(pos)
+            world?.checkLight(pos)
         }
 
     /**
@@ -108,8 +108,7 @@ class TileEntityBarrel : TileEntity(), ITickable {
 
     private val fluidHandler = BarrelFluidHandler(fluidCapacity)
     private val itemHandler = BarrelItemHandler()
-    private val barrel: TileEntityBarrel
-        get() = this
+    private val barrel: TileEntityBarrel get() = this
 
     override fun update() {
         this.timerLastTick = this.timer
