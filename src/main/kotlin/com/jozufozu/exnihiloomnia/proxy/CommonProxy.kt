@@ -22,12 +22,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.registry.EntityRegistry
-import java.io.File
 
 open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
-        ExNihilo.PATH = File(event.modConfigurationDirectory.absolutePath + File.separator + "exnihiloomnia" + File.separator)
-
         ConfigManager.sync(ExNihilo.MODID, Config.Type.INSTANCE)
 
         ExNihiloFluids.preInit()

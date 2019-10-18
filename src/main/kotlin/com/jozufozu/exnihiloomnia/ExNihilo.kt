@@ -2,7 +2,8 @@ package com.jozufozu.exnihiloomnia
 
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.client.ores.models.ExNihiloOreModels
-import com.jozufozu.exnihiloomnia.common.registries.command.CommandRegistry
+import com.jozufozu.exnihiloomnia.common.commands.CommandOreStuffGeneration
+import com.jozufozu.exnihiloomnia.common.commands.CommandRegistry
 import com.jozufozu.exnihiloomnia.proxy.CommonProxy
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fluids.FluidRegistry
@@ -28,7 +29,8 @@ object ExNihilo {
     @SidedProxy(serverSide = "com.jozufozu.exnihiloomnia.proxy.CommonProxy", clientSide = "com.jozufozu.exnihiloomnia.proxy.ClientProxy")
     lateinit var proxy: CommonProxy
 
-    var PATH: File? = null
+    lateinit var PATH: File
+        private set
 
     init {
         FluidRegistry.enableUniversalBucket()
@@ -38,6 +40,7 @@ object ExNihilo {
 
     @EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
+        PATH = File(event.modConfigurationDirectory.absolutePath + File.separator + "exnihiloomnia" + File.separator)
         MinecraftForge.EVENT_BUS.register(proxy)
         proxy.preInit(event)
     }
@@ -55,5 +58,6 @@ object ExNihilo {
     @EventHandler
     fun onServerStart(event: FMLServerStartingEvent) {
         event.registerServerCommand(CommandRegistry())
+        event.registerServerCommand(CommandOreStuffGeneration())
     }
 }

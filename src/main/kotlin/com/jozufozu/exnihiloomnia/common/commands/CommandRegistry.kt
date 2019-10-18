@@ -1,4 +1,4 @@
-package com.jozufozu.exnihiloomnia.common.registries.command
+package com.jozufozu.exnihiloomnia.common.commands
 
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.registries.ReloadableRegistry
@@ -12,7 +12,7 @@ import java.util.*
 
 class CommandRegistry : CommandBase() {
     override fun getName(): String {
-        return "enoreg"
+        return "enoregistry"
     }
 
     override fun getUsage(sender: ICommandSender): String {
