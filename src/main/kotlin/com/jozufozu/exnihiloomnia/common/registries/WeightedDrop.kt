@@ -5,7 +5,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
-import com.jozufozu.exnihiloomnia.common.util.IRewardProcessor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -19,10 +18,10 @@ class WeightedDrop(
         val type: String = ""
 ) {
 
-    fun roll(user: EntityPlayer?, activeStack: ItemStack, random: Random): ItemStack {
+    fun roll(user: EntityPlayer?, multipliers: Map<String, Float>, random: Random): ItemStack {
         var chance = this.chance
         user?.let { chance += it.luck }
-        (activeStack.item as? IRewardProcessor)?.let { chance *= it.getEffectivenessForType(this.type) }
+        chance *= multipliers.getOrDefault(type, 1f)
 
         return if (random.nextFloat() < chance) drop.copy() else ItemStack.EMPTY
     }

@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "exnihiloomnia:mesh_silk"
+    },
+    "multipliers": {
+        "ore": 0.6,
+        "junk": 0.7,
+        "resource": 1.0,
+        "plant": 1.2
+    }
+}

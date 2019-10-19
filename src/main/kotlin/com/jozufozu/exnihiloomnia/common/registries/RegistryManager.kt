@@ -13,6 +13,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.common.Mod
+import kotlin.math.max
 
 @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
 object RegistryManager {
@@ -37,6 +38,8 @@ object RegistryManager {
     val MELTING = ReloadableRegistry(LibRegistries.MELTING, MeltingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/melting", MeltingRecipe.Serde::deserialize) }
     val HEAT = ReloadableRegistry(LibRegistries.HEAT_SOURCE, HeatSource::class.java)  { RegistryLoader.genericLoad(it, "/registries/heat", HeatSource.Serde::deserialize) }
 
+    val MESH = ReloadableRegistry(LibRegistries.MESH, Mesh::class.java)  { RegistryLoader.genericLoad(it, "/registries/mesh", Mesh.Serde::deserialize) }
+
     fun getHammerRewards(world: World, hammer: ItemStack, player: EntityPlayer, toHammer: IBlockState): NonNullList<ItemStack> {
         val drops = NonNullList.create<ItemStack>()
 
@@ -45,36 +48,24 @@ object RegistryManager {
 
         for (hammerRecipe in HAMMERING) {
             if (hammerRecipe.matches(toHammer)) {
-                drops.addAll(hammerRecipe.rewards.roll(player, hammer, world.rand))
+                drops.addAll(hammerRecipe.rewards.roll(player, emptyMap(), world.rand))
             }
         }
 
         return drops
     }
 
+    fun isMesh(input: ItemStack) = MESH.any { it.matches(input) }
+
     /**
      * Whether or not the given input can generate rewards
      */
-    fun siftable(input: ItemStack): Boolean {
-        for (recipe in SIFTING) {
-            if (recipe.matches(input))
-                return true
-        }
-
-        return false
-    }
+    fun siftable(input: ItemStack) = SIFTING.any { it.matches(input) }
 
     /**
      * Whether or not the given block can be hammered
      */
-    fun hammerable(input: IBlockState): Boolean {
-        for (recipe in HAMMERING) {
-            if (recipe.matches(input))
-                return true
-        }
-
-        return false
-    }
+    fun hammerable(input: IBlockState) = HAMMERING.any { it.matches(input) }
 
     fun getFermenting(fluid: FluidStack): List<FermentingRecipe> {
         return FERMENTING.filter { it.matches(fluid) }
@@ -136,5 +127,22 @@ object RegistryManager {
         }
 
         return 0
+    }
+
+    fun getMultipliers(itemStack: ItemStack): Map<String, Float> {
+        val out = hashMapOf<String, Float>()
+        for (mesh in MESH) {
+            for ((type, value) in mesh.multipliers) {
+                if (type in out) {
+                    val other = out[type] ?: 0f
+
+                    out[type] = max(value, other)
+                } else {
+                    out[type] = value
+                }
+            }
+        }
+
+        return out
     }
 }

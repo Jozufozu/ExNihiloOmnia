@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "exnihiloomnia:mesh_wood"
+    },
+    "multipliers": {
+        "junk": 0.5,
+        "ore": 1.3,
+        "resource": 1.3,
+        "plant": 0.2
+    }
+}

@@ -48,6 +48,7 @@ object RegistryLoader {
         RegistryManager.HAMMERING.load()
         RegistryManager.MELTING.load()
         RegistryManager.HEAT.load()
+        RegistryManager.MESH.load()
         val timeNow = System.nanoTime()
 
         clearCtx()

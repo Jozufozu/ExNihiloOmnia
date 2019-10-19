@@ -20,7 +20,7 @@ class HeatSource(
     companion object Serde {
 
         fun deserialize(heatSource: JsonObject): HeatSource? {
-            if (LibRegistries.SOURCE !in heatSource) throw JsonSyntaxException("Heat source is missing block!")
+            if (LibRegistries.SOURCE !in heatSource) throw JsonSyntaxException("heat source is missing \"${LibRegistries.SOURCE}\"")
 
             if (!CraftingHelper.processConditions(heatSource, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 

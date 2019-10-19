@@ -23,11 +23,11 @@ class WeightedRewards {
      * @param processor The item being used to generate these rewards
      * @param random
      */
-    fun roll(player: EntityPlayer?, processor: ItemStack, random: Random): NonNullList<ItemStack> {
+    fun roll(player: EntityPlayer?, multipliers: Map<String, Float>, random: Random): NonNullList<ItemStack> {
         val out = NonNullList.create<ItemStack>()
 
         for (reward in outputs) {
-            val roll = reward.roll(player, processor, random)
+            val roll = reward.roll(player, multipliers, random)
 
             if (roll.isEmpty)
                 continue

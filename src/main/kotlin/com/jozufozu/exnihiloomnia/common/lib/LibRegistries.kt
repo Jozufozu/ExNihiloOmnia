@@ -76,4 +76,6 @@ object LibRegistries {
 
     @JvmField val MELTING = ResourceLocation(ExNihilo.MODID, "melting")
     @JvmField val HEAT_SOURCE = ResourceLocation(ExNihilo.MODID, "heat")
+
+    @JvmField val MESH = ResourceLocation(ExNihilo.MODID, "mesh")
 }

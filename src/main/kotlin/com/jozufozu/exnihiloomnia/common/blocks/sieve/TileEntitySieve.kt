@@ -2,7 +2,6 @@ package com.jozufozu.exnihiloomnia.common.blocks.sieve
 
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.client.ParticleSieve
-import com.jozufozu.exnihiloomnia.common.items.tools.IMesh
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
 import com.jozufozu.exnihiloomnia.common.network.MessageUpdateSieve
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
@@ -131,7 +130,7 @@ class TileEntitySieve : TileEntity(), ITickable {
 
     fun trySetMesh(player: EntityPlayer, stack: ItemStack) {
         user = player
-        if (!stack.isEmpty && stack.item is IMesh) {
+        if (!stack.isEmpty && RegistryManager.isMesh(stack)) {
             mesh = stack.splitStack(1)
         }
     }
@@ -178,7 +177,7 @@ class TileEntitySieve : TileEntity(), ITickable {
 
         for (recipe in RegistryManager.SIFTING) {
             if (recipe.matches(contents)) {
-                val roll = recipe.rewards.roll(user, mesh, world.rand)
+                val roll = recipe.rewards.roll(user, RegistryManager.getMultipliers(mesh), world.rand)
 
                 (user as? EntityPlayerMP)?.let { ExNihiloTriggers.USE_SIEVE_TRIGGER.trigger(it, recipe.registryName!!, roll) }
 
@@ -253,7 +252,7 @@ class TileEntitySieve : TileEntity(), ITickable {
             if (stack.isEmpty) return stack
             when (slot) {
                 0 -> {
-                    if (mesh.isEmpty && stack.item is IMesh) {
+                    if (mesh.isEmpty && RegistryManager.isMesh(stack)) {
                         val copy = stack.copy()
 
                         val insert = copy.splitStack(1)
