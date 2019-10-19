@@ -49,7 +49,7 @@ open class BlockBarrelColored @JvmOverloads constructor(registryName: ResourceLo
     override fun getMetaFromState(state: IBlockState) = state.getValue(COLOR).metadata
 
     override val itemBlock: ItemBlock by lazy {
-        ItemMultiTexture(this, this) { item -> EnumDyeColor.byMetadata(item.metadata).dyeColorName }.also {
+        ItemMultiTexture(this, this) { item -> EnumDyeColor.byMetadata(item.metadata).name }.also {
             it.registryName = registryName
         }
     }
@@ -59,7 +59,7 @@ open class BlockBarrelColored @JvmOverloads constructor(registryName: ResourceLo
         val registryName = this.registryName ?: return
         val itemBlock = itemBlock
         for (enumType in EnumDyeColor.values()) {
-            ModelLoader.setCustomModelResourceLocation(itemBlock, enumType.metadata, ModelResourceLocation(registryName, "color=" + enumType.dyeColorName))
+            ModelLoader.setCustomModelResourceLocation(itemBlock, enumType.metadata, ModelResourceLocation(registryName, "color=" + enumType.name))
         }
     }
 }

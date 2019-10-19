@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia.proxy
 
 import com.jozufozu.exnihiloomnia.ExNihilo
+import com.jozufozu.exnihiloomnia.client.ores.models.ExNihiloOreModels
 import com.jozufozu.exnihiloomnia.client.ores.textures.ExNihiloOreTextures
 import com.jozufozu.exnihiloomnia.client.tileentities.TileEntityBarrelRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
@@ -34,6 +35,7 @@ class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
 
+        ExNihiloOreModels.preInit()
         RenderingRegistry.registerEntityRenderingHandler(EntityThrownStone::class.java) { manager -> RenderSnowball(manager, ExNihiloItems.STONE, Minecraft.getMinecraft().renderItem) }
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBarrel::class.java, TileEntityBarrelRenderer())
     }

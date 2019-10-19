@@ -2,7 +2,11 @@ package com.jozufozu.exnihiloomnia.common.ores
 
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
+import com.jozufozu.exnihiloomnia.common.registries.ReloadableRegistry
+import com.jozufozu.exnihiloomnia.common.registries.WeightedDrop
+import com.jozufozu.exnihiloomnia.common.registries.WeightedRewards
 import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
+import com.jozufozu.exnihiloomnia.common.registries.recipes.SieveRecipe
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.creativetab.CreativeTabs
@@ -12,6 +16,7 @@ import net.minecraft.item.crafting.IRecipe
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.item.crafting.ShapedRecipes
 import net.minecraft.util.NonNullList
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
@@ -92,6 +97,30 @@ object OreManager {
 
             for (blockOre in map.values) {
                 GameRegistry.addSmelting(blockOre, ingot, ore.smeltingExp)
+            }
+        }
+    }
+
+    fun registerSifting(registry: ReloadableRegistry<SieveRecipe>) {
+        for ((ore, map) in items) {
+            for ((type, item) in map) {
+                val rewards = WeightedRewards().also { it.addOutput(WeightedDrop(ItemStack(item), 0.03f, "ore")) }
+                type.siftedFrom.value?.let { stack ->
+                    val name = ResourceLocation(ExNihilo.MODID, "_generated_ores_${type.name}_${ore.registryName!!.let { "${it.resourceDomain}_${it.resourcePath}" }}")
+                    registry.register(SieveRecipe(Ingredient.fromStacks(stack), 40, rewards).also { it.registryName = name })
+                }
+            }
+        }
+    }
+
+    fun registerHammering(registry: ReloadableRegistry<SieveRecipe>) {
+        for ((ore, map) in items) {
+            for ((type, item) in map) {
+                val rewards = WeightedRewards().also { it.addOutput(WeightedDrop(ItemStack(item), 0.03f, "ore")) }
+                type.siftedFrom.value?.let { stack ->
+                    ResourceLocation(ExNihilo.MODID, "_generated_ores_${ore.registryName!!.let { "${it.resourceDomain}_${it.resourcePath}" }}")
+                    SieveRecipe(Ingredient.fromStacks(stack), 40, rewards)
+                }
             }
         }
     }

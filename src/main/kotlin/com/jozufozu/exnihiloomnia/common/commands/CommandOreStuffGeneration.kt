@@ -42,7 +42,8 @@ class CommandOreStuffGeneration : CommandBase() {
 
         val blockName = ore.getName(blockType).toString()
 
-        val writer = JsonWriter(FileWriter(File(root, "ore_generated_${blockName.replace(':', '_')}"), false))
+        val writer = JsonWriter(FileWriter(File(root, "ore_generated_${blockName.replace(':', '_')}.json"), false))
+        writer.setIndent("    ")
 
         with(writer) {
             beginObject()
@@ -78,11 +79,12 @@ class CommandOreStuffGeneration : CommandBase() {
     }
 
     private fun generateSieveRecipe(root: File, ore: Ore, itemType: ItemType) {
-        val blockType = itemType.blockEquivalent ?: return
+        val siftedFrom = itemType.siftedFrom.value ?: return
 
-        val blockName = ore.getName(blockType).toString()
+        val itemName = ore.getName(itemType).toString()
+        val writer = JsonWriter(FileWriter(File(root, "ore_generated_${itemName.replace(':', '_')}.json"), false))
 
-        val writer = JsonWriter(FileWriter(File(root, "ore_generated_${blockName.replace(':', '_')}"), false))
+        writer.setIndent("    ")
 
         with(writer) {
             beginObject()
@@ -90,7 +92,7 @@ class CommandOreStuffGeneration : CommandBase() {
             name(LibRegistries.INPUT)
             beginObject()
             name(LibRegistries.ITEM)
-            value(blockName)
+            value(siftedFrom.item.registryName.toString())
             endObject()
 
             name(LibRegistries.REWARDS)
@@ -98,7 +100,7 @@ class CommandOreStuffGeneration : CommandBase() {
             beginObject()
 
             name(LibRegistries.ITEM)
-            value(ore.getName(itemType).toString())
+            value(itemName)
 
             name(LibRegistries.CHANCE)
             value(0.07)

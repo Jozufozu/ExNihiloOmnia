@@ -1,12 +1,16 @@
 package com.jozufozu.exnihiloomnia.common.ores
 
-enum class ItemType(val blockEquivalent: BlockType?) {
-    CHUNK(BlockType.GRAVEL),
-    NETHER_CHUNK(BlockType.NETHER_GRAVEL),
-    END_CHUNK(BlockType.END_GRAVEL),
-    CRUSHED(BlockType.SAND),
-    POWDER(BlockType.DUST),
-    INGOT(null);
+import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
+import net.minecraft.init.Blocks
+import net.minecraft.item.ItemStack
+
+enum class ItemType(val blockEquivalent: BlockType?, val siftedFrom: Lazy<ItemStack?>) {
+    CHUNK(BlockType.GRAVEL, lazy { ItemStack(Blocks.GRAVEL) }),
+    NETHER_CHUNK(BlockType.NETHER_GRAVEL, lazy { ItemStack(ExNihiloBlocks.NETHER_GRAVEL) }),
+    END_CHUNK(BlockType.END_GRAVEL, lazy { ItemStack(ExNihiloBlocks.END_GRAVEL) }),
+    CRUSHED(BlockType.SAND, lazy { ItemStack(Blocks.SAND) }),
+    POWDER(BlockType.DUST, lazy { ItemStack(ExNihiloBlocks.DUST) }),
+    INGOT(null, lazy { null });
 
     override fun toString(): String = when (this) {
         CHUNK -> "chunk"

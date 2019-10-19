@@ -2,7 +2,6 @@ package com.jozufozu.exnihiloomnia.common.registries
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonParseException
-import com.google.gson.stream.JsonWriter
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -42,14 +41,6 @@ class WeightedRewards {
         }
 
         return out
-    }
-
-    fun serialize(writer: JsonWriter) {
-        writer.beginArray()
-        for (drop in _outputs) {
-            drop.serialize(writer)
-        }
-        writer.endArray()
     }
 
     companion object {

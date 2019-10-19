@@ -9,7 +9,7 @@ import net.minecraftforge.client.model.IModel
 import net.minecraftforge.client.model.ModelLoaderRegistry
 
 object ExNihiloOreModels {
-    init {
+    fun preInit() {
         ModelLoaderRegistry.registerLoader(OreBlockModelLoader)
         ModelLoaderRegistry.registerLoader(OreItemModelLoader)
     }
