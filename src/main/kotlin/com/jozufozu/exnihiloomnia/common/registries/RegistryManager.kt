@@ -3,7 +3,6 @@ package com.jozufozu.exnihiloomnia.common.registries
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
-import com.jozufozu.exnihiloomnia.common.ores.OreManager
 import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*
 import net.minecraft.block.state.IBlockState
@@ -32,10 +31,7 @@ object RegistryManager {
         BarrelStates.setShouldReload()
     }
 
-    val SIFTING = ReloadableRegistry(LibRegistries.SIEVE, SieveRecipe::class.java)  {
-        RegistryLoader.genericLoad(it, "/registries/sifting", SieveRecipe.Serde::deserialize)
-        OreManager.registerSifting(it)
-    }
+    val SIFTING = ReloadableRegistry(LibRegistries.SIEVE, SieveRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/sifting", SieveRecipe.Serde::deserialize) }
     val HAMMERING = ReloadableRegistry(LibRegistries.HAMMER, HammerRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/hammering", HammerRecipe.Serde::deserialize) }
 
     val MELTING = ReloadableRegistry(LibRegistries.MELTING, MeltingRecipe::class.java)  { RegistryLoader.genericLoad(it, "/registries/melting", MeltingRecipe.Serde::deserialize) }
