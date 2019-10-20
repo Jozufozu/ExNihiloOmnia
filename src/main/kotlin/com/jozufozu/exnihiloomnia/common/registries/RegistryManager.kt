@@ -132,6 +132,7 @@ object RegistryManager {
     fun getMultipliers(itemStack: ItemStack): Map<String, Float> {
         val out = hashMapOf<String, Float>()
         for (mesh in MESH) {
+            if (!mesh.matches(itemStack)) continue
             for ((type, value) in mesh.multipliers) {
                 if (type in out) {
                     val other = out[type] ?: 0f

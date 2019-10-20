@@ -56,6 +56,8 @@ object ExNihiloItems {
         val toolTip = event.toolTip
 
         if (RegistryManager.isMesh(itemStack)) {
+
+            toolTip.add("")
             val multipliers = RegistryManager.getMultipliers(itemStack)
 
             toolTip.add(I18n.format("exnihiloomnia.drops.effective_list"))

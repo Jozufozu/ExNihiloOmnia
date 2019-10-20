@@ -15,7 +15,7 @@ jei.exnihiloomnia.info.reward_chance=§b%.1f%%§c chance for §b%s
 jei.exnihiloomnia.info.required_heat=§cRequired Heat: §b%s
 jei.exnihiloomnia.info.type_list=§a%s§c
 
-exnihiloomnia.drops.effective_list=§cMultipliers:
+exnihiloomnia.drops.effective_list=§cMultipliers in Sieve:
 exnihiloomnia.drops.effective_entry=§a%s§c - §b%.1fx
 
 exnihiloomnia.drops.type.junk=Junk
