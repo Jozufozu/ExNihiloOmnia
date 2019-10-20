@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "exnihiloomnia:dust"
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_draconium_powder",
+            "chance": 0.07
+        }
+    ]
+}

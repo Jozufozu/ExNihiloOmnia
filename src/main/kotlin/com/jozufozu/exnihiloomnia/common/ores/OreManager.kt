@@ -6,6 +6,7 @@ import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
@@ -119,10 +120,13 @@ object OreManager {
 
     val ORES_TAB: CreativeTabs = object : CreativeTabs("exnihiloomnia.ores") {
         override fun getTabIconItem(): ItemStack {
-            return ItemStack(items.entries.first().value.entries.first().value)
+            return if (items.isEmpty()) ItemStack(Items.POISONOUS_POTATO)
+            else ItemStack(items.entries.first().value.entries.first().value)
         }
 
         override fun displayAllRelevantItems(list: NonNullList<ItemStack>) {
+            if (items.isEmpty()) return
+
             RegistryManager.ORES.asSequence().flatMap {
                 blocks[it]?.values?.asSequence()?.map { ItemStack(it) }.orEmpty() +
                         items[it]?.values?.asSequence()?.map { ItemStack(it) }.orEmpty()

@@ -150,6 +150,8 @@ tile.exnihiloomnia.infested_minecraft_leaves.name=Infested Leaves
 tile.exnihiloomnia.infested_minecraft_leaves2.name=Infested Leaves
 tile.exnihiloomnia.infested_minecraft_vine.name=Infested Vines
 
+tile.exnihiloomnia.crook.name=Crook
+tile.exnihiloomnia.crook_bone.name=Bone Crook
 
 tile.exnihiloomnia.ores.ore_aluminum_gravel.name=Aluminum Ore Gravel
 tile.exnihiloomnia.ores.ore_aluminum_nether_gravel.name=Aluminum Nether Gravel

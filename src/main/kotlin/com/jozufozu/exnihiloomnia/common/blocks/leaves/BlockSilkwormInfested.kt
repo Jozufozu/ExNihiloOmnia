@@ -171,7 +171,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
 
     @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
     companion object {
-        private val blockStateField by lazy { ReflectionHelper.findField(Block::class.java, "blockState") }
+        private val blockStateField by lazy { ReflectionHelper.findField(Block::class.java, "blockState", "field_176227_L") }
 
         private val infestedBlocks = mutableListOf<BlockSilkwormInfested>()
 

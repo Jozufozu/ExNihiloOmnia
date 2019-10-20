@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "minecraft:gravel"
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_lead_chunk",
+            "chance": 0.07
+        }
+    ]
+}

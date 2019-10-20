@@ -1,0 +1,17 @@
+{
+    "blockInput": {
+        "block": "exnihiloomnia:ore_tin_dust"
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_tin_powder",
+            "count": 4,
+            "chance": 1.0
+        },
+        {
+            "item": "exnihiloomnia:ore_tin_powder",
+            "count": 1,
+            "chance": 0.1
+        }
+    ]
+}

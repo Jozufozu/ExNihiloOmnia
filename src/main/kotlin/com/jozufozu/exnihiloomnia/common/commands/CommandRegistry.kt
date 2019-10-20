@@ -47,7 +47,7 @@ class CommandRegistry : CommandBase() {
 
         val seconds = (System.nanoTime().toDouble() - start) * 1E-9
 
-        CommandBase.notifyCommandListener(sender, this, "commands.exnihiloomnia.enoreg.done", count, seconds)
+        notifyCommandListener(sender, this, "commands.exnihiloomnia.enoreg.done", count, seconds)
     }
 
     override fun getTabCompletions(server: MinecraftServer, sender: ICommandSender, args: Array<String>, targetPos: BlockPos?): List<String> {
@@ -62,7 +62,7 @@ class CommandRegistry : CommandBase() {
                 completions.add(registry.registryName.resourcePath)
             }
 
-            return CommandBase.getListOfStringsMatchingLastWord(args, completions)
+            return getListOfStringsMatchingLastWord(args, completions)
         }
 
         return super.getTabCompletions(server, sender, args, targetPos)

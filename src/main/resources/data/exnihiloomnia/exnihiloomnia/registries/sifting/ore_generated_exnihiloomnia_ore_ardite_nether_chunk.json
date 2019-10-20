@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "exnihiloomnia:nether_gravel"
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_ardite_nether_chunk",
+            "chance": 0.07
+        }
+    ]
+}

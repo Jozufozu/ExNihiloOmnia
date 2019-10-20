@@ -1,0 +1,17 @@
+{
+    "blockInput": {
+        "block": "exnihiloomnia:ore_nickel_gravel"
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_nickel_chunk",
+            "count": 4,
+            "chance": 1.0
+        },
+        {
+            "item": "exnihiloomnia:ore_nickel_chunk",
+            "count": 1,
+            "chance": 0.1
+        }
+    ]
+}

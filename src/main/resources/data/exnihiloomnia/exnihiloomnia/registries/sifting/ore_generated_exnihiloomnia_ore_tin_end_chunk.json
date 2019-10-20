@@ -1,0 +1,11 @@
+{
+    "input": {
+        "item": "exnihiloomnia:end_gravel"
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_tin_end_chunk",
+            "chance": 0.07
+        }
+    ]
+}

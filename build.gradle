@@ -6,14 +6,14 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.40'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'kotlin'
 
 
-version = "0.0.1"
+version = "0.0.2"
 group = "com.jozufozu.exnihiloomnia"
 archivesBaseName = "exnihiloomnia"
 
@@ -60,7 +60,7 @@ repositories {
 }
 
 dependencies {
-    compile group: "net.shadowfacts", name: "Forgelin", version: "1.8.3"
+    compile group: "net.shadowfacts", name: "Forgelin", version: "1.8.4"
 
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
 

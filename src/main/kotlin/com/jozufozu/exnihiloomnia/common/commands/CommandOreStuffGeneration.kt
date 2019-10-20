@@ -93,6 +93,12 @@ class CommandOreStuffGeneration : CommandBase() {
             beginObject()
             name(LibRegistries.ITEM)
             value(siftedFrom.item.registryName.toString())
+
+            if (siftedFrom.hasSubtypes) {
+                name(LibRegistries.DATA)
+                value(siftedFrom.itemDamage)
+            }
+
             endObject()
 
             name(LibRegistries.REWARDS)

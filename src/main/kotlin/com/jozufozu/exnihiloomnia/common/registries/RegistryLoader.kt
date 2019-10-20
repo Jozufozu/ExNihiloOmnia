@@ -15,9 +15,10 @@ import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import java.io.*
 import java.net.URISyntaxException
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
+import java.nio.file.*
 import java.util.*
+import kotlin.streams.asSequence
+
 
 object RegistryLoader {
     val GSON: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
@@ -59,27 +60,22 @@ object RegistryLoader {
         val clear = pushCtx(registry.registryName.resourcePath)
 
         try {
-            for (file in getFilesToLoad(resourcePath)) {
+            getFilesToLoad(resourcePath) { stream, name ->
                 restoreCtx(clear)
-                val fileName = FilenameUtils.getName(FilenameUtils.removeExtension(file.name)).replace("\\\\".toRegex(), "/")
-                val resourceLocation = ResourceLocation(ExNihilo.MODID, fileName)
-                var reader: BufferedReader? = null
-
+                val resourceLocation = ResourceLocation(ExNihilo.MODID, FilenameUtils.getName(FilenameUtils.removeExtension(name)).replace("\\\\".toRegex(), "/"))
                 try {
-                    reader = BufferedReader(FileReader(file))
-
                     pushCtx(resourceLocation.resourcePath)
 
-                    JsonUtils.fromJson(GSON, reader, JsonObject::class.java)?.run(deserializer)?.let {
+                    JsonUtils.fromJson(GSON, stream, JsonObject::class.java)?.run(deserializer)?.let {
                         it.registryName = resourceLocation
                         registry.register(it)
                     }
                 } catch (jsonparseexception: JsonParseException) {
                     error("Parsing error, ${jsonparseexception.message}")
                 } catch (ioexception: IOException) {
-                    error("Couldn't read '${registry.registryName}' entries '$resourceLocation' from ${file.path}", ioexception)
+                    error("Couldn't read '${registry.registryName}' entries '$resourceLocation' from $name", ioexception)
                 } finally {
-                    IOUtils.closeQuietly(reader)
+                    stream.close()
                 }
             }
         } catch (ioException: Exception) {
@@ -89,17 +85,32 @@ object RegistryLoader {
         }
     }
 
-    fun getFilesToLoad(resourcePath: String): Array<File> {
-        return if (ModConfig.enableCraftingCustomization) {
+    private fun getFilesToLoad(resourcePath: String, action: (Reader, String) -> Unit) {
+        if (ModConfig.enableCraftingCustomization) {
             copyIfUnconfigured(resourcePath)
 
             val root = File(ExNihilo.PATH, resourcePath)
 
-            root.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: emptyArray()
+            (root.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: return).map { BufferedReader(FileReader(it)) to it.name }.forEach { action(it.first, it.second) }
         } else {
-            val registryPath = File(RegistryLoader::class.java.getResource(getFullyQualifiedResourcePath(resourcePath)).toURI())
+            val path = getFullyQualifiedResourcePath(resourcePath)
 
-            registryPath.listFiles { _, name -> "json" == FilenameUtils.getExtension(name) } ?: emptyArray()
+            val uri = RegistryLoader::class.java.getResource(path).toURI()
+
+            var fileSystem: FileSystem? = null
+
+            val dir = when (uri.scheme) {
+                "file" -> Paths.get(uri)
+                "jar" -> {
+                    fileSystem = FileSystems.newFileSystem(uri, emptyMap<String, Any>())
+                    fileSystem.getPath(path)
+                }
+                else -> throw Error("Invalid uri scheme loading resources, this in a programmer error!")
+            }
+
+            Files.walk(dir).asSequence().filter { it.toString().endsWith(".json") }.map { Files.newBufferedReader(it) to it.toString() }.forEach { action(it.first, it.second) }
+
+            IOUtils.closeQuietly(fileSystem)
         }
     }
 

@@ -1,0 +1,12 @@
+{
+    "input": {
+        "item": "minecraft:sand",
+        "data": 0
+    },
+    "rewards": [
+        {
+            "item": "exnihiloomnia:ore_yellorite_crushed",
+            "chance": 0.07
+        }
+    ]
+}
