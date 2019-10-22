@@ -108,6 +108,9 @@ class CommandOreStuffGeneration : CommandBase() {
             name(LibRegistries.ITEM)
             value(itemName)
 
+            name(LibRegistries.DROP_CATEGORY)
+            value("ore")
+
             name(LibRegistries.CHANCE)
             value(0.07)
 
