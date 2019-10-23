@@ -28,7 +28,6 @@ open class CommonProxy {
         ConfigManager.sync(ExNihilo.MODID, Config.Type.INSTANCE)
 
         ExNihiloFluids.preInit()
-        RegistryLoader.loadOres()
         ExNihiloMaterials.preInit()
 
         ExNihiloTriggers.preInit()
@@ -40,7 +39,7 @@ open class CommonProxy {
 
         EntityRegistry.registerModEntity(LibMisc.ENTITY_STONE, EntityThrownStone::class.java, "thrown_stone", 0, ExNihilo, 64, 3, true)
 
-        WorldTypeSkyblock.SKY_BLOCK = WorldTypeSkyblock()
+        WorldTypeSkyblock.id // force the object to initialize
         WorldProviderSkyblock.preInit()
     }
 

@@ -9,7 +9,7 @@ import net.minecraftforge.common.DimensionManager
 class WorldProviderSkyblock : WorldProviderSurface() {
 
     override fun getRandomizedSpawnPoint(): BlockPos {
-        return if (world.worldInfo.terrainType === WorldTypeSkyblock.SKY_BLOCK) {
+        return if (world.worldInfo.terrainType === WorldTypeSkyblock) {
             world.spawnPoint
         } else super.getRandomizedSpawnPoint()
     }

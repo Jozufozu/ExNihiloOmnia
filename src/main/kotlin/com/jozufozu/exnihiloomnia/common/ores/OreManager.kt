@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.ores
 
 import com.jozufozu.exnihiloomnia.ExNihilo
+import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import net.minecraft.block.Block
@@ -17,6 +18,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.OreDictionary
@@ -56,8 +58,10 @@ object OreManager {
         blocks.asSequence().flatMap { it.value.values.asSequence() }.map { it.itemBlock }.forEach(event.registry::register)
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     @JvmStatic fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        RegistryLoader.loadOres()
+
         for (ore in RegistryManager.ORES) {
             val map = EnumMap<BlockType, BlockOre>(BlockType::class.java)
             BlockType.values().forEach {
