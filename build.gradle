@@ -5,27 +5,57 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 apply plugin: 'kotlin'
 
 
-version = "0.0.3"
+version = "0.0.1"
 group = "com.jozufozu.exnihiloomnia"
 archivesBaseName = "exnihiloomnia"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    version = project.mc_version + "-" + project.forge_version
-    runDir = "run"
+    mappings channel: 'snapshot', version: '20190719-1.14.3'
 
-    replace '@VERSION@', project.mc_version + "-" + project.version
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    mappings = "snapshot_20170624"
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 repositories {
@@ -59,30 +89,32 @@ repositories {
     maven {
         url = "http://maven.shadowfacts.net/"
     }
+
+    maven { url 'https://minecraft.curseforge.com/api/maven/' }
 }
 
 dependencies {
-    compile group: "net.shadowfacts", name: "Forgelin", version: "1.8.4"
+    minecraft "net.minecraftforge:forge:$mc_version-$forge_version"
 
-    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
+    compile "kottle:Kottle:$kottle_version"
 
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-${top_version}"
+    // deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
 
-    //deobfCompile 'elucent:albedo:2.0-SNAPSHOT'
+    // deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-${top_version}"
 }
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "exnihiloomnia",
+                "Specification-Vendor": "jozufozu",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"jozufozu",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
 
