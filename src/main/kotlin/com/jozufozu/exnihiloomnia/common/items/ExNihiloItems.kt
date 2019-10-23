@@ -24,7 +24,7 @@ object ExNihiloItems {
     val DIAMOND_MESH: Item = register(ItemBaseTool(LibItems.DIAMOND_MESH, Item.ToolMaterial.DIAMOND))
     val GOLD_MESH: Item = register(ItemBaseTool(LibItems.GOLD_MESH, Item.ToolMaterial.GOLD))
 
-    val CROOK: Item = register(ItemCrook(LibItems.CROOK, Item.ToolMaterial.WOOD))
+    val CROOK: Item = register(ItemCrook(LibItems.WOODEN_CROOK, Item.ToolMaterial.WOOD))
     val BONE_CROOK: Item = register(ItemCrook(LibItems.BONE_CROOK, ExNihiloMaterials.SKELETAL))
 
     val WOOD_HAMMER: Item = register(ItemHammer(LibItems.WOODEN_HAMMER, Item.ToolMaterial.WOOD))
@@ -38,6 +38,8 @@ object ExNihiloItems {
     val ASTROLABE: Item = register(ItemJadeAstrolabe())
     val ASH: Item = register(ItemAsh())
     val SILKWORM: Item = register(ItemSilkWorm())
+
+    val PORCELAIN_CLAY: Item = register(ItemBase(LibItems.PORCELAIN_CLAY))
 
     @SubscribeEvent
     @JvmStatic fun registerItems(event: RegistryEvent.Register<Item>) {

@@ -5,23 +5,23 @@ import net.minecraft.util.ResourceLocation
 
 object LibBlocks {
     //Modifiers
-    const val SUFFIX_WOOD = "_wood"
-    const val SUFFIX_STONE = "_stone"
-    const val SUFFIX_GLASS = "_glass"
-    const val SUFFIX_CONCRETE = "_concrete"
-    const val SUFFIX_TERRACOTTA = "_terracotta"
-    const val STAINED = "_stained"
+    const val WOOD = "wood"
+    const val STONE = "stone"
+    const val GLASS = "glass"
+    const val CONCRETE = "concrete"
+    const val TERRACOTTA = "terracotta"
+    const val STAINED = "stained"
 
     //Blocks
     const val BARREL = "barrel"
 
     val SIEVE = get("sieve")
-    val WOODEN_BARREL = get(BARREL, SUFFIX_WOOD)
-    val STONE_BARREL = get(BARREL, SUFFIX_STONE)
-    val GLASS_BARREL = get(BARREL, SUFFIX_GLASS)
-    val STAINED_GLASS_BARREL = get(BARREL, STAINED, SUFFIX_GLASS)
-    val TERRACOTTA_BARREL = get(BARREL, SUFFIX_TERRACOTTA)
-    val CONCRETE_BARREL = get(BARREL, SUFFIX_CONCRETE)
+    val WOODEN_BARREL = get(BARREL, WOOD)
+    val STONE_BARREL = get(BARREL, STONE)
+    val GLASS_BARREL = get(BARREL, GLASS)
+    val STAINED_GLASS_BARREL = get(BARREL, STAINED, GLASS)
+    val TERRACOTTA_BARREL = get(BARREL, TERRACOTTA)
+    val CONCRETE_BARREL = get(BARREL, CONCRETE)
 
     val CRUCIBLE = get("crucible")
     val RAW_CRUCIBLE = get("raw_crucible")
@@ -33,12 +33,7 @@ object LibBlocks {
     val INFESTED_LEAVES = get("infested_leaves")
     val WITCHWATER = get("witchwater")
 
-    private operator fun get(vararg name: String): ResourceLocation {
-        val builder = StringBuilder()
-        for (s in name) {
-            builder.append(s)
-        }
-
-        return ResourceLocation(ExNihilo.MODID, builder.toString())
+    private fun get(vararg name: String): ResourceLocation {
+        return ResourceLocation(ExNihilo.MODID, name.joinToString("_"))
     }
 }

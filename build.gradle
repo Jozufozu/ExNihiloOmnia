@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'kotlin'
 
 
-version = "0.0.2"
+version = "0.0.3"
 group = "com.jozufozu.exnihiloomnia"
 archivesBaseName = "exnihiloomnia"
 
@@ -22,6 +22,8 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 minecraft {
     version = project.mc_version + "-" + project.forge_version
     runDir = "run"
+
+    replace '@VERSION@', project.mc_version + "-" + project.version
 
     mappings = "snapshot_20170624"
 }

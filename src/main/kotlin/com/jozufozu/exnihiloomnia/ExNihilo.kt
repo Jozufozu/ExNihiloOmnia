@@ -21,7 +21,7 @@ import java.io.File
 object ExNihilo {
     const val MODID = "exnihiloomnia"
     const val NAME = "Ex Nihilo Omnia"
-    const val VERSION = "1.0"
+    const val VERSION = "@VERSION@"
 
     val log: Logger = LogManager.getLogger(NAME)
 

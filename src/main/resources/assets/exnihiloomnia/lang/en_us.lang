@@ -128,16 +128,16 @@ item.exnihiloomnia.small_stone.name=Small Stone
 item.exnihiloomnia.ash.name=Pile of Ash
 item.exnihiloomnia.silkworm.name=Silkworm
 
-item.exnihiloomnia.mesh_wood.name=Wooden Mesh
-item.exnihiloomnia.mesh_silk.name=Silk Mesh
-item.exnihiloomnia.mesh_gold.name=Golden Mesh
-item.exnihiloomnia.mesh_diamond.name=Diamond Mesh
+item.exnihiloomnia.wooden_mesh.name=Wooden Mesh
+item.exnihiloomnia.silk_mesh.name=Silk Mesh
+item.exnihiloomnia.gold_mesh.name=Golden Mesh
+item.exnihiloomnia.diamond_mesh.name=Diamond Mesh
 
-item.exnihiloomnia.hammer_wood.name=Wooden Hammer
-item.exnihiloomnia.hammer_stone.name=Stone Hammer
-item.exnihiloomnia.hammer_iron.name=Iron Hammer
-item.exnihiloomnia.hammer_gold.name=Golden Hammer
-item.exnihiloomnia.hammer_diamond.name=Diamond Hammer
+item.exnihiloomnia.wooden_hammer.name=Wooden Hammer
+item.exnihiloomnia.stone_hammer.name=Stone Hammer
+item.exnihiloomnia.iron_hammer.name=Iron Hammer
+item.exnihiloomnia.gold_hammer.name=Golden Hammer
+item.exnihiloomnia.diamond_hammer.name=Diamond Hammer
 
 item.exnihiloomnia.tree_seed.oak.name=Oak Seed
 item.exnihiloomnia.tree_seed.spruce.name=Spruce Seed
@@ -146,12 +146,12 @@ item.exnihiloomnia.tree_seed.jungle.name=Jungle Seed
 item.exnihiloomnia.tree_seed.acacia.name=Acacia Seed
 item.exnihiloomnia.tree_seed.big_oak.name=Dark Oak Seed
 
+item.exnihiloomnia.wooden_crook.name=Crook
+item.exnihiloomnia.bone_crook.name=Bone Crook
+
 tile.exnihiloomnia.infested_minecraft_leaves.name=Infested Leaves
 tile.exnihiloomnia.infested_minecraft_leaves2.name=Infested Leaves
 tile.exnihiloomnia.infested_minecraft_vine.name=Infested Vines
-
-tile.exnihiloomnia.crook.name=Crook
-tile.exnihiloomnia.crook_bone.name=Bone Crook
 
 tile.exnihiloomnia.ores.ore_aluminum_gravel.name=Aluminum Ore Gravel
 tile.exnihiloomnia.ores.ore_aluminum_nether_gravel.name=Aluminum Nether Gravel
