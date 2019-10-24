@@ -17,11 +17,10 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.io.File
 
-@Mod(modid = ExNihilo.MODID, name = ExNihilo.NAME, version = ExNihilo.VERSION, modLanguage = "kotlin", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
+@Mod(ExNihilo.MODID)
 object ExNihilo {
     const val MODID = "exnihiloomnia"
     const val NAME = "Ex Nihilo Omnia"
-    const val VERSION = "@VERSION@"
 
     val log: Logger = LogManager.getLogger(NAME)
 

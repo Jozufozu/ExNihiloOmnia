@@ -1,21 +1,25 @@
 package com.jozufozu.exnihiloomnia.common.items
 
-import net.minecraft.init.Items
-import net.minecraft.item.Item.ToolMaterial
-import net.minecraft.item.ItemStack
-import net.minecraftforge.common.util.EnumHelper
+import net.minecraft.item.IItemTier
+import net.minecraft.item.Items
+import net.minecraft.item.crafting.Ingredient
 
-object ExNihiloMaterials {
-    val SILK: ToolMaterial = EnumHelper.addToolMaterial("ENO_SILK", 0, 128, 10.0f, 0f, 18) ?: throw Exception("Error adding SILK to EnumToolMaterials")
-    val SKELETAL: ToolMaterial = EnumHelper.addToolMaterial("ENO_BONE", 1, 200, 8.0f, 2f, 25) ?: throw Exception("Error adding BONE to EnumToolMaterials")
+enum class ExNihiloMaterials(private val harvestLevel: Int,
+                                 private val maxUses: Int,
+                                 private val attackDamage: Float,
+                                 private val enchantability: Int,
+                                 private val efficiency: Float,
+                                 lazyRepairMaterialSupplier: () -> Ingredient): IItemTier {
+    SILK(0, 128, 0.0f, 18, 10.0f, { Ingredient.fromItems(Items.STRING) }),
+    BONE(1, 200, 2.0f, 25, 8.0f, { Ingredient.fromItems(Items.BONE) });
 
-    private val STRING: ItemStack by lazy { ItemStack(Items.STRING) }
-    private val BONE: ItemStack by lazy { ItemStack(Items.BONE) }
+    private val repair: Ingredient by lazy(lazyRepairMaterialSupplier)
 
-    fun preInit() {}
+    override fun getHarvestLevel(): Int = harvestLevel
+    override fun getMaxUses(): Int = maxUses
+    override fun getAttackDamage(): Float = attackDamage
+    override fun getEnchantability(): Int = enchantability
+    override fun getEfficiency(): Float = efficiency
+    override fun getRepairMaterial(): Ingredient = repair
 
-    fun init() {
-        SILK.setRepairItem(STRING)
-        SKELETAL.setRepairItem(BONE)
-    }
 }

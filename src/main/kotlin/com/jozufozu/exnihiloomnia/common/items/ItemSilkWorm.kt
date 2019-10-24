@@ -10,7 +10,7 @@ import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ItemSilkWorm : ItemBase(LibItems.SILKWORM) {
+class ItemSilkWorm : ModItem(LibItems.SILKWORM) {
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         if (!worldIn.isRemote) {
             val uninfestedState = worldIn.getBlockState(pos)

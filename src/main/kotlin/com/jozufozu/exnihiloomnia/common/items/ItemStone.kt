@@ -12,7 +12,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.SoundCategory
 import net.minecraft.world.World
 
-class ItemStone : ItemBase(LibItems.SMALL_STONE) {
+class ItemStone : ModItem(LibItems.SMALL_STONE) {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         val stack = playerIn.getHeldItem(handIn)

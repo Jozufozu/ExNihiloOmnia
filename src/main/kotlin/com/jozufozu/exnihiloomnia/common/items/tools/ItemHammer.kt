@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.IItemTier
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.world.BlockEvent
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.util.*
 
-class ItemHammer(registryName: ResourceLocation, toolMaterial: ToolMaterial) : ItemBaseTool(registryName, toolMaterial) {
+class ItemHammer(registryName: ResourceLocation, toolMaterial: IItemTier) : ItemBaseTool(registryName, toolMaterial) {
 
     override fun hitEntity(stack: ItemStack, target: EntityLivingBase, attacker: EntityLivingBase): Boolean {
         //Hammers have a built-in knockback effect

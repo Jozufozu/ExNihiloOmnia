@@ -11,14 +11,15 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
-import net.minecraft.util.*
+import net.minecraft.util.NonNullList
+import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemTreeSeed : ItemBase(LibItems.TREE_SEED) {
+class ItemTreeSeed : ModItem(LibItems.TREE_SEED) {
     init {
         this.setHasSubtypes(true)
     }

@@ -8,7 +8,7 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumHand
 import net.minecraft.world.World
 
-class ItemJadeAstrolabe : ItemBase(LibItems.ASTROLABE) {
+class ItemJadeAstrolabe : ModItem(LibItems.ASTROLABE) {
 
     override fun onItemRightClick(worldIn: World, playerIn: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {

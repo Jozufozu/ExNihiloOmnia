@@ -9,6 +9,8 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
+import net.minecraft.item.ItemTier
+import net.minecraft.util.text.TranslationTextComponent
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.event.entity.player.ItemTooltipEvent
 import net.minecraftforge.fml.common.Mod
@@ -19,19 +21,19 @@ import java.util.*
 object ExNihiloItems {
     val modItems = ArrayList<Item>()
 
-    val WOOD_MESH: Item = register(ItemBaseTool(LibItems.WOODEN_MESH, Item.ToolMaterial.WOOD))
+    val WOOD_MESH: Item = register(ItemBaseTool(LibItems.WOODEN_MESH, ItemTier.WOOD))
     val SILK_MESH: Item = register(ItemBaseTool(LibItems.SILK_MESH, ExNihiloMaterials.SILK))
-    val DIAMOND_MESH: Item = register(ItemBaseTool(LibItems.DIAMOND_MESH, Item.ToolMaterial.DIAMOND))
-    val GOLD_MESH: Item = register(ItemBaseTool(LibItems.GOLD_MESH, Item.ToolMaterial.GOLD))
+    val DIAMOND_MESH: Item = register(ItemBaseTool(LibItems.DIAMOND_MESH, ItemTier.DIAMOND))
+    val GOLD_MESH: Item = register(ItemBaseTool(LibItems.GOLD_MESH, ItemTier.GOLD))
 
-    val CROOK: Item = register(ItemCrook(LibItems.WOODEN_CROOK, Item.ToolMaterial.WOOD))
-    val BONE_CROOK: Item = register(ItemCrook(LibItems.BONE_CROOK, ExNihiloMaterials.SKELETAL))
+    val CROOK: Item = register(ItemCrook(LibItems.WOODEN_CROOK, ItemTier.WOOD))
+    val BONE_CROOK: Item = register(ItemCrook(LibItems.BONE_CROOK, ExNihiloMaterials.BONE))
 
-    val WOOD_HAMMER: Item = register(ItemHammer(LibItems.WOODEN_HAMMER, Item.ToolMaterial.WOOD))
-    val STONE_HAMMER: Item = register(ItemHammer(LibItems.STONE_HAMMER, Item.ToolMaterial.STONE))
-    val IRON_HAMMER: Item = register(ItemHammer(LibItems.IRON_HAMMER, Item.ToolMaterial.IRON))
-    val GOLD_HAMMER: Item = register(ItemHammer(LibItems.GOLD_HAMMER, Item.ToolMaterial.GOLD))
-    val DIAMOND_HAMMER: Item = register(ItemHammer(LibItems.DIAMOND_HAMMER, Item.ToolMaterial.DIAMOND))
+    val WOOD_HAMMER: Item = register(ItemHammer(LibItems.WOODEN_HAMMER, ItemTier.WOOD))
+    val STONE_HAMMER: Item = register(ItemHammer(LibItems.STONE_HAMMER, ItemTier.STONE))
+    val IRON_HAMMER: Item = register(ItemHammer(LibItems.IRON_HAMMER, ItemTier.IRON))
+    val GOLD_HAMMER: Item = register(ItemHammer(LibItems.GOLD_HAMMER, ItemTier.GOLD))
+    val DIAMOND_HAMMER: Item = register(ItemHammer(LibItems.DIAMOND_HAMMER, ItemTier.DIAMOND))
 
     val TREE_SEED: Item = register(ItemTreeSeed())
     val STONE: Item = register(ItemStone())
@@ -41,7 +43,6 @@ object ExNihiloItems {
 
     val PORCELAIN_CLAY: Item = register(ItemBase(LibItems.PORCELAIN_CLAY))
 
-    @SubscribeEvent
     @JvmStatic fun registerItems(event: RegistryEvent.Register<Item>) {
         for (item in modItems)
             event.registry.register(item)
@@ -51,7 +52,6 @@ object ExNihiloItems {
                 event.registry.register((block as IItemBlockHolder).itemBlock)
     }
 
-    @SubscribeEvent
     @JvmStatic fun addMeshTooltip(event: ItemTooltipEvent) {
         val itemStack = event.itemStack
 
@@ -59,16 +59,16 @@ object ExNihiloItems {
 
         if (RegistryManager.isMesh(itemStack)) {
 
-            toolTip.add("")
+            toolTip.add(null)
             val multipliers = RegistryManager.getMultipliers(itemStack)
 
-            toolTip.add(I18n.format("exnihiloomnia.drops.effective_list"))
+            toolTip.add(TranslationTextComponent("exnihiloomnia.drops.effective_list"))
             for ((type, modifier) in multipliers) {
                 val localizedTypeName = "exnihiloomnia.drops.type.$type".let { if (I18n.hasKey(it)) I18n.format(it) else it }
 
-                toolTip.add(I18n.format("exnihiloomnia.drops.effective_entry", localizedTypeName, modifier))
+                toolTip.add(TranslationTextComponent("exnihiloomnia.drops.effective_entry", localizedTypeName, modifier))
             }
-            toolTip.add("")
+            toolTip.add(null)
         }
     }
 

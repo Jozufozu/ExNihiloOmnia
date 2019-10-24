@@ -6,10 +6,11 @@ import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.Block
+import net.minecraft.block.BlockState
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.color.IBlockColor
@@ -28,6 +29,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.Explosion
 import net.minecraft.world.IBlockAccess
+import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
 import net.minecraftforge.client.event.ModelBakeEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -54,10 +56,10 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
         this.lightOpacity = if (this.fullBlock) 255 else 0
     }
 
-    fun uninfestedToInfested(uninfested: IBlockState): IBlockState = mimicState.getMimickingBlockState(uninfested)
-    fun infestedToUninfested(infested: IBlockState): IBlockState = mimicState.getMimickedBlockState(infested)
+    fun uninfestedToInfested(uninfested: BlockState): BlockState = mimicState.getMimickingBlockState(uninfested)
+    fun infestedToUninfested(infested: BlockState): BlockState = mimicState.getMimickedBlockState(infested)
 
-    override fun removedByPlayer(state: IBlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean): Boolean {
+    override fun removedByPlayer(state: BlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean): Boolean {
         if (!world.isRemote && !player.isCreative) {
             (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.let {
                 if (world.rand.nextFloat() < it.percentInfested * 1 / 4.0)
@@ -75,7 +77,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
         return world.setBlockToAir(pos)
     }
 
-    override fun breakBlock(world: World, pos: BlockPos, state: IBlockState) {
+    override fun breakBlock(world: World, pos: BlockPos, state: BlockState) {
         mimic.breakBlock(world, pos, state)
         super.breakBlock(world, pos, state)
     }
@@ -91,22 +93,22 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
 
     override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntitySilkwormInfested()
 
-    override fun beginLeavesDecay(state: IBlockState, world: World, pos: BlockPos) {
+    override fun beginLeavesDecay(state: BlockState, world: World, pos: BlockPos) {
         mimic.beginLeavesDecay(state, world, pos)
     }
 
-    override fun isLeaves(state: IBlockState, world: IBlockAccess, pos: BlockPos) = mimic.isLeaves(state, world, pos)
+    override fun isLeaves(state: BlockState, world: IBlockAccess, pos: BlockPos) = mimic.isLeaves(state, world, pos)
 
-    override fun getMapColor(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): MapColor = MapColor.WHITE_STAINED_HARDENED_CLAY
+    override fun getMapColor(state: BlockState, worldIn: IBlockAccess, pos: BlockPos): MapColor = MapColor.WHITE_STAINED_HARDENED_CLAY
 
-    override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
+    override fun getActualState(state: BlockState, worldIn: IBlockAccess, pos: BlockPos): BlockState {
         val actualState = infestedToUninfested(state).getActualState(worldIn, pos)
         return uninfestedToInfested(actualState)
     }
 
-    override fun getMetaFromState(state: IBlockState): Int = mimic.getMetaFromState(infestedToUninfested(state))
+    override fun getMetaFromState(state: BlockState): Int = mimic.getMetaFromState(infestedToUninfested(state))
 
-    override fun getStateFromMeta(meta: Int): IBlockState = uninfestedToInfested(mimic.getStateFromMeta(meta))
+    override fun getStateFromMeta(meta: Int): BlockState = uninfestedToInfested(mimic.getStateFromMeta(meta))
 
     override fun getFlammability(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Int = mimic.getFlammability(world, pos, face)
 
@@ -116,31 +118,31 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
 
     override fun isFireSource(world: World, pos: BlockPos, side: EnumFacing): Boolean = mimic.isFireSource(world, pos, side)
 
-    override fun canRenderInLayer(state: IBlockState, layer: BlockRenderLayer): Boolean = mimic.canRenderInLayer(mimicState.getMimickedBlockState(state), layer)
+    override fun canRenderInLayer(state: BlockState, layer: BlockRenderLayer): Boolean = mimic.canRenderInLayer(mimicState.getMimickedBlockState(state), layer)
 
     override fun recolorBlock(world: World, pos: BlockPos, side: EnumFacing, color: EnumDyeColor): Boolean = mimic.recolorBlock(world, pos, side, color)
 
     override fun isCollidable(): Boolean = mimic.isCollidable
 
-    override fun canCollideCheck(state: IBlockState, hitIfLiquid: Boolean): Boolean = mimic.canCollideCheck(state, hitIfLiquid)
+    override fun canCollideCheck(state: BlockState, hitIfLiquid: Boolean): Boolean = mimic.canCollideCheck(state, hitIfLiquid)
 
     override fun modifyAcceleration(worldIn: World, pos: BlockPos, entityIn: Entity, motion: Vec3d): Vec3d = mimic.modifyAcceleration(worldIn, pos, entityIn, motion)
 
-    override fun doesSideBlockChestOpening(blockState: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean = mimic.doesSideBlockChestOpening(blockState, world, pos, side)
+    override fun doesSideBlockChestOpening(blockState: BlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean = mimic.doesSideBlockChestOpening(blockState, world, pos, side)
 
     override fun isBurning(world: IBlockAccess, pos: BlockPos): Boolean = mimic.isBurning(world, pos)
 
     override fun getExplosionResistance(world: World, pos: BlockPos, exploder: Entity?, explosion: Explosion): Float = mimic.getExplosionResistance(world, pos, exploder, explosion)
 
-    override fun onBlockAdded(worldIn: World, pos: BlockPos, state: IBlockState) {
+    override fun onBlockAdded(worldIn: World, pos: BlockPos, state: BlockState) {
         mimic.onBlockAdded(worldIn, pos, state)
     }
 
-    override fun isToolEffective(type: String, state: IBlockState): Boolean = mimic.isToolEffective(type, state)
+    override fun isToolEffective(type: String, state: BlockState): Boolean = mimic.isToolEffective(type, state)
 
     override fun rotateBlock(world: World, pos: BlockPos, axis: EnumFacing): Boolean = mimic.rotateBlock(world, pos, axis)
 
-    override fun isLadder(state: IBlockState, world: IBlockAccess, pos: BlockPos, entity: EntityLivingBase): Boolean = mimic.isLadder(state, world, pos, entity)
+    override fun isLadder(state: BlockState, world: IBlockAccess, pos: BlockPos, entity: EntityLivingBase): Boolean = mimic.isLadder(state, world, pos, entity)
 
     override fun canSpawnInBlock(): Boolean = mimic.canSpawnInBlock()
 
@@ -148,15 +150,15 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
         mimic.onEntityWalk(worldIn, pos, entityIn)
     }
 
-    override fun updateTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) {
+    override fun updateTick(worldIn: World, pos: BlockPos, state: BlockState, rand: Random) {
         mimic.updateTick(worldIn, pos, state, rand)
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = mimic.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ)
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: BlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = mimic.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ)
 
-    override fun randomTick(worldIn: World, pos: BlockPos, state: IBlockState, random: Random) {}
+    override fun randomTick(worldIn: World, pos: BlockPos, state: BlockState, random: Random) {}
 
-    override fun onEntityCollidedWithBlock(worldIn: World, pos: BlockPos, state: IBlockState, entityIn: Entity) {
+    override fun onEntityCollidedWithBlock(worldIn: World, pos: BlockPos, state: BlockState, entityIn: Entity) {
         mimic.onEntityCollidedWithBlock(worldIn, pos, state, entityIn)
     }
 
@@ -165,7 +167,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
     override fun canPlaceBlockAt(worldIn: World, pos: BlockPos): Boolean = mimic.canPlaceBlockAt(worldIn, pos)
 
     @SideOnly(Side.CLIENT)
-    override fun randomDisplayTick(stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
+    override fun randomDisplayTick(stateIn: BlockState, worldIn: World, pos: BlockPos, rand: Random) {
         mimic.randomDisplayTick(stateIn, worldIn, pos, rand)
     }
 
@@ -219,15 +221,15 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Blo
 
         @SideOnly(Side.CLIENT)
         fun postInit() {
-            with(Minecraft.getMinecraft().blockColors) {
+            with(Minecraft.getInstance().blockColors) {
                 for (leaf in infestedBlocks) {
-                    registerBlockColorHandler(IBlockColor { infested: IBlockState, world: IBlockAccess?, pos: BlockPos?, i: Int ->
+                    register(IBlockColor { infested: BlockState, world: IEnviromentBlockReader?, pos: BlockPos?, i: Int ->
                         if (world != null && pos != null) (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.let {
                             if (it.infested) return@IBlockColor -1
 
                             val mimic = leaf.infestedToUninfested(infested)
 
-                            val mimickedColor = Color(colorMultiplier(mimic, world, pos, i))
+                            val mimickedColor = Color(getColor(mimic, world, pos, i))
                             return@IBlockColor Color.weightedAverage(mimickedColor, Color.WHITE, it.percentInfested).toInt()
                         }
 

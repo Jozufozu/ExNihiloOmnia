@@ -3,18 +3,22 @@ package com.jozufozu.exnihiloomnia.common.items.tools
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.items.ItemBaseTool
 import net.minecraft.block.Block
+import net.minecraft.block.BlockState
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.enchantment.EnchantmentHelper
+import net.minecraft.enchantment.Enchantments
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.Enchantments
+import net.minecraft.item.IItemTier
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 
-class ItemCrook(registryName: ResourceLocation, toolMaterial: ToolMaterial) : ItemBaseTool(registryName, toolMaterial) {
+class ItemCrook(registryName: ResourceLocation, toolMaterial: IItemTier) : ItemBaseTool(registryName, toolMaterial) {
 
-    override fun onBlockStartBreak(itemstack: ItemStack, pos: BlockPos, player: EntityPlayer): Boolean {
+    override fun onBlockStartBreak(itemstack: ItemStack, pos: BlockPos, player: PlayerEntity): Boolean {
         val world = player.world
         val state = world.getBlockState(pos)
 
@@ -29,11 +33,11 @@ class ItemCrook(registryName: ResourceLocation, toolMaterial: ToolMaterial) : It
         return false
     }
 
-    override fun canHarvestBlock(blockIn: IBlockState): Boolean {
+    override fun canHarvestBlock(blockIn: BlockState): Boolean {
         return blockIn.material === Material.LEAVES
     }
 
-    override fun getStrVsBlock(stack: ItemStack, state: IBlockState): Float {
-        return if (state.material === Material.LEAVES) this.efficiencyOnProperMaterial else super.getStrVsBlock(stack, state)
+    override fun getDestroySpeed(stack: ItemStack, state: BlockState): Float {
+        return if (state.material === Material.LEAVES) this.efficiency else super.getDestroySpeed(stack, state)
     }
 }
