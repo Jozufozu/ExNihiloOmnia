@@ -3,10 +3,10 @@ package com.jozufozu.exnihiloomnia.common.items.tools
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.items.ItemBaseTool
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityItem
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.IItemTier
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
@@ -24,15 +24,15 @@ class ItemHammer(registryName: ResourceLocation, toolMaterial: IItemTier) : Item
         return super.hitEntity(stack, target, attacker)
     }
 
-    override fun canHarvestBlock(state: IBlockState): Boolean {
+    override fun canHarvestBlock(state: BlockState): Boolean {
         return toolMaterial.harvestLevel >= state.block.getHarvestLevel(state) && RegistryManager.hammerable(state)
     }
 
-    override fun getHarvestLevel(stack: ItemStack, toolClass: String, player: EntityPlayer?, blockState: IBlockState?): Int {
+    override fun getHarvestLevel(stack: ItemStack, toolClass: String, player: PlayerEntity?, blockState: BlockState?): Int {
         return if (RegistryManager.hammerable(blockState!!)) this.toolMaterial.harvestLevel else -1
     }
 
-    override fun getStrVsBlock(stack: ItemStack, state: IBlockState): Float {
+    override fun getStrVsBlock(stack: ItemStack, state: BlockState): Float {
         return if (RegistryManager.hammerable(state)) this.efficiencyOnProperMaterial else super.getStrVsBlock(stack, state)
     }
 

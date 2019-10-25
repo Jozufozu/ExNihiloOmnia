@@ -9,7 +9,7 @@ import com.jozufozu.exnihiloomnia.common.registries.WeightedRewards
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
 
@@ -44,10 +44,10 @@ class SieveRecipe(
             if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val input = CraftingHelper.getIngredient(recipe.get(LibRegistries.INPUT), RegistryLoader.CONTEXT)
-            val siftTime = JsonUtils.getInt(recipe, LibRegistries.TIME, 40)
+            val siftTime = JSONUtils.getInt(recipe, LibRegistries.TIME, 40)
 
             RegistryLoader.pushCtx(LibRegistries.REWARDS)
-            val output = WeightedRewards.deserialize(JsonUtils.getJsonArray(recipe, LibRegistries.REWARDS))
+            val output = WeightedRewards.deserialize(JSONUtils.getJsonArray(recipe, LibRegistries.REWARDS))
             RegistryLoader.popCtx()
 
             return SieveRecipe(input, siftTime, output)

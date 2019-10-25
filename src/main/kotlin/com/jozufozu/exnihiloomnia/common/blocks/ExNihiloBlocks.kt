@@ -11,7 +11,6 @@ import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.util.*
 
 @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
@@ -121,8 +120,8 @@ object ExNihiloBlocks {
     val RAW_CRUCIBLE = register(RawCrucibleBlock())
 
     val DUST: Block = register(BlockDust())
-    val END_GRAVEL: Block = register(BlockBaseFalling(BlocksLib.END_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
-    val NETHER_GRAVEL: Block = register(BlockBaseFalling(BlocksLib.NETHER_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
+    val END_GRAVEL: Block = register(FallingModBlock(BlocksLib.END_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
+    val NETHER_GRAVEL: Block = register(FallingModBlock(BlocksLib.NETHER_GRAVEL, Material.GROUND, SoundType.GROUND).setHardness(0.6f))
 
     val WITCHWATER: Block = register(BlockFluidWitchWater())
 

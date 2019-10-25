@@ -11,7 +11,7 @@ import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import com.jozufozu.exnihiloomnia.common.util.IModelRegister
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelBakery
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -64,7 +64,7 @@ class ClientProxy : CommonProxy() {
         ModelBakery.registerItemVariants(ItemBlock(ExNihiloBlocks.WITCHWATER))
 
         ModelLoader.setCustomStateMapper(ExNihiloBlocks.WITCHWATER, object : StateMapperBase() {
-            override fun getModelResourceLocation(state: IBlockState): ModelResourceLocation {
+            override fun getModelResourceLocation(state: BlockState): ModelResourceLocation {
                 return WITCHWATER_MODEL_LOCATION
             }
         })

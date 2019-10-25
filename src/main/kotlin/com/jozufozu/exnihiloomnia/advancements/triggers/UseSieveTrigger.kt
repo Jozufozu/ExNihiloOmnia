@@ -11,7 +11,7 @@ import net.minecraft.advancements.PlayerAdvancements
 import net.minecraft.advancements.critereon.AbstractCriterionInstance
 import net.minecraft.advancements.critereon.ItemPredicate
 import net.minecraft.advancements.criterion.ItemPredicate
-import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.entity.player.PlayerEntityMP
 import net.minecraft.item.ItemStack
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.NonNullList
@@ -53,7 +53,7 @@ class UseSieveTrigger : ICriterionTrigger<UseSieveTrigger.Instance> {
         return Instance(recipe, drops)
     }
 
-    fun trigger(player: EntityPlayerMP, sifted: ResourceLocation, drops: NonNullList<ItemStack>) {
+    fun trigger(player: PlayerEntityMP, sifted: ResourceLocation, drops: NonNullList<ItemStack>) {
         val listeners = this.listeners[player.advancements]
 
         listeners?.trigger(sifted, drops)

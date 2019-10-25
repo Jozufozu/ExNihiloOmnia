@@ -8,8 +8,8 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.registries.recipes.FermentingRecipe
 import net.minecraft.block.material.Material
-import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.block.state.BlockState
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
@@ -33,7 +33,7 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
         logic.add(MossLogic)
     }
 
-    override fun getLightValue(barrel: BarrelTileEntity, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
+    override fun getLightValue(barrel: BarrelTileEntity, state: BlockState, world: IBlockAccess, pos: BlockPos): Int {
         return barrel.fluid?.fluid?.getLuminosity(barrel.fluid) ?: 0
     }
 
@@ -43,7 +43,7 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
         drawFluid(barrel, x, y, z, partialTicks)
     }
 
-    override fun randomDisplayTick(barrel: BarrelTileEntity, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
+    override fun randomDisplayTick(barrel: BarrelTileEntity, stateIn: BlockState, worldIn: World, pos: BlockPos, rand: Random) {
         barrel.fluid?.fluid?.block?.let { block ->
             block.randomDisplayTick(block.defaultState, worldIn, pos, rand)
         }
@@ -182,11 +182,11 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object FluidCraftingTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return barrel.fluid != null && barrel.fluidAmount == BarrelTileEntity.fluidCapacity && RegistryManager.getFluidCrafting(itemStack, barrel.fluid!!) != null
         }
 
-        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             barrel.fluid?.let { fluid ->
                 RegistryManager.getFluidCrafting(itemStack, fluid)?.let {
                     barrel.world.playSound(null, barrel.pos, it.craftSound, SoundCategory.BLOCKS, 1.0f, 1.0f)
@@ -202,11 +202,11 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object SummonTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return barrel.fluid != null && barrel.fluidAmount == BarrelTileEntity.fluidCapacity && RegistryManager.getSummoning(itemStack, barrel.fluid!!) != null
         }
 
-        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             barrel.fluid?.let { fluid ->
                 RegistryManager.getSummoning(itemStack, fluid)?.let {
                     barrel.state = it.barrelState

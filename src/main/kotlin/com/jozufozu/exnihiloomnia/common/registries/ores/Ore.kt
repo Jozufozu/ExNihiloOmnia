@@ -11,7 +11,7 @@ import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.ItemStack
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
@@ -60,8 +60,8 @@ class Ore(
         fun deserialize(ore: JsonObject): Ore? {
             if (!CraftingHelper.processConditions(ore, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
-            val color = JsonHelper.deserializeColor(JsonUtils.getString(ore, LibRegistries.COLOR, "ffffff"))
-            val smeltingExp = JsonUtils.getFloat(ore, "smeltingExp", 1f)
+            val color = JsonHelper.deserializeColor(JSONUtils.getString(ore, LibRegistries.COLOR, "ffffff"))
+            val smeltingExp = JSONUtils.getFloat(ore, "smeltingExp", 1f)
 
             val ingot = if (LibRegistries.ORE_INGOT in ore) {
                 LazyItemStack.deserialize(ore.getAsJsonObject(LibRegistries.ORE_INGOT))

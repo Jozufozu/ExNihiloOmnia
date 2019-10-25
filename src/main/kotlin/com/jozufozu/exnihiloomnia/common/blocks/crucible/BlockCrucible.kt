@@ -5,9 +5,9 @@ import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.entity.Entity
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.Blocks
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -18,8 +18,8 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.relauncher.OnlyIn
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
@@ -29,7 +29,7 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
         this.setHardness(3.0f)
     }
 
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: BlockState, playerIn: PlayerEntity, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         if (!worldIn.isRemote) (worldIn.getTileEntity(pos) as? TileEntityCrucible)?.let {
             val held = playerIn.getHeldItem(hand)
 
@@ -60,7 +60,7 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
         return true
     }
 
-    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
+    override fun addCollisionBoxToList(state: BlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
         super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185477_7_)
 
         (worldIn.getTileEntity(pos) as? TileEntityCrucible)?.let {
@@ -80,7 +80,7 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
         return false
     }
 
-    override fun isEntityInsideMaterial(world: IBlockAccess, pos: BlockPos, state: IBlockState, entity: Entity, yToTest: Double, material: Material, testingHead: Boolean): Boolean {
+    override fun isEntityInsideMaterial(world: IBlockAccess, pos: BlockPos, state: BlockState, entity: Entity, yToTest: Double, material: Material, testingHead: Boolean): Boolean {
         (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
             it.fluidContents?.let { fluid ->
                 if (it.fluidBB.offset(pos).intersects(entity.entityBoundingBox)) {
@@ -102,7 +102,7 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
 
     override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntityCrucible()
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     override fun registerModels() {
         super.registerModels()
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible::class.java, TileEntityCrucibleRenderer())

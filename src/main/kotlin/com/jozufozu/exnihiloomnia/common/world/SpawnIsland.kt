@@ -4,9 +4,9 @@ import com.google.gson.*
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.Block
-import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.nbt.*
+import net.minecraft.block.state.BlockState
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.nbt.JsonToNBT
 import net.minecraft.util.JsonUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
@@ -22,7 +22,7 @@ import kotlin.collections.HashMap
 import kotlin.math.max
 import kotlin.math.min
 
-data class Placement(val state: IBlockState) {
+data class Placement(val state: BlockState) {
     fun serialize(): JsonObject {
         val json = JsonObject()
 
@@ -87,7 +87,7 @@ class SpawnIsland {
         ExNihilo.log.info(String.format("Loaded spawn island into world. Took %.3f", (nanoNow - nanoStart).toDouble() * 1E-9))
     }
 
-    fun save(user: EntityPlayer) {
+    fun save(user: PlayerEntity) {
         var writer: PrintWriter? = null
         try {
             val now = LocalDateTime.now()

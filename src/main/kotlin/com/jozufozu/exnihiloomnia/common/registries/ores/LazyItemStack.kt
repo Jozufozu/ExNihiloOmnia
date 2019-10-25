@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.JsonToNBT
 import net.minecraft.nbt.NBTException
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 
 class LazyItemStack(val itemName: String, val count: Int, val data: Int, val nbt: NBTTagCompound?) {
     lateinit var stack: ItemStack
@@ -23,10 +23,10 @@ class LazyItemStack(val itemName: String, val count: Int, val data: Int, val nbt
 
     companion object {
         fun deserialize(itemStack: JsonObject): LazyItemStack {
-            val registryName = JsonUtils.getString(itemStack, LibRegistries.ITEM)
+            val registryName = JSONUtils.getString(itemStack, LibRegistries.ITEM)
 
-            val data = JsonUtils.getInt(itemStack, LibRegistries.DATA, 0)
-            val count = JsonUtils.getInt(itemStack, LibRegistries.COUNT, 1)
+            val data = JSONUtils.getInt(itemStack, LibRegistries.DATA, 0)
+            val count = JSONUtils.getInt(itemStack, LibRegistries.COUNT, 1)
 
             val nbt = if ("nbt" in itemStack) {
                 try {
@@ -34,7 +34,7 @@ class LazyItemStack(val itemName: String, val count: Int, val data: Int, val nbt
                     val nbt: NBTTagCompound = if (element.isJsonObject)
                         JsonToNBT.getTagFromJson(RegistryLoader.GSON.toJson(element))
                     else
-                        JsonToNBT.getTagFromJson(JsonUtils.getString(element, "nbt"))
+                        JsonToNBT.getTagFromJson(JSONUtils.getString(element, "nbt"))
 
                     val tmp = NBTTagCompound()
                     if (nbt.hasKey("ForgeCaps")) {

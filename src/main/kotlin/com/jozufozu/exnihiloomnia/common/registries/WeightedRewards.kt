@@ -2,7 +2,7 @@ package com.jozufozu.exnihiloomnia.common.registries
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonParseException
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import java.util.*
@@ -23,7 +23,7 @@ class WeightedRewards {
      * @param processor The item being used to generate these rewards
      * @param random
      */
-    fun roll(player: EntityPlayer?, multipliers: Map<String, Float>, random: Random): NonNullList<ItemStack> {
+    fun roll(player: PlayerEntity?, multipliers: Map<String, Float>, random: Random): NonNullList<ItemStack> {
         val out = NonNullList.create<ItemStack>()
 
         for (reward in outputs) {

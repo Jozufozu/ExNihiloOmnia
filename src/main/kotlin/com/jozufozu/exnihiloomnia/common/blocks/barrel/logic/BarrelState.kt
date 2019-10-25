@@ -6,7 +6,7 @@ import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import net.minecraft.block.Block
 import net.minecraft.block.Block.NULL_AABB
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.monster.EntityEndermite
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
@@ -26,8 +26,8 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
+import net.minecraftforge.fml.relauncher.OnlyIn
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import org.lwjgl.opengl.GL11
 import java.util.*
 
@@ -42,9 +42,9 @@ open class BarrelState(val id: ResourceLocation) {
 
     fun canExtractFluids(barrel: BarrelTileEntity): Boolean = false
 
-    open fun addCollisionBoxToList(barrel: BarrelTileEntity, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {  }
+    open fun addCollisionBoxToList(barrel: BarrelTileEntity, state: BlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {  }
 
-    open fun getLightValue(barrel: BarrelTileEntity, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int = 0
+    open fun getLightValue(barrel: BarrelTileEntity, state: BlockState, world: IBlockAccess, pos: BlockPos): Int = 0
 
     open fun activate(barrel: BarrelTileEntity) {
         for (barrelLogic in logic) {
@@ -60,7 +60,7 @@ open class BarrelState(val id: ResourceLocation) {
         }
     }
 
-    fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+    fun canUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): Boolean {
         for (barrelLogic in logic) {
             if (barrelLogic.canUseItem(barrel, player, hand, itemStack)) {
                 return true
@@ -69,7 +69,7 @@ open class BarrelState(val id: ResourceLocation) {
         return false
     }
 
-    fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+    fun onUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
         for (barrelLogic in logic) {
             val interactResult = barrelLogic.onUseItem(barrel, player, hand, itemStack)
             if (interactResult != EnumInteractResult.PASS) {
@@ -100,7 +100,7 @@ open class BarrelState(val id: ResourceLocation) {
         return EnumInteractResult.PASS
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     open fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         if (!isSlaveReady) {
             renderSlave = EntityEndermite(barrel.world)
@@ -110,8 +110,8 @@ open class BarrelState(val id: ResourceLocation) {
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    open fun randomDisplayTick(barrel: BarrelTileEntity, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {}
+    @OnlyIn(Dist.CLIENT)
+    open fun randomDisplayTick(barrel: BarrelTileEntity, stateIn: BlockState, worldIn: World, pos: BlockPos, rand: Random) {}
 
     companion object {
         lateinit var renderSlave: EntityLivingBase
@@ -129,7 +129,7 @@ open class BarrelState(val id: ResourceLocation) {
             }
         }
 
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         fun drawFluid(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
             val fluid = barrel.fluid?.fluid ?: return
             drawFluid(
@@ -141,7 +141,7 @@ open class BarrelState(val id: ResourceLocation) {
                     barrel.world.getBlockState(barrel.pos).material.isOpaque)
         }
 
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         fun drawFluid(fluid: Fluid, amount: Float, amountLastTick: Float, x: Double, y: Double, z: Double, partialTicks: Float, color: Color, complex: Boolean = false) {
             GlStateManager.pushMatrix()
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
@@ -184,7 +184,7 @@ open class BarrelState(val id: ResourceLocation) {
             GlStateManager.popMatrix()
         }
 
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         fun drawContents(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
             val contents = barrel.item
 

@@ -9,14 +9,14 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.ExplicitWorldIngredient.Info
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.Block
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.item.ItemStack
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.NonNullList
 import net.minecraftforge.oredict.OreDictionary
 import java.util.function.Predicate
 
-abstract class WorldIngredient: Predicate<IBlockState> {
+abstract class WorldIngredient: Predicate<BlockState> {
 
     abstract val stacks: NonNullList<ItemStack>
 
@@ -46,7 +46,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
             when {
                 isOre -> return deserializeOre(ingredient)
                 isBlock -> {
-                    val blockName = JsonUtils.getString(ingredient, LibRegistries.BLOCK)
+                    val blockName = JSONUtils.getString(ingredient, LibRegistries.BLOCK)
                     val block = Block.getBlockFromName(blockName) ?: throw JsonSyntaxException("$blockName is not a valid block")
 
                     val hasData = LibRegistries.DATA in ingredient
@@ -54,7 +54,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
 
                     if (hasData && hasVariants) throw JsonSyntaxException("blockInput can have \"${LibRegistries.DATA}\" or \"${LibRegistries.VARIANTS}\", but not both")
                     return when {
-                        hasData -> ExplicitWorldIngredient(block, Info.Data(JsonUtils.getInt(ingredient, LibRegistries.DATA)))
+                        hasData -> ExplicitWorldIngredient(block, Info.Data(JSONUtils.getInt(ingredient, LibRegistries.DATA)))
                         hasVariants -> deserializeWithBlockStateVariants(ingredient, block, blockName)
                         else -> ExplicitWorldIngredient(block)
                     }
@@ -64,7 +64,7 @@ abstract class WorldIngredient: Predicate<IBlockState> {
         }
 
         private fun deserializeOre(ingredient: JsonObject): OreWorldIngredient {
-            val oredict = JsonUtils.getString(ingredient, LibRegistries.OREDICT)
+            val oredict = JSONUtils.getString(ingredient, LibRegistries.OREDICT)
 
             if (!OreDictionary.doesOreNameExist(oredict)) throw JsonSyntaxException("Nothing called '$oredict' exists in the ore dictionary")
 
@@ -72,9 +72,9 @@ abstract class WorldIngredient: Predicate<IBlockState> {
         }
 
         private fun deserializeWithBlockStateVariants(ingredient: JsonObject, block: Block, blockName: String): ExplicitWorldIngredient {
-            val variants = JsonUtils.getJsonObject(ingredient, LibRegistries.VARIANTS)
+            val variants = JSONUtils.getJsonObject(ingredient, LibRegistries.VARIANTS)
 
-            val predicates = ArrayList<(IBlockState) -> Boolean>()
+            val predicates = ArrayList<(BlockState) -> Boolean>()
 
             val ctx = RegistryLoader.pushCtx(LibRegistries.VARIANTS)
             for ((key, value) in variants.entrySet()) {

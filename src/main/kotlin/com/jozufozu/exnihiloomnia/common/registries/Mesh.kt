@@ -7,7 +7,7 @@ import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
 import java.util.*
@@ -30,7 +30,7 @@ class Mesh(
             RegistryLoader.pushCtx(LibRegistries.INPUT)
             val input = CraftingHelper.getIngredient(mesh.get(LibRegistries.INPUT), RegistryLoader.CONTEXT)
 
-            val multipliersJson = JsonUtils.getJsonObject(mesh, "multipliers")
+            val multipliersJson = JSONUtils.getJsonObject(mesh, "multipliers")
 
             val multipliers = HashMap<String, Float>()
 

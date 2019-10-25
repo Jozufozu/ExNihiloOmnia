@@ -3,10 +3,10 @@ package com.jozufozu.exnihiloomnia.common.blocks
 import com.jozufozu.exnihiloomnia.common.ExNihiloFluids
 import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.material.Material
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.MobEffects
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.math.BlockPos
@@ -21,7 +21,7 @@ class BlockFluidWitchWater : BlockFluidClassic(ExNihiloFluids.WITCHWATER, Materi
         registryName = BlocksLib.WITCHWATER
     }
 
-    override fun onEntityCollidedWithBlock(world: World, pos: BlockPos, state: IBlockState, entity: Entity) {
+    override fun onEntityCollidedWithBlock(world: World, pos: BlockPos, state: BlockState, entity: Entity) {
         if (!world.isRemote && !entity.isDead) {
             if (entity is EntityVillager) {
                 if (world.difficulty !== EnumDifficulty.PEACEFUL) {
@@ -49,7 +49,7 @@ class BlockFluidWitchWater : BlockFluidClassic(ExNihiloFluids.WITCHWATER, Materi
                 }
             }
 
-            if (entity is EntityPlayer) {
+            if (entity is PlayerEntity) {
                 entity.addPotionEffect(PotionEffect(MobEffects.BLINDNESS, 210, 0))
                 entity.addPotionEffect(PotionEffect(MobEffects.WEAKNESS, 210, 2))
                 entity.addPotionEffect(PotionEffect(MobEffects.WITHER, 210, 0))

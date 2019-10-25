@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic
 
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraftforge.fluids.FluidStack
@@ -27,7 +27,7 @@ abstract class BarrelLogic {
      * @param itemStack the item being tested
      * @return true if item can be used on barrel
      */
-    open fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+    open fun canUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): Boolean {
         return false
     }
 
@@ -39,7 +39,7 @@ abstract class BarrelLogic {
      * @param itemStack the item to be checked
      * @return true if the state changed
      */
-    open fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+    open fun onUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
         return EnumInteractResult.PASS
     }
 

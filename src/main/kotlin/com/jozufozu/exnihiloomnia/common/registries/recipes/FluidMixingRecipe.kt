@@ -9,12 +9,14 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundEvent
+import net.minecraft.util.SoundEvents
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.fluids.FluidStack
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistries
+import net.minecraftforge.registries.ForgeRegistryEntry
 
 class FluidMixingRecipe(
         /**
@@ -30,7 +32,7 @@ class FluidMixingRecipe(
         output: ItemStack,
 
         val craftSound: SoundEvent = SoundEvents.BLOCK_LAVA_EXTINGUISH
-): IForgeRegistryEntry.Impl<FluidMixingRecipe>() {
+): ForgeRegistryEntry<FluidMixingRecipe>() {
 
     val output: ItemStack = output
         get() = field.copy()
@@ -49,15 +51,15 @@ class FluidMixingRecipe(
             if (LibRegistries.IN_BARREL !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.IN_BARREL}\"")
             if (LibRegistries.ON_BARREL !in recipe) throw JsonSyntaxException("fluid mixing recipe is missing \"${LibRegistries.ON_BARREL}\"")
 
-            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS)) return null
 
             val lower = JsonHelper.deserializeFluid(recipe[LibRegistries.IN_BARREL])
             val upper = JsonHelper.deserializeFluid(recipe[LibRegistries.ON_BARREL])
 
-            val output = JsonHelper.deserializeItem(JsonUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
+            val output = JsonHelper.deserializeItem(JSONUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
 
-            val soundName = JsonUtils.getString(recipe, "sound", DEFAULT_SOUND)
-            val craftSound = SoundEvent.REGISTRY.getObject(ResourceLocation(soundName))
+            val soundName = JSONUtils.getString(recipe, "sound", DEFAULT_SOUND)
+            val craftSound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation(soundName))
 
             if (craftSound == null) {
                 RegistryLoader.warn("'$soundName' is not a valid sound, defaulting to '$DEFAULT_SOUND'")

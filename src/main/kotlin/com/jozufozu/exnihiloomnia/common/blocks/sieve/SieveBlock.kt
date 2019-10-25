@@ -7,12 +7,11 @@ import com.jozufozu.exnihiloomnia.common.util.IModelRegister
 import net.minecraft.block.BlockState
 import net.minecraft.block.properties.PropertyEnum
 import net.minecraft.block.state.BlockFaceShape
+import net.minecraft.block.state.BlockState
 import net.minecraft.block.state.BlockStateContainer
-import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityType
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemBlock
@@ -29,8 +28,8 @@ import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.relauncher.OnlyIn
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.ItemHandlerHelper
 
 class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name, properties) {
@@ -95,7 +94,7 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
 
     override fun createTileEntity(state: BlockState?, world: IBlockReader?) = TileEntitySieve()
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     override fun registerModels() {
         val registryName = this.registryName ?: return
         val itemBlock = itemBlock

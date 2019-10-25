@@ -8,12 +8,13 @@ import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
 import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.contains
+import net.minecraft.block.Blocks
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistryEntry
 
 class CompostRecipe(
         /**
@@ -36,13 +37,13 @@ class CompostRecipe(
          * The item that will be given once composting is complete
          */
         output: ItemStack = ItemStack(Blocks.DIRT)
-) : IForgeRegistryEntry.Impl<CompostRecipe>() {
+) : ForgeRegistryEntry<CompostRecipe>() {
 
     val output: ItemStack = output
         get() = field.copy()
 
 
-    fun matches(stack: ItemStack) = input.apply(stack)
+    fun matches(stack: ItemStack) = input.test(stack)
 
     companion object Serde {
 
@@ -50,17 +51,17 @@ class CompostRecipe(
         fun deserialize(recipe: JsonObject): CompostRecipe? {
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("compost recipe has no input")
 
-            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS)) return null
 
             RegistryLoader.pushCtx(LibRegistries.INPUT)
-            val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)
+            val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT])
             RegistryLoader.popCtx()
 
-            val color = JsonHelper.deserializeColor(JsonUtils.getString(recipe, LibRegistries.COLOR, "ffffff"))
-            val volume = JsonUtils.getInt(recipe, LibRegistries.VOLUME, 125)
+            val color = JsonHelper.deserializeColor(JSONUtils.getString(recipe, LibRegistries.COLOR, "ffffff"))
+            val volume = JSONUtils.getInt(recipe, LibRegistries.VOLUME, 125)
 
             return if (LibRegistries.OUTPUT in recipe) {
-                val output = JsonHelper.deserializeItem(JsonUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
+                val output = JsonHelper.deserializeItem(JSONUtils.getJsonObject(recipe, LibRegistries.OUTPUT), true)
                 CompostRecipe(input, color, volume, output)
             } else {
                 CompostRecipe(input, color, volume)

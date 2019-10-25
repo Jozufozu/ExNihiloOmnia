@@ -5,10 +5,10 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import java.util.*
 
@@ -18,7 +18,7 @@ class WeightedDrop(
         val type: String = ""
 ) {
 
-    fun roll(user: EntityPlayer?, multipliers: Map<String, Float>, random: Random): ItemStack {
+    fun roll(user: PlayerEntity?, multipliers: Map<String, Float>, random: Random): ItemStack {
         var chance = this.chance
         user?.let { chance += it.luck }
         chance *= multipliers.getOrDefault(type, 1f)
@@ -33,8 +33,8 @@ class WeightedDrop(
             return when {
                 drop is JsonObject -> {
                     val item = JsonHelper.deserializeItem(drop, true)
-                    val chance = JsonUtils.getFloat(drop, LibRegistries.CHANCE, 1.0f)
-                    val type = JsonUtils.getString(drop, LibRegistries.DROP_CATEGORY, "")
+                    val chance = JSONUtils.getFloat(drop, LibRegistries.CHANCE, 1.0f)
+                    val type = JSONUtils.getString(drop, LibRegistries.DROP_CATEGORY, "")
 
                     WeightedDrop(item, chance, type)
                 }

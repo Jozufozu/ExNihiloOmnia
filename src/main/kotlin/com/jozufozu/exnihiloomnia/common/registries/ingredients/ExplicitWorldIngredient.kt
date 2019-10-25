@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.registries.ingredients
 
 import net.minecraft.block.Block
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -22,7 +22,7 @@ class ExplicitWorldIngredient(val block: Block, val info: Info = Info.None) : Wo
         }
     } else NonNullList.from(ItemStack.EMPTY, ItemStack(block, 1))
 
-    override fun test(state: IBlockState): Boolean {
+    override fun test(state: BlockState): Boolean {
         if (state.block === this.block) {
             when (info) {
                 is Info.None -> return true
@@ -45,6 +45,6 @@ class ExplicitWorldIngredient(val block: Block, val info: Info = Info.None) : Wo
     sealed class Info {
         object None : Info()
         class Data(val data: Int) : Info()
-        class Variants(val predicates: ArrayList<(IBlockState) -> Boolean>) : Info()
+        class Variants(val predicates: ArrayList<(BlockState) -> Boolean>) : Info()
     }
 }

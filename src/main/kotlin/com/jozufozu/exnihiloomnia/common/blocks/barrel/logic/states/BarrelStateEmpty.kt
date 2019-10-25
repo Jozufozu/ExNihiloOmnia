@@ -7,7 +7,7 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.Color
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraftforge.fluids.FluidRegistry
@@ -28,11 +28,11 @@ object BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     }
 
     object CompostTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
 
-        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             val compost = RegistryManager.getCompost(itemStack) ?: return EnumInteractResult.PASS
 
             if (!barrel.world.isRemote) {

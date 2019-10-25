@@ -10,10 +10,10 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.fluids.FluidStack
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistryEntry
 
 class MeltingRecipe(
         /**
@@ -24,13 +24,13 @@ class MeltingRecipe(
         val input: Ingredient,
         val inputVolume: Int,
         output: FluidStack
-) : IForgeRegistryEntry.Impl<MeltingRecipe>() {
+) : ForgeRegistryEntry<MeltingRecipe>() {
 
     val output: FluidStack = output
         get() = field.copy()
 
     fun matches(input: ItemStack): Boolean {
-        return this.input.apply(input)
+        return this.input.test(input)
     }
 
     companion object Serde {
@@ -43,9 +43,9 @@ class MeltingRecipe(
             if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
             val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)
-            val inputVolume = JsonUtils.getInt(recipe, LibRegistries.VOLUME, 1000)
+            val inputVolume = JSONUtils.getInt(recipe, LibRegistries.VOLUME, 1000)
 
-            val requiredHeat = JsonUtils.getInt(recipe, LibRegistries.HEAT, 1)
+            val requiredHeat = JSONUtils.getInt(recipe, LibRegistries.HEAT, 1)
 
             val output = JsonHelper.deserializeFluid(recipe[LibRegistries.FLUID_OUTPUT])
 

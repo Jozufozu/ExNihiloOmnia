@@ -17,7 +17,7 @@ object ExNihiloNetwork {
         registerMessage(MessageUpdateSieve::class.java, MessageUpdateSieve.Handler::class.java)
     }
 
-    private fun <REQ : IMessage, REPLY : IMessage> registerMessage(requestMessageType: Class<REQ>, messageHandler: Class<out IMessageHandler<REQ, REPLY>>, side: Side = Side.CLIENT) {
+    private fun <REQ : IMessage, REPLY : IMessage> registerMessage(requestMessageType: Class<REQ>, messageHandler: Class<out IMessageHandler<REQ, REPLY>>, side: Side = Dist.CLIENT) {
         channel.registerMessage(messageHandler, requestMessageType, nextId++, side)
     }
 }

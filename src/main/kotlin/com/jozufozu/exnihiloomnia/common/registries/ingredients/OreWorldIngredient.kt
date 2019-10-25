@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.registries.ingredients
 
 import net.minecraft.block.Block
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -22,5 +22,5 @@ class OreWorldIngredient(oreDictName: String) : WorldIngredient() {
         }
     }
 
-    override fun test(t: IBlockState): Boolean = t.block in matchingBlocks
+    override fun test(t: BlockState): Boolean = t.block in matchingBlocks
 }

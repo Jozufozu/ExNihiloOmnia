@@ -5,8 +5,8 @@ import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
 import com.jozufozu.exnihiloomnia.common.util.contains
-import net.minecraft.block.state.IBlockState
-import net.minecraft.util.JsonUtils
+import net.minecraft.block.state.BlockState
+import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.IForgeRegistryEntry
 
@@ -15,7 +15,7 @@ class HeatSource(
         val heatSource: WorldIngredient
 ) : IForgeRegistryEntry.Impl<HeatSource>() {
 
-    fun matches(state: IBlockState) = heatSource.test(state)
+    fun matches(state: BlockState) = heatSource.test(state)
 
     companion object Serde {
 
@@ -24,7 +24,7 @@ class HeatSource(
 
             if (!CraftingHelper.processConditions(heatSource, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
-            val heatLevel = JsonUtils.getInt(heatSource, LibRegistries.HEAT)
+            val heatLevel = JSONUtils.getInt(heatSource, LibRegistries.HEAT)
 
             RegistryLoader.pushCtx(LibRegistries.SOURCE)
             val source = WorldIngredient.deserialize(heatSource[LibRegistries.SOURCE])

@@ -6,7 +6,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.ModConfig
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.JsonContext
 import net.minecraftforge.registries.IForgeRegistryEntry
@@ -66,7 +66,7 @@ object RegistryLoader {
                 try {
                     pushCtx(resourceLocation.resourcePath)
 
-                    JsonUtils.fromJson(GSON, stream, JsonObject::class.java)?.run(deserializer)?.let {
+                    JSONUtils.fromJson(GSON, stream, JsonObject::class.java)?.run(deserializer)?.let {
                         it.registryName = resourceLocation
                         registry.register(it)
                     }
@@ -150,7 +150,7 @@ object RegistryLoader {
         try {
             val reader = BufferedReader(FileReader(toLoad))
 
-            val json = JsonUtils.fromJson(GSON, reader, JsonObject::class.java)
+            val json = JSONUtils.fromJson(GSON, reader, JsonObject::class.java)
             if (json == null) {
                 LOGGER.error("Could not load JSON file '$resourcePath'")
                 return false

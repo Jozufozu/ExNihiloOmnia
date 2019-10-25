@@ -5,8 +5,8 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*
-import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.block.state.BlockState
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -40,7 +40,7 @@ object RegistryManager {
 
     val MESH = ReloadableRegistry(LibRegistries.MESH, Mesh::class.java)  { RegistryLoader.genericLoad(it, "/registries/mesh", Mesh.Serde::deserialize) }
 
-    fun getHammerRewards(world: World, hammer: ItemStack, player: EntityPlayer, toHammer: IBlockState): NonNullList<ItemStack> {
+    fun getHammerRewards(world: World, hammer: ItemStack, player: PlayerEntity, toHammer: BlockState): NonNullList<ItemStack> {
         val drops = NonNullList.create<ItemStack>()
 
         if (toHammer.block === Blocks.AIR)
@@ -65,7 +65,7 @@ object RegistryManager {
     /**
      * Whether or not the given block can be hammered
      */
-    fun hammerable(input: IBlockState) = HAMMERING.any { it.matches(input) }
+    fun hammerable(input: BlockState) = HAMMERING.any { it.matches(input) }
 
     fun getFermenting(fluid: FluidStack): List<FermentingRecipe> {
         return FERMENTING.filter { it.matches(fluid) }
@@ -120,7 +120,7 @@ object RegistryManager {
         return null
     }
 
-    fun getHeat(source: IBlockState): Int {
+    fun getHeat(source: BlockState): Int {
         for (heatSource in HEAT) {
             if (heatSource.matches(source))
                 return heatSource.heatLevel

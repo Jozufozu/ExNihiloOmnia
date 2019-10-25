@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.JsonToNBT
 import net.minecraft.nbt.NBTException
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
@@ -24,12 +24,12 @@ object JsonHelper {
      */
     @Throws(JsonParseException::class)
     fun deserializeItem(itemStack: JsonObject, useCount: Boolean): ItemStack {
-        val registryName = JsonUtils.getString(itemStack, LibRegistries.ITEM)
+        val registryName = JSONUtils.getString(itemStack, LibRegistries.ITEM)
 
         val item = Item.REGISTRY.getObject(ResourceLocation(registryName)) ?: throw JsonSyntaxException("Unknown item '$registryName'")
 
-        val data = JsonUtils.getInt(itemStack, LibRegistries.DATA, 0)
-        val count = if (useCount) JsonUtils.getInt(itemStack, LibRegistries.COUNT, 1) else 1
+        val data = JSONUtils.getInt(itemStack, LibRegistries.DATA, 0)
+        val count = if (useCount) JSONUtils.getInt(itemStack, LibRegistries.COUNT, 1) else 1
 
         if (itemStack.has("nbt")) {
             try {
@@ -37,7 +37,7 @@ object JsonHelper {
                 val nbt: NBTTagCompound = if (element.isJsonObject)
                     JsonToNBT.getTagFromJson(RegistryLoader.GSON.toJson(element))
                 else
-                    JsonToNBT.getTagFromJson(JsonUtils.getString(element, "nbt"))
+                    JsonToNBT.getTagFromJson(JSONUtils.getString(element, "nbt"))
 
                 val tmp = NBTTagCompound()
                 if (nbt.hasKey("ForgeCaps")) {
@@ -72,8 +72,8 @@ object JsonHelper {
                 volume = defaultVolume
             }
             fluid.isJsonObject -> {
-                name = JsonUtils.getString(fluid.asJsonObject, LibRegistries.FLUID)
-                volume = JsonUtils.getInt(fluid.asJsonObject, LibRegistries.VOLUME, defaultVolume)
+                name = JSONUtils.getString(fluid.asJsonObject, LibRegistries.FLUID)
+                volume = JSONUtils.getInt(fluid.asJsonObject, LibRegistries.VOLUME, defaultVolume)
             }
             else -> throw JsonSyntaxException("Fluid must be either ")
         }

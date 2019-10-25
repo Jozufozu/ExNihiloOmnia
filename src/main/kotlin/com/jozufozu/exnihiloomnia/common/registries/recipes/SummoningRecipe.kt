@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.nbt.JsonToNBT
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.JsonUtils
+import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundEvent
 import net.minecraftforge.common.crafting.CraftingHelper
@@ -50,16 +50,16 @@ class SummoningRecipe(
 
             if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
 
-            val item = CraftingHelper.getIngredient(JsonUtils.getJsonObject(recipe, LibRegistries.INPUT), RegistryLoader.CONTEXT)
+            val item = CraftingHelper.getIngredient(JSONUtils.getJsonObject(recipe, LibRegistries.INPUT), RegistryLoader.CONTEXT)
 
-            val time = JsonUtils.getInt(recipe, LibRegistries.TIME, 400)
-            val color = JsonHelper.deserializeColor(JsonUtils.getString(recipe, LibRegistries.COLOR, "ffffff"))
+            val time = JSONUtils.getInt(recipe, LibRegistries.TIME, 400)
+            val color = JsonHelper.deserializeColor(JSONUtils.getString(recipe, LibRegistries.COLOR, "ffffff"))
 
             RegistryLoader.pushPopCtx(LibRegistries.FLUID_INPUT)
             val fluid = JsonHelper.deserializeFluid(recipe[LibRegistries.FLUID_INPUT])
 
             RegistryLoader.pushPopCtx("entity")
-            val entityTag = JsonToNBT.getTagFromJson(JsonUtils.getJsonObject(recipe, "entity").toString())
+            val entityTag = JsonToNBT.getTagFromJson(JSONUtils.getJsonObject(recipe, "entity").toString())
 
             if (!entityTag.hasKey("id", Constants.NBT.TAG_STRING)) throw JsonSyntaxException("entity must have \"id\". e.g. 'minecraft:creeper'")
 
@@ -69,7 +69,7 @@ class SummoningRecipe(
             entityTag.removeTag("Pos")
             entityTag.removeTag("UUID")
 
-            val soundName: String? = JsonUtils.getString(recipe, "sound", null)
+            val soundName: String? = JSONUtils.getString(recipe, "sound", null)
             val summonSound = if (soundName == null) {
                 null
             } else {

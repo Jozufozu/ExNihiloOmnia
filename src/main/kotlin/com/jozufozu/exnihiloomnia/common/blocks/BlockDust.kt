@@ -1,33 +1,32 @@
 package com.jozufozu.exnihiloomnia.common.blocks
 
 import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
-import net.minecraft.block.Block
-import net.minecraft.block.SoundType
+import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
 import net.minecraft.block.material.Material
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.init.Blocks
+import net.minecraft.item.BlockItemUseContext
+import net.minecraft.util.Direction
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IWorldReader
 import net.minecraft.world.World
 
-class BlockDust : BlockBaseFalling(BlocksLib.DUST, Material.SAND, SoundType.SNOW) {
-    init {
-        setHardness(0.4f)
-    }
+class BlockDust : FallingModBlock(BlocksLib.DUST, Properties.create(Material.SNOW_BLOCK).hardnessAndResistance(0.4f)) {
 
-    override fun onEndFalling(worldIn: World, pos: BlockPos, p_176502_3_: IBlockState, replace: IBlockState) {
+    override fun onEndFalling(worldIn: World, pos: BlockPos, p_176502_3_: BlockState, replace: BlockState) {
         if (replace.material.isLiquid) {
             worldIn.setBlockState(pos, Blocks.CLAY.defaultState, 3)
         }
     }
 
-    private fun tryTouchWater(worldIn: World, pos: BlockPos): Boolean {
-        for (facing in EnumFacing.values()) {
-            if (facing != EnumFacing.DOWN) {
+    private fun tryTouchWater(worldIn: IWorldReader, pos: BlockPos): Boolean {
+        for (facing in Direction.values()) {
+            if (facing != Direction.DOWN) {
                 val checkPos = pos.offset(facing)
 
                 if (worldIn.getBlockState(checkPos).material === Material.WATER) {
-                    worldIn.setBlockState(pos, Blocks.CLAY.defaultState, 3)
                     return true
                 }
             }
@@ -36,15 +35,7 @@ class BlockDust : BlockBaseFalling(BlocksLib.DUST, Material.SAND, SoundType.SNOW
         return false
     }
 
-    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
-        if (!this.tryTouchWater(worldIn, pos)) {
-            super.neighborChanged(state, worldIn, pos, blockIn, fromPos)
-        }
-    }
-
-    override fun onBlockAdded(worldIn: World, pos: BlockPos, state: IBlockState) {
-        if (!this.tryTouchWater(worldIn, pos)) {
-            super.onBlockAdded(worldIn, pos, state)
-        }
+    override fun getStateForPlacement(ctx: BlockItemUseContext): BlockState? {
+        return if (tryTouchWater(ctx.world, ctx.pos)) Blocks.CLAY.defaultState else super.getStateForPlacement(ctx)
     }
 }

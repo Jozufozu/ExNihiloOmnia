@@ -10,13 +10,13 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import com.jozufozu.exnihiloomnia.proxy.ClientProxy
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.entity.Entity
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.AxisAlignedBB
@@ -30,7 +30,7 @@ object BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) 
         logic.add(CompostCollectionLogic)
     }
 
-    override fun addCollisionBoxToList(barrel: BarrelTileEntity, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
+    override fun addCollisionBoxToList(barrel: BarrelTileEntity, state: BlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, barrel.compostBB)
     }
 
@@ -79,11 +79,11 @@ object BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) 
     }
 
     object CompostCollectionLogic : BarrelLogic() {
-        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
 
-        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: PlayerEntity?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             val compostRecipe = RegistryManager.getCompost(itemStack) ?: return EnumInteractResult.PASS
 
             if (!barrel.world.isRemote) {

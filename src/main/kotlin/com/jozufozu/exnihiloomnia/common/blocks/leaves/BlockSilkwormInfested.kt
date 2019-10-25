@@ -7,59 +7,57 @@ import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.renderer.color.IBlockColor
+import net.minecraft.client.renderer.model.ModelResourceLocation
 import net.minecraft.client.resources.I18n
-import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.Items
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
-import net.minecraft.util.BlockRenderLayer
+import net.minecraft.item.Items
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Vec3d
-import net.minecraft.world.Explosion
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
+import net.minecraftforge.api.distmarker.Dist
+import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.client.event.ModelBakeEvent
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.eventbus.api.EventPriority
+import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.relauncher.OnlyIn
 import net.minecraftforge.fml.relauncher.ReflectionHelper
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.*
 
-class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : ModBlock(blockName, mimic.defaultState.material, mimic.soundType), ITileEntityProvider {
-    val mimicState: MimicBlockState
+class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : ModBlock(blockName, Properties.from(mimic)) {
+    val mimicState: MimicStateContainer
 
     init {
         if (mimic.defaultState.material === Material.AIR) throw BlockMimicException("Cannot mimic air! This is likely a programmer's mistake, and probably not a config issue")
-        MimicBlockState.currentMimic = mimic
-        mimicState = MimicBlockState(mimic, this)
+        MimicStateContainer.currentMimic = mimic
+        mimicState = MimicStateContainer(mimic, this)
         blockStateField.set(this, mimicState)
-        this.defaultState = this.blockState.baseState
-        this.fullBlock = this.defaultState.isOpaqueCube
-        this.lightOpacity = if (this.fullBlock) 255 else 0
+        this.defaultState = this.stateContainer.baseState
     }
 
     fun uninfestedToInfested(uninfested: BlockState): BlockState = mimicState.getMimickingBlockState(uninfested)
     fun infestedToUninfested(infested: BlockState): BlockState = mimicState.getMimickedBlockState(infested)
 
-    override fun removedByPlayer(state: BlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean): Boolean {
+    override fun removedByPlayer(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, willHarvest: Boolean): Boolean {
         if (!world.isRemote && !player.isCreative) {
             (world.getTileEntity(pos) as? TileEntitySilkwormInfested)?.let {
                 if (world.rand.nextFloat() < it.percentInfested * 1 / 4.0)
@@ -93,84 +91,6 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Mod
 
     override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntitySilkwormInfested()
 
-    override fun beginLeavesDecay(state: BlockState, world: World, pos: BlockPos) {
-        mimic.beginLeavesDecay(state, world, pos)
-    }
-
-    override fun isLeaves(state: BlockState, world: IBlockAccess, pos: BlockPos) = mimic.isLeaves(state, world, pos)
-
-    override fun getMapColor(state: BlockState, worldIn: IBlockAccess, pos: BlockPos): MapColor = MapColor.WHITE_STAINED_HARDENED_CLAY
-
-    override fun getActualState(state: BlockState, worldIn: IBlockAccess, pos: BlockPos): BlockState {
-        val actualState = infestedToUninfested(state).getActualState(worldIn, pos)
-        return uninfestedToInfested(actualState)
-    }
-
-    override fun getMetaFromState(state: BlockState): Int = mimic.getMetaFromState(infestedToUninfested(state))
-
-    override fun getStateFromMeta(meta: Int): BlockState = uninfestedToInfested(mimic.getStateFromMeta(meta))
-
-    override fun getFlammability(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Int = mimic.getFlammability(world, pos, face)
-
-    override fun isFlammable(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Boolean = mimic.isFlammable(world, pos, face)
-
-    override fun getFireSpreadSpeed(world: IBlockAccess, pos: BlockPos, face: EnumFacing): Int = mimic.getFireSpreadSpeed(world, pos, face)
-
-    override fun isFireSource(world: World, pos: BlockPos, side: EnumFacing): Boolean = mimic.isFireSource(world, pos, side)
-
-    override fun canRenderInLayer(state: BlockState, layer: BlockRenderLayer): Boolean = mimic.canRenderInLayer(mimicState.getMimickedBlockState(state), layer)
-
-    override fun recolorBlock(world: World, pos: BlockPos, side: EnumFacing, color: EnumDyeColor): Boolean = mimic.recolorBlock(world, pos, side, color)
-
-    override fun isCollidable(): Boolean = mimic.isCollidable
-
-    override fun canCollideCheck(state: BlockState, hitIfLiquid: Boolean): Boolean = mimic.canCollideCheck(state, hitIfLiquid)
-
-    override fun modifyAcceleration(worldIn: World, pos: BlockPos, entityIn: Entity, motion: Vec3d): Vec3d = mimic.modifyAcceleration(worldIn, pos, entityIn, motion)
-
-    override fun doesSideBlockChestOpening(blockState: BlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean = mimic.doesSideBlockChestOpening(blockState, world, pos, side)
-
-    override fun isBurning(world: IBlockAccess, pos: BlockPos): Boolean = mimic.isBurning(world, pos)
-
-    override fun getExplosionResistance(world: World, pos: BlockPos, exploder: Entity?, explosion: Explosion): Float = mimic.getExplosionResistance(world, pos, exploder, explosion)
-
-    override fun onBlockAdded(worldIn: World, pos: BlockPos, state: BlockState) {
-        mimic.onBlockAdded(worldIn, pos, state)
-    }
-
-    override fun isToolEffective(type: String, state: BlockState): Boolean = mimic.isToolEffective(type, state)
-
-    override fun rotateBlock(world: World, pos: BlockPos, axis: EnumFacing): Boolean = mimic.rotateBlock(world, pos, axis)
-
-    override fun isLadder(state: BlockState, world: IBlockAccess, pos: BlockPos, entity: EntityLivingBase): Boolean = mimic.isLadder(state, world, pos, entity)
-
-    override fun canSpawnInBlock(): Boolean = mimic.canSpawnInBlock()
-
-    override fun onEntityWalk(worldIn: World, pos: BlockPos, entityIn: Entity) {
-        mimic.onEntityWalk(worldIn, pos, entityIn)
-    }
-
-    override fun updateTick(worldIn: World, pos: BlockPos, state: BlockState, rand: Random) {
-        mimic.updateTick(worldIn, pos, state, rand)
-    }
-
-    override fun onBlockActivated(worldIn: World, pos: BlockPos, state: BlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean = mimic.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ)
-
-    override fun randomTick(worldIn: World, pos: BlockPos, state: BlockState, random: Random) {}
-
-    override fun onEntityCollidedWithBlock(worldIn: World, pos: BlockPos, state: BlockState, entityIn: Entity) {
-        mimic.onEntityCollidedWithBlock(worldIn, pos, state, entityIn)
-    }
-
-    override fun canPlaceBlockOnSide(worldIn: World, pos: BlockPos, side: EnumFacing): Boolean = mimic.canPlaceBlockOnSide(worldIn, pos, side)
-
-    override fun canPlaceBlockAt(worldIn: World, pos: BlockPos): Boolean = mimic.canPlaceBlockAt(worldIn, pos)
-
-    @SideOnly(Side.CLIENT)
-    override fun randomDisplayTick(stateIn: BlockState, worldIn: World, pos: BlockPos, rand: Random) {
-        mimic.randomDisplayTick(stateIn, worldIn, pos, rand)
-    }
-
     @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
     companion object {
         private val blockStateField by lazy { ReflectionHelper.findField(Block::class.java, "blockState", "field_176227_L") }
@@ -196,7 +116,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Mod
         }
 
         // Map our blockstates to the corresponding models of the other block
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         @SubscribeEvent(priority = EventPriority.LOWEST)
         fun registerModels(event: ModelBakeEvent) {
             infestedBlocks.forEach { leaf ->
@@ -209,7 +129,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Mod
         }
 
         // Register the blocks with a dummy model until we have enough information to register the proper models
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         fun registerModels(event: ModelRegistryEvent) {
             infestedBlocks.forEach { leaf ->
@@ -219,7 +139,7 @@ class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : Mod
             }
         }
 
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         fun postInit() {
             with(Minecraft.getInstance().blockColors) {
                 for (leaf in infestedBlocks) {

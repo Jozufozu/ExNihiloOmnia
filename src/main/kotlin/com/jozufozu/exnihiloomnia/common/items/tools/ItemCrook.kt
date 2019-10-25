@@ -5,10 +5,9 @@ import com.jozufozu.exnihiloomnia.common.items.ItemBaseTool
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.material.Material
-import net.minecraft.block.state.IBlockState
+import net.minecraft.block.state.BlockState
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.enchantment.Enchantments
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.init.Enchantments
 import net.minecraft.item.IItemTier

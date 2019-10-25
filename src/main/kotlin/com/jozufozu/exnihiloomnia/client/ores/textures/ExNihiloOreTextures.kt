@@ -7,13 +7,12 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.relauncher.OnlyIn
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
-
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 object ExNihiloOreTextures {
     fun register(map: TextureMap) {
         for (type in BlockType.values()) {

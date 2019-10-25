@@ -7,13 +7,13 @@ import net.minecraft.item.ItemStack
 object ExNihiloTabs {
     val BARRELS: ItemGroup = object : ItemGroup("exnihiloomnia.barrels") {
         override fun createIcon(): ItemStack {
-            return ItemStack(ExNihiloBlocks.BARREL_WOOD)
+            return ItemStack(ExNihiloBlocks.OAK_WOOD_BARREL)
         }
     }
 
     val ITEMS: ItemGroup = object : ItemGroup("exnihiloomnia.items") {
         override fun createIcon(): ItemStack {
-            return ItemStack(ExNihiloBlocks.SIEVE)
+            return ItemStack(ExNihiloBlocks.OAK_SIEVE)
         }
     }
 }
