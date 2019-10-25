@@ -3,7 +3,7 @@ package com.jozufozu.exnihiloomnia.proxy
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.common.ExNihiloFluids
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
 import com.jozufozu.exnihiloomnia.common.blocks.leaves.TileEntitySilkwormInfested
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
@@ -34,7 +34,7 @@ open class CommonProxy {
 
         TileEntity.register("exnihiloomnia:sieve", TileEntitySieve::class.java)
         TileEntity.register("exnihiloomnia:crucible", TileEntityCrucible::class.java)
-        TileEntity.register("exnihiloomnia:barrel", TileEntityBarrel::class.java)
+        TileEntity.register("exnihiloomnia:barrel", BarrelTileEntity::class.java)
         TileEntity.register("exnihiloomnia:infested_leaves", TileEntitySilkwormInfested::class.java)
 
         EntityRegistry.registerModEntity(LibMisc.ENTITY_STONE, EntityThrownStone::class.java, "thrown_stone", 0, ExNihilo, 64, 3, true)

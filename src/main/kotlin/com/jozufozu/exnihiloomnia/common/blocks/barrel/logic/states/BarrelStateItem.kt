@@ -1,8 +1,8 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
@@ -17,7 +17,7 @@ object BarrelStateItem : BarrelState(BarrelStates.ID_ITEMS) {
 
     private val itemBB = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0)
 
-    override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
+    override fun addCollisionBoxToList(barrel: BarrelTileEntity, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
         val block = Block.getBlockFromItem(barrel.item.item)
 
         if (block === Blocks.AIR) {
@@ -45,11 +45,11 @@ object BarrelStateItem : BarrelState(BarrelStates.ID_ITEMS) {
         }.forEach { addCollisionBoxToList(pos, entityBox, collidingBoxes, it) }
     }
 
-    override fun canInteractWithFluids(barrel: TileEntityBarrel): Boolean = false
+    override fun canInteractWithFluids(barrel: BarrelTileEntity): Boolean = false
 
-    override fun canExtractItems(barrel: TileEntityBarrel): Boolean = true
+    override fun canExtractItems(barrel: BarrelTileEntity): Boolean = true
 
-    override fun getLightValue(barrel: TileEntityBarrel, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
+    override fun getLightValue(barrel: BarrelTileEntity, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
         val block = Block.getBlockFromItem(barrel.item.item)
 
         if (block === Blocks.AIR) return 0
@@ -57,13 +57,13 @@ object BarrelStateItem : BarrelState(BarrelStates.ID_ITEMS) {
         return block.getLightValue(block.getStateFromMeta(barrel.item.metadata), world, pos)
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
         drawContents(barrel, x, y, z, partialTicks)
     }
 
-    override fun randomDisplayTick(barrel: TileEntityBarrel, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
+    override fun randomDisplayTick(barrel: BarrelTileEntity, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
         val block = Block.getBlockFromItem(barrel.item.item)
 
         if (block === Blocks.AIR) return

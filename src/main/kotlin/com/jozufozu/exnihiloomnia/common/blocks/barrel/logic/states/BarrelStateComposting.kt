@@ -2,10 +2,10 @@ package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
 import com.jozufozu.exnihiloomnia.client.RenderUtil
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.CountdownLogic
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import com.jozufozu.exnihiloomnia.proxy.ClientProxy
 import net.minecraft.block.Block
@@ -29,11 +29,11 @@ object BarrelStateComposting : BarrelState(BarrelStates.ID_COMPOSTING) {
 
     private val compostBB = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, 15.0 / 16.0, 14.0 / 16.0)
 
-    override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
+    override fun addCollisionBoxToList(barrel: BarrelTileEntity, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, compostBB)
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
         val timerNow = (ModConfig.blocks.barrel.compostTime - barrel.timer).toFloat() / ModConfig.blocks.barrel.compostTime.toFloat()

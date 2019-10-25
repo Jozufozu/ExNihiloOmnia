@@ -1,20 +1,20 @@
 package com.jozufozu.exnihiloomnia.client
 
 import net.minecraft.block.Block
-import net.minecraft.client.particle.ParticleDigging
+import net.minecraft.client.particle.DiggingParticle
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import kotlin.math.ceil
 
-class ParticleSieve(world: World, mimic: ItemStack, sievePos: BlockPos)
-    : ParticleDigging(
+class SieveParticle(world: World, mimic: ItemStack, sievePos: BlockPos)
+    : DiggingParticle(
         world,
         sievePos.x.toDouble() + world.rand.nextDouble() * 0.875 + 0.0625,
         sievePos.y + 8.5 / 16.0,
         sievePos.z.toDouble() + world.rand.nextDouble() * 0.875 + 0.0625,
         0.0, 0.0, 0.0,
-        Block.getBlockFromItem(mimic.item).getStateFromMeta(mimic.metadata)) {
+        Block.getBlockFromItem(mimic.item).defaultState) {
     init {
         setBlockPos(sievePos)
 
@@ -23,15 +23,15 @@ class ParticleSieve(world: World, mimic: ItemStack, sievePos: BlockPos)
         motionZ = 0.0
 
         particleScale /= 5.0f
-        particleMaxAge = ceil(particleMaxAge.toDouble() * 1.3).toInt()
+        maxAge = ceil(maxAge.toDouble() * 1.3).toInt()
     }
 
-    override fun onUpdate() {
+    override fun tick() {
         prevPosX = posX
         prevPosY = posY
         prevPosZ = posZ
 
-        if (particleAge++ >= particleMaxAge) {
+        if (age++ >= maxAge) {
             setExpired()
         }
 

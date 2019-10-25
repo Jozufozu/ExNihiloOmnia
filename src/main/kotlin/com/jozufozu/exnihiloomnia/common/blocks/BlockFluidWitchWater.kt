@@ -1,13 +1,11 @@
 package com.jozufozu.exnihiloomnia.common.blocks
 
 import com.jozufozu.exnihiloomnia.common.ExNihiloFluids
-import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
+import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.monster.*
-import net.minecraft.entity.passive.*
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.MobEffects
 import net.minecraft.potion.PotionEffect
@@ -20,7 +18,7 @@ import net.minecraftforge.fluids.BlockFluidClassic
 class BlockFluidWitchWater : BlockFluidClassic(ExNihiloFluids.WITCHWATER, Material.WATER) {
 
     init {
-        registryName = LibBlocks.WITCHWATER
+        registryName = BlocksLib.WITCHWATER
     }
 
     override fun onEntityCollidedWithBlock(world: World, pos: BlockPos, state: IBlockState, entity: Entity) {

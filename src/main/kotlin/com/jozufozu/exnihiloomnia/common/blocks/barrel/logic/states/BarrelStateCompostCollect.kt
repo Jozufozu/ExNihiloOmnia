@@ -1,7 +1,11 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
 import com.jozufozu.exnihiloomnia.client.RenderUtil
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.*
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelLogic
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
@@ -26,22 +30,22 @@ object BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) 
         logic.add(CompostCollectionLogic)
     }
 
-    override fun addCollisionBoxToList(barrel: TileEntityBarrel, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
+    override fun addCollisionBoxToList(barrel: BarrelTileEntity, state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, barrel.compostBB)
     }
 
-    override fun canInteractWithItems(barrel: TileEntityBarrel): Boolean {
+    override fun canInteractWithItems(barrel: BarrelTileEntity): Boolean {
         return true
     }
 
-    override fun canInteractWithFluids(barrel: TileEntityBarrel): Boolean {
+    override fun canInteractWithFluids(barrel: BarrelTileEntity): Boolean {
         return false
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
-        val height = 0.875 * MathStuff.lerp(barrel.compostAmountLastTick.toDouble() / TileEntityBarrel.compostCapacity.toDouble(), barrel.compostAmount.toDouble() / TileEntityBarrel.compostCapacity.toDouble(), partialTicks.toDouble())
+        val height = 0.875 * MathStuff.lerp(barrel.compostAmountLastTick.toDouble() / BarrelTileEntity.compostCapacity.toDouble(), barrel.compostAmount.toDouble() / BarrelTileEntity.compostCapacity.toDouble(), partialTicks.toDouble())
 
         Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
 
@@ -75,11 +79,11 @@ object BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) 
     }
 
     object CompostCollectionLogic : BarrelLogic() {
-        override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
 
-        override fun onUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             val compostRecipe = RegistryManager.getCompost(itemStack) ?: return EnumInteractResult.PASS
 
             if (!barrel.world.isRemote) {
@@ -95,9 +99,9 @@ object BarrelStateCompostCollect : BarrelState(BarrelStates.ID_COMPOST_COLLECT) 
                 }
 
                 barrel.compostAmount += compostRecipe.volume
-                barrel.compostAmount = min(barrel.compostAmount, TileEntityBarrel.compostCapacity)
+                barrel.compostAmount = min(barrel.compostAmount, BarrelTileEntity.compostCapacity)
 
-                if (barrel.compostAmount == TileEntityBarrel.compostCapacity) {
+                if (barrel.compostAmount == BarrelTileEntity.compostCapacity) {
                     barrel.state = BarrelStates.COMPOSTING
                 }
             }

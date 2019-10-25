@@ -5,11 +5,11 @@ import com.jozufozu.exnihiloomnia.client.ores.models.ExNihiloOreModels
 import com.jozufozu.exnihiloomnia.client.ores.textures.ExNihiloOreTextures
 import com.jozufozu.exnihiloomnia.client.tileentities.TileEntityBarrelRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.leaves.BlockSilkwormInfested
 import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
-import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
+import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import com.jozufozu.exnihiloomnia.common.util.IModelRegister
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
@@ -37,7 +37,7 @@ class ClientProxy : CommonProxy() {
 
         ExNihiloOreModels.preInit()
         RenderingRegistry.registerEntityRenderingHandler(EntityThrownStone::class.java) { manager -> RenderSnowball(manager, ExNihiloItems.STONE, Minecraft.getMinecraft().renderItem) }
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBarrel::class.java, TileEntityBarrelRenderer())
+        ClientRegistry.bindTileEntitySpecialRenderer(BarrelTileEntity::class.java, TileEntityBarrelRenderer())
     }
 
     override fun postInit(event: FMLPostInitializationEvent) {
@@ -73,7 +73,7 @@ class ClientProxy : CommonProxy() {
     }
 
     companion object {
-        val WITCHWATER_MODEL_LOCATION = ModelResourceLocation(LibBlocks.WITCHWATER, "fluid")
+        val WITCHWATER_MODEL_LOCATION = ModelResourceLocation(BlocksLib.WITCHWATER, "fluid")
         val PORCELAIN_BUCKET_LOCATION = ModelResourceLocation(ResourceLocation(ExNihilo.MODID, "porcelain_bucket"), "inventory")
 
         val COMPOST_RESOURCE = ResourceLocation(ExNihilo.MODID, "blocks/compost")

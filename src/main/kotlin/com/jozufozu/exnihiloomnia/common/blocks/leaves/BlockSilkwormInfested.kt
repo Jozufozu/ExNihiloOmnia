@@ -2,7 +2,7 @@ package com.jozufozu.exnihiloomnia.common.blocks.leaves
 
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.ModConfig
-import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
+import com.jozufozu.exnihiloomnia.common.blocks.ModBlock
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.Block
@@ -43,7 +43,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.*
 
-class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : BlockBase(blockName, mimic.defaultState.material, mimic.soundType), ITileEntityProvider {
+class BlockSilkwormInfested(val mimic: Block, blockName: ResourceLocation) : ModBlock(blockName, mimic.defaultState.material, mimic.soundType), ITileEntityProvider {
     val mimicState: MimicBlockState
 
     init {

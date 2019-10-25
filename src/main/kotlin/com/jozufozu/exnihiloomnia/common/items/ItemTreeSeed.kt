@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.items
 
 import com.jozufozu.exnihiloomnia.ExNihilo
-import com.jozufozu.exnihiloomnia.common.lib.LibItems
+import com.jozufozu.exnihiloomnia.common.lib.ItemsLib
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.block.BlockPlanks
 import net.minecraft.block.state.IBlockState
@@ -19,7 +19,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class ItemTreeSeed : ModItem(LibItems.TREE_SEED) {
+class ItemTreeSeed : ModItem(ItemsLib.TREE_SEED) {
     init {
         this.setHasSubtypes(true)
     }

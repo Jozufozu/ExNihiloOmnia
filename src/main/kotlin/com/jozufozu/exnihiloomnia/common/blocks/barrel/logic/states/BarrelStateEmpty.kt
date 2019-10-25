@@ -1,6 +1,10 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.*
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelLogic
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.entity.player.EntityPlayer
@@ -16,7 +20,7 @@ object BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
         logic.add(RainTrigger)
     }
 
-    override fun activate(barrel: TileEntityBarrel) {
+    override fun activate(barrel: BarrelTileEntity) {
         barrel.item = ItemStack.EMPTY
         barrel.fluid = null
         barrel.color = Color.WHITE
@@ -24,11 +28,11 @@ object BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     }
 
     object CompostTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
             return RegistryManager.getCompost(itemStack) != null
         }
 
-        override fun onUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             val compost = RegistryManager.getCompost(itemStack) ?: return EnumInteractResult.PASS
 
             if (!barrel.world.isRemote) {
@@ -44,11 +48,11 @@ object BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     }
 
     object FluidFillTrigger : BarrelLogic() {
-        override fun canFillFluid(barrel: TileEntityBarrel, fluidStack: FluidStack): Boolean {
+        override fun canFillFluid(barrel: BarrelTileEntity, fluidStack: FluidStack): Boolean {
             return true
         }
 
-        override fun onFillFluid(barrel: TileEntityBarrel, fluidStack: FluidStack): EnumInteractResult {
+        override fun onFillFluid(barrel: BarrelTileEntity, fluidStack: FluidStack): EnumInteractResult {
             if (!barrel.world.isRemote) {
                 barrel.state = BarrelStates.FLUID
             }
@@ -57,7 +61,7 @@ object BarrelStateEmpty : BarrelState(BarrelStates.ID_EMPTY) {
     }
 
     object RainTrigger : BarrelLogic() {
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity): Boolean {
             val world = barrel.world
 
             if (!world.isRemote) {

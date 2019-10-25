@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.blocks
 
-import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
+import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class BlockDust : BlockBaseFalling(LibBlocks.DUST, Material.SAND, SoundType.SNOW) {
+class BlockDust : BlockBaseFalling(BlocksLib.DUST, Material.SAND, SoundType.SNOW) {
     init {
         setHardness(0.4f)
     }

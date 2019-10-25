@@ -1,24 +1,31 @@
-package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic
+package com.jozufozu.exnihiloomnia.common.blocks.barrel
 
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
 import com.jozufozu.exnihiloomnia.common.network.MessageUpdateBarrel
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.material.Material
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.CompoundNBT
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
+import net.minecraft.network.play.server.SUpdateTileEntityPacket
+import net.minecraft.tileentity.ITickableTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.fluids.FluidEvent
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
+import net.minecraftforge.fluids.capability.templates.FluidTank
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
@@ -26,7 +33,7 @@ import net.minecraftforge.items.ItemStackHandler
 import java.util.*
 import kotlin.math.min
 
-class TileEntityBarrel : TileEntity(), ITickable {
+class BarrelTileEntity : TileEntity(), ITickableTileEntity {
     /**
      * When set, marks the compost level to be sent to the client
      */
@@ -85,11 +92,10 @@ class TileEntityBarrel : TileEntity(), ITickable {
     /**
      * When set, marks the fluid to be sent to the client
      */
-    var fluid: FluidStack?
+    var fluid: FluidStack
         get() = fluidHandler.fluid
         set(value) {
             fluidHandler.fluid = value
-            world?.checkLight(pos)
         }
 
     /**
@@ -108,9 +114,9 @@ class TileEntityBarrel : TileEntity(), ITickable {
 
     private val fluidHandler = BarrelFluidHandler(fluidCapacity)
     private val itemHandler = BarrelItemHandler()
-    private val barrel: TileEntityBarrel get() = this
+    private val barrel: BarrelTileEntity get() = this
 
-    override fun update() {
+    override fun tick() {
         this.timerLastTick = this.timer
         this.fluidAmountLastTick = this.fluidAmount
         this.compostAmountLastTick = this.compostAmount
@@ -132,61 +138,55 @@ class TileEntityBarrel : TileEntity(), ITickable {
         burnTimer = 0
     }
 
-    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
-        val barrelTag = NBTTagCompound()
+    override fun write(compound: CompoundNBT): CompoundNBT {
+        val barrelTag = CompoundNBT()
 
-        barrelTag.setString("state", state.id.toString())
-        barrelTag.setInteger("color", color.toInt())
+        barrelTag.putString("state", state.id.toString())
+        barrelTag.putInt("color", color.toInt())
 
-        item.takeIf { !it.isEmpty }?.let { barrelTag.setTag("item", it.writeToNBT(NBTTagCompound())) }
-        fluid?.let { barrelTag.setTag("fluid", it.writeToNBT(NBTTagCompound())) }
-        if (compostAmount != 0) barrelTag.setInteger("compostAmount", this.compostAmount)
-        if (burnTimer != 0) barrelTag.setInteger("burnTimer", this.burnTimer)
+        item.takeIf { !it.isEmpty }?.let { barrelTag.put("item", it.write(CompoundNBT())) }
+        fluid.takeIf { !it.isEmpty }?.let { barrelTag.put("fluid", it.writeToNBT(CompoundNBT())) }
+        if (compostAmount != 0) barrelTag.putInt("compostAmount", compostAmount)
+        if (burnTimer != 0) barrelTag.putInt("burnTimer", burnTimer)
 
-        compound.setTag("barrel", barrelTag)
+        compound.put("barrel", barrelTag)
 
-        return super.writeToNBT(compound)
+        return super.write(compound)
     }
 
-    override fun readFromNBT(compound: NBTTagCompound) {
-        val barrelTag = compound.getCompoundTag("barrel")
+    override fun read(compound: CompoundNBT) {
+        val barrelTag = compound.getCompound("barrel")
 
-        color = Color(barrelTag.getInteger("color"), true)
+        color = Color(barrelTag.getInt("color"), true)
 
         state = BarrelStates.STATES.getOrDefault(ResourceLocation(barrelTag.getString("state")), BarrelStates.EMPTY)
 
-        item = if (barrelTag.hasKey("item")) ItemStack(barrelTag.getCompoundTag("item")) else ItemStack.EMPTY
-        fluid = if (barrelTag.hasKey("fluid")) FluidStack.loadFluidStackFromNBT(barrelTag.getCompoundTag("fluid")) else null
+        item = if ("item" in barrelTag) ItemStack.read(barrelTag.getCompound("item")) else ItemStack.EMPTY
+        fluid = if ("fluid" in barrelTag) FluidStack.loadFluidStackFromNBT(barrelTag.getCompound("fluid")) else FluidStack.EMPTY
 
-        compostAmount = barrelTag.getInteger("compostAmount")
-        burnTimer = barrelTag.getInteger("burnTimer")
+        compostAmount = barrelTag.getInt("compostAmount")
+        burnTimer = barrelTag.getInt("burnTimer")
 
-        super.readFromNBT(compound)
+        super.read(compound)
     }
 
-    override fun getUpdateTag(): NBTTagCompound {
-        return this.writeToNBT(NBTTagCompound())
+    override fun getUpdateTag(): CompoundNBT {
+        return this.write(CompoundNBT())
     }
 
-    override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        return SPacketUpdateTileEntity(getPos(), 1, this.updateTag)
+    override fun getUpdatePacket(): SUpdateTileEntityPacket {
+        return SUpdateTileEntityPacket(getPos(), 1, this.updateTag)
     }
 
-    override fun onDataPacket(net: NetworkManager, packet: SPacketUpdateTileEntity) {
-        this.readFromNBT(packet.nbtCompound)
+    override fun onDataPacket(net: NetworkManager, packet: SUpdateTileEntityPacket) {
+        this.read(packet.nbtCompound)
     }
 
-    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.state.canInteractWithItems(this) || capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && this.state.canInteractWithFluids(this)) {
-            true
-        } else super.hasCapability(capability, facing)
-    }
-
-    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+    override fun <T : Any?> getCapability(cap: Capability<T>): LazyOptional<T> {
         return when {
-            capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.state.canInteractWithItems(this) -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler)
-            capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && this.state.canInteractWithFluids(this) -> CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler)
-            else -> super.getCapability(capability, facing)
+            cap === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && state.canInteractWithItems(this) -> LazyOptional.of { itemHandler }.cast()
+            cap === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && state.canInteractWithFluids(this) -> LazyOptional.of { fluidHandler }.cast()
+            else -> super.getCapability(cap)
         }
     }
 

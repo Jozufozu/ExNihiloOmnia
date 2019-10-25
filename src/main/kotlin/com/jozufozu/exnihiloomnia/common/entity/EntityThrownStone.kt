@@ -1,50 +1,48 @@
 package com.jozufozu.exnihiloomnia.common.entity
 
+import com.jozufozu.exnihiloomnia.common.ExNihiloTags
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
-import net.minecraft.block.ITileEntityProvider
-import net.minecraft.block.material.Material
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.monster.EntityIronGolem
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.projectile.EntityThrowable
+import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.passive.IronGolemEntity
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.projectile.ThrowableEntity
 import net.minecraft.util.DamageSource
 import net.minecraft.util.SoundCategory
+import net.minecraft.util.math.BlockRayTraceResult
+import net.minecraft.util.math.EntityRayTraceResult
 import net.minecraft.util.math.RayTraceResult
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
-class EntityThrownStone : EntityThrowable {
+class EntityThrownStone : ThrowableEntity {
     constructor(worldIn: World) : super(worldIn) {}
 
-    constructor(worldIn: World, throwerIn: EntityLivingBase) : super(worldIn, throwerIn) {}
+    constructor(worldIn: World, throwerIn: LivingEntity) : super(worldIn, throwerIn) {}
 
     /**
      * Called when this EntityThrowable hits a block or entity.
      */
     override fun onImpact(result: RayTraceResult) {
-        if (result.entityHit != null) {
+        if (result.type == RayTraceResult.Type.ENTITY && result is EntityRayTraceResult) {
             var i = 4
 
-            if (result.entityHit is EntityIronGolem) {
+            if (result.entity is IronGolemEntity) {
                 i = 0
             }
 
-            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), i.toFloat())
+            result.entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), i.toFloat())
         }
 
         if (!this.world.isRemote) {
-            if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                val blockPos = result.blockPos
+            if (result.type == RayTraceResult.Type.BLOCK && result is BlockRayTraceResult) {
+                val blockPos = result.pos
                 val blockState = this.world.getBlockState(blockPos)
 
                 //We want it to break glass, but some stuff (barrels) shouldn't
 
-                val motion = Vec3d(this.motionX, this.motionY, this.motionZ)
-
-                if (motion.lengthSquared() >= 1.2 && blockState.material === Material.GLASS && blockState.getBlockHardness(world, blockPos) <= 0.6f && blockState.block !is ITileEntityProvider) {
+                if (motion.lengthSquared() >= 1.2 && ExNihiloTags.Blocks.THROWN_STONE_BREAKING.contains(blockState.block)) {
                     this.world.destroyBlock(blockPos, false)
-                    this.motionX *= 0.8
-                    this.motionZ *= 0.8
+
+                    setMotion(motion.x * 0.8, motion.y, motion.z * 0.8)
 
                     return
                 }
@@ -54,11 +52,11 @@ class EntityThrownStone : EntityThrowable {
                 this.world.playSound(null, result.hitVec.x, result.hitVec.y, result.hitVec.z, hitSound, SoundCategory.PLAYERS, 0.6f, soundType.getPitch() + this.world.rand.nextFloat() * 0.4f)
             }
 
-            if (world.rand.nextFloat() <= 0.5f && !(this.getThrower() is EntityPlayer && (this.getThrower() as EntityPlayer).isCreative))
-                this.dropItem(ExNihiloItems.STONE, 1)
+            if (world.rand.nextFloat() <= 0.5f && !(this.thrower is PlayerEntity && (this.thrower as PlayerEntity).isCreative))
+                this.entityDropItem(ExNihiloItems.STONE)
 
-            this.world.setEntityState(this, 3.toByte())
-            this.setDead()
+            this.world.setEntityState(this, 3)
+            this.remove()
         }
     }
 }

@@ -5,6 +5,7 @@ import com.jozufozu.exnihiloomnia.common.items.ExNihiloTabs
 import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder
 import com.jozufozu.exnihiloomnia.common.util.IModelRegister
 import net.minecraft.block.BlockFalling
+import net.minecraft.block.FallingBlock
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -14,7 +15,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-open class BlockBaseFalling @JvmOverloads constructor(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : BlockFalling(materialIn), IItemBlockHolder, IModelRegister {
+open class BlockBaseFalling(registryName: ResourceLocation, materialIn: Material, soundType: SoundType = SoundType.STONE) : FallingBlock(materialIn), IItemBlockHolder, IModelRegister {
 
     init {
 

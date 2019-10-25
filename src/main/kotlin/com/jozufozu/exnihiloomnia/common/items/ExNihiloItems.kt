@@ -4,7 +4,7 @@ import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemCrook
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemHammer
-import com.jozufozu.exnihiloomnia.common.lib.LibItems
+import com.jozufozu.exnihiloomnia.common.lib.ItemsLib
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder
 import net.minecraft.client.resources.I18n
@@ -21,27 +21,27 @@ import java.util.*
 object ExNihiloItems {
     val modItems = ArrayList<Item>()
 
-    val WOOD_MESH: Item = register(ItemBaseTool(LibItems.WOODEN_MESH, ItemTier.WOOD))
-    val SILK_MESH: Item = register(ItemBaseTool(LibItems.SILK_MESH, ExNihiloMaterials.SILK))
-    val DIAMOND_MESH: Item = register(ItemBaseTool(LibItems.DIAMOND_MESH, ItemTier.DIAMOND))
-    val GOLD_MESH: Item = register(ItemBaseTool(LibItems.GOLD_MESH, ItemTier.GOLD))
+    val WOOD_MESH: Item = register(ItemBaseTool(ItemsLib.WOODEN_MESH, ItemTier.WOOD))
+    val SILK_MESH: Item = register(ItemBaseTool(ItemsLib.SILK_MESH, ExNihiloMaterials.SILK))
+    val DIAMOND_MESH: Item = register(ItemBaseTool(ItemsLib.DIAMOND_MESH, ItemTier.DIAMOND))
+    val GOLD_MESH: Item = register(ItemBaseTool(ItemsLib.GOLD_MESH, ItemTier.GOLD))
 
-    val CROOK: Item = register(ItemCrook(LibItems.WOODEN_CROOK, ItemTier.WOOD))
-    val BONE_CROOK: Item = register(ItemCrook(LibItems.BONE_CROOK, ExNihiloMaterials.BONE))
+    val CROOK: Item = register(ItemCrook(ItemsLib.WOODEN_CROOK, ItemTier.WOOD))
+    val BONE_CROOK: Item = register(ItemCrook(ItemsLib.BONE_CROOK, ExNihiloMaterials.BONE))
 
-    val WOOD_HAMMER: Item = register(ItemHammer(LibItems.WOODEN_HAMMER, ItemTier.WOOD))
-    val STONE_HAMMER: Item = register(ItemHammer(LibItems.STONE_HAMMER, ItemTier.STONE))
-    val IRON_HAMMER: Item = register(ItemHammer(LibItems.IRON_HAMMER, ItemTier.IRON))
-    val GOLD_HAMMER: Item = register(ItemHammer(LibItems.GOLD_HAMMER, ItemTier.GOLD))
-    val DIAMOND_HAMMER: Item = register(ItemHammer(LibItems.DIAMOND_HAMMER, ItemTier.DIAMOND))
+    val WOOD_HAMMER: Item = register(ItemHammer(ItemsLib.WOODEN_HAMMER, ItemTier.WOOD))
+    val STONE_HAMMER: Item = register(ItemHammer(ItemsLib.STONE_HAMMER, ItemTier.STONE))
+    val IRON_HAMMER: Item = register(ItemHammer(ItemsLib.IRON_HAMMER, ItemTier.IRON))
+    val GOLD_HAMMER: Item = register(ItemHammer(ItemsLib.GOLD_HAMMER, ItemTier.GOLD))
+    val DIAMOND_HAMMER: Item = register(ItemHammer(ItemsLib.DIAMOND_HAMMER, ItemTier.DIAMOND))
 
     val TREE_SEED: Item = register(ItemTreeSeed())
-    val STONE: Item = register(ItemStone())
+    val STONE: Item = register(SmallStoneItem())
     val ASTROLABE: Item = register(ItemJadeAstrolabe())
     val ASH: Item = register(ItemAsh())
     val SILKWORM: Item = register(ItemSilkWorm())
 
-    val PORCELAIN_CLAY: Item = register(ItemBase(LibItems.PORCELAIN_CLAY))
+    val PORCELAIN_CLAY: Item = register(ItemBase(ItemsLib.PORCELAIN_CLAY))
 
     @JvmStatic fun registerItems(event: RegistryEvent.Register<Item>) {
         for (item in modItems)

@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
-import com.jozufozu.exnihiloomnia.common.blocks.BlockBase
-import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
+import com.jozufozu.exnihiloomnia.common.blocks.ModBlock
+import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.BlockFaceShape
@@ -14,8 +14,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material, soundType: SoundType) : BlockBase(registryName, materialIn, soundType) {
-    constructor() : this(LibBlocks.RAW_CRUCIBLE, Material.GROUND, SoundType.GROUND) {
+open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material, soundType: SoundType) : ModBlock(registryName, materialIn, soundType) {
+    constructor() : this(BlocksLib.RAW_CRUCIBLE, Material.GROUND, SoundType.GROUND) {
         this.setHardness(1.0f)
     }
 

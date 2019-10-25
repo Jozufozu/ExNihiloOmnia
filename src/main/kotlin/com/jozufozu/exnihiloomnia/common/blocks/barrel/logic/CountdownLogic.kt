@@ -1,11 +1,13 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic
 
-class CountdownLogic(val initialTime: () -> Int, val onComplete: (TileEntityBarrel) -> Unit) : BarrelLogic() {
-    override fun onActivate(barrel: TileEntityBarrel) {
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
+
+class CountdownLogic(val initialTime: () -> Int, val onComplete: (BarrelTileEntity) -> Unit) : BarrelLogic() {
+    override fun onActivate(barrel: BarrelTileEntity) {
         barrel.timer = initialTime()
     }
 
-    override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+    override fun onUpdate(barrel: BarrelTileEntity): Boolean {
         barrel.timer--
         if (!barrel.world.isRemote) {
             if (barrel.timer <= 0) {

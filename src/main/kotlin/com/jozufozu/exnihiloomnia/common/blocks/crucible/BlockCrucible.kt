@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
 import com.jozufozu.exnihiloomnia.client.tileentities.TileEntityCrucibleRenderer
-import com.jozufozu.exnihiloomnia.common.lib.LibBlocks
+import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
-class BlockCrucible : BlockCrucibleRaw(LibBlocks.CRUCIBLE, Material.ROCK, SoundType.STONE), ITileEntityProvider {
+class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundType.STONE), ITileEntityProvider {
     init {
         this.setLightOpacity(1)
         this.setHardness(3.0f)

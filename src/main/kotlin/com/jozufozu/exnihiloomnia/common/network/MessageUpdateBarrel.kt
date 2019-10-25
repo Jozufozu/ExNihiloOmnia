@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.network
 
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.util.Color
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
@@ -90,7 +90,7 @@ class MessageUpdateBarrel() : IMessage {
 
                 val barrel = mc.world.getTileEntity(msg.pos)
 
-                if (barrel is TileEntityBarrel) {
+                if (barrel is BarrelTileEntity) {
                     msg.barrelState.ifPresent { barrel.state = BarrelStates.getState(it) ?: return@ifPresent }
                     msg.item.ifPresent { barrel.item = it }
                     if (msg.updateFluid) barrel.fluid = msg.fluid

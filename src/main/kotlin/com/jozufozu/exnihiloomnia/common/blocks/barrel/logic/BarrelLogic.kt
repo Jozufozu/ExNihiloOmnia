@@ -1,5 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic
 
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
@@ -9,7 +10,7 @@ abstract class BarrelLogic {
     /**
      * Called when a barrel state is set
      */
-    open fun onActivate(barrel: TileEntityBarrel) {
+    open fun onActivate(barrel: BarrelTileEntity) {
 
     }
 
@@ -17,7 +18,7 @@ abstract class BarrelLogic {
      * @param barrel the barrel being ticked
      * @return true if the barrel state changed
      */
-    open fun onUpdate(barrel: TileEntityBarrel): Boolean {
+    open fun onUpdate(barrel: BarrelTileEntity): Boolean {
         return false
     }
 
@@ -26,7 +27,7 @@ abstract class BarrelLogic {
      * @param itemStack the item being tested
      * @return true if item can be used on barrel
      */
-    open fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+    open fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
         return false
     }
 
@@ -38,7 +39,7 @@ abstract class BarrelLogic {
      * @param itemStack the item to be checked
      * @return true if the state changed
      */
-    open fun onUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+    open fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
         return EnumInteractResult.PASS
     }
 
@@ -47,7 +48,7 @@ abstract class BarrelLogic {
      * @param fluidStack the fluid being tested
      * @return true if the fluid can be put in the barrel
      */
-    open fun canFillFluid(barrel: TileEntityBarrel, fluidStack: FluidStack): Boolean {
+    open fun canFillFluid(barrel: BarrelTileEntity, fluidStack: FluidStack): Boolean {
         return false
     }
 
@@ -56,7 +57,7 @@ abstract class BarrelLogic {
      * Only called if [BarrelState.canInteractWithFluids] returns true
      * @return true if the state changed. Will prevent the tank from being filled
      */
-    open fun onFillFluid(barrel: TileEntityBarrel, fluidStack: FluidStack): EnumInteractResult {
+    open fun onFillFluid(barrel: BarrelTileEntity, fluidStack: FluidStack): EnumInteractResult {
         return EnumInteractResult.PASS
     }
 }

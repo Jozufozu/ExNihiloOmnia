@@ -1,9 +1,9 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.CountdownLogic
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.TileEntityBarrel
 import com.jozufozu.exnihiloomnia.common.registries.recipes.SummoningRecipe
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.util.ResourceLocation
@@ -24,7 +24,7 @@ class BarrelStateSummoning(val recipe: SummoningRecipe, name: ResourceLocation) 
         }))
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
         val progress: Float = (recipe.time - barrel.timer).toFloat() / recipe.time
@@ -33,8 +33,8 @@ class BarrelStateSummoning(val recipe: SummoningRecipe, name: ResourceLocation) 
         val fluid = barrel.fluid?.fluid ?: return
         drawFluid(
                 fluid,
-                barrel.fluidAmount.toFloat() / TileEntityBarrel.fluidCapacity.toFloat(),
-                barrel.fluidAmountLastTick.toFloat() / TileEntityBarrel.fluidCapacity.toFloat(),
+                barrel.fluidAmount.toFloat() / BarrelTileEntity.fluidCapacity.toFloat(),
+                barrel.fluidAmountLastTick.toFloat() / BarrelTileEntity.fluidCapacity.toFloat(),
                 x, y, z, partialTicks,
                 tint,
                 barrel.world.getBlockState(barrel.pos).material.isOpaque)

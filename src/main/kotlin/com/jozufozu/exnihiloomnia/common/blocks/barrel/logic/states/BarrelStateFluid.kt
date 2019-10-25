@@ -1,6 +1,10 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.states
 
-import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.*
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelLogic
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
+import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import com.jozufozu.exnihiloomnia.common.registries.recipes.FermentingRecipe
 import net.minecraft.block.material.Material
@@ -29,28 +33,28 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
         logic.add(MossLogic)
     }
 
-    override fun getLightValue(barrel: TileEntityBarrel, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
+    override fun getLightValue(barrel: BarrelTileEntity, state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
         return barrel.fluid?.fluid?.getLuminosity(barrel.fluid) ?: 0
     }
 
-    override fun draw(barrel: TileEntityBarrel, x: Double, y: Double, z: Double, partialTicks: Float) {
+    override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         super.draw(barrel, x, y, z, partialTicks)
 
         drawFluid(barrel, x, y, z, partialTicks)
     }
 
-    override fun randomDisplayTick(barrel: TileEntityBarrel, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
+    override fun randomDisplayTick(barrel: BarrelTileEntity, stateIn: IBlockState, worldIn: World, pos: BlockPos, rand: Random) {
         barrel.fluid?.fluid?.block?.let { block ->
             block.randomDisplayTick(block.defaultState, worldIn, pos, rand)
         }
     }
 
     object MossLogic : BarrelLogic() {
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity): Boolean {
             val world = barrel.world
             if (!world.isRemote && barrel.material === Material.WOOD) barrel.fluid?.let { fluid ->
                 val leaks = RegistryManager.getLeaking(fluid)
-                val chanceMultiplier = (barrel.fluid?.amount?.toFloat()?.div(TileEntityBarrel.fluidCapacity) ?: 0f)
+                val chanceMultiplier = (barrel.fluid?.amount?.toFloat()?.div(BarrelTileEntity.fluidCapacity) ?: 0f)
                 val barrelPos = barrel.pos
 
                 for (pos in BlockPos.MutableBlockPos.getAllInBoxMutable(barrelPos.add(-1, -1, -1), barrelPos.add(1, -1, 1))) {
@@ -69,11 +73,11 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object RainLogic : BarrelLogic() {
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity): Boolean {
             val world = barrel.world
             if (!world.isRemote && barrel.fluid?.fluid === FluidRegistry.WATER && world.isRainingAt(barrel.pos.up())) {
                 barrel.fluid?.let {
-                    if (it.amount < TileEntityBarrel.fluidCapacity) it.amount++
+                    if (it.amount < BarrelTileEntity.fluidCapacity) it.amount++
                     barrel.fluid = it
                 }
             }
@@ -83,11 +87,11 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object FermentingTrigger : BarrelLogic() {
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity): Boolean {
             val world = barrel.world
             if (!world.isRemote && barrel.material === Material.WOOD) {
                 barrel.fluid?.let { fluid: FluidStack ->
-                    if (fluid.amount == TileEntityBarrel.fluidCapacity) {
+                    if (fluid.amount == BarrelTileEntity.fluidCapacity) {
                         val possibleFermentations = RegistryManager.getFermenting(fluid)
 
                         if (possibleFermentations.isEmpty()) return false
@@ -130,10 +134,10 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object WoodenBarrelBurn : BarrelLogic() {
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity): Boolean {
             if (barrel.material.canBurn) {
-                barrel.fluid?.fluid?.takeIf { it.temperature > TileEntityBarrel.burnTemperature }?.let {
-                    if (barrel.burnTimer++ > TileEntityBarrel.burnTime) {
+                barrel.fluid?.fluid?.takeIf { it.temperature > BarrelTileEntity.burnTemperature }?.let {
+                    if (barrel.burnTimer++ > BarrelTileEntity.burnTime) {
                         val block = it.block
                         barrel.world.setBlockState(barrel.pos, block.defaultState)
                         barrel.world.scheduleBlockUpdate(barrel.pos, block, 1, 3)
@@ -146,7 +150,7 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object FluidMixingTrigger : BarrelLogic() {
-        override fun onUpdate(barrel: TileEntityBarrel): Boolean {
+        override fun onUpdate(barrel: BarrelTileEntity): Boolean {
             val world = barrel.world
             if (!world.isRemote) {
                 val blockState = world.getBlockState(barrel.pos.up())
@@ -178,11 +182,11 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object FluidCraftingTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
-            return barrel.fluid != null && barrel.fluidAmount == TileEntityBarrel.fluidCapacity && RegistryManager.getFluidCrafting(itemStack, barrel.fluid!!) != null
+        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+            return barrel.fluid != null && barrel.fluidAmount == BarrelTileEntity.fluidCapacity && RegistryManager.getFluidCrafting(itemStack, barrel.fluid!!) != null
         }
 
-        override fun onUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             barrel.fluid?.let { fluid ->
                 RegistryManager.getFluidCrafting(itemStack, fluid)?.let {
                     barrel.world.playSound(null, barrel.pos, it.craftSound, SoundCategory.BLOCKS, 1.0f, 1.0f)
@@ -198,11 +202,11 @@ object BarrelStateFluid : BarrelState(BarrelStates.ID_FLUID) {
     }
 
     object SummonTrigger : BarrelLogic() {
-        override fun canUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
-            return barrel.fluid != null && barrel.fluidAmount == TileEntityBarrel.fluidCapacity && RegistryManager.getSummoning(itemStack, barrel.fluid!!) != null
+        override fun canUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): Boolean {
+            return barrel.fluid != null && barrel.fluidAmount == BarrelTileEntity.fluidCapacity && RegistryManager.getSummoning(itemStack, barrel.fluid!!) != null
         }
 
-        override fun onUseItem(barrel: TileEntityBarrel, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
+        override fun onUseItem(barrel: BarrelTileEntity, player: EntityPlayer?, hand: EnumHand?, itemStack: ItemStack): EnumInteractResult {
             barrel.fluid?.let { fluid ->
                 RegistryManager.getSummoning(itemStack, fluid)?.let {
                     barrel.state = it.barrelState
