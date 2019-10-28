@@ -1,36 +1,30 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.network.CCruciblePacket
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
-import com.jozufozu.exnihiloomnia.common.network.MessageUpdateCrucible
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.CompoundNBT
 import net.minecraft.network.NetworkManager
-import net.minecraft.network.play.server.SPacketUpdateTileEntity
+import net.minecraft.tileentity.ITickableTileEntity
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.EnumFacing
-import net.minecraft.util.ITickable
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
+import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.fluids.FluidStack
-import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
-import net.minecraftforge.fml.common.network.NetworkRegistry
+import net.minecraftforge.fluids.capability.templates.FluidTank
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.floor
 import kotlin.math.min
 
-class TileEntityCrucible : TileEntity(), ITickable {
+class TileEntityCrucible : TileEntity(), ITickableTileEntity {
     private val itemHandler = CrucibleItemHandler()
     val fluidHandler = FluidTank(fluidCapacity)
-
-    init {
-        fluidHandler.setTileEntity(this)
-    }
 
     var solid: ItemStack = ItemStack.EMPTY
     /** How many mB of solid this crucible has  */
@@ -61,7 +55,7 @@ class TileEntityCrucible : TileEntity(), ITickable {
     var requiredHeatLevel: Int = 0
     var meltingRatio: Float = 0f
 
-    val fluidContents: FluidStack? get() = this.fluidHandler.fluid?.copy()
+    val fluidContents: FluidStack? get() = this.fluidHandler.fluid.copy()
 
     val fluidBB get() = AxisAlignedBB(1.0 / 16.0, 3.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0, (3.0 / 16.0) + (fluidAmount.toDouble() / fluidCapacity) * (12.0 / 16.0), 15.0 / 16.0)
     val solidBB get() = AxisAlignedBB(1.0 / 16.0, 3.0 / 16.0, 1.0 / 16.0, 15.0 / 16.0, (3.0 / 16.0) + (solidAmount.toDouble() / solidCapacity) * (12.0 / 16.0), 15.0 / 16.0)
@@ -72,22 +66,22 @@ class TileEntityCrucible : TileEntity(), ITickable {
      * If packet is accessed on the client it will always return null,
      * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
      */
-    private val packet: MessageUpdateCrucible?
+    private val packet: CCruciblePacket?
         get() {
-            if (world == null || world.isRemote) return null
-            if (_packet == null) _packet = MessageUpdateCrucible(pos)
+            if (world == null || world!!.isRemote) return null
+            if (_packet == null) _packet = CCruciblePacket(pos)
             return _packet
         }
     // Separate backing field so the update loop can know whether or not to send a packet
-    private var _packet: MessageUpdateCrucible? = null
+    private var _packet: CCruciblePacket? = null
 
-    override fun update() {
+    override fun tick() {
         solidAmountLastTick = solidAmount
         fluidAmountLastTick = fluidAmount
         partialFluidLastTick = partialFluid
 
-        if (!world.isRemote && world.totalWorldTime % 100 == 0L) {
-            val sourceHeatLevel = RegistryManager.getHeat(world.getBlockState(pos.down()))
+        if (!world!!.isRemote && world!!.gameTime % 100 == 0L) {
+            val sourceHeatLevel = RegistryManager.getHeat(world!!.getBlockState(pos.down()))
             //Every 5 seconds, increase the heat by one if the heat source is hotter, decrease it by 1 if it is cooler, or leave it alone
             currentHeatLevel += Integer.signum(sourceHeatLevel - currentHeatLevel)
         }
@@ -140,7 +134,7 @@ class TileEntityCrucible : TileEntity(), ITickable {
             packet?.sendItem()
         }
 
-        if (!world.isRemote) {
+        if (!world!!.isRemote) {
             _packet?.let {
                 markDirty()
                 ExNihiloNetwork.channel.sendToAllAround(it, NetworkRegistry.TargetPoint(world.provider.dimension, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 64.0))
@@ -149,8 +143,8 @@ class TileEntityCrucible : TileEntity(), ITickable {
         }
     }
 
-    override fun getUpdateTag(): NBTTagCompound {
-        return this.writeToNBT(NBTTagCompound())
+    override fun getUpdateTag(): CompoundNBT {
+        return this.writeToNBT(CompoundNBT())
     }
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity {
@@ -161,27 +155,27 @@ class TileEntityCrucible : TileEntity(), ITickable {
         this.readFromNBT(packet.nbtCompound)
     }
 
-    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
+    override fun write(compound: CompoundNBT): CompoundNBT {
         if (!solid.isEmpty) {
-            val solidContents = solid.writeToNBT(NBTTagCompound())
+            val solidContents = solid.writeToNBT(CompoundNBT())
             solidContents.removeTag("Count")
             compound.setTag("solidContents", solidContents)
         }
 
         if (solidAmount != 0) compound.setInteger("solidAmount", solidAmount)
 
-        if (fluidContents != null) compound.setTag("fluidContents", fluidHandler.writeToNBT(NBTTagCompound()))
+        if (fluidContents != null) compound.setTag("fluidContents", fluidHandler.writeToNBT(CompoundNBT()))
 
         if (currentHeatLevel != 0) compound.setInteger("currentHeat", currentHeatLevel)
         if (requiredHeatLevel != 0) compound.setInteger("requiredHeat", requiredHeatLevel)
         compound.setFloat("meltingRatio", meltingRatio)
         compound.setFloat("partial", partialFluid)
 
-        return super.writeToNBT(compound)
+        return super.write(compound)
     }
 
-    override fun readFromNBT(compound: NBTTagCompound) {
-        super.readFromNBT(compound)
+    override fun read(compound: CompoundNBT) {
+        super.read(compound)
 
         if (compound.hasKey("solidContents", Constants.NBT.TAG_COMPOUND)) solid = ItemStack(compound.getCompoundTag("solidContents"))
         solidAmount = compound.getInteger("Amount")
@@ -196,17 +190,12 @@ class TileEntityCrucible : TileEntity(), ITickable {
         partialFluid = compound.getFloat("partial")
     }
 
-    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY === capability || CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY === capability || super.hasCapability(capability, facing)
-    }
-
-    override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
+    override fun <T : Any?> getCapability(cap: Capability<T>): LazyOptional<T> {
         return when {
-            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY === capability -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler)
-            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY === capability -> CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler)
-            else -> super.getCapability(capability, facing)
+            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY === cap -> LazyOptional.of { itemHandler }.cast()
+            CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY === cap -> LazyOptional.of { fluidHandler }.cast()
+            else -> super.getCapability(cap)
         }
-
     }
 
     inner class CrucibleItemHandler : IItemHandler {

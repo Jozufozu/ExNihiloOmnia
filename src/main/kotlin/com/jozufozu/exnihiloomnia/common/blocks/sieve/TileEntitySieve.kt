@@ -2,8 +2,8 @@ package com.jozufozu.exnihiloomnia.common.blocks.sieve
 
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.client.SieveParticle
+import com.jozufozu.exnihiloomnia.common.network.CSievePacket
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
-import com.jozufozu.exnihiloomnia.common.network.MessageUpdateSieve
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
@@ -67,14 +67,14 @@ class TileEntitySieve : TileEntity(), ITickableTileEntity {
      * If packet is accessed on the client it will always return null,
      * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
      */
-    private val packet: MessageUpdateSieve?
+    private val packet: CSievePacket?
         get() {
             if (world == null || world.isRemote) return null
-            if (_packet == null) _packet = MessageUpdateSieve(pos)
+            if (_packet == null) _packet = CSievePacket(pos)
             return _packet
         }
     // Separate backing field so the update loop can know whether or not to send a packet
-    private var _packet: MessageUpdateSieve? = null
+    private var _packet: CSievePacket? = null
 
     override fun tick() {
         countdownLastTick = countdown

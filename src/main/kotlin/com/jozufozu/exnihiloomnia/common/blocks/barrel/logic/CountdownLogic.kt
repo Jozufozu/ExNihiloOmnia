@@ -9,7 +9,7 @@ class CountdownLogic(val initialTime: () -> Int, val onComplete: (BarrelTileEnti
 
     override fun onUpdate(barrel: BarrelTileEntity): Boolean {
         barrel.timer--
-        if (!barrel.world.isRemote) {
+        if (!barrel.world!!.isRemote) {
             if (barrel.timer <= 0) {
                 barrel.timer = 0
                 onComplete(barrel)

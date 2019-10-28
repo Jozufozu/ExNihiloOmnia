@@ -1,21 +1,15 @@
 package com.jozufozu.exnihiloomnia.common.network
 
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
-import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
+import net.minecraftforge.fml.network.NetworkEvent
+import java.util.function.Supplier
 
-class MessageUpdateSieve() : IMessage {
-    constructor(pos: BlockPos): this() {
-        this.pos = pos
-    }
-
-    lateinit var pos: BlockPos
+class CSievePacket {
+    val pos: BlockPos
 
     var mesh: ItemStack? = null
 
@@ -25,18 +19,11 @@ class MessageUpdateSieve() : IMessage {
     var countdown: Int? = null
     var workTimer: Int? = null
 
-    fun sendContents(stack: ItemStack, requiredTime: Int) {
-        contents = stack
-        this.requiredTime = requiredTime
+    constructor(pos: BlockPos) {
+        this.pos = pos
     }
 
-    fun sendContents() {
-        contents = ItemStack.EMPTY
-    }
-
-    override fun fromBytes(buf: ByteBuf) {
-        val buf = PacketBuffer(buf)
-        pos = buf.readBlockPos()
+    constructor(buf: PacketBuffer): this(buf.readBlockPos()) {
         val mask = buf.readByte().toInt()
 
         if ((mask and meshMask) != 0) {
@@ -57,8 +44,16 @@ class MessageUpdateSieve() : IMessage {
         if ((mask and workTimerMask) != 0) workTimer = buf.readVarInt()
     }
 
-    override fun toBytes(buf: ByteBuf) {
-        val buf = PacketBuffer(buf)
+    fun sendContents(stack: ItemStack, requiredTime: Int) {
+        contents = stack
+        this.requiredTime = requiredTime
+    }
+
+    fun sendContents() {
+        contents = ItemStack.EMPTY
+    }
+
+    fun encode(buf: PacketBuffer) {
 
         var mask = 0
         if (mesh != null) mask = mask or meshMask
@@ -82,27 +77,25 @@ class MessageUpdateSieve() : IMessage {
         workTimer?.let { buf.writeVarInt(it) }
     }
 
-    class Handler : IMessageHandler<MessageUpdateSieve, IMessage> {
-        override fun onMessage(msg: MessageUpdateSieve, ctx: MessageContext): IMessage? {
-            val mc = Minecraft.getMinecraft()
+    fun handle(ctx: Supplier<NetworkEvent.Context>) {
+        val mc = Minecraft.getInstance()
 
-            mc.addScheduledTask {
-                if (!mc.world.isBlockLoaded(msg.pos)) return@addScheduledTask
+        ctx.get().enqueueWork {
+            if (!mc.world.isBlockLoaded(pos)) return@enqueueWork
 
-                (mc.world.getTileEntity(msg.pos) as? TileEntitySieve)?.let { sieve ->
-                    msg.mesh?.let { sieve.mesh = it }
-                    msg.contents?.let {
-                        sieve.contents = it
-                        sieve.requiredTime = msg.requiredTime
-                    }
-
-                    msg.countdown?.let { sieve.countdown = it }
-                    msg.workTimer?.let { sieve.workTimer = it }
+            (mc.world.getTileEntity(pos) as? TileEntitySieve)?.let { sieve ->
+                mesh?.let { sieve.mesh = it }
+                contents?.let {
+                    sieve.contents = it
+                    sieve.requiredTime = requiredTime
                 }
-            }
 
-            return null
+                countdown?.let { sieve.countdown = it }
+                workTimer?.let { sieve.workTimer = it }
+            }
         }
+
+        ctx.get().packetHandled = true
     }
 
     companion object {

@@ -1,23 +1,18 @@
 package com.jozufozu.exnihiloomnia.common.network
 
 import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
-import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
-import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
+import net.minecraftforge.fml.network.NetworkEvent
+import net.minecraftforge.registries.ForgeRegistries
+import java.util.function.Supplier
 
-class MessageUpdateCrucible() : IMessage {
-    constructor(pos: BlockPos): this() {
-        this.pos = pos
-    }
-
-    lateinit var pos: BlockPos
+class CCruciblePacket {
+    val pos: BlockPos
 
     private var item: ItemStack? = null
     private var requiredHeat: Int = 0
@@ -47,9 +42,11 @@ class MessageUpdateCrucible() : IMessage {
         this.partialFluidAmount = partial
     }
 
-    override fun fromBytes(buf: ByteBuf) {
-        val buf = PacketBuffer(buf)
-        pos = buf.readBlockPos()
+    constructor(pos: BlockPos) {
+        this.pos = pos
+    }
+
+    constructor(buf: PacketBuffer): this(buf.readBlockPos()) {
         val mask = buf.readByte().toInt()
 
         if ((mask and itemMask) != 0) {
@@ -69,7 +66,7 @@ class MessageUpdateCrucible() : IMessage {
             val fluidName = buf.readString(64)
             val tag = buf.readCompoundTag()
 
-            fluid = FluidStack(FluidRegistry.getFluid(fluidName), 0, tag)
+            fluid = FluidStack(ForgeRegistries.FLUIDS.getValue(ResourceLocation(fluidName)), 0, tag)
         }
 
         if ((mask and fluidAmountMask) != 0) {
@@ -80,9 +77,7 @@ class MessageUpdateCrucible() : IMessage {
         if ((mask and heatMask) != 0) heat = buf.readVarInt()
     }
 
-    override fun toBytes(buf: ByteBuf) {
-        val buf = PacketBuffer(buf)
-
+    fun encode(buf: PacketBuffer) {
         var mask = 0
         if (item != null) mask = mask or itemMask
         if (solidAmount != null) mask = mask or solidAmountMask
@@ -106,7 +101,7 @@ class MessageUpdateCrucible() : IMessage {
         solidAmount?.let { buf.writeInt(it) }
 
         fluid?.let {
-            buf.writeString(it.fluid.name)
+            buf.writeString(it.fluid.registryName.toString())
             buf.writeCompoundTag(it.tag)
         }
         fluidAmount?.let {
@@ -117,31 +112,28 @@ class MessageUpdateCrucible() : IMessage {
         heat?.let { buf.writeVarInt(it) }
     }
 
-    class Handler : IMessageHandler<MessageUpdateCrucible, IMessage> {
-        override fun onMessage(msg: MessageUpdateCrucible, ctx: MessageContext): IMessage? {
-            val mc = Minecraft.getMinecraft()
+    fun handle(ctx: Supplier<NetworkEvent.Context>) {
+        val mc = Minecraft.getInstance()
 
-            mc.addScheduledTask {
-                if (!mc.world.isBlockLoaded(msg.pos)) return@addScheduledTask
+        ctx.get().enqueueWork {
+            if (!mc.world.isBlockLoaded(pos)) return@enqueueWork
 
-                (mc.world.getTileEntity(msg.pos) as? TileEntityCrucible)?.let { crucible ->
-                    msg.item?.let {
-                        crucible.solid = it
-                        crucible.requiredHeatLevel = msg.requiredHeat
-                        crucible.meltingRatio = msg.meltingRatio
-                    }
-                    msg.solidAmount?.let { crucible.solidAmount = it }
-                    msg.fluid?.let { crucible.fluidHandler.fluid = it }
-                    msg.fluidAmount?.let {
-                        crucible.fluidHandler.fluid?.amount = it
-                        crucible.partialFluid = msg.partialFluidAmount
-                    }
-                    msg.heat?.let { crucible.currentHeatLevel = it }
+            (mc.world.getTileEntity(pos) as? TileEntityCrucible)?.let { crucible ->
+                item?.let {
+                    crucible.solid = it
+                    crucible.requiredHeatLevel = requiredHeat
+                    crucible.meltingRatio = meltingRatio
                 }
+                solidAmount?.let { crucible.solidAmount = it }
+                fluid?.let { crucible.fluidHandler.fluid = it }
+                fluidAmount?.let {
+                    crucible.fluidHandler.fluid?.amount = it
+                    crucible.partialFluid = partialFluidAmount
+                }
+                heat?.let { crucible.currentHeatLevel = it }
             }
-
-            return null
         }
+        ctx.get().packetHandled = true
     }
 
     companion object {

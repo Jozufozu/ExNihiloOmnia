@@ -4,8 +4,8 @@ import com.jozufozu.exnihiloomnia.common.ModConfig
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
+import com.jozufozu.exnihiloomnia.common.network.CBarrelPacket
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
-import com.jozufozu.exnihiloomnia.common.network.MessageUpdateBarrel
 import com.jozufozu.exnihiloomnia.common.util.Color
 import net.minecraft.block.material.Material
 import net.minecraft.item.ItemStack
@@ -25,13 +25,13 @@ import net.minecraftforge.fluids.FluidEvent
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
+import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.fluids.capability.templates.FluidTank
 import net.minecraftforge.fml.common.network.NetworkRegistry
+import net.minecraftforge.fml.network.PacketDistributor
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
-import java.util.*
-import kotlin.math.min
 
 class BarrelTileEntity : TileEntity(), ITickableTileEntity {
     /**
@@ -40,7 +40,7 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
     var compostAmount: Int = 0
         set(value) {
             field = value
-            packet?.compostLevel = Optional.of(value)
+            packet?.compostLevel = value
         }
     var compostAmountLastTick: Int = 0
 
@@ -50,7 +50,7 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
     var color: Color = Color.WHITE
         set(value) {
             field = value
-            packet?.color = Optional.of(value.toInt())
+            packet?.color = value.toInt()
         }
 
     var fluidAmount: Int = 0
@@ -71,7 +71,7 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
             field = state
             state.activate(this)
 
-            packet?.barrelState = Optional.of(state.id.toString())
+            packet?.barrelState = state.id.toString()
         }
 
     /**
@@ -80,14 +80,14 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
      * If packet is accessed on the client it will always return null,
      * this makes the side checking by the user unnecessary and can be simplified to just be the ? operator.
      */
-    private val packet: MessageUpdateBarrel?
+    private val packet: CBarrelPacket?
         get() {
-            if (world == null || world.isRemote) return null
-            if (_packet == null) _packet = MessageUpdateBarrel(pos)
+            if (world == null || world!!.isRemote) return null
+            if (_packet == null) _packet = CBarrelPacket(pos)
             return _packet
         }
     // Separate backing field so the update loop can know whether or not to send a packet
-    private var _packet: MessageUpdateBarrel? = null
+    private var _packet: CBarrelPacket? = null
 
     /**
      * When set, marks the fluid to be sent to the client
@@ -105,11 +105,11 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
         get() = itemHandler.getStackInSlot(0)
         set(value) {
             itemHandler.setStackInSlot(0, value)
-            packet?.item = Optional.of(value)
+            packet?.item = value
         }
 
-    val material: Material get() = world.getBlockState(pos).material
-    val fluidBB get() = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, (1.0 / 16.0) + ((fluid?.amount?.toDouble() ?: 0.0) / fluidCapacity) * (14.0 / 16.0), 14.0 / 16.0)
+    val material: Material get() = blockState.material
+    val fluidBB get() = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, (1.0 / 16.0) + (fluid.amount.toDouble() / fluidCapacity) * (14.0 / 16.0), 14.0 / 16.0)
     val compostBB get() = AxisAlignedBB(2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 14.0 / 16.0, (1.0 / 16.0) + (barrel.compostAmount.toDouble() / compostCapacity) * (14.0 / 16.0), 14.0 / 16.0)
 
     private val fluidHandler = BarrelFluidHandler(fluidCapacity)
@@ -125,10 +125,10 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
 
         this.fluidAmount = this.fluidHandler.fluidAmount
 
-        if (!world.isRemote) {
+        if (!world!!.isRemote) {
             _packet?.let {
                 markDirty()
-                ExNihiloNetwork.channel.sendToAllAround(it, NetworkRegistry.TargetPoint(world.provider.dimension, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 64.0))
+                ExNihiloNetwork.channel.send(PacketDistributor.TRACKING_CHUNK.with { world.getChunkAt(pos) }, it)
             }
             _packet = null
         }
@@ -253,97 +253,37 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
         }
 
         override fun onContentsChanged(slot: Int) {
-            packet?.item = Optional.of(getStackInSlot(0))
+            packet?.item = getStackInSlot(0)
         }
     }
 
     inner class BarrelFluidHandler(capacity: Int) : FluidTank(capacity) {
         init {
-            this.setTileEntity(barrel)
+            setValidator {
+                !state.canInteractWithFluids(barrel) || !state.canFillFluid(barrel, it)
+            }
         }
 
-        override fun fillInternal(resource: FluidStack?, doFill: Boolean): Int {
-            if (resource == null || resource.amount <= 0 || !state.canInteractWithFluids(barrel) || !state.canFillFluid(barrel, resource)) {
-                return 0
+        override fun drain(maxDrain: Int, action: IFluidHandler.FluidAction): FluidStack {
+            if (!state.canInteractWithFluids(barrel) || !state.canExtractFluids(barrel)) {
+                return FluidStack.EMPTY
             }
 
-            if (!doFill || state.onFillFluid(barrel, resource) === EnumInteractResult.CONSUME) {
-                if (fluid == null) {
-                    return min(capacity, resource.amount)
-                }
+            val out = super.drain(maxDrain, action)
 
-                return if (!fluid!!.isFluidEqual(resource)) {
-                    0
-                } else min(capacity - fluid!!.amount, resource.amount)
-
-            }
-
-            if (fluid == null) {
-                fluid = FluidStack(resource, min(capacity, resource.amount))
-
-                onContentsChanged()
-
-                if (tile != null) {
-                    FluidEvent.fireEvent(FluidEvent.FluidFillingEvent(fluid, tile.world, tile.pos, this, fluid!!.amount))
-                }
-                return fluid!!.amount
-            }
-
-            if (!fluid!!.isFluidEqual(resource)) {
-                return 0
-            }
-            var filled = capacity - fluid!!.amount
-
-            if (resource.amount < filled) {
-                fluid!!.amount += resource.amount
-                filled = resource.amount
-            } else {
-                fluid!!.amount = capacity
-            }
-
-            onContentsChanged()
-
-            if (tile != null) {
-                FluidEvent.fireEvent(FluidEvent.FluidFillingEvent(fluid, tile.world, tile.pos, this, filled))
-            }
-            return filled
-        }
-
-        override fun drain(maxDrain: Int, doDrain: Boolean): FluidStack? {
-            if (!state.canInteractWithFluids(barrel)) {
-                return null
-            }
-
-            val out = super.drain(maxDrain, doDrain)
-
-            if (doDrain) {
+            if (action.execute()) {
                 state = BarrelStates.EMPTY
             }
 
             return out
         }
 
-        override fun drain(resource: FluidStack, doDrain: Boolean): FluidStack? {
-            if (!state.canExtractFluids(barrel)) {
-                return null
-            }
-
-            val out = super.drain(resource, doDrain)
-
-            if (doDrain) {
-                state = BarrelStates.EMPTY
-            }
-
-            return out
-        }
-
-        override fun setFluid(fluid: FluidStack?) {
+        override fun setFluid(fluid: FluidStack) {
             super.setFluid(fluid)
             onContentsChanged()
         }
 
         override fun onContentsChanged() {
-            packet?.updateFluid = true
             packet?.fluid = fluid
         }
     }

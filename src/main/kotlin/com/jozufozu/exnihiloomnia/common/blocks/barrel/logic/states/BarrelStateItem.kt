@@ -4,12 +4,15 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import net.minecraft.block.Block
+import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
 import net.minecraft.block.state.BlockState
 import net.minecraft.entity.Entity
 import net.minecraft.init.Blocks
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
 import java.util.*
 
@@ -29,7 +32,7 @@ object BarrelStateItem : BarrelState(BarrelStates.ID_ITEMS) {
 
         val boxes = mutableListOf<AxisAlignedBB>()
 
-        block.addCollisionBoxToList(state, worldIn, BlockPos.ORIGIN, infiniteBoundingBox, boxes, entityIn, false)
+        block.add(state, worldIn, BlockPos.ZERO, infiniteBoundingBox, boxes, entityIn, false)
 
         boxes.asSequence().map {
             val sizeX = it.maxX - it.minX
@@ -49,12 +52,12 @@ object BarrelStateItem : BarrelState(BarrelStates.ID_ITEMS) {
 
     override fun canExtractItems(barrel: BarrelTileEntity): Boolean = true
 
-    override fun getLightValue(barrel: BarrelTileEntity, state: BlockState, world: IBlockAccess, pos: BlockPos): Int {
+    override fun getLightValue(barrel: BarrelTileEntity, state: BlockState, world: IEnviromentBlockReader, pos: BlockPos): Int {
         val block = Block.getBlockFromItem(barrel.item.item)
 
         if (block === Blocks.AIR) return 0
 
-        return block.getLightValue(block.getStateFromMeta(barrel.item.metadata), world, pos)
+        return block.getLightValue(block.defaultState, world, pos)
     }
 
     override fun draw(barrel: BarrelTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {

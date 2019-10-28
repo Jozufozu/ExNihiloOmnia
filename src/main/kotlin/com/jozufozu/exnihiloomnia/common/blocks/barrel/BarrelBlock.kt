@@ -81,6 +81,10 @@ open class BarrelBlock(registryName: ResourceLocation, properties: Properties) :
         return true
     }
 
+    override fun getLightValue(state: BlockState, world: IEnviromentBlockReader, pos: BlockPos): Int {
+        return super.getLightValue(state, world, pos)
+    }
+
     override fun getShape(state: BlockState, worldIn: IBlockReader, pos: BlockPos, context: ISelectionContext) = BARREL_AABB
 
     override fun isNormalCube(state: BlockState, world: IBlockReader, pos: BlockPos) = false

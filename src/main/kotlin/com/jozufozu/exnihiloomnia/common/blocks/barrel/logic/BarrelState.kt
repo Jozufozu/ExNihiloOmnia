@@ -6,6 +6,7 @@ import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import net.minecraft.block.Block
 import net.minecraft.block.Block.NULL_AABB
+import net.minecraft.block.BlockState
 import net.minecraft.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -23,6 +24,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
@@ -44,7 +46,7 @@ open class BarrelState(val id: ResourceLocation) {
 
     open fun addCollisionBoxToList(barrel: BarrelTileEntity, state: BlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?) {  }
 
-    open fun getLightValue(barrel: BarrelTileEntity, state: BlockState, world: IBlockAccess, pos: BlockPos): Int = 0
+    open fun getLightValue(barrel: BarrelTileEntity, state: BlockState, world: IEnviromentBlockReader, pos: BlockPos): Int = 0
 
     open fun activate(barrel: BarrelTileEntity) {
         for (barrelLogic in logic) {
