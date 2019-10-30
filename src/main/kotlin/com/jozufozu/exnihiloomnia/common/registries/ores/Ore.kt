@@ -9,12 +9,12 @@ import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
 import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.contains
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.renderer.model.ModelResourceLocation
 import net.minecraft.item.ItemStack
 import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.CraftingHelper
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistryEntry
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,14 +38,14 @@ class Ore(
         val blockOreDict: Map<BlockType, List<String>>,
         val itemOreDict: Map<ItemType, List<String>>,
         private val lazyIngot: LazyItemStack?
-) : IForgeRegistryEntry.Impl<Ore>() {
+) : ForgeRegistryEntry<Ore>() {
     val ingot: ItemStack get() = lazyIngot?.get()?.copy() ?: ItemStack.EMPTY
 
-    fun getName(type: ItemType) = ResourceLocation(ExNihilo.MODID, "ore_${registryName!!.resourcePath}_$type")
-    fun getName(type: BlockType) = ResourceLocation(ExNihilo.MODID, "ore_${registryName!!.resourcePath}_$type")
+    fun getName(type: ItemType) = ResourceLocation(ExNihilo.MODID, "ore_${registryName!!.path}_$type")
+    fun getName(type: BlockType) = ResourceLocation(ExNihilo.MODID, "ore_${registryName!!.path}_$type")
 
-    fun getModel(type: ItemType) = ModelResourceLocation("${ExNihilo.MODID}:ores/item/ore_${registryName!!.resourcePath}_$type")
-    fun getModel(type: BlockType) = ModelResourceLocation("${ExNihilo.MODID}:ores/block/ore_${registryName!!.resourcePath}_$type")
+    fun getModel(type: ItemType) = ModelResourceLocation("${ExNihilo.MODID}:ores/item/ore_${registryName!!.namespace}_$type")
+    fun getModel(type: BlockType) = ModelResourceLocation("${ExNihilo.MODID}:ores/block/ore_${registryName!!.namespace}_$type")
 
     fun hasItem(type: ItemType): Boolean {
         return if (type == ItemType.INGOT) hasGeneratedIngot
@@ -58,7 +58,7 @@ class Ore(
 
         @Throws(JsonParseException::class)
         fun deserialize(ore: JsonObject): Ore? {
-            if (!CraftingHelper.processConditions(ore, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(ore, LibRegistries.CONDITIONS)) return null
 
             val color = JsonHelper.deserializeColor(JSONUtils.getString(ore, LibRegistries.COLOR, "ffffff"))
             val smeltingExp = JSONUtils.getFloat(ore, "smeltingExp", 1f)

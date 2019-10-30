@@ -22,7 +22,6 @@ import kotlin.streams.asSequence
 
 object RegistryLoader {
     val GSON: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
-    val CONTEXT = JsonContext(ExNihilo.MODID)
 
     private val LOGGER = LogManager.getLogger("Ex Nihilo")
 

@@ -6,10 +6,10 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.registries.ForgeRegistries
 import java.util.*
 
 class WeightedDrop(
@@ -40,7 +40,7 @@ class WeightedDrop(
                 }
                 drop.isJsonPrimitive && drop.asJsonPrimitive.isString -> {
                     val itemName = drop.asJsonPrimitive.asString
-                    val itemMaybe = Item.REGISTRY.getObject(ResourceLocation(itemName))
+                    val itemMaybe = ForgeRegistries.ITEMS.getValue(ResourceLocation(itemName))
                             ?: throw JsonParseException("unknown item '$itemName'")
 
                     WeightedDrop(ItemStack(itemMaybe), 1f)

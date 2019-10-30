@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistryEntry
 
 class SieveRecipe(
         /**
@@ -29,10 +29,10 @@ class SieveRecipe(
          * What could drop when fully processed.
          */
         val rewards: WeightedRewards
-) : IForgeRegistryEntry.Impl<SieveRecipe>() {
+) : ForgeRegistryEntry<SieveRecipe>() {
 
     fun matches(input: ItemStack): Boolean {
-        return this.input.apply(input)
+        return this.input.test(input)
     }
 
     companion object Serde {
@@ -41,9 +41,9 @@ class SieveRecipe(
         fun deserialize(recipe: JsonObject): SieveRecipe? {
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("sieve recipe has no input")
 
-            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS)) return null
 
-            val input = CraftingHelper.getIngredient(recipe.get(LibRegistries.INPUT), RegistryLoader.CONTEXT)
+            val input = CraftingHelper.getIngredient(recipe.get(LibRegistries.INPUT))
             val siftTime = JSONUtils.getInt(recipe, LibRegistries.TIME, 40)
 
             RegistryLoader.pushCtx(LibRegistries.REWARDS)

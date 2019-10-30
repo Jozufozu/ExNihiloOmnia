@@ -11,33 +11,33 @@ import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
+import net.minecraft.nbt.CompoundNBT
 import net.minecraft.nbt.JsonToNBT
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.SoundEvent
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fluids.FluidStack
-import net.minecraftforge.fml.common.registry.ForgeRegistries
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistries
+import net.minecraftforge.registries.ForgeRegistryEntry
 
 class SummoningRecipe(
         val fluid: FluidStack,
         val catalyst: Ingredient,
         val time: Int,
         val color: Color,
-        val entityNBT: NBTTagCompound,
+        val entityNBT: CompoundNBT,
         val summonSound: SoundEvent?
-) : IForgeRegistryEntry.Impl<SummoningRecipe>() {
+) : ForgeRegistryEntry<SummoningRecipe>() {
 
     val barrelState by lazy {
-        val name = ResourceLocation(registryName!!.resourceDomain, "fermenting_${registryName!!.resourcePath}")
+        val name = ResourceLocation(registryName!!.namespace, "fermenting_${registryName!!.path}")
         BarrelStateSummoning(this, name)
     }
 
     fun matches(catalyst: ItemStack, fluid: FluidStack): Boolean {
-        return this.catalyst.apply(catalyst) && this.fluid.isFluidEqual(fluid)
+        return this.catalyst.test(catalyst) && this.fluid.isFluidEqual(fluid)
     }
 
     companion object Serde {
@@ -48,9 +48,9 @@ class SummoningRecipe(
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("summoning recipe is missing \"${LibRegistries.INPUT}\"")
             if ("entity" !in recipe) throw JsonSyntaxException("summoning recipe is missing \"entity\"")
 
-            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS)) return null
 
-            val item = CraftingHelper.getIngredient(JSONUtils.getJsonObject(recipe, LibRegistries.INPUT), RegistryLoader.CONTEXT)
+            val item = CraftingHelper.getIngredient(JSONUtils.getJsonObject(recipe, LibRegistries.INPUT))
 
             val time = JSONUtils.getInt(recipe, LibRegistries.TIME, 400)
             val color = JsonHelper.deserializeColor(JSONUtils.getString(recipe, LibRegistries.COLOR, "ffffff"))
@@ -61,19 +61,19 @@ class SummoningRecipe(
             RegistryLoader.pushPopCtx("entity")
             val entityTag = JsonToNBT.getTagFromJson(JSONUtils.getJsonObject(recipe, "entity").toString())
 
-            if (!entityTag.hasKey("id", Constants.NBT.TAG_STRING)) throw JsonSyntaxException("entity must have \"id\". e.g. 'minecraft:creeper'")
+            if (!entityTag.contains("id", Constants.NBT.TAG_STRING)) throw JsonSyntaxException("entity must have \"id\". e.g. 'minecraft:creeper'")
 
             val id = entityTag.getString("id")
             ForgeRegistries.ENTITIES.getValue(ResourceLocation(id)) ?: throw JsonSyntaxException("entity has invalid \"id\": '$id'")
 
-            entityTag.removeTag("Pos")
-            entityTag.removeTag("UUID")
+            entityTag.remove("Pos")
+            entityTag.remove("UUID")
 
             val soundName: String? = JSONUtils.getString(recipe, "sound", null)
             val summonSound = if (soundName == null) {
                 null
             } else {
-                val sound = SoundEvent.REGISTRY.getObject(ResourceLocation(soundName))
+                val sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation(soundName))
                 if (sound == null) {
                     RegistryLoader.warn("'$sound' is not a valid sound, ignoring")
                     null

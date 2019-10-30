@@ -34,7 +34,7 @@ class WeightedRewards {
 
             if (roll.count > 1) {
                 while (roll.count > 0) {
-                    out.add(ItemStack(roll.item, 1, roll.metadata).also { it.tagCompound = roll.tagCompound?.copy() })
+                    out.add(ItemStack(roll.item, 1).also { it.tag = roll.tag?.copy() })
                     roll.shrink(1)
                 }
             } else out.add(roll)

@@ -9,7 +9,6 @@ import com.jozufozu.exnihiloomnia.common.registries.WeightedRewards
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.BlockState
-import net.minecraft.block.state.BlockState
 import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.registries.ForgeRegistryEntry

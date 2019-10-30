@@ -5,9 +5,9 @@ import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.ores.Ore
 import com.jozufozu.exnihiloomnia.common.registries.recipes.*
-import net.minecraft.block.state.BlockState
+import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World

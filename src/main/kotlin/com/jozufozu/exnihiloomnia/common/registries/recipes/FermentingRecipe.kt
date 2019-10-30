@@ -10,7 +10,6 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.registries.ingredients.WorldIngredient
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.block.BlockState
-import net.minecraft.block.state.BlockState
 import net.minecraft.util.JSONUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.CraftingHelper

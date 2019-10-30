@@ -6,7 +6,6 @@ import com.google.gson.JsonSyntaxException
 import com.jozufozu.exnihiloomnia.common.ModConfig
 import com.jozufozu.exnihiloomnia.common.lib.LibRegistries
 import com.jozufozu.exnihiloomnia.common.registries.JsonHelper
-import com.jozufozu.exnihiloomnia.common.registries.RegistryLoader
 import com.jozufozu.exnihiloomnia.common.util.contains
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
@@ -40,9 +39,9 @@ class MeltingRecipe(
             if (LibRegistries.INPUT !in recipe) throw JsonSyntaxException("melting recipe is missing \"${LibRegistries.INPUT}\"")
             if (LibRegistries.FLUID_OUTPUT !in recipe) throw JsonSyntaxException("melting recipe is missing \"${LibRegistries.FLUID_OUTPUT}\"")
 
-            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(recipe, LibRegistries.CONDITIONS)) return null
 
-            val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT], RegistryLoader.CONTEXT)
+            val input = CraftingHelper.getIngredient(recipe[LibRegistries.INPUT])
             val inputVolume = JSONUtils.getInt(recipe, LibRegistries.VOLUME, 1000)
 
             val requiredHeat = JSONUtils.getInt(recipe, LibRegistries.HEAT, 1)

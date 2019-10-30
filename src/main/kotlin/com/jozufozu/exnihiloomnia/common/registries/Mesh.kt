@@ -9,13 +9,13 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.util.JSONUtils
 import net.minecraftforge.common.crafting.CraftingHelper
-import net.minecraftforge.registries.IForgeRegistryEntry
+import net.minecraftforge.registries.ForgeRegistryEntry
 import java.util.*
 
 class Mesh(
         private val item: Ingredient,
         val multipliers: Map<String, Float>
-) : IForgeRegistryEntry.Impl<Mesh>() {
+) : ForgeRegistryEntry<Mesh>() {
 
     fun matches(itemStack: ItemStack) = item.test(itemStack)
 
@@ -25,10 +25,10 @@ class Mesh(
             if (LibRegistries.INPUT !in mesh) throw JsonSyntaxException("mesh is missing \"${LibRegistries.INPUT}\"")
             if ("multipliers" !in mesh) throw JsonSyntaxException("mesh is missing \"multipliers\"")
 
-            if (!CraftingHelper.processConditions(mesh, LibRegistries.CONDITIONS, RegistryLoader.CONTEXT)) return null
+            if (!CraftingHelper.processConditions(mesh, LibRegistries.CONDITIONS)) return null
 
             RegistryLoader.pushCtx(LibRegistries.INPUT)
-            val input = CraftingHelper.getIngredient(mesh.get(LibRegistries.INPUT), RegistryLoader.CONTEXT)
+            val input = CraftingHelper.getIngredient(mesh.get(LibRegistries.INPUT))
 
             val multipliersJson = JSONUtils.getJsonObject(mesh, "multipliers")
 
