@@ -1,7 +1,7 @@
 
 package com.jozufozu.exnihiloomnia.common.items
 
-import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
+import com.jozufozu.exnihiloomnia.common.entity.ThrownStoneEntity
 import com.jozufozu.exnihiloomnia.common.lib.ItemsLib
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
@@ -20,7 +20,7 @@ class SmallStoneItem : ModItem(ItemsLib.SMALL_STONE, Properties()) {
 
         if (!worldIn.isRemote) {
 
-            val thrownStone = EntityThrownStone(worldIn, playerIn)
+            val thrownStone = ThrownStoneEntity(worldIn, playerIn)
             thrownStone.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0f, 1.5f, 1.0f)
             worldIn.addEntity(thrownStone)
         }

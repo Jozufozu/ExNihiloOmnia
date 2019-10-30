@@ -7,7 +7,7 @@ import com.jozufozu.exnihiloomnia.client.tileentities.TileEntityBarrelRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloBlocks
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.leaves.BlockSilkwormInfested
-import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
+import com.jozufozu.exnihiloomnia.common.entity.ThrownStoneEntity
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
 import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import com.jozufozu.exnihiloomnia.common.util.IModelRegister
@@ -36,7 +36,7 @@ class ClientProxy : CommonProxy() {
         super.preInit(event)
 
         ExNihiloOreModels.preInit()
-        RenderingRegistry.registerEntityRenderingHandler(EntityThrownStone::class.java) { manager -> RenderSnowball(manager, ExNihiloItems.STONE, Minecraft.getMinecraft().renderItem) }
+        RenderingRegistry.registerEntityRenderingHandler(ThrownStoneEntity::class.java) { manager -> RenderSnowball(manager, ExNihiloItems.STONE, Minecraft.getMinecraft().renderItem) }
         ClientRegistry.bindTileEntitySpecialRenderer(BarrelTileEntity::class.java, TileEntityBarrelRenderer())
     }
 

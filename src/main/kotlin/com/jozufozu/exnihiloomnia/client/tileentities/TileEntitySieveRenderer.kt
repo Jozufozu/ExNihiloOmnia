@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.client.tileentities
 
-import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
+import com.jozufozu.exnihiloomnia.common.blocks.sieve.SieveTileEntity
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.passive.EntityBat
 
-class TileEntitySieveRenderer : TileEntitySpecialRenderer<TileEntitySieve>() {
+class TileEntitySieveRenderer : TileEntitySpecialRenderer<SieveTileEntity>() {
 
-    override fun render(sieve: TileEntitySieve, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
+    override fun render(sieve: SieveTileEntity, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         if (!isSlaveReady) renderSlave = EntityBat(world)
 
         GlStateManager.pushMatrix()

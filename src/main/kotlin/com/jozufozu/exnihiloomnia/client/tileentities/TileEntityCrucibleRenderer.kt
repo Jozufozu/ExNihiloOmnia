@@ -1,7 +1,7 @@
 package com.jozufozu.exnihiloomnia.client.tileentities
 
 import com.jozufozu.exnihiloomnia.client.RenderUtil
-import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.CrucibleTileEntity
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
 import net.minecraft.client.Minecraft
@@ -14,13 +14,13 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.passive.EntityBat
 import org.lwjgl.opengl.GL11
 
-class TileEntityCrucibleRenderer : TileEntitySpecialRenderer<TileEntityCrucible>() {
+class TileEntityCrucibleRenderer : TileEntitySpecialRenderer<CrucibleTileEntity>() {
 
-    override fun isGlobalRenderer(te: TileEntityCrucible?): Boolean {
+    override fun isGlobalRenderer(te: CrucibleTileEntity?): Boolean {
         return true
     }
 
-    override fun render(crucible: TileEntityCrucible, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
+    override fun render(crucible: CrucibleTileEntity, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
         if (renderSlave == null)
             renderSlave = EntityBat(world)
 
@@ -29,11 +29,11 @@ class TileEntityCrucibleRenderer : TileEntitySpecialRenderer<TileEntityCrucible>
 
         renderSolid(crucible, x, y, z, partialTicks)
 
-        if (crucible.solidAmount != crucible.fluidAmount || crucible.solidAmount < TileEntityCrucible.solidCapacity)
+        if (crucible.solidAmount != crucible.fluidAmount || crucible.solidAmount < CrucibleTileEntity.solidCapacity)
             renderFluid(crucible, x, y, z, partialTicks)
     }
 
-    private fun renderSolid(crucible: TileEntityCrucible, x: Double, y: Double, z: Double, partialTicks: Float) {
+    private fun renderSolid(crucible: CrucibleTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         val contents = crucible.solid
 
         if (contents.isEmpty)
@@ -45,8 +45,8 @@ class TileEntityCrucibleRenderer : TileEntitySpecialRenderer<TileEntityCrucible>
         GlStateManager.translate(x + 0.5, y + height, z + 0.5)
         GlStateManager.scale(width, 1.0, width)
 
-        val solid = crucible.solidAmount.toFloat() / TileEntityCrucible.solidCapacity.toFloat()
-        val solidLastTick = crucible.solidAmountLastTick.toFloat() / TileEntityCrucible.solidCapacity.toFloat()
+        val solid = crucible.solidAmount.toFloat() / CrucibleTileEntity.solidCapacity.toFloat()
+        val solidLastTick = crucible.solidAmountLastTick.toFloat() / CrucibleTileEntity.solidCapacity.toFloat()
 
         val fullness = MathStuff.lerp(solidLastTick, solid, partialTicks)
         val contentsSize = 12.5 / 16.0 * fullness
@@ -60,7 +60,7 @@ class TileEntityCrucibleRenderer : TileEntitySpecialRenderer<TileEntityCrucible>
         GlStateManager.popMatrix()
     }
 
-    private fun renderFluid(crucible: TileEntityCrucible, x: Double, y: Double, z: Double, partialTicks: Float) {
+    private fun renderFluid(crucible: CrucibleTileEntity, x: Double, y: Double, z: Double, partialTicks: Float) {
         val fluidStack = crucible.fluidContents ?: return
 
         GlStateManager.pushMatrix()
@@ -77,8 +77,8 @@ class TileEntityCrucibleRenderer : TileEntitySpecialRenderer<TileEntityCrucible>
         Minecraft.getMinecraft().textureManager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)
         val fluidTexture = Minecraft.getMinecraft().textureMapBlocks.getAtlasSprite(fluidStack.fluid.still.toString())
 
-        val fluid = (crucible.fluidAmount + crucible.partialFluid) / TileEntityCrucible.fluidCapacity.toFloat()
-        val fluidLastTick = (crucible.fluidAmountLastTick + crucible.partialFluidLastTick) / TileEntityCrucible.fluidCapacity.toFloat()
+        val fluid = (crucible.fluidAmount + crucible.partialFluid) / CrucibleTileEntity.fluidCapacity.toFloat()
+        val fluidLastTick = (crucible.fluidAmountLastTick + crucible.partialFluidLastTick) / CrucibleTileEntity.fluidCapacity.toFloat()
         val fullness = MathStuff.lerp(fluid, fluidLastTick, partialTicks)
         val contentsSize = 12.5 / 16.0 * fullness
 

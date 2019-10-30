@@ -57,7 +57,7 @@ open class BarrelBlock(registryName: ResourceLocation, properties: Properties) :
                         .map { it.fluid.fillSound }
                         .orElseGet {
                             fluidBefore
-                                    .map { it.fluid.emptySound }
+                                    .map { it.fluid.filledBucket }
                                     .orElse(null)
                         }
 

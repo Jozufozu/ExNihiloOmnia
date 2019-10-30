@@ -38,7 +38,7 @@ object ExNihiloItems {
     val TREE_SEED: Item = register(ItemTreeSeed())
     val STONE: Item = register(SmallStoneItem())
     val ASTROLABE: Item = register(ItemJadeAstrolabe())
-    val ASH: Item = register(ItemAsh())
+    val ASH: Item = register(AshItem())
     val SILKWORM: Item = register(ItemSilkWorm())
 
     val PORCELAIN_CLAY: Item = register(ItemBase(ItemsLib.PORCELAIN_CLAY))

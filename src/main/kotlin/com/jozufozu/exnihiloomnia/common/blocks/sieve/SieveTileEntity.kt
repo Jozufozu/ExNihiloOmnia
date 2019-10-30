@@ -2,6 +2,7 @@ package com.jozufozu.exnihiloomnia.common.blocks.sieve
 
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.client.SieveParticle
+import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloTileEntities
 import com.jozufozu.exnihiloomnia.common.network.CSievePacket
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
@@ -21,13 +22,15 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.NonNullList
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
+import net.minecraft.util.math.Vec3d
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.common.util.LazyOptional
+import net.minecraftforge.fml.network.PacketDistributor
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class TileEntitySieve : TileEntity(), ITickableTileEntity {
+class SieveTileEntity : TileEntity(ExNihiloTileEntities.SIEVE), ITickableTileEntity {
     private val itemHandler = SieveItemHandler()
 
     var mesh: ItemStack = ItemStack.EMPTY
@@ -69,7 +72,7 @@ class TileEntitySieve : TileEntity(), ITickableTileEntity {
      */
     private val packet: CSievePacket?
         get() {
-            if (world == null || world.isRemote) return null
+            if (world == null || world!!.isRemote) return null
             if (_packet == null) _packet = CSievePacket(pos)
             return _packet
         }
@@ -84,38 +87,38 @@ class TileEntitySieve : TileEntity(), ITickableTileEntity {
                 workTimer--
                 countdown--
 
-                if (world.isRemote) {
+                if (world!!.isRemote) {
                     val mimic = contents
-                    for (i in 0 until world.rand.nextInt(10) + 25) {
-                        Minecraft.getInstance().particles.addEffect(SieveParticle(world, mimic, pos))
+                    for (i in 0 until world!!.rand.nextInt(10) + 25) {
+                        Minecraft.getInstance().particles.addEffect(SieveParticle(world!!, mimic, pos))
                     }
                 }
             }
 
             if (countdown <= 0) {
-                if (!world.isRemote) {
+                if (!world!!.isRemote) {
                     rollRewards()
 
                     if (user?.isCreative?.not() == true) {
-                        if (mesh.attemptDamageItem(1, world.rand, user as? ServerPlayerEntity)) {
-                            world.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.8f, 0.8f + world.rand.nextFloat() * 0.4f)
+                        if (mesh.attemptDamageItem(1, world!!.rand, user as? ServerPlayerEntity)) {
+                            world!!.playSound(null, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.8f, 0.8f + world!!.rand.nextFloat() * 0.4f)
 
                             mesh = ItemStack.EMPTY
                         }
                     }
 
                     val soundType = blockSound(user)
-                    world.playSound(null, pos, soundType.breakSound, SoundCategory.BLOCKS, 0.8f, soundType.getPitch() * 0.8f + world.rand.nextFloat() * 0.4f)
+                    world!!.playSound(null, pos, soundType.breakSound, SoundCategory.BLOCKS, 0.8f, soundType.getPitch() * 0.8f + world!!.rand.nextFloat() * 0.4f)
                 }
 
                 reset()
             }
         }
 
-        if (!world.isRemote) {
+        if (!world!!.isRemote) {
             _packet?.let {
                 markDirty()
-                ExNihiloNetwork.channel.sendToAllAround(it, NetworkRegistry.TargetPoint(world.provider.dimension, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), 64.0))
+                ExNihiloNetwork.channel.send(PacketDistributor.TRACKING_CHUNK.with { world!!.getChunkAt(pos) }, it)
             }
             _packet = null
         }
@@ -143,11 +146,11 @@ class TileEntitySieve : TileEntity(), ITickableTileEntity {
 
             val block = Block.getBlockFromItem(insert.item)
             val soundEvent = if (block !== Blocks.AIR)
-                block.getSoundType(block.getStateFromMeta(insert.metadata), world, pos, player).placeSound
+                block.getSoundType(block.defaultState, world, pos, player).placeSound
             else
                 SoundEvents.BLOCK_GRAVEL_HIT
 
-            world.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, 0.4f, 0.75f + world.rand.nextFloat() * 0.1f)
+            world!!.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, 0.4f, 0.75f + world!!.rand.nextFloat() * 0.1f)
         }
     }
 
@@ -176,7 +179,7 @@ class TileEntitySieve : TileEntity(), ITickableTileEntity {
 
         for (recipe in RegistryManager.SIFTING) {
             if (recipe.matches(contents)) {
-                val roll = recipe.rewards.roll(user, RegistryManager.getMultipliers(mesh), world.rand)
+                val roll = recipe.rewards.roll(user, RegistryManager.getMultipliers(mesh), world!!.rand)
 
                 (user as? ServerPlayerEntity)?.let { ExNihiloTriggers.USE_SIEVE_TRIGGER.trigger(it, recipe.registryName!!, roll) }
 
@@ -185,19 +188,21 @@ class TileEntitySieve : TileEntity(), ITickableTileEntity {
         }
 
         for (drop in drops) {
-            val posX = world.rand.nextDouble() * 0.75 + 0.125
-            val posZ = world.rand.nextDouble() * 0.75 + 0.125
+            val posX = world!!.rand.nextDouble() * 0.75 + 0.125
+            val posZ = world!!.rand.nextDouble() * 0.75 + 0.125
 
-            val entityitem = ItemEntity(world, pos.x + posX, pos.y + 1.0, pos.z + posZ, drop)
+            val entityitem = ItemEntity(world!!, pos.x + posX, pos.y + 1.0, pos.z + posZ, drop)
 
             val motionMag = 0.08
 
-            entityitem.motionX = 0.5 * (world.rand.nextFloat().toDouble() * motionMag * 2.0 - motionMag)
-            entityitem.motionY = world.rand.nextFloat().toDouble() * motionMag * 1.6
-            entityitem.motionZ = 0.5 * (world.rand.nextFloat().toDouble() * motionMag * 2.0 - motionMag)
+            entityitem.motion = Vec3d(
+                    0.5 * (world!!.rand.nextFloat().toDouble() * motionMag * 2.0 - motionMag),
+                    world!!.rand.nextFloat().toDouble() * motionMag * 1.6,
+                    0.5 * (world!!.rand.nextFloat().toDouble() * motionMag * 2.0 - motionMag)
+            )
 
             entityitem.setDefaultPickupDelay()
-            world.addEntity(entityitem)
+            world!!.addEntity(entityitem)
         }
     }
 

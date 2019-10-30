@@ -41,7 +41,7 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
     }
 
     override fun onBlockActivated(state: BlockState, worldIn: World, pos: BlockPos, player: PlayerEntity, hand: Hand, rayTrace: BlockRayTraceResult): Boolean {
-        val sieve = worldIn.getTileEntity(pos) as? TileEntitySieve ?: return true
+        val sieve = worldIn.getTileEntity(pos) as? SieveTileEntity ?: return true
 
         val held = player.getHeldItem(hand)
 
@@ -78,7 +78,7 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
     }
 
     override fun onReplaced(state: BlockState, world: World, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
-        (world.getTileEntity(pos) as? TileEntitySieve)?.let {
+        (world.getTileEntity(pos) as? SieveTileEntity)?.let {
             spawnAsEntity(world, pos, it.mesh)
         }
         super.onReplaced(state, world, pos, newState, isMoving)
@@ -92,7 +92,7 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
 
     override fun hasTileEntity(state: BlockState) = true
 
-    override fun createTileEntity(state: BlockState?, world: IBlockReader?) = TileEntitySieve()
+    override fun createTileEntity(state: BlockState?, world: IBlockReader?) = SieveTileEntity()
 
     @OnlyIn(Dist.CLIENT)
     override fun registerModels() {
@@ -102,6 +102,6 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
             ModelLoader.setCustomModelResourceLocation(itemBlock, enumType.metadata, ModelResourceLocation(registryName, "variant=" + enumType.name))
         }
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySieve::class.java, TileEntitySieveRenderer())
+        ClientRegistry.bindTileEntitySpecialRenderer(SieveTileEntity::class.java, TileEntitySieveRenderer())
     }
 }

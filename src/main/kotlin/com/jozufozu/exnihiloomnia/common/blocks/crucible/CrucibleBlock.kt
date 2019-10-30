@@ -23,14 +23,14 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 
-class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundType.STONE), ITileEntityProvider {
+class CrucibleBlock : RawCrucibleBlock(BlocksLib.CRUCIBLE, Material.ROCK, SoundType.STONE), ITileEntityProvider {
     init {
         this.setLightOpacity(1)
         this.setHardness(3.0f)
     }
 
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: BlockState, playerIn: PlayerEntity, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        if (!worldIn.isRemote) (worldIn.getTileEntity(pos) as? TileEntityCrucible)?.let {
+        if (!worldIn.isRemote) (worldIn.getTileEntity(pos) as? CrucibleTileEntity)?.let {
             val held = playerIn.getHeldItem(hand)
 
             var toInsert = ItemHandlerHelper.copyStackWithSize(held, 1)
@@ -63,13 +63,13 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
     override fun addCollisionBoxToList(state: BlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, p_185477_7_: Boolean) {
         super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185477_7_)
 
-        (worldIn.getTileEntity(pos) as? TileEntityCrucible)?.let {
+        (worldIn.getTileEntity(pos) as? CrucibleTileEntity)?.let {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, it.solidBB)
         }
     }
 
     override fun isAABBInsideMaterial(world: World, pos: BlockPos, boundingBox: AxisAlignedBB, material: Material): Boolean {
-        (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
+        (world.getTileEntity(pos) as? CrucibleTileEntity)?.let {
             it.fluidContents?.let { fluid ->
                 if (it.fluidBB.offset(pos).intersects(boundingBox)) {
                     return fluid.fluid.block.defaultState.material == material
@@ -81,7 +81,7 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
     }
 
     override fun isEntityInsideMaterial(world: IBlockAccess, pos: BlockPos, state: BlockState, entity: Entity, yToTest: Double, material: Material, testingHead: Boolean): Boolean {
-        (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
+        (world.getTileEntity(pos) as? CrucibleTileEntity)?.let {
             it.fluidContents?.let { fluid ->
                 if (it.fluidBB.offset(pos).intersects(entity.entityBoundingBox)) {
                     return fluid.fluid.block.defaultState.material == material
@@ -93,18 +93,18 @@ class BlockCrucible : BlockCrucibleRaw(BlocksLib.CRUCIBLE, Material.ROCK, SoundT
     }
 
     override fun isAABBInsideLiquid(world: World, pos: BlockPos, boundingBox: AxisAlignedBB): Boolean {
-        (world.getTileEntity(pos) as? TileEntityCrucible)?.let {
+        (world.getTileEntity(pos) as? CrucibleTileEntity)?.let {
             return it.fluidBB.offset(pos).intersects(boundingBox)
         }
 
         return false
     }
 
-    override fun createNewTileEntity(worldIn: World, meta: Int) = TileEntityCrucible()
+    override fun createNewTileEntity(worldIn: World, meta: Int) = CrucibleTileEntity()
 
     @OnlyIn(Dist.CLIENT)
     override fun registerModels() {
         super.registerModels()
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible::class.java, TileEntityCrucibleRenderer())
+        ClientRegistry.bindTileEntitySpecialRenderer(CrucibleTileEntity::class.java, TileEntityCrucibleRenderer())
     }
 }

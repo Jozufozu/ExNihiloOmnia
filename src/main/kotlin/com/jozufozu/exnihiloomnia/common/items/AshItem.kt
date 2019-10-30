@@ -9,7 +9,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ItemAsh : ModItem(ItemsLib.ASH) {
+class AshItem : ModItem(ItemsLib.ASH) {
     override fun onItemUse(player: PlayerEntity, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
         if (ItemDye.applyBonemeal(player.getHeldItem(hand), worldIn, pos, player, hand)) {
             if (!worldIn.isRemote) {

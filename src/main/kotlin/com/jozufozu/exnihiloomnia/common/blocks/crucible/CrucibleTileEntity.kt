@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks.crucible
 
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloTileEntities
 import com.jozufozu.exnihiloomnia.common.network.CCruciblePacket
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
@@ -22,7 +23,7 @@ import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.floor
 import kotlin.math.min
 
-class TileEntityCrucible : TileEntity(), ITickableTileEntity {
+class CrucibleTileEntity : TileEntity(ExNihiloTileEntities.CRUCIBLE), ITickableTileEntity {
     private val itemHandler = CrucibleItemHandler()
     val fluidHandler = FluidTank(fluidCapacity)
 

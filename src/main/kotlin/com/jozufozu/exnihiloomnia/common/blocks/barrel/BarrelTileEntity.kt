@@ -1,6 +1,7 @@
 package com.jozufozu.exnihiloomnia.common.blocks.barrel
 
 import com.jozufozu.exnihiloomnia.common.ModConfig
+import com.jozufozu.exnihiloomnia.common.blocks.ExNihiloTileEntities
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelState
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.BarrelStates
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.logic.EnumInteractResult
@@ -11,29 +12,23 @@ import net.minecraft.block.material.Material
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.network.NetworkManager
-import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.network.play.server.SUpdateTileEntityPacket
 import net.minecraft.tileentity.ITickableTileEntity
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.EnumFacing
-import net.minecraft.util.ITickable
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.LazyOptional
-import net.minecraftforge.fluids.FluidEvent
 import net.minecraftforge.fluids.FluidStack
-import net.minecraftforge.fluids.FluidTank
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.fluids.capability.templates.FluidTank
-import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.network.PacketDistributor
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.ItemStackHandler
 
-class BarrelTileEntity : TileEntity(), ITickableTileEntity {
+class BarrelTileEntity : TileEntity(ExNihiloTileEntities.BARREL), ITickableTileEntity {
     /**
      * When set, marks the compost level to be sent to the client
      */
@@ -128,7 +123,7 @@ class BarrelTileEntity : TileEntity(), ITickableTileEntity {
         if (!world!!.isRemote) {
             _packet?.let {
                 markDirty()
-                ExNihiloNetwork.channel.send(PacketDistributor.TRACKING_CHUNK.with { world.getChunkAt(pos) }, it)
+                ExNihiloNetwork.channel.send(PacketDistributor.TRACKING_CHUNK.with { world!!.getChunkAt(pos) }, it)
             }
             _packet = null
         }

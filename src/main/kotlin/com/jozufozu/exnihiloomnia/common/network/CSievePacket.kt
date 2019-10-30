@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.network
 
-import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
+import com.jozufozu.exnihiloomnia.common.blocks.sieve.SieveTileEntity
 import net.minecraft.client.Minecraft
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
@@ -83,7 +83,7 @@ class CSievePacket {
         ctx.get().enqueueWork {
             if (!mc.world.isBlockLoaded(pos)) return@enqueueWork
 
-            (mc.world.getTileEntity(pos) as? TileEntitySieve)?.let { sieve ->
+            (mc.world.getTileEntity(pos) as? SieveTileEntity)?.let { sieve ->
                 mesh?.let { sieve.mesh = it }
                 contents?.let {
                     sieve.contents = it

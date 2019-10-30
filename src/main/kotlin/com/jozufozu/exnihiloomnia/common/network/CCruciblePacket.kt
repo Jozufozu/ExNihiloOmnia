@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.network
 
-import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.CrucibleTileEntity
 import net.minecraft.client.Minecraft
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
@@ -118,7 +118,7 @@ class CCruciblePacket {
         ctx.get().enqueueWork {
             if (!mc.world.isBlockLoaded(pos)) return@enqueueWork
 
-            (mc.world.getTileEntity(pos) as? TileEntityCrucible)?.let { crucible ->
+            (mc.world.getTileEntity(pos) as? CrucibleTileEntity)?.let { crucible ->
                 item?.let {
                     crucible.solid = it
                     crucible.requiredHeatLevel = requiredHeat

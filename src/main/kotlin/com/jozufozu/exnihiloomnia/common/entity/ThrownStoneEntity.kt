@@ -13,7 +13,7 @@ import net.minecraft.util.math.EntityRayTraceResult
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 
-class EntityThrownStone : ThrowableEntity {
+class ThrownStoneEntity : ThrowableEntity {
     constructor(worldIn: World) : super(worldIn) {}
 
     constructor(worldIn: World, throwerIn: LivingEntity) : super(worldIn, throwerIn) {}

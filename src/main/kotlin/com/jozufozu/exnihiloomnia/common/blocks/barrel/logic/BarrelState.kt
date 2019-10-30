@@ -4,6 +4,7 @@ import com.jozufozu.exnihiloomnia.client.RenderUtil
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
 import com.jozufozu.exnihiloomnia.common.util.Color
 import com.jozufozu.exnihiloomnia.common.util.MathStuff
+import com.mojang.blaze3d.platform.GlStateManager
 import net.minecraft.block.Block
 import net.minecraft.block.Block.NULL_AABB
 import net.minecraft.block.BlockState
@@ -26,6 +27,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
+import net.minecraftforge.api.distmarker.Dist
+import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.relauncher.OnlyIn

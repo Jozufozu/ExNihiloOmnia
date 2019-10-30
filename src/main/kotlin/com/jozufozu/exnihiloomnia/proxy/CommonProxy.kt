@@ -4,10 +4,10 @@ import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.advancements.ExNihiloTriggers
 import com.jozufozu.exnihiloomnia.common.ExNihiloFluids
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelTileEntity
-import com.jozufozu.exnihiloomnia.common.blocks.crucible.TileEntityCrucible
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.CrucibleTileEntity
 import com.jozufozu.exnihiloomnia.common.blocks.leaves.TileEntitySilkwormInfested
-import com.jozufozu.exnihiloomnia.common.blocks.sieve.TileEntitySieve
-import com.jozufozu.exnihiloomnia.common.entity.EntityThrownStone
+import com.jozufozu.exnihiloomnia.common.blocks.sieve.SieveTileEntity
+import com.jozufozu.exnihiloomnia.common.entity.ThrownStoneEntity
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloMaterials
 import com.jozufozu.exnihiloomnia.common.lib.LibMisc
 import com.jozufozu.exnihiloomnia.common.network.ExNihiloNetwork
@@ -32,12 +32,12 @@ open class CommonProxy {
 
         ExNihiloTriggers.preInit()
 
-        TileEntity.register("exnihiloomnia:sieve", TileEntitySieve::class.java)
-        TileEntity.register("exnihiloomnia:crucible", TileEntityCrucible::class.java)
+        TileEntity.register("exnihiloomnia:sieve", SieveTileEntity::class.java)
+        TileEntity.register("exnihiloomnia:crucible", CrucibleTileEntity::class.java)
         TileEntity.register("exnihiloomnia:barrel", BarrelTileEntity::class.java)
         TileEntity.register("exnihiloomnia:infested_leaves", TileEntitySilkwormInfested::class.java)
 
-        EntityRegistry.registerModEntity(LibMisc.ENTITY_STONE, EntityThrownStone::class.java, "thrown_stone", 0, ExNihilo, 64, 3, true)
+        EntityRegistry.registerModEntity(LibMisc.ENTITY_STONE, ThrownStoneEntity::class.java, "thrown_stone", 0, ExNihilo, 64, 3, true)
 
         WorldTypeSkyblock.id // force the object to initialize
         WorldProviderSkyblock.preInit()

@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
-open class BlockCrucibleRaw(registryName: ResourceLocation, materialIn: Material, soundType: SoundType) : ModBlock(registryName, materialIn, soundType) {
+open class RawCrucibleBlock(registryName: ResourceLocation, materialIn: Material, soundType: SoundType) : ModBlock(registryName, materialIn, soundType) {
     constructor() : this(BlocksLib.RAW_CRUCIBLE, Material.GROUND, SoundType.GROUND) {
         this.setHardness(1.0f)
     }
