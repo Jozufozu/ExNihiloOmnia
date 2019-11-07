@@ -19,9 +19,9 @@ import net.minecraftforge.event.RegistryEvent
 object ExNihiloTileEntities {
     private val tileEntities: ArrayList<TileEntityType<*>> = ArrayList()
 
-    val SIEVE = register(ResourceLocation(ExNihilo.MODID, "sieve"), TileEntityType.Builder.create<SieveTileEntity>( { SieveTileEntity() }, ExNihiloBlocks.OAK_SIEVE, ExNihiloBlocks.SPRUCE_SIEVE, ExNihiloBlocks.BIRCH_SIEVE, ExNihiloBlocks.JUNGLE_SIEVE, ExNihiloBlocks.ACACIA_SIEVE, ExNihiloBlocks.DARK_OAK_SIEVE))
-    val BARREL = register(ResourceLocation(ExNihilo.MODID, "barrel"), TileEntityType.Builder.create<BarrelTileEntity>( { BarrelTileEntity() }, *BarrelBlock.INSTANCES.toTypedArray()))
-    val CRUCIBLE = register(ResourceLocation(ExNihilo.MODID, "crucible"), TileEntityType.Builder.create<CrucibleTileEntity>( { CrucibleTileEntity() }, ExNihiloBlocks.CRUCIBLE))
+    val SIEVE = register(ResourceLocation(ExNihilo.MODID, "sieve"), TileEntityType.Builder.create<SieveTileEntity>(::SieveTileEntity, ExNihiloBlocks.OAK_SIEVE, ExNihiloBlocks.SPRUCE_SIEVE, ExNihiloBlocks.BIRCH_SIEVE, ExNihiloBlocks.JUNGLE_SIEVE, ExNihiloBlocks.ACACIA_SIEVE, ExNihiloBlocks.DARK_OAK_SIEVE))
+    val BARREL = register(ResourceLocation(ExNihilo.MODID, "barrel"), TileEntityType.Builder.create<BarrelTileEntity>(::BarrelTileEntity, *BarrelBlock.INSTANCES.toTypedArray()))
+    val CRUCIBLE = register(ResourceLocation(ExNihilo.MODID, "crucible"), TileEntityType.Builder.create<CrucibleTileEntity>(::CrucibleTileEntity, ExNihiloBlocks.CRUCIBLE))
 
     fun register(event: RegistryEvent.Register<TileEntityType<*>>) {
         tileEntities.forEach(event.registry::register)

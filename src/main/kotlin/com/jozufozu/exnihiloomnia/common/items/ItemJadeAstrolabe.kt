@@ -5,12 +5,12 @@ import com.jozufozu.exnihiloomnia.common.world.SpawnIsland
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
-import net.minecraft.util.EnumHand
+import net.minecraft.util.Hand
 import net.minecraft.world.World
 
 class ItemJadeAstrolabe : ModItem(ItemsLib.ASTROLABE) {
 
-    override fun onItemRightClick(worldIn: World, playerIn: PlayerEntity, handIn: EnumHand): ActionResult<ItemStack> {
+    override fun onItemRightClick(worldIn: World, playerIn: PlayerEntity, handIn: Hand): ActionResult<ItemStack> {
         if (!worldIn.isRemote) {
             val position = playerIn.position
 

@@ -6,28 +6,32 @@ import com.jozufozu.exnihiloomnia.common.items.tools.ItemCrook
 import com.jozufozu.exnihiloomnia.common.items.tools.ItemHammer
 import com.jozufozu.exnihiloomnia.common.lib.ItemsLib
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
-import com.jozufozu.exnihiloomnia.common.util.IItemBlockHolder
+import net.minecraft.block.Blocks
 import net.minecraft.client.resources.I18n
+import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemTier
 import net.minecraft.util.text.TranslationTextComponent
+import net.minecraftforge.common.ToolType
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.event.entity.player.ItemTooltipEvent
 import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.util.*
 
 @Mod.EventBusSubscriber(modid = ExNihilo.MODID)
 object ExNihiloItems {
     val modItems = ArrayList<Item>()
 
-    val WOOD_MESH: Item = register(ItemBaseTool(ItemsLib.WOODEN_MESH, ItemTier.WOOD))
-    val SILK_MESH: Item = register(ItemBaseTool(ItemsLib.SILK_MESH, ExNihiloMaterials.SILK))
-    val DIAMOND_MESH: Item = register(ItemBaseTool(ItemsLib.DIAMOND_MESH, ItemTier.DIAMOND))
-    val GOLD_MESH: Item = register(ItemBaseTool(ItemsLib.GOLD_MESH, ItemTier.GOLD))
+    val MESH_TOOL = ToolType.get("mesh")
+    val CROOK_TOOL = ToolType.get("crook")
 
-    val CROOK: Item = register(ItemCrook(ItemsLib.WOODEN_CROOK, ItemTier.WOOD))
-    val BONE_CROOK: Item = register(ItemCrook(ItemsLib.BONE_CROOK, ExNihiloMaterials.BONE))
+    val WOOD_MESH: Item = register(ItemBaseTool(ItemsLib.WOODEN_MESH, ItemTier.WOOD, Item.Properties().addToolType(MESH_TOOL, 0)))
+    val SILK_MESH: Item = register(ItemBaseTool(ItemsLib.SILK_MESH, ExNihiloMaterials.SILK, Item.Properties().addToolType(MESH_TOOL, 1)))
+    val DIAMOND_MESH: Item = register(ItemBaseTool(ItemsLib.DIAMOND_MESH, ItemTier.DIAMOND, Item.Properties().addToolType(MESH_TOOL, 3)))
+    val GOLD_MESH: Item = register(ItemBaseTool(ItemsLib.GOLD_MESH, ItemTier.GOLD, Item.Properties().addToolType(MESH_TOOL, 2)))
+
+    val CROOK: Item = register(ItemCrook(ItemsLib.WOODEN_CROOK, ItemTier.WOOD, Item.Properties().addToolType(CROOK_TOOL, 0)))
+    val BONE_CROOK: Item = register(ItemCrook(ItemsLib.BONE_CROOK, ExNihiloMaterials.BONE, Item.Properties().addToolType(CROOK_TOOL, 1)))
 
     val WOOD_HAMMER: Item = register(ItemHammer(ItemsLib.WOODEN_HAMMER, ItemTier.WOOD))
     val STONE_HAMMER: Item = register(ItemHammer(ItemsLib.STONE_HAMMER, ItemTier.STONE))
@@ -35,29 +39,32 @@ object ExNihiloItems {
     val GOLD_HAMMER: Item = register(ItemHammer(ItemsLib.GOLD_HAMMER, ItemTier.GOLD))
     val DIAMOND_HAMMER: Item = register(ItemHammer(ItemsLib.DIAMOND_HAMMER, ItemTier.DIAMOND))
 
-    val TREE_SEED: Item = register(ItemTreeSeed())
+    val OAK_SEED: Item = register(BlockItem(Blocks.OAK_SAPLING, Item.Properties().group(ExNihiloTabs.ITEMS)).also { it.registryName = ItemsLib.OAK_SEED })
+    val SPRUCE_SEED: Item = register(BlockItem(Blocks.SPRUCE_SAPLING, Item.Properties().group(ExNihiloTabs.ITEMS)).also { it.registryName = ItemsLib.SPRUCE_SEED })
+    val BIRCH_SEED: Item = register(BlockItem(Blocks.BIRCH_SAPLING, Item.Properties().group(ExNihiloTabs.ITEMS)).also { it.registryName = ItemsLib.BIRCH_SEED })
+    val JUNGLE_SEED: Item = register(BlockItem(Blocks.JUNGLE_SAPLING, Item.Properties().group(ExNihiloTabs.ITEMS)).also { it.registryName = ItemsLib.JUNGLE_SEED })
+    val ACACIA_SEED: Item = register(BlockItem(Blocks.ACACIA_SAPLING, Item.Properties().group(ExNihiloTabs.ITEMS)).also { it.registryName = ItemsLib.ACACIA_SEED })
+    val DARK_OAK_SEED: Item = register(BlockItem(Blocks.DARK_OAK_SAPLING, Item.Properties().group(ExNihiloTabs.ITEMS)).also { it.registryName = ItemsLib.DARK_OAK_SEED })
+
     val STONE: Item = register(SmallStoneItem())
     val ASTROLABE: Item = register(ItemJadeAstrolabe())
-    val ASH: Item = register(AshItem())
     val SILKWORM: Item = register(ItemSilkWorm())
 
-    val PORCELAIN_CLAY: Item = register(ItemBase(ItemsLib.PORCELAIN_CLAY))
+    val PORCELAIN_CLAY: Item = register(ModItem(ItemsLib.PORCELAIN_CLAY))
 
     @JvmStatic fun registerItems(event: RegistryEvent.Register<Item>) {
         for (item in modItems)
             event.registry.register(item)
 
         for (block in ExNihiloBlocks.modBlocks)
-            if (block is IItemBlockHolder)
-                event.registry.register((block as IItemBlockHolder).itemBlock)
+            event.registry.register(block.asItem())
     }
 
     @JvmStatic fun addMeshTooltip(event: ItemTooltipEvent) {
         val itemStack = event.itemStack
 
-        val toolTip = event.toolTip
-
         if (RegistryManager.isMesh(itemStack)) {
+            val toolTip = event.toolTip
 
             toolTip.add(null)
             val multipliers = RegistryManager.getMultipliers(itemStack)

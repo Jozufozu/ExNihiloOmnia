@@ -3,6 +3,8 @@ package com.jozufozu.exnihiloomnia.common.blocks
 import com.jozufozu.exnihiloomnia.ExNihilo
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.BarrelBlock
 import com.jozufozu.exnihiloomnia.common.blocks.barrel.GlassBarrelBlock
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.CrucibleBlock
+import com.jozufozu.exnihiloomnia.common.blocks.crucible.RawCrucibleBlock
 import com.jozufozu.exnihiloomnia.common.blocks.sieve.SieveBlock
 import com.jozufozu.exnihiloomnia.common.lib.BlocksLib
 import net.minecraft.block.Block
@@ -10,6 +12,7 @@ import net.minecraft.block.Blocks
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.common.Mod
 import java.util.*
 

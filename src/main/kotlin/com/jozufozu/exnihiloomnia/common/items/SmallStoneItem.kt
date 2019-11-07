@@ -11,21 +11,21 @@ import net.minecraft.world.World
 
 class SmallStoneItem : ModItem(ItemsLib.SMALL_STONE, Properties()) {
 
-    override fun onItemRightClick(worldIn: World, playerIn: PlayerEntity, handIn: Hand): ActionResult<ItemStack> {
-        val stack = playerIn.getHeldItem(handIn)
+    override fun onItemRightClick(world: World, player: PlayerEntity, handIn: Hand): ActionResult<ItemStack> {
+        val stack = player.getHeldItem(handIn)
 
-        if (!playerIn.isCreative) stack.shrink(1)
+        if (!player.isCreative) stack.shrink(1)
 
-        worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5f, 0.4f / (random.nextFloat() * 0.4f + 0.8f))
+        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5f, 0.4f / (random.nextFloat() * 0.4f + 0.8f))
 
-        if (!worldIn.isRemote) {
+        if (!world.isRemote) {
 
-            val thrownStone = ThrownStoneEntity(worldIn, playerIn)
-            thrownStone.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0f, 1.5f, 1.0f)
-            worldIn.addEntity(thrownStone)
+            val thrownStone = ThrownStoneEntity(player, world)
+            thrownStone.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 1.5f, 1.0f)
+            world.addEntity(thrownStone)
         }
 
-        playerIn.addStat(Stats.ITEM_USED[this])
+        player.addStat(Stats.ITEM_USED[this])
         return ActionResult(ActionResultType.SUCCESS, stack)
     }
 }

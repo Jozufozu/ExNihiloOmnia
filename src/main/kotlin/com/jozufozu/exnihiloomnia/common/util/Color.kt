@@ -1,6 +1,6 @@
 package com.jozufozu.exnihiloomnia.common.util
 
-import net.minecraft.nbt.NBTTagInt
+import net.minecraft.nbt.IntNBT
 
 class Color {
     val r: Float
@@ -40,14 +40,14 @@ class Color {
         return average(this, other)
     }
 
-    fun serializeNBT(): NBTTagInt {
-        return NBTTagInt(toInt())
+    fun serializeNBT(): IntNBT {
+        return IntNBT(toInt())
     }
 
     companion object {
         val WHITE = Color(0xFFFFFF)
 
-        fun deserialize(nbt: NBTTagInt): Color {
+        fun deserialize(nbt: IntNBT): Color {
             return Color(nbt.int, true)
         }
 

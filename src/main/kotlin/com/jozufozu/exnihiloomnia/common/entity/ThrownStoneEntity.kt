@@ -1,7 +1,9 @@
 package com.jozufozu.exnihiloomnia.common.entity
 
 import com.jozufozu.exnihiloomnia.common.ExNihiloTags
+import com.jozufozu.exnihiloomnia.common.ModEntities
 import com.jozufozu.exnihiloomnia.common.items.ExNihiloItems
+import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.passive.IronGolemEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -14,9 +16,13 @@ import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 
 class ThrownStoneEntity : ThrowableEntity {
-    constructor(worldIn: World) : super(worldIn) {}
+    constructor(type: EntityType<ThrownStoneEntity>, world: World) : super(type, world)
 
-    constructor(worldIn: World, throwerIn: LivingEntity) : super(worldIn, throwerIn) {}
+    constructor(type: EntityType<ThrownStoneEntity>, thrower: LivingEntity, world: World) : super(type, thrower, world)
+
+    constructor(thrower: LivingEntity, world: World) : super(ModEntities.THROWN_STONE, thrower, world)
+
+    override fun registerData() { }
 
     /**
      * Called when this EntityThrowable hits a block or entity.
@@ -36,8 +42,6 @@ class ThrownStoneEntity : ThrowableEntity {
             if (result.type == RayTraceResult.Type.BLOCK && result is BlockRayTraceResult) {
                 val blockPos = result.pos
                 val blockState = this.world.getBlockState(blockPos)
-
-                //We want it to break glass, but some stuff (barrels) shouldn't
 
                 if (motion.lengthSquared() >= 1.2 && ExNihiloTags.Blocks.THROWN_STONE_BREAKING.contains(blockState.block)) {
                     this.world.destroyBlock(blockPos, false)

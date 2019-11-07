@@ -1,21 +1,10 @@
 package com.jozufozu.exnihiloomnia.common.blocks.sieve
 
-import com.jozufozu.exnihiloomnia.client.tileentities.TileEntitySieveRenderer
 import com.jozufozu.exnihiloomnia.common.blocks.ModBlock
 import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
-import com.jozufozu.exnihiloomnia.common.util.IModelRegister
 import net.minecraft.block.BlockState
-import net.minecraft.block.properties.PropertyEnum
-import net.minecraft.block.state.BlockFaceShape
-import net.minecraft.block.state.BlockState
-import net.minecraft.block.state.BlockStateContainer
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.init.SoundEvents
-import net.minecraft.item.ItemBlock
-import net.minecraft.item.ItemMultiTexture
 import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.BlockRayTraceResult
@@ -26,10 +15,6 @@ import net.minecraft.util.math.shapes.VoxelShapes
 import net.minecraft.world.IBlockReader
 import net.minecraft.world.IEnviromentBlockReader
 import net.minecraft.world.World
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.fml.client.registry.ClientRegistry
-import net.minecraftforge.fml.relauncher.OnlyIn
-import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.items.ItemHandlerHelper
 
 class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name, properties) {
@@ -73,7 +58,7 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
         return true
     }
 
-    fun getShape(state: BlockState, worldIn: IBlockReader, pos: BlockPos, context: ISelectionContext): VoxelShape {
+    override fun getShape(state: BlockState, worldIn: IBlockReader, pos: BlockPos, context: ISelectionContext): VoxelShape {
         return VoxelShapes.fullCube()
     }
 
@@ -93,15 +78,4 @@ class SieveBlock(name: ResourceLocation, properties: Properties) : ModBlock(name
     override fun hasTileEntity(state: BlockState) = true
 
     override fun createTileEntity(state: BlockState?, world: IBlockReader?) = SieveTileEntity()
-
-    @OnlyIn(Dist.CLIENT)
-    override fun registerModels() {
-        val registryName = this.registryName ?: return
-        val itemBlock = itemBlock
-        for (enumType in BlockPlanks.EnumType.values()) {
-            ModelLoader.setCustomModelResourceLocation(itemBlock, enumType.metadata, ModelResourceLocation(registryName, "variant=" + enumType.name))
-        }
-
-        ClientRegistry.bindTileEntitySpecialRenderer(SieveTileEntity::class.java, TileEntitySieveRenderer())
-    }
 }

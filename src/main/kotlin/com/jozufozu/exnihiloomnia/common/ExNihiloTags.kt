@@ -8,7 +8,7 @@ import net.minecraft.tags.ItemTags
 import net.minecraft.tags.Tag
 import net.minecraft.util.ResourceLocation
 
-class ExNihiloTags {
+object ExNihiloTags {
     object Blocks {
         val THROWN_STONE_BREAKING = tag("thrown_stone_breaking")
 

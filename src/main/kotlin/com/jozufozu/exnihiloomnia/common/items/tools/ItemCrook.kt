@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 
-class ItemCrook(registryName: ResourceLocation, toolMaterial: IItemTier) : ItemBaseTool(registryName, toolMaterial) {
+class ItemCrook(registryName: ResourceLocation, toolMaterial: IItemTier, properties: Properties) : ItemBaseTool(registryName, toolMaterial, properties) {
 
     override fun onBlockStartBreak(itemstack: ItemStack, pos: BlockPos, player: PlayerEntity): Boolean {
         val world = player.world

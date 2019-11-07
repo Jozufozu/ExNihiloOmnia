@@ -8,6 +8,7 @@ import com.jozufozu.exnihiloomnia.common.registries.RegistryManager
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.network.NetworkManager
+import net.minecraft.network.play.server.SUpdateTileEntityPacket
 import net.minecraft.tileentity.ITickableTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.AxisAlignedBB
@@ -145,32 +146,32 @@ class CrucibleTileEntity : TileEntity(ExNihiloTileEntities.CRUCIBLE), ITickableT
     }
 
     override fun getUpdateTag(): CompoundNBT {
-        return this.writeToNBT(CompoundNBT())
+        return this.write(CompoundNBT())
     }
 
-    override fun getUpdatePacket(): SPacketUpdateTileEntity {
-        return SPacketUpdateTileEntity(getPos(), 1, this.updateTag)
+    override fun getUpdatePacket(): SUpdateTileEntityPacket {
+        return SUpdateTileEntityPacket(getPos(), 1, this.updateTag)
     }
 
-    override fun onDataPacket(net: NetworkManager, packet: SPacketUpdateTileEntity) {
-        this.readFromNBT(packet.nbtCompound)
+    override fun onDataPacket(net: NetworkManager, packet: SUpdateTileEntityPacket) {
+        this.read(packet.nbtCompound)
     }
 
     override fun write(compound: CompoundNBT): CompoundNBT {
         if (!solid.isEmpty) {
-            val solidContents = solid.writeToNBT(CompoundNBT())
-            solidContents.removeTag("Count")
-            compound.setTag("solidContents", solidContents)
+            val solidContents = solid.write(CompoundNBT())
+            solidContents.remove("Count")
+            compound.put("solidContents", solidContents)
         }
 
-        if (solidAmount != 0) compound.setInteger("solidAmount", solidAmount)
+        if (solidAmount != 0) compound.putInt("solidAmount", solidAmount)
 
-        if (fluidContents != null) compound.setTag("fluidContents", fluidHandler.writeToNBT(CompoundNBT()))
+        if (fluidContents != null) compound.put("fluidContents", fluidHandler.writeToNBT(CompoundNBT()))
 
-        if (currentHeatLevel != 0) compound.setInteger("currentHeat", currentHeatLevel)
-        if (requiredHeatLevel != 0) compound.setInteger("requiredHeat", requiredHeatLevel)
-        compound.setFloat("meltingRatio", meltingRatio)
-        compound.setFloat("partial", partialFluid)
+        if (currentHeatLevel != 0) compound.putInt("currentHeat", currentHeatLevel)
+        if (requiredHeatLevel != 0) compound.putInt("requiredHeat", requiredHeatLevel)
+        compound.putFloat("meltingRatio", meltingRatio)
+        compound.putFloat("partial", partialFluid)
 
         return super.write(compound)
     }
@@ -178,15 +179,15 @@ class CrucibleTileEntity : TileEntity(ExNihiloTileEntities.CRUCIBLE), ITickableT
     override fun read(compound: CompoundNBT) {
         super.read(compound)
 
-        if (compound.hasKey("solidContents", Constants.NBT.TAG_COMPOUND)) solid = ItemStack(compound.getCompoundTag("solidContents"))
-        solidAmount = compound.getInteger("Amount")
+        if (compound.contains("solidContents", Constants.NBT.TAG_COMPOUND)) solid = ItemStack.read(compound.getCompound("solidContents"))
+        solidAmount = compound.getInt("Amount")
 
-        if (compound.hasKey("fluidContents", Constants.NBT.TAG_COMPOUND)) fluidHandler.readFromNBT(compound.getCompoundTag("fluidContents"))
+        if (compound.contains("fluidContents", Constants.NBT.TAG_COMPOUND)) fluidHandler.readFromNBT(compound.getCompound("fluidContents"))
 
         fluidAmountLastTick = fluidAmount
 
-        currentHeatLevel = compound.getInteger("currentHeat")
-        requiredHeatLevel = compound.getInteger("requiredHeat")
+        currentHeatLevel = compound.getInt("currentHeat")
+        requiredHeatLevel = compound.getInt("requiredHeat")
         meltingRatio = compound.getFloat("meltingRatio")
         partialFluid = compound.getFloat("partial")
     }
@@ -200,6 +201,11 @@ class CrucibleTileEntity : TileEntity(ExNihiloTileEntities.CRUCIBLE), ITickableT
     }
 
     inner class CrucibleItemHandler : IItemHandler {
+        override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
+            return if (slot == 0) RegistryManager.getMelting(stack) != null
+            else false
+        }
+
         override fun getStackInSlot(slot: Int): ItemStack = solid.copy().also { it.count = 1 }
 
         override fun getSlotLimit(slot: Int) = solidCapacity
@@ -225,7 +231,7 @@ class CrucibleTileEntity : TileEntity(ExNihiloTileEntities.CRUCIBLE), ITickableT
             copy.shrink(allowedIn)
 
             if (!simulate) {
-                if (fluidHandler.fluid == null) {
+                if (fluidHandler.fluid.isEmpty) {
                     fluidHandler.fluid = FluidStack(meltingRecipe.output, 0)
                     packet?.fluid = fluidHandler.fluid
                 }

@@ -8,12 +8,9 @@ import net.minecraft.item.Item
 import net.minecraft.item.ToolItem
 import net.minecraft.util.ResourceLocation
 
-open class ItemBaseTool(registryName: ResourceLocation, toolMaterial: IItemTier, properties: Properties, damage: Float = 0f, attackSpeed: Float = 0f, effectiveBlocksIn: Set<Block> = Sets.newHashSet()) : ToolItem(damage, attackSpeed, toolMaterial, effectiveBlocksIn, properties.group(ExNihiloTabs.ITEMS)), Identifiable<Item> {
+open class ItemBaseTool(final override val identifier: ResourceLocation, toolMaterial: IItemTier, properties: Properties, damage: Float = 0f, attackSpeed: Float = 0f, effectiveBlocksIn: Set<Block> = Sets.newHashSet()) : ToolItem(damage, attackSpeed, toolMaterial, effectiveBlocksIn, properties.group(ExNihiloTabs.ITEMS)), Identifiable<Item> {
 
     init {
-        this.registryName = registryName
+        this.registryName = identifier
     }
-
-    override val identifier: ResourceLocation = registryName
-    override val identified: Item get() = this
 }
